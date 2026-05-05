@@ -1,0 +1,12 @@
+/**
+ * @fileoverview Saasflare UI — single-file entry point.
+ * @module packages/ui/styles/globals
+ * @package ui
+ * @reviewed 2026-04-19
+ *
+ * Apps should import exactly this file:
+ *   @import "@saasflare/ui/globals.css";
+ *
+ * theme.css transitively pulls in motion.css, surfaces.css, and themes.css.
+ */
+@import "./theme.css";

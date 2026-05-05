@@ -1,0 +1,147 @@
+/**
+ * @fileoverview 16 preset brand palettes — activate via [data-palette="id"] on <html>.
+ * @module packages/ui/styles/palettes
+ * @package ui
+ * @reviewed 2026-04-19
+ *
+ * Each preset overrides only the rebrand surface:
+ *   --primary-h / --primary-c / --primary-l   (brand axis)
+ *   --neutral-h / --neutral-c                 (neutral axis, only when palette wants neutral greys)
+ *
+ * All downstream semantic tokens (secondary, muted, border, card, chart-*, …)
+ * are derived in theme.css from these axes. Adding a preset costs one line.
+ *
+ * Selectors are scoped with `:root` prefix (e.g. `:root[data-palette="ocean"]`)
+ * to guarantee specificity (0,2,0) — this beats the `:root` baseline (0,1,0)
+ * and the `.dark` class (0,1,0) regardless of @import source order.
+ *
+ * Ink & Stone are achromatic palettes (primary-c: 0). Chart palettes are
+ * overridden so dashboards stay legible with 5 distinct hues.
+ */
+
+/* ─── Saasflare (house brand) ───────────────────── */
+:root[data-palette="saasflare"]      { --primary-h: 259.1; --primary-c: 0.214; --primary-l: 0.623; }
+:root[data-palette="saasflare"].dark { --primary-l: 0.72; }
+
+/* ─── Ocean ─────────────────────────────────────── */
+:root[data-palette="ocean"]      { --primary-h: 230; --primary-c: 0.18; --primary-l: 0.60; }
+:root[data-palette="ocean"].dark { --primary-l: 0.70; }
+
+/* ─── Ink (neutral) ─────────────────────────────── */
+:root[data-palette="ink"] {
+    --primary-h: 0;
+    --primary-c: 0;
+    --primary-l: 0.45;
+    --neutral-h: 0;
+    --neutral-c: 0;
+}
+:root[data-palette="ink"].dark { --primary-l: 0.75; }
+
+/* ─── Achromatic (near-black / near-white) ──────── */
+/* Achromatic palettes invert primary lightness across modes, so the default
+ * white --primary-foreground would collide with a near-white --primary in
+ * dark mode. Pin the foreground per-mode to keep button contrast readable. */
+:root[data-palette="achromatic"] {
+    --primary-h: 0;
+    --primary-c: 0;
+    --primary-l: 0.15;                       /* ≈ #171717, near-black */
+    --neutral-h: 0;
+    --neutral-c: 0;
+    --primary-foreground: oklch(1 0 0);      /* white on near-black */
+}
+:root[data-palette="achromatic"].dark {
+    --primary-l: 0.95;                       /* ≈ #f2f2f2, near-white */
+    --primary-foreground: oklch(0.15 0 0);   /* near-black on near-white */
+}
+
+/* ─── Black (pure) ──────────────────────────────── */
+:root[data-palette="black"] {
+    --primary-h: 0;
+    --primary-c: 0;
+    --primary-l: 0;                          /* #000 */
+    --neutral-h: 0;
+    --neutral-c: 0;
+    --primary-foreground: oklch(1 0 0);      /* white on black */
+}
+:root[data-palette="black"].dark {
+    --primary-l: 1;                          /* #fff */
+    --primary-foreground: oklch(0 0 0);      /* black on white */
+}
+
+/* ─── Aurora ────────────────────────────────────── */
+:root[data-palette="aurora"]      { --primary-h: 195; --primary-c: 0.19; --primary-l: 0.65; }
+:root[data-palette="aurora"].dark { --primary-l: 0.75; }
+
+/* ─── Indigo ────────────────────────────────────── */
+:root[data-palette="indigo"]      { --primary-h: 265; --primary-c: 0.20; --primary-l: 0.60; }
+:root[data-palette="indigo"].dark { --primary-l: 0.70; }
+
+/* ─── Emerald ───────────────────────────────────── */
+:root[data-palette="emerald"]      { --primary-h: 155; --primary-c: 0.17; --primary-l: 0.55; }
+:root[data-palette="emerald"].dark { --primary-l: 0.68; }
+
+/* ─── Violet ────────────────────────────────────── */
+:root[data-palette="violet"]      { --primary-h: 290; --primary-c: 0.20; --primary-l: 0.60; }
+:root[data-palette="violet"].dark { --primary-l: 0.70; }
+
+/* ─── Coral ─────────────────────────────────────── */
+:root[data-palette="coral"]      { --primary-h: 20; --primary-c: 0.19; --primary-l: 0.65; }
+:root[data-palette="coral"].dark { --primary-l: 0.72; }
+
+/* ─── Stone (neutral) ───────────────────────────── */
+:root[data-palette="stone"] {
+    --primary-h: 0;
+    --primary-c: 0;
+    --primary-l: 0.55;
+    --neutral-h: 0;
+    --neutral-c: 0;
+}
+:root[data-palette="stone"].dark { --primary-l: 0.78; }
+
+/* ─── Jade ──────────────────────────────────────── */
+:root[data-palette="jade"]      { --primary-h: 165; --primary-c: 0.16; --primary-l: 0.58; }
+:root[data-palette="jade"].dark { --primary-l: 0.70; }
+
+/* ─── Cobalt ────────────────────────────────────── */
+:root[data-palette="cobalt"]      { --primary-h: 240; --primary-c: 0.20; --primary-l: 0.60; }
+:root[data-palette="cobalt"].dark { --primary-l: 0.70; }
+
+/* ─── Amber ─────────────────────────────────────── */
+:root[data-palette="amber"]      { --primary-h: 50; --primary-c: 0.17; --primary-l: 0.65; }
+:root[data-palette="amber"].dark { --primary-l: 0.72; }
+
+/* ─── Fuchsia ───────────────────────────────────── */
+:root[data-palette="fuchsia"]      { --primary-h: 340; --primary-c: 0.21; --primary-l: 0.62; }
+:root[data-palette="fuchsia"].dark { --primary-l: 0.72; }
+
+/* ─── Honey ─────────────────────────────────────── */
+:root[data-palette="honey"]      { --primary-h: 70; --primary-c: 0.16; --primary-l: 0.68; }
+:root[data-palette="honey"].dark { --primary-l: 0.76; }
+
+/* ─── Teal ──────────────────────────────────────── */
+:root[data-palette="teal"]      { --primary-h: 185; --primary-c: 0.15; --primary-l: 0.60; }
+:root[data-palette="teal"].dark { --primary-l: 0.70; }
+
+/* ─── Iris ──────────────────────────────────────── */
+:root[data-palette="iris"]      { --primary-h: 255; --primary-c: 0.16; --primary-l: 0.60; }
+:root[data-palette="iris"].dark { --primary-l: 0.70; }
+
+/* ─── Ruby ──────────────────────────────────────── */
+:root[data-palette="ruby"]      { --primary-h: 10; --primary-c: 0.21; --primary-l: 0.58; }
+:root[data-palette="ruby"].dark { --primary-l: 0.68; }
+
+/* ============================================
+ * Chart palette overrides for achromatic palettes
+ *
+ * With --primary-c: 0, the derived chart colors collapse to grayscale.
+ * Give Ink and Stone a fixed distinguishable 5-hue palette.
+ * ============================================ */
+:root[data-palette="ink"],
+:root[data-palette="stone"],
+:root[data-palette="black"] {
+    --chart-1: oklch(0.60 0.18 230);  /* blue */
+    --chart-2: oklch(0.65 0.17  55);  /* orange */
+    --chart-3: oklch(0.60 0.15 155);  /* green */
+    --chart-4: oklch(0.58 0.20  25);  /* red */
+    --chart-5: oklch(0.60 0.18 290);  /* violet */
+}

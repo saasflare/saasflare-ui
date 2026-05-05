@@ -1,0 +1,15 @@
+/**
+ * @fileoverview Demo UI app — global stylesheet entry.
+ * @module apps/demo/ui/app/globals
+ * @package demo
+ * @reviewed 2026-04-19
+ *
+ * Single-line consumer of the Saasflare UI design system.
+ * App-specific overrides (custom tokens, demo-only utilities)
+ * MUST go after the import below.
+ */
+@import "@saasflare/ui/globals.css";
+
+/* Scan @saasflare/mvp/landing for Tailwind class usage so navbar/footer
+ * markup is included in the generated stylesheet. */
+@source "../../../packages/mvp/src/landing";

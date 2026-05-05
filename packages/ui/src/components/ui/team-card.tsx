@@ -1,0 +1,103 @@
+// @draft
+/**
+ * @fileoverview Team member card with photo, name, role, and social links.
+ * @author Saasflare™
+ * @module packages/ui/components/ui/team-card
+ * @package ui
+ *
+ * @component
+ * @example
+ * import { TeamCard } from '@saasflare/ui';
+ * <TeamCard
+ *   name="Jane Doe"
+ *   role="CEO & Co-Founder"
+ *   photo="/team/jane.jpg"
+ *   socials={[
+ *     { label: "Twitter", url: "https://twitter.com/jane", icon: <TwitterIcon /> },
+ *     { label: "LinkedIn", url: "https://linkedin.com/in/jane", icon: <LinkedInIcon /> },
+ *   ]}
+ * />
+ */
+
+import { type ReactNode } from "react"
+import { cn } from "../../lib/utils"
+
+/** A social link entry. */
+export interface SocialLink {
+  /** Accessible label for the link. */
+  label: string
+  /** URL to the social profile. */
+  url: string
+  /** Icon element. */
+  icon: ReactNode
+}
+
+/** Props for the TeamCard component. */
+export interface TeamCardProps {
+  /** Person's name. */
+  name: string
+  /** Role or job title. */
+  role: string
+  /** Photo URL. */
+  photo?: string
+  /** Short bio text. */
+  bio?: string
+  /** Social media links. */
+  socials?: SocialLink[]
+  /** Additional class names. */
+  className?: string
+}
+
+/**
+ * Team member card with photo, name, role, and social links.
+ *
+ * @component
+ * @package ui
+ */
+export function TeamCard({
+  name,
+  role,
+  photo,
+  bio,
+  socials,
+  className,
+}: TeamCardProps) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col items-center rounded-card border border-border-subtle bg-glass-2 p-6 text-center",
+        "transition-all duration-200 hover:border-border-hover hover:shadow-card-hover hover:-translate-y-px",
+        "motion-reduce:hover:transform-none",
+        className,
+      )}
+      data-slot="team-card"
+    >
+      {photo && (
+        <img
+          src={photo}
+          alt={name}
+          className="mb-4 size-24 rounded-full object-cover"
+        />
+      )}
+      <h3 className="text-base font-semibold">{name}</h3>
+      <p className="text-sm text-muted-foreground">{role}</p>
+      {bio && <p className="mt-2 text-sm text-muted-foreground">{bio}</p>}
+      {socials && socials.length > 0 && (
+        <div className="mt-4 flex gap-2">
+          {socials.map((s) => (
+            <a
+              key={s.label}
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              aria-label={s.label}
+            >
+              {s.icon}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}

@@ -1,0 +1,51 @@
+/**
+ * @fileoverview Surface system — flat / glass as semantic overlay.
+ * @module packages/ui/styles/surfaces
+ * @package ui
+ * @reviewed 2026-04-19
+ *
+ * Components bind to four surface tokens:
+ *   --surface-bg         background color or gradient
+ *   --surface-border     border color
+ *   --surface-backdrop   backdrop-filter value (blur/saturate) or "none"
+ *   --surface-shadow     box-shadow value
+ *
+ * Switching [data-style="…"] on <html> swaps the tokens without touching
+ * any component. Extend by adding a new selector block:
+ *
+ *   [data-style="neumorphic"] { --surface-bg: …; … }
+ *
+ * and registering the id in the StyleVariant union (types.ts).
+ */
+
+:root {
+    --surface-bg: var(--card);
+    --surface-border: var(--border);
+    --surface-backdrop: none;
+    --surface-shadow: 0 1px 2px oklch(0 0 0 / 0.05);
+}
+
+[data-style="flat"] {
+    --surface-bg: var(--card);
+    --surface-border: var(--border);
+    --surface-backdrop: none;
+    --surface-shadow: 0 1px 2px oklch(0 0 0 / 0.05);
+}
+
+[data-style="glass"] {
+    --surface-bg: oklch(0.99 0.005 var(--neutral-h) / 0.6);
+    --surface-border: oklch(1 0 0 / 0.2);
+    --surface-backdrop: blur(12px) saturate(140%);
+    --surface-shadow:
+        0 8px 32px oklch(0 0 0 / 0.08),
+        inset 0 1px 0 oklch(1 0 0 / 0.4);
+}
+
+[data-style="glass"].dark,
+.dark [data-style="glass"] {
+    --surface-bg: oklch(0.2 0.015 var(--neutral-h) / 0.5);
+    --surface-border: oklch(1 0 0 / 0.1);
+    --surface-shadow:
+        0 8px 32px oklch(0 0 0 / 0.4),
+        inset 0 1px 0 oklch(1 0 0 / 0.08);
+}

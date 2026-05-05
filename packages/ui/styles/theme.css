@@ -1,0 +1,388 @@
+/**
+ * @fileoverview Saasflare core theme — semantic tokens + Tailwind bridge.
+ * @module packages/ui/styles/theme
+ * @package ui
+ * @reviewed 2026-04-19
+ *
+ * ┌─────────────────────────────────────────────────────────────────────┐
+ * │  Two-axis design system                                              │
+ * │                                                                       │
+ * │  BRAND   → --primary-h / --primary-c / --primary-l                   │
+ * │            Drives --primary, --ring, and optionally tinted neutrals. │
+ * │                                                                       │
+ * │  NEUTRAL → --neutral-h / --neutral-c                                 │
+ * │            Drives --background, --muted, --border, --card, …         │
+ * │            Defaults to the brand hue with very low chroma so         │
+ * │            neutrals feel subtly primary-tinted ("brand warmth").     │
+ * │            Themes that want truly achromatic greys (ink, stone)      │
+ * │            set --neutral-c to 0.                                     │
+ * └─────────────────────────────────────────────────────────────────────┘
+ *
+ * To rebrand globally: override --primary-h/c/l in your app's globals.css.
+ * To add a preset: add one selector block in palettes.css.
+ * To add a custom palette at runtime: pass <SaasflareProvider palette={…}/>.
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./motion.css";
+@import "./surfaces.css";
+@import "./palettes.css";
+
+/* Tailwind v4 source discovery — scan the package itself so consumers
+ * don't have to declare @source in their app globals. */
+@source "../src/components";
+@source "../src/providers";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================
+ * Light Mode
+ * ============================================ */
+:root {
+    /* ── Brand axis (rebrand surface) ── */
+    --primary-h: 259.1;
+    --primary-c: 0.214;
+    --primary-l: 0.623;
+
+    /* ── Neutral axis ── defaults to brand hue with tiny chroma */
+    --neutral-h: var(--primary-h);
+    --neutral-c: 0.009;
+
+    --radius: 0.625rem;
+
+    /* ── Typography axis ── purpose-named slots. Consumed by Tailwind via
+     * @theme inline below AND by the auto-apply rules in @layer base.
+     * Apps load actual fonts with next/font (variable: "--font-body" etc.)
+     * which override these baselines via the cascade. The package never
+     * bundles fonts — it only provides the vocabulary and system fallbacks.
+     *
+     * See packages/ui/examples/fonts.example.ts for the consumer pattern. */
+    --font-body: ui-sans-serif, system-ui, -apple-system, Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-heading: var(--font-body);
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "JetBrains Mono", monospace;
+
+    /* ── Background & foreground ── */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.141 0.005 var(--neutral-h));
+
+    /* ── Primary (derived from brand axis) ── */
+    --primary: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+    --primary-foreground: oklch(1 0 0);
+
+    /* ── Secondary / Accent / Muted (from neutral axis) ── */
+    --secondary: oklch(0.965 var(--neutral-c) var(--neutral-h));
+    --secondary-foreground: oklch(0.24 calc(var(--neutral-c) * 2) var(--neutral-h));
+
+    --accent: oklch(0.95 calc(var(--neutral-c) * 1.6) var(--neutral-h));
+    --accent-foreground: oklch(0.24 calc(var(--neutral-c) * 2) var(--neutral-h));
+
+    --muted: oklch(0.965 var(--neutral-c) var(--neutral-h));
+    --muted-foreground: oklch(0.55 calc(var(--neutral-c) * 1.6) var(--neutral-h));
+
+    /* ── Surfaces ── */
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.141 0.005 var(--neutral-h));
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.141 0.005 var(--neutral-h));
+
+    /* ── Borders & rings ── */
+    --border: oklch(0.915 calc(var(--neutral-c) * 0.8) var(--neutral-h));
+    --input: oklch(0.915 calc(var(--neutral-c) * 0.8) var(--neutral-h));
+    --ring: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+
+    /* ── Semantic (fixed hues, brand-independent) ── */
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(1 0 0);
+    --success: oklch(0.59 0.17 149);
+    --success-foreground: oklch(1 0 0);
+    --warning: oklch(0.75 0.17 65);
+    --warning-foreground: oklch(0.22 0.05 65);
+    --info: oklch(0.68 0.15 230);
+    --info-foreground: oklch(1 0 0);
+
+    /* ── Charts (offsets from primary hue) ── */
+    --chart-1: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+    --chart-2: oklch(0.59 0.17 calc(var(--primary-h) - 110));
+    --chart-3: oklch(0.75 0.17 calc(var(--primary-h) - 194));
+    --chart-4: oklch(0.62 0.20 calc(var(--primary-h) + 51));
+    --chart-5: oklch(0.65 0.22 calc(var(--primary-h) - 237));
+
+    /* ── Sidebar ── */
+    --sidebar: oklch(0.985 calc(var(--neutral-c) * 0.6) var(--neutral-h));
+    --sidebar-foreground: oklch(0.141 0.005 var(--neutral-h));
+    --sidebar-primary: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.95 calc(var(--neutral-c) * 1.6) var(--neutral-h));
+    --sidebar-accent-foreground: oklch(0.24 calc(var(--neutral-c) * 2) var(--neutral-h));
+    --sidebar-border: oklch(0.915 calc(var(--neutral-c) * 0.8) var(--neutral-h));
+    --sidebar-ring: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+}
+
+/* ============================================
+ * Dark Mode
+ * ============================================ */
+.dark {
+    --primary-l: 0.65;
+    --primary-c: 0.22;
+
+    --background: oklch(0.16 calc(var(--neutral-c) * 1.5) var(--neutral-h));
+    --foreground: oklch(0.985 0 0);
+
+    --primary: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+    --primary-foreground: oklch(1 0 0);
+
+    --secondary: oklch(0.27 calc(var(--neutral-c) * 2) var(--neutral-h));
+    --secondary-foreground: oklch(0.985 0 0);
+
+    --accent: oklch(0.27 calc(var(--neutral-c) * 2) var(--neutral-h));
+    --accent-foreground: oklch(0.985 0 0);
+
+    --muted: oklch(0.27 calc(var(--neutral-c) * 1.6) var(--neutral-h));
+    --muted-foreground: oklch(0.65 calc(var(--neutral-c) * 2) var(--neutral-h));
+
+    --card: oklch(0.21 calc(var(--neutral-c) * 1.6) var(--neutral-h));
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.19 calc(var(--neutral-c) * 1.6) var(--neutral-h));
+    --popover-foreground: oklch(0.985 0 0);
+
+    --border: oklch(1 0 0 / 0.10);
+    --input: oklch(1 0 0 / 0.15);
+    --ring: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+
+    --destructive: oklch(0.704 0.191 22.216);
+    --destructive-foreground: oklch(0.15 0.03 27);
+    --success: oklch(0.68 0.19 149);
+    --success-foreground: oklch(0.15 0.03 149);
+    --warning: oklch(0.8 0.17 65);
+    --warning-foreground: oklch(0.2 0.04 65);
+    --info: oklch(0.72 0.15 230);
+    --info-foreground: oklch(0.15 0.03 230);
+
+    --chart-1: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+    --chart-2: oklch(0.68 0.19 calc(var(--primary-h) - 110));
+    --chart-3: oklch(0.80 0.17 calc(var(--primary-h) - 194));
+    --chart-4: oklch(0.65 0.22 calc(var(--primary-h) + 51));
+    --chart-5: oklch(0.70 0.22 calc(var(--primary-h) - 237));
+
+    --sidebar: oklch(0.14 calc(var(--neutral-c) * 2) var(--neutral-h));
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.27 calc(var(--neutral-c) * 2) var(--neutral-h));
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 0.10);
+    --sidebar-ring: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+}
+
+/* ============================================
+ * Tailwind Theme Registration — bridges every
+ * semantic token into a Tailwind utility class.
+ * ============================================ */
+@theme inline {
+    /* Radius */
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+
+    /* Core colors */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    /* Semantic */
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-info: var(--info);
+    --color-info-foreground: var(--info-foreground);
+
+    /* Charts */
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    /* Sidebar */
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    /* Motion */
+    --duration-fast: var(--duration-fast);
+    --duration-normal: var(--duration-normal);
+    --duration-slow: var(--duration-slow);
+    --duration-overlay: var(--duration-overlay);
+
+    /* Typography — registers Tailwind utilities font-body / font-heading /
+     * font-mono that read the runtime CSS vars defined in :root above.
+     * `font-sans` is kept as a legacy alias mapped to --font-body so
+     * shadcn-pattern components using `font-sans` keep working. */
+    --font-body: var(--font-body);
+    --font-heading: var(--font-heading);
+    --font-mono: var(--font-mono);
+    --font-sans: var(--font-body);
+}
+
+/* ============================================
+ * Base Styles
+ * ============================================ */
+html, body {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-padding-top: 80px;
+    scroll-behavior: smooth;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        font-family: var(--font-body);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading);
+    }
+
+    code, pre, kbd, samp {
+        font-family: var(--font-mono);
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+}
+
+/* ============================================
+ * Cursor behavior
+ * ============================================ */
+button,
+[role="button"],
+a,
+select,
+summary,
+[role="tab"],
+[role="menuitem"],
+[role="option"],
+[role="checkbox"],
+[role="radio"],
+[role="switch"] {
+    cursor: pointer;
+}
+
+[disabled],
+[aria-disabled="true"] {
+    cursor: not-allowed !important;
+}
+
+input:not([type]),
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+textarea,
+[contenteditable="true"],
+[role="textbox"] {
+    cursor: text;
+}
+
+/* ============================================
+ * Focus ring doctrine
+ * ============================================ */
+:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+/* ============================================
+ * Radius axis — discrete preset switched via [data-radius] on <html>.
+ *
+ * Baseline default is "rounded" (set in :root above as --radius: 0.625rem).
+ * "pill" overrides the entire derived scale explicitly: relying on calc()
+ * would give 9995–10003px for sm/lg, which is visually pill on tall elements
+ * but NOT pill on a 200px-wide component. Lock the whole scale instead.
+ *
+ * Custom per-palette override (CustomPalette.radius) sets --radius inline
+ * and wins by specificity — intentional escape hatch.
+ * ============================================ */
+:root[data-radius="sharp"]   { --radius: 0;        }
+:root[data-radius="soft"]    { --radius: 0.25rem;  }
+:root[data-radius="rounded"] { --radius: 0.625rem; }
+:root[data-radius="pill"] {
+    --radius: 9999px;
+    --radius-sm: 9999px;
+    --radius-md: 9999px;
+    --radius-lg: 9999px;
+    --radius-xl: 9999px;
+}
+
+/* ============================================
+ * Intent color system — components set
+ * data-intent="primary|success|warning|…" to
+ * activate intent-aware coloring via --intent.
+ * ============================================ */
+[data-intent="primary"] {
+    --intent: var(--primary);
+    --intent-fg: var(--primary-foreground);
+}
+
+[data-intent="neutral"] {
+    --intent: var(--secondary);
+    --intent-fg: var(--secondary-foreground);
+}
+
+[data-intent="success"] {
+    --intent: var(--success);
+    --intent-fg: var(--success-foreground);
+}
+
+[data-intent="warning"] {
+    --intent: var(--warning);
+    --intent-fg: var(--warning-foreground);
+}
+
+[data-intent="danger"] {
+    --intent: var(--destructive);
+    --intent-fg: var(--destructive-foreground);
+}
+
+[data-intent="info"] {
+    --intent: var(--info);
+    --intent-fg: var(--info-foreground);
+}

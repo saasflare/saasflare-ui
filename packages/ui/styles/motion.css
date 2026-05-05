@@ -1,0 +1,53 @@
+/**
+ * @fileoverview Motion tokens + animation kill-switch.
+ * @module packages/ui/styles/motion
+ * @package ui
+ * @reviewed 2026-04-19
+ *
+ * Duration and easing tokens consumed by components and utility classes.
+ * The [data-animated="false"] attribute — set by SaasflareProvider on <html> —
+ * acts as a global kill-switch that collapses every animation and transition,
+ * including those in third-party libraries that don't read our tokens.
+ *
+ * Reduced-motion media query is an additional safety net for users with an
+ * OS-level preference, regardless of the provider's `animated` prop.
+ */
+
+:root {
+    --duration-fast: 150ms;
+    --duration-normal: 220ms;
+    --duration-slow: 320ms;
+    --duration-overlay: 400ms;
+
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-exit: cubic-bezier(0.3, 0, 1, 1);
+}
+
+[data-animated="false"],
+[data-animated="false"] *,
+[data-animated="false"] *::before,
+[data-animated="false"] *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --duration-fast: 0ms;
+        --duration-normal: 0ms;
+        --duration-slow: 0ms;
+        --duration-overlay: 0ms;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0ms !important;
+        scroll-behavior: auto !important;
+    }
+}
