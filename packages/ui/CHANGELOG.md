@@ -1,5 +1,18 @@
 # @saasflare/ui
 
+## 1.1.2
+
+### Patch Changes
+
+- Add TypeScript 6 support. Bumps `typescript` devDep from `^5.9.3` to `^6.0.3`. Affects how the package is developed and how `.d.ts` files are emitted; consumer-visible only via the (unchanged) `.d.ts` output, which still typechecks under TS 5 and TS 6.
+
+  Configuration adjustments to satisfy TS 6's stricter deprecation rules:
+
+  - Removed `baseUrl` from `tsconfig.base.json` and `apps/ui/tsconfig.json`. It was only there as boilerplate; nothing in the workspace relied on bare-path resolution. `apps/ui`'s `paths: { "@/*": ["./*"] }` now resolves relative to the tsconfig file, which TypeScript 5.4+ supports natively.
+  - Added `ignoreDeprecations: "6.0"` to `tsconfig.base.json`. This is a workaround for [tsup 8.5.1's DTS bundler](https://github.com/egoist/tsup/blob/main/src/rollup.ts), which hard-codes `baseUrl: compilerOptions.baseUrl || "."` when synthesizing the DTS rollup config. The injected default trips TS 6's deprecation error even though our own configs are clean. Once tsup releases a fix, this opt-out can be dropped.
+
+  Verified: `packages/ui` typecheck + tsup build (CJS, ESM, DTS) green; `apps/ui` typecheck + full Next 16 production build green.
+
 ## 1.1.1
 
 ### Patch Changes

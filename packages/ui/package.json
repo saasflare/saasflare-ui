@@ -1,6 +1,6 @@
 {
   "name": "@saasflare/ui",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": false,
   "license": "MIT",
   "description": "Saasflare UI Components Library – Standalone components built on Radix UI + Tailwind CSS",
@@ -154,6 +154,6 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
