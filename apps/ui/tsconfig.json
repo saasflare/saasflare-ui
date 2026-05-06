@@ -3,7 +3,6 @@
   "compilerOptions": {
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     }
