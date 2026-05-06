@@ -1,6 +1,6 @@
 {
   "name": "@saasflare/ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "license": "MIT",
   "description": "Saasflare UI Components Library – Standalone components built on Radix UI + Tailwind CSS",
@@ -111,16 +111,36 @@
     "zod": "^4.0.0"
   },
   "peerDependenciesMeta": {
-    "@hookform/resolvers": { "optional": true },
-    "date-fns": { "optional": true },
-    "embla-carousel-react": { "optional": true },
-    "react-day-picker": { "optional": true },
-    "react-hook-form": { "optional": true },
-    "react-resizable-panels": { "optional": true },
-    "recharts": { "optional": true },
-    "sonner": { "optional": true },
-    "vaul": { "optional": true },
-    "zod": { "optional": true }
+    "@hookform/resolvers": {
+      "optional": true
+    },
+    "date-fns": {
+      "optional": true
+    },
+    "embla-carousel-react": {
+      "optional": true
+    },
+    "react-day-picker": {
+      "optional": true
+    },
+    "react-hook-form": {
+      "optional": true
+    },
+    "react-resizable-panels": {
+      "optional": true
+    },
+    "recharts": {
+      "optional": true
+    },
+    "sonner": {
+      "optional": true
+    },
+    "vaul": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/react": "^19.2.14",
