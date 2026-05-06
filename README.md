@@ -23,7 +23,7 @@ pnpm dev:ui     # ui.saasflare.io on :3000
 
 `@saasflare/ui` is the only publishable artefact. It ships to public npm.
 
-## Related repos (access-restricted)
+## Related repos (access-restricted, paid tiers)
 
-- `saasflare-saas/`      — paid customer SaaS starter (hosts `@saasflare/mvp` + `@saasflare/saas`)
-- `saasflare-marketing/` — content engine (later)
+- `saasflare-saas/`      — SaaS boilerplate
+- `saasflare-marketing/` — content engine

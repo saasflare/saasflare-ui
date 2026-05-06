@@ -6,11 +6,13 @@
   "description": "Saasflare UI Components Library – Standalone components built on Radix UI + Tailwind CSS",
   "repository": {
     "type": "git",
-    "url": "https://github.com/saasflare/saasflare.git",
+    "url": "https://github.com/saasflare/saasflare-ui.git",
     "directory": "packages/ui"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public",
+    "registry": "https://registry.npmjs.org",
+    "provenance": true
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -42,7 +44,8 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "tsup"
   },
   "dependencies": {
     "radix-ui": "^1.4.3",

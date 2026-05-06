@@ -10,9 +10,13 @@
     "dev:demo": "turbo run dev --filter=@saasflare/demo-app",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm -F @saasflare/ui build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "turbo": "^2.8.16",
     "typescript": "^5.9.3"
   },
@@ -21,6 +25,7 @@
       "prismjs": ">=1.30.0",
       "dompurify": ">=3.3.3",
       "js-yaml": ">=4.1.1",
+      "read-yaml-file>js-yaml": "^3.14.1",
       "undici": ">=7.22.0"
     }
   }
