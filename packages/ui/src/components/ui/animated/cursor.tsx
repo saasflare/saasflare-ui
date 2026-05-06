@@ -21,7 +21,7 @@
  */
 
 import { useEffect, useState, useCallback } from "react"
-import { m, useMotionValue, useSpring } from "framer-motion"
+import { m, useMotionValue, useSpring } from "motion/react"
 import { useReducedMotion } from "../../../hooks/use-reduced-motion"
 
 /** Props for the AnimatedCursor component. */

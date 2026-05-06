@@ -20,7 +20,7 @@
 "use client"
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import { ChevronDownIcon, ChevronUpIcon, CheckIcon } from "lucide-react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cn } from "../../lib/utils"

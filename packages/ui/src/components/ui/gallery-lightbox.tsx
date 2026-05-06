@@ -24,7 +24,7 @@
  */
 
 import { useEffect, useCallback } from "react"
-import { AnimatePresence, m } from "framer-motion"
+import { AnimatePresence, m } from "motion/react"
 import { XIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import { cn } from "../../lib/utils"
 

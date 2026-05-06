@@ -19,7 +19,7 @@
  */
 
 import * as React from "react"
-import { m, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "motion/react"
 import { CheckIcon } from "lucide-react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cn } from "../../lib/utils"

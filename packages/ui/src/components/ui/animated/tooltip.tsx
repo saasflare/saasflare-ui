@@ -15,7 +15,7 @@
 
 import Image from 'next/image';
 import React, { JSX, useState } from 'react';
-import { m, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { m, useTransform, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
 
 /**
  * Shape of a single tooltip item.

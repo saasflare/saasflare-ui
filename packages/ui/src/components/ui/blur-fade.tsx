@@ -26,7 +26,7 @@
  */
 
 import { useRef, type ReactNode } from "react"
-import { m, useInView } from "framer-motion"
+import { m, useInView } from "motion/react"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 

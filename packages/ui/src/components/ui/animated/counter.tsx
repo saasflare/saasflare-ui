@@ -20,7 +20,7 @@
  */
 
 import { useEffect, useRef, useState } from "react"
-import { m, useSpring, useInView, useMotionValue } from "framer-motion"
+import { m, useSpring, useInView, useMotionValue } from "motion/react"
 import { cn } from "../../../lib/utils"
 import { useReducedMotion } from "../motion-config"
 

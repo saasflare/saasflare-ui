@@ -19,7 +19,7 @@
 "use client"
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cn } from "../../lib/utils"

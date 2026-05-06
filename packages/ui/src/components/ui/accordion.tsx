@@ -20,7 +20,7 @@
  */
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import { ChevronDownIcon } from "lucide-react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cn } from "../../lib"

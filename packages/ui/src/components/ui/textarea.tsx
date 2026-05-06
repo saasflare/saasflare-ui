@@ -12,7 +12,7 @@
 "use client"
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import { cn } from "../../lib/utils"
 
 function Textarea({ className, ...props }: Omit<React.ComponentProps<"textarea">, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>) {

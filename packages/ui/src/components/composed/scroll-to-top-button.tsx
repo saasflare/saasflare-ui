@@ -27,7 +27,7 @@
 
 import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowUpIcon } from 'lucide-react';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, m } from 'motion/react';
 import { cn } from '../../lib';
 import {
     useSaasflareProps,

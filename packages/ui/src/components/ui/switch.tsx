@@ -13,7 +13,7 @@
 "use client"
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"

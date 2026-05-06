@@ -16,7 +16,7 @@
  */
 
 import { useEffect } from "react"
-import { useMotionValue, type MotionValue } from "framer-motion"
+import { useMotionValue, type MotionValue } from "motion/react"
 
 /** Return value of the useParallax hook. */
 export interface ParallaxValue {

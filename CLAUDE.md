@@ -92,7 +92,7 @@ adopt the new accent on next HMR. If one doesn't, the consumer's setup is broken
 ## Design Principles
 
 1. **Components expose semantic props only** — no micro-styling, no prop bloat.
-2. **Animation via Framer Motion** — listed in peer dependencies; consumers provide.
+2. **Animation via Motion (formerly Framer Motion)** — `motion/react`; declared as an optional peer; consumers provide.
 3. **Zero env vars** — `@saasflare/ui` works without configuration.
 4. **Own implementation** — no shadcn dependency. We control the primitives.
 5. **One component per file**. JSDoc on every export (feeds copilot training).

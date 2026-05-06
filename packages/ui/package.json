@@ -1,6 +1,6 @@
 {
   "name": "@saasflare/ui",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "private": false,
   "license": "MIT",
   "description": "Saasflare UI Components Library – Standalone components built on Radix UI + Tailwind CSS",
@@ -90,15 +90,14 @@
     "cmdk": "^1.1.1",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.577.0",
-    "tailwind-merge": "^3.5.0",
-    "tw-animate-css": "^1.4.0"
+    "tailwind-merge": "^3.5.0"
   },
   "peerDependencies": {
     "@hookform/resolvers": "^5.0.0",
     "date-fns": "^4.0.0",
     "embla-carousel-react": "^8.0.0",
-    "framer-motion": "^12.0.0",
-    "next": "^16.0.0",
+    "motion": "^12.0.0",
+    "next": "^15.0.0 || ^16.0.0",
     "next-themes": "^0.4.0",
     "react": "^18.2.0 || ^19.0.0",
     "react-day-picker": "^9.0.0",
@@ -118,6 +117,15 @@
       "optional": true
     },
     "embla-carousel-react": {
+      "optional": true
+    },
+    "motion": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    },
+    "next-themes": {
       "optional": true
     },
     "react-day-picker": {

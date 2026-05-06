@@ -24,7 +24,6 @@
  */
 
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "./motion.css";
 @import "./surfaces.css";
 @import "./palettes.css";
