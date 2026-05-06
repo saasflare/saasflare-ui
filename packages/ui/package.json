@@ -1,14 +1,39 @@
 {
   "name": "@saasflare/ui",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "private": false,
   "license": "MIT",
-  "description": "Saasflare UI Components Library – Standalone components built on Radix UI + Tailwind CSS",
+  "description": "The Next.js UI library — App Router-aware Radix primitives with Tailwind v4 and Motion, animated by default.",
+  "keywords": [
+    "react",
+    "nextjs",
+    "next",
+    "app-router",
+    "rsc",
+    "server-components",
+    "tailwindcss",
+    "tailwind-v4",
+    "radix-ui",
+    "motion",
+    "components",
+    "ui-library",
+    "design-system",
+    "accessible",
+    "typescript"
+  ],
+  "homepage": "https://ui.saasflare.io",
+  "bugs": {
+    "url": "https://github.com/saasflare/saasflare-ui/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/saasflare/saasflare-ui.git",
     "directory": "packages/ui"
   },
+  "engines": {
+    "node": ">=20"
+  },
+  "sideEffects": false,
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org",
@@ -43,7 +68,8 @@
       "types": "./dist/entries/carousel.d.ts",
       "import": "./dist/entries/carousel.mjs",
       "require": "./dist/entries/carousel.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
@@ -99,13 +125,14 @@
     "motion": "^12.0.0",
     "next": "^15.0.0 || ^16.0.0",
     "next-themes": "^0.4.0",
-    "react": "^18.2.0 || ^19.0.0",
+    "react": "^19.0.0",
     "react-day-picker": "^9.0.0",
-    "react-dom": "^18.2.0 || ^19.0.0",
+    "react-dom": "^19.0.0",
     "react-hook-form": "^7.0.0",
     "react-resizable-panels": "^4.0.0",
     "recharts": "^3.0.0",
     "sonner": "^2.0.0",
+    "tailwindcss": "^4.0.0",
     "vaul": "^1.0.0",
     "zod": "^4.0.0"
   },
@@ -120,12 +147,6 @@
       "optional": true
     },
     "motion": {
-      "optional": true
-    },
-    "next": {
-      "optional": true
-    },
-    "next-themes": {
       "optional": true
     },
     "react-day-picker": {
