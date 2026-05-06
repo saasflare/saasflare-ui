@@ -1,6 +1,6 @@
 {
   "name": "@saasflare/ui",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": false,
   "license": "MIT",
   "description": "Saasflare UI Components Library – Standalone components built on Radix UI + Tailwind CSS",
@@ -89,7 +89,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "input-otp": "^1.4.2",
-    "lucide-react": "^0.577.0",
+    "lucide-react": "^1.14.0",
     "tailwind-merge": "^3.5.0"
   },
   "peerDependencies": {
