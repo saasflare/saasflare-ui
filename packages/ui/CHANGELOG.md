@@ -1,5 +1,13 @@
 # @saasflare/ui
 
+## 1.0.2
+
+### Patch Changes
+
+- Move `react`, `react-dom`, `next`, and `next-themes` out of `devDependencies`. They are already declared as `peerDependencies`, so duplicating them in `devDependencies` risked dual-React installs in consumer trees (the classic "Invalid hook call" symptom) and gave no benefit beyond what pnpm's `auto-install-peers` already provides.
+
+  No runtime change for consumers. `@types/react` / `@types/react-dom` stay in `devDependencies` since they are type-only and needed for the local build.
+
 ## 1.0.1
 
 ### Patch Changes
