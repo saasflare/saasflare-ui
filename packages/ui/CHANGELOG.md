@@ -1,5 +1,58 @@
 # @saasflare/ui
 
+## 2.0.0
+
+### Major Changes
+
+- **`@saasflare/ui` 2.0.0 — Next.js-first signaling and metadata correctness.**
+
+  This release reflects the audit finding that 1.x was _technically_ a Next.js UI lib but was _signaling_ like a framework-agnostic component dump. 2.0.0 makes the package metadata match the actual contract.
+
+  ### Breaking — peer dependencies
+
+  Three peer-related changes that may produce install warnings/errors for consumers:
+
+  1. **`react` and `react-dom` peer ranges narrowed to `^19.0.0`** (was `^18.2.0 || ^19.0.0`). Next 16 is React 19-only; supporting React 18 forced us to avoid `useActionState`, `useFormStatus`, `use()` etc. Drop the back-compat.
+
+  2. **`tailwindcss ^4.0.0` is now a required peer.** The package's stylesheet is `@import "tailwindcss"` and uses Tailwind v4 features (`@theme inline`, `@utility`, `@property` declarations in `motion.css`). Consumers always needed Tailwind v4 installed; this just signals it.
+
+  3. **`next` and `next-themes` are now required peers** (removed from `peerDependenciesMeta`). The provider stack (`SaasflareShell` / `SaasflareProvider`) and several common components (`<TopLoadingBar>`, `<Logo>`, `<ThemeModeToggle>`, `<Sonner>`) hard-import `next/*` and `next-themes`. Marking them optional was a polite fiction.
+
+  ### Breaking — Node engines
+
+  `engines.node` is now `>=20`. Next 16 requires Node 20+; documenting it explicitly so `pnpm install` fails fast on older Node.
+
+  ### Bug fix — `"use client"` directive on subpath entries
+
+  `tsup.config.ts`'s `prependUseClient` post-build hook used non-recursive `readdir(dist)`, so `dist/entries/chart.mjs` and `dist/entries/carousel.mjs` shipped **without** the `"use client"` directive in 1.0–1.1.x. That was an RSC-boundary bug: the App Router would treat the chart/carousel imports as Server Components and crash on first render in some setups. The hook now walks `dist/` recursively. All 10 emitted JS files in 2.0.0 carry `"use client"` at the top.
+
+  ### Metadata correctness
+
+  - `description` rewritten to signal Next.js-first positioning instead of framework-neutral "Components Library".
+  - `keywords` added (`nextjs`, `app-router`, `rsc`, `server-components`, `tailwindcss`, `tailwind-v4`, `radix-ui`, `motion`, …) for npm discoverability.
+  - `homepage` and `bugs.url` added.
+  - `sideEffects: false` declared — JS files import nothing for side effects; CSS is consumed via the `./styles` export path, which goes through Tailwind/PostCSS, not the bundler tree-shaker.
+  - `./package.json` export added — lets consumers do `import pkg from "@saasflare/ui/package.json"` for version checks etc.
+
+  ### Not in this release — flagged for follow-up
+
+  The audit also called out four items that need actual code/build refactors, not metadata changes. These are **explicitly deferred** to keep the manifest from lying about capabilities:
+
+  - **`react-server` export condition with separate RSC build.** Requires a parallel `tsup` config that emits a Server Component-safe variant (no `"use client"`-tainted re-exports). Roughly a 1-week refactor — own PR.
+  - **Per-component subpath exports** (`./button`, `./form`, `./calendar`, `./drawer`, `./toast`, …). Requires new entries under `src/entries/` and a downstream `tsup.config.ts` matrix. Without this, optional peers like `vaul`, `sonner`, `react-day-picker` are still pulled in install-time even when the consumer only uses `<Button>`. Big win when shipped.
+  - **`motion` as required peer (matching `next` / `next-themes`).** Currently still optional from 1.1.0. The same logic that makes `next` required (the provider hard-imports it) applies to `motion` (the provider uses `LazyMotion`). Left optional in 2.0.0 because flipping it on top of the React/Tailwind/Next breaks already in this release felt like piling on; tackle in a 2.1 cleanup once the per-component subpaths exist and most components don't need motion.
+  - **Next-specific helpers** (`<Image>`/`<Link>`/`<Font>` wrappers, `generateMetadata` helpers). The differentiator vs. shadcn-style libs.
+
+  ### Migration
+
+  ```bash
+  # If you were on @saasflare/ui 1.x:
+  pnpm remove framer-motion        # already gone in 1.1.0 — keep an eye out
+  pnpm add motion next next-themes tailwindcss
+  # React 19 required; if still on 18:
+  pnpm add react@^19 react-dom@^19
+  ```
+
 ## 1.1.2
 
 ### Patch Changes
