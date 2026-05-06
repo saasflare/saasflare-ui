@@ -13,8 +13,8 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { Switch as SwitchPrimitive } from "radix-ui"
+import { m } from "framer-motion"
+import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"
 
@@ -40,7 +40,7 @@ function Switch({
         data-slot="switch-thumb"
         asChild
       >
-        <motion.span
+        <m.span
           className="pointer-events-none block rounded-full bg-background ring-0 group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground"
           layout
           transition={springBouncy}

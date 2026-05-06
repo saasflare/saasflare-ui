@@ -23,7 +23,7 @@
 // ============================================================================
 
 import * as React from "react"
-import { Slot } from "radix-ui"
+import * as Slot from "@radix-ui/react-slot"
 import { cn } from "../../../lib/utils"
 import { Input } from "../input"
 import { Separator } from "../separator"

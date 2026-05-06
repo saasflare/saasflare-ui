@@ -19,9 +19,9 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
-import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"
 
@@ -57,7 +57,7 @@ function DropdownMenuContent({
         asChild
         {...props}
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.95, y: -4 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -4 }}

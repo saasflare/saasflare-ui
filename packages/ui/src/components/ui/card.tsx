@@ -20,7 +20,7 @@
  */
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { springGentle, noMotion, useReducedMotion } from "./motion-config"
 
@@ -43,7 +43,7 @@ function Card({ className, ...props }: Omit<React.ComponentProps<"div">, MotionC
   const reduced = useReducedMotion()
 
   return (
-    <motion.div
+    <m.div
       data-slot="card"
       whileHover={reduced ? undefined : { y: -2, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
       transition={reduced ? noMotion : springGentle}

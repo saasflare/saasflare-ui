@@ -12,8 +12,8 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { Slider as SliderPrimitive } from "radix-ui"
+import { m } from "framer-motion"
+import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"
 
@@ -58,7 +58,7 @@ function Slider({
           key={index}
           asChild
         >
-          <motion.span
+          <m.span
             className="block size-4 shrink-0 cursor-grab rounded-full border border-primary/50 bg-background shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing"
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}

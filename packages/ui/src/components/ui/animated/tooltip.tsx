@@ -15,7 +15,7 @@
 
 import Image from 'next/image';
 import React, { JSX, useState } from 'react';
-import { motion, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { m, useTransform, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 
 /**
  * Shape of a single tooltip item.
@@ -81,7 +81,7 @@ export const AnimatedTooltip = ({
                 >
                     <AnimatePresence>
                         {hoveredIndex === item.id && (
-                            <motion.div
+                            <m.div
                                 initial={{ opacity: 0, y: 20, scale: 0.6 }}
                                 animate={{
                                     opacity: 1,
@@ -105,7 +105,7 @@ export const AnimatedTooltip = ({
                                 <div className="absolute left-10 w-[40%] z-30 -bottom-px bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px " />
                                 <div className="font-bold text-white relative z-30 text-base">{item.name}</div>
                                 <div className="text-white text-xs">{item.designation}</div>
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                     <Image

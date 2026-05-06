@@ -13,12 +13,12 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { cn } from "../../lib/utils"
 
 function Input({ className, type, ...props }: Omit<React.ComponentProps<"input">, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>) {
   return (
-    <motion.input
+    <m.input
       type={type}
       data-slot="input"
       whileFocus={{ boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}

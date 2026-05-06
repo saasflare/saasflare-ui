@@ -7,9 +7,12 @@
  * @module packages/core/components/ui/carousel
  * @layer core
  *
+ * @requires embla-carousel-react — peer dependency. Shipped via the `/carousel`
+ *   subpath: `import { Carousel } from "@saasflare/ui/carousel"`.
+ *
  * @component
  * @example
- * import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@saasflare/core';
+ * import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@saasflare/ui/carousel';
  * <Carousel>
  *   <CarouselContent>
  *     <CarouselItem>Slide 1</CarouselItem>

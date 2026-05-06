@@ -186,14 +186,7 @@ export {
 export { Skeleton } from "./skeleton"
 export { Toggle, toggleVariants } from "./toggle"
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group"
-export {
-  type CarouselApi,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "./carousel"
+// Carousel moved to subpath: import from "@saasflare/ui/carousel"
 export { Calendar, CalendarDayButton } from "./calendar"
 export { RadioGroup, RadioGroupItem } from "./radio-group"
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsible"
@@ -218,32 +211,17 @@ export {
   ButtonGroupText,
   buttonGroupVariants,
 } from "./button-group"
-export {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
-  ChartStyle,
-} from "./chart"
+// Chart moved to subpath: import from "@saasflare/ui/chart"
 export {
   Combobox,
-  ComboboxInput,
+  ComboboxTrigger,
   ComboboxContent,
+  ComboboxInput,
   ComboboxList,
   ComboboxItem,
   ComboboxGroup,
-  ComboboxLabel,
-  ComboboxCollection,
   ComboboxEmpty,
   ComboboxSeparator,
-  ComboboxChips,
-  ComboboxChip,
-  ComboboxChipsInput,
-  ComboboxTrigger,
-  ComboboxValue,
-  useComboboxAnchor,
 } from "./combobox"
 export {
   Command,

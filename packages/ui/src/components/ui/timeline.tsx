@@ -23,7 +23,7 @@
  */
 
 import { useRef, type ReactNode } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { m, useScroll, useTransform } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 
@@ -66,7 +66,7 @@ export function Timeline({ children, className }: TimelineProps) {
 
       {/* Animated beam overlay */}
       {!reduced && (
-        <motion.div
+        <m.div
           className="absolute left-4 top-0 w-0.5 bg-primary md:left-1/2 md:-translate-x-px"
           style={{ height: beamHeight }}
         />
@@ -109,7 +109,7 @@ export function TimelineItem({
   const reduced = useReducedMotion()
 
   return (
-    <motion.div
+    <m.div
       initial={reduced ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -128,6 +128,6 @@ export function TimelineItem({
         <h3 className="text-lg font-semibold">{title}</h3>
         <div className="mt-1 text-muted-foreground">{children}</div>
       </div>
-    </motion.div>
+    </m.div>
   )
 }

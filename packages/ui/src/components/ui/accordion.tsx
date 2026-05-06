@@ -20,10 +20,10 @@
  */
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { ChevronDownIcon } from "lucide-react"
-import { Accordion as AccordionPrimitive } from "radix-ui"
-import { cn } from "../../lib/utils"
+import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import { cn } from "../../lib"
 import { springBouncy, useReducedMotion } from "./motion-config"
 
 function Accordion({
@@ -69,13 +69,13 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <motion.div
+        <m.div
           className="pointer-events-none shrink-0 translate-y-0.5 text-muted-foreground"
           animate={{ rotate: 0 }}
           transition={reduced ? { duration: 0 } : springBouncy}
         >
           <ChevronDownIcon className="size-4" />
-        </motion.div>
+        </m.div>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
@@ -100,14 +100,14 @@ function AccordionContent({
       className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
       {...props}
     >
-      <motion.div
+      <m.div
         initial={reduced ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={reduced ? { duration: 0 } : { delay: 0.1, duration: 0.2 }}
         className={cn("pt-0 pb-4", className)}
       >
         {children}
-      </motion.div>
+      </m.div>
     </AccordionPrimitive.Content>
   )
 }

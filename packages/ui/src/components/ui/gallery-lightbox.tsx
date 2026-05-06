@@ -24,7 +24,7 @@
  */
 
 import { useEffect, useCallback } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { XIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 import { cn } from "../../lib/utils"
 
@@ -88,7 +88,7 @@ export function GalleryLightbox({
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -125,7 +125,7 @@ export function GalleryLightbox({
           )}
 
           {/* Image */}
-          <motion.img
+          <m.img
             key={index}
             src={images[index]}
             alt={`Image ${index + 1} of ${images.length}`}
@@ -155,7 +155,7 @@ export function GalleryLightbox({
               {index + 1} / {images.length}
             </div>
           )}
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

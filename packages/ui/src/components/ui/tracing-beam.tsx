@@ -21,7 +21,7 @@
  */
 
 import { useRef, type ReactNode } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { m, useScroll, useTransform } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 
@@ -85,13 +85,13 @@ export function TracingBeam({
       />
 
       {/* Filled beam */}
-      <motion.div
+      <m.div
         className="absolute left-3 top-0 w-px"
         style={{ height: beamHeight, backgroundColor: color }}
       />
 
       {/* Dot indicator */}
-      <motion.div
+      <m.div
         className="absolute left-[9px] size-1.5 rounded-full"
         style={{
           top: dotY,

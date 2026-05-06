@@ -27,7 +27,7 @@
 
 import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowUpIcon } from 'lucide-react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { cn } from '../../lib';
 import {
     useSaasflareProps,
@@ -126,7 +126,7 @@ export function ScrollToTopButton({
     return (
         <AnimatePresence>
             {isVisible && (
-                <motion.button
+                <m.button
                     onClick={scrollToTop}
                     aria-label="Scroll to top"
                     initial={{ opacity: 0, y: 40 }}
@@ -140,7 +140,7 @@ export function ScrollToTopButton({
                     )}
                 >
                     <ArrowUpIcon className="h-5 w-5" />
-                </motion.button>
+                </m.button>
             )}
         </AnimatePresence>
     );

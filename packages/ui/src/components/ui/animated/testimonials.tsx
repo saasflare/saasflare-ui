@@ -25,7 +25,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { ChevronLeftIcon, ChevronRightIcon, QuoteIcon } from "lucide-react"
 import { cn } from "../../../lib/utils"
 import { springGentle, noMotion, useReducedMotion } from "../motion-config"
@@ -109,7 +109,7 @@ export function AnimatedTestimonials({
         />
 
         <AnimatePresence mode="wait">
-          <motion.div
+          <m.div
             key={active}
             initial={reduced ? false : { opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -136,7 +136,7 @@ export function AnimatedTestimonials({
                 </p>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
 

@@ -26,8 +26,8 @@
  */
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { AlertDialog as AlertDialogPrimitive } from "radix-ui"
+import { m } from "framer-motion"
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import { cn } from "../../lib/utils"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
 import { buttonVariants } from "./button"
@@ -81,7 +81,7 @@ function AlertDialogContent({
         asChild
         {...props}
       >
-        <motion.div
+        <m.div
           initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
@@ -92,7 +92,7 @@ function AlertDialogContent({
           )}
         >
           {children}
-        </motion.div>
+        </m.div>
       </AlertDialogPrimitive.Content>
     </AlertDialogPortal>
   )

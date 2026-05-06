@@ -17,8 +17,8 @@
 "use client"
 
 import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Tooltip as TooltipPrimitive } from "radix-ui"
+import { m, AnimatePresence } from "framer-motion"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"
 
@@ -61,7 +61,7 @@ function TooltipContent({
         asChild
         {...props}
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.92, y: 2 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.92 }}
@@ -72,7 +72,7 @@ function TooltipContent({
           )}
         >
           {children}
-        </motion.div>
+        </m.div>
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   )

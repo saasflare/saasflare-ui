@@ -29,6 +29,7 @@
 
 import { createContext, useCallback, useContext, useEffect, type ReactNode } from "react"
 import { ThemeProvider, useTheme } from "next-themes"
+import { LazyMotion, domAnimation } from "framer-motion"
 import { hexToOklch, isHex } from "../lib"
 import { SAASFLARE_DATA_ATTR, UI_PREFS_STORAGE_KEY, THEME_STORAGE_KEY } from "../lib/constants"
 import { useLocalStorage } from "../hooks/use-local-storage"
@@ -344,36 +345,38 @@ export function SaasflareProvider({
     }, [currentPalette, currentStyle, currentRadius, effectiveAnimated])
 
     return (
-        <ThemeProvider
-            attribute="class"
-            defaultTheme={theme}
-            enableSystem={theme === "system"}
-            storageKey={themeStorageKey}
-            disableTransitionOnChange
-        >
-            {scriptHtml !== null && (
-                <script
-                    nonce={scriptNonce}
-                    dangerouslySetInnerHTML={{ __html: scriptHtml }}
-                />
-            )}
-            <SaasflareThemeContext.Provider
-                value={{
-                    palette: currentPalette,
-                    surface: currentStyle,
-                    radius: currentRadius,
-                    setPalette,
-                    setSurface,
-                    setRadius,
-                }}
+        <LazyMotion features={domAnimation} strict>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme={theme}
+                enableSystem={theme === "system"}
+                storageKey={themeStorageKey}
+                disableTransitionOnChange
             >
-                <AnimationContext.Provider value={{ animated: effectiveAnimated }}>
-                    {isCustomPalette && <CustomPaletteInjector palette={palette} />}
-                    <SmoothScrollProvider enabled={smoothScrolling}>
-                        {children}
-                    </SmoothScrollProvider>
-                </AnimationContext.Provider>
-            </SaasflareThemeContext.Provider>
-        </ThemeProvider>
+                {scriptHtml !== null && (
+                    <script
+                        nonce={scriptNonce}
+                        dangerouslySetInnerHTML={{ __html: scriptHtml }}
+                    />
+                )}
+                <SaasflareThemeContext.Provider
+                    value={{
+                        palette: currentPalette,
+                        surface: currentStyle,
+                        radius: currentRadius,
+                        setPalette,
+                        setSurface,
+                        setRadius,
+                    }}
+                >
+                    <AnimationContext.Provider value={{ animated: effectiveAnimated }}>
+                        {isCustomPalette && <CustomPaletteInjector palette={palette} />}
+                        <SmoothScrollProvider enabled={smoothScrolling}>
+                            {children}
+                        </SmoothScrollProvider>
+                    </AnimationContext.Provider>
+                </SaasflareThemeContext.Provider>
+            </ThemeProvider>
+        </LazyMotion>
     )
 }

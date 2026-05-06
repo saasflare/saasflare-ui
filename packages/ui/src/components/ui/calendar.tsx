@@ -5,6 +5,9 @@
  * @module packages/core/components/ui/calendar
  * @layer core
  *
+ * @requires react-day-picker — peer dependency.
+ * @requires date-fns — peer dependency.
+ *
  * @component
  * @example
  * import { Calendar } from '@saasflare/core';

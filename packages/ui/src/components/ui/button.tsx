@@ -27,15 +27,22 @@
 
 import * as React from "react"
 import { Loader2Icon } from "lucide-react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
+import * as Slot from "@radix-ui/react-slot"
 import { cn } from "../../lib"
 import {
   useSaasflareProps,
   type SaasflareComponentProps,
 } from "../../providers"
 import { spring, noMotion, useReducedMotion } from "./motion-config"
+
+/**
+ * Motion-wrapped Slot.Root for the asChild + animated path. MUST be defined
+ * at module top level — defining it inside the component creates a fresh
+ * component identity per render and breaks React reconciliation.
+ */
+const MotionSlot = m.create(Slot.Root)
 
 /* ── Intent type ── */
 const INTENTS = ["primary", "neutral", "success", "warning", "danger", "info"] as const
@@ -201,15 +208,18 @@ function Button({
   const motionDisabled = !sfProps.animated || reduced || disabled || loading
   const transition = !sfProps.animated || reduced ? noMotion : spring
 
-  /* ── Slot rendering (no motion wrapper) ── */
+  /* ── Slot rendering (Pattern A: animated asChild via m.create(Slot.Root)) ── */
   if (asChild) {
     return (
-      <Slot.Root
+      <MotionSlot
         data-slot="button"
         data-variant={resolvedVariant}
         data-intent={resolvedIntent}
         data-size={size}
         data-surface={sfProps.surface}
+        whileHover={motionDisabled ? undefined : { scale: 1.02 }}
+        whileTap={motionDisabled ? undefined : { scale: 0.97 }}
+        transition={transition}
         className={cn(
           buttonVariants({ variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"], size }),
           fullWidth && "w-full",
@@ -218,12 +228,12 @@ function Button({
         {...props}
       >
         {children}
-      </Slot.Root>
+      </MotionSlot>
     )
   }
 
   return (
-    <motion.button
+    <m.button
       data-slot="button"
       data-variant={resolvedVariant}
       data-intent={resolvedIntent}
@@ -246,7 +256,7 @@ function Button({
         <Loader2Icon className="animate-spin" aria-hidden="true" />
       )}
       {children}
-    </motion.button>
+    </m.button>
   )
 }
 

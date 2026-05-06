@@ -28,7 +28,7 @@
  */
 
 import { type ReactNode } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { springGentle, noMotion, useReducedMotion } from "./motion-config"
 
@@ -131,7 +131,7 @@ export function BentoGridItem({
   const reduced = useReducedMotion()
 
   return (
-    <motion.div
+    <m.div
       initial={reduced ? false : { opacity: 0, y: 16 }}
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -147,6 +147,6 @@ export function BentoGridItem({
       data-slot="bento-grid-item"
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }

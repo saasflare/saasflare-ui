@@ -20,8 +20,8 @@
  */
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { Dialog as DialogPrimitive } from "radix-ui"
+import { m } from "framer-motion"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
@@ -87,7 +87,7 @@ function DialogContent({
         asChild
         {...props}
       >
-        <motion.div
+        <m.div
           initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
@@ -102,7 +102,7 @@ function DialogContent({
             <XIcon />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
-        </motion.div>
+        </m.div>
       </DialogPrimitive.Content>
     </DialogPortal>
   )

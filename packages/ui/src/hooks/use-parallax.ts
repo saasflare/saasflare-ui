@@ -10,9 +10,9 @@
  * @example
  * import { useParallax } from '@saasflare/ui';
  * const { scrollY, mouseX, mouseY } = useParallax();
- * <motion.div style={{ y: useTransform(scrollY, [0, 1000], [0, -200]) }}>
+ * <m.div style={{ y: useTransform(scrollY, [0, 1000], [0, -200]) }}>
  *   Parallax content
- * </motion.div>
+ * </m.div>
  */
 
 import { useEffect } from "react"

@@ -10,6 +10,8 @@
  * a mobile-friendly slide-up panel with drag-to-dismiss gesture, overlay
  * backdrop, and composable header/footer/content slots.
  *
+ * @requires vaul — peer dependency.
+ *
  * @component
  * @example
  * import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from "@saasflare/core";

@@ -27,7 +27,7 @@
  */
 
 import { useEffect, useCallback } from "react"
-import { motion, useMotionValue, useSpring } from "framer-motion"
+import { m, useMotionValue, useSpring } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "../../hooks/use-reduced-motion"
 
@@ -97,7 +97,7 @@ export function MouseGradientBlob({
       className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
       aria-hidden="true"
     >
-      <motion.div
+      <m.div
         style={{
           x: blobX,
           y: blobY,

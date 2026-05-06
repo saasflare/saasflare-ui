@@ -25,7 +25,7 @@
  */
 
 import { useMemo, useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { m, useInView } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 
@@ -81,7 +81,7 @@ export function TextGenerateEffect({
       data-slot="text-generate-effect"
     >
       {words.map((word, i) => (
-        <motion.span
+        <m.span
           key={`${word}-${i}`}
           initial={{ opacity: 0, filter: "blur(4px)" }}
           animate={
@@ -94,7 +94,7 @@ export function TextGenerateEffect({
         >
           {word}
           {i < words.length - 1 && "\u00A0"}
-        </motion.span>
+        </m.span>
       ))}
     </Tag>
   )

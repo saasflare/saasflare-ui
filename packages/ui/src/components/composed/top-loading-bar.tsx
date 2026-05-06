@@ -1,9 +1,10 @@
-// @reviewed 2026-04-18
+// @reviewed 2026-05-06
 /**
  * @fileoverview Top loading bar that shows progress during route transitions.
  *
  * Two render modes, selected by the provider's `animated` flag:
- *   - animated  → NProgress trickle bar (slim, peg-glow, theme-aware).
+ *   - animated  → A self-trickling 2px bar in `--primary`. Pure CSS + a small
+ *                 progress driver; no external runtime dependency.
  *   - static    → A flat 2px bar in `--primary` that simply appears and
  *                 disappears, plus an aria-live region. This keeps a visible
  *                 navigation signal for users with `prefers-reduced-motion`
@@ -13,7 +14,7 @@
  * Wrapped in Suspense to safely access `useSearchParams` in Next.js App Router.
  *
  * Integrates with SaasflareProvider:
- *   - `animated` → switches between the NProgress and static renderers.
+ *   - `animated` → switches between the trickle and static renderers.
  *   - `surface`  → accepted for interface consistency; the 2px bar has no
  *                  background surface, so this value is ignored visually.
  *
@@ -27,35 +28,12 @@
  */
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
 import {
     useSaasflareProps,
     type SaasflareComponentProps,
 } from '../../providers';
-
-NProgress.configure({ showSpinner: false, trickleSpeed: 100 });
-
-/**
- * Theme override for NProgress. The library ships hardcoded `#29d` blue;
- * we pin the bar / peg glow / spinner stroke to the active Saasflare primary
- * via CSS variables so the bar follows the current theme automatically.
- */
-const NPROGRESS_THEME_CSS = `
-#nprogress .bar {
-    background: var(--primary) !important;
-    height: 2px;
-}
-#nprogress .peg {
-    box-shadow: 0 0 10px var(--primary), 0 0 5px var(--primary) !important;
-}
-#nprogress .spinner-icon {
-    border-top-color: var(--primary) !important;
-    border-left-color: var(--primary) !important;
-}
-`;
 
 /**
  * Props for the TopLoadingBar component.
@@ -72,8 +50,23 @@ export interface TopLoadingBarProps extends SaasflareComponentProps {
 
 type InnerProps = Pick<TopLoadingBarProps, 'startDelayMs' | 'finishDelayMs'>;
 
+const BAR_BASE_STYLE: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 2,
+    background: 'var(--primary)',
+    transformOrigin: 'left',
+    zIndex: 9999,
+    pointerEvents: 'none',
+};
+
 /**
- * Animated variant — the original NProgress trickle bar.
+ * Animated variant — a self-trickling 2px bar. Progress accelerates toward
+ * an asymptote (~90%) while the route is changing, then snaps to 100% on
+ * completion before fading out. Replaces the historical `nprogress` runtime
+ * dependency with a self-contained implementation.
  */
 function TopLoadingBarAnimated({
                                    startDelayMs = 100,
@@ -81,22 +74,68 @@ function TopLoadingBarAnimated({
                                }: InnerProps) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const [progress, setProgress] = useState(0);
+    const [visible, setVisible] = useState(false);
+    const trickleRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     useEffect(() => {
-        const startDelay = setTimeout(() => NProgress.start(), startDelayMs);
+        const start = setTimeout(() => {
+            setVisible(true);
+            setProgress(0.08);
+            trickleRef.current = setInterval(() => {
+                setProgress((p) => {
+                    if (p >= 0.9) return p;
+                    // ease-out trickle: smaller increments as we approach 90%
+                    const remaining = 0.9 - p;
+                    return p + remaining * 0.06;
+                });
+            }, 200);
+        }, startDelayMs);
 
         const finish = setTimeout(() => {
-            clearTimeout(startDelay);
-            NProgress.done();
+            clearTimeout(start);
+            if (trickleRef.current) {
+                clearInterval(trickleRef.current);
+                trickleRef.current = null;
+            }
+            setProgress(1);
+            // Fade out after the snap animation has had a frame to render.
+            const fade = setTimeout(() => {
+                setVisible(false);
+                setProgress(0);
+            }, 200);
+            return () => clearTimeout(fade);
         }, finishDelayMs);
 
         return () => {
-            clearTimeout(startDelay);
+            clearTimeout(start);
             clearTimeout(finish);
+            if (trickleRef.current) {
+                clearInterval(trickleRef.current);
+                trickleRef.current = null;
+            }
         };
     }, [pathname, searchParams, startDelayMs, finishDelayMs]);
 
-    return null;
+    return (
+        <>
+            <div
+                aria-hidden="true"
+                style={{
+                    ...BAR_BASE_STYLE,
+                    transform: `scaleX(${progress})`,
+                    opacity: visible ? 1 : 0,
+                    transition:
+                        'transform 200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 250ms ease-out',
+                    boxShadow:
+                        '0 0 10px var(--primary), 0 0 5px var(--primary)',
+                }}
+            />
+            <span aria-live="polite" className="sr-only">
+                {visible ? 'Loading…' : ''}
+            </span>
+        </>
+    );
 }
 
 /**
@@ -132,15 +171,8 @@ function TopLoadingBarStatic({
             <div
                 aria-hidden="true"
                 style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    background: 'var(--primary)',
+                    ...BAR_BASE_STYLE,
                     opacity: pending ? 1 : 0,
-                    zIndex: 9999,
-                    pointerEvents: 'none',
                     // No transition — this variant is intentionally motion-free.
                 }}
             />
@@ -170,14 +202,11 @@ export function TopLoadingBar({
     }
 
     return (
-        <>
-            <style dangerouslySetInnerHTML={{ __html: NPROGRESS_THEME_CSS }} />
-            <Suspense fallback={null}>
-                <TopLoadingBarAnimated
-                    startDelayMs={startDelayMs}
-                    finishDelayMs={finishDelayMs}
-                />
-            </Suspense>
-        </>
+        <Suspense fallback={null}>
+            <TopLoadingBarAnimated
+                startDelayMs={startDelayMs}
+                finishDelayMs={finishDelayMs}
+            />
+        </Suspense>
     );
 }

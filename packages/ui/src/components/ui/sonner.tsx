@@ -6,6 +6,8 @@
  * @module packages/core/components/ui/sonner
  * @layer core
  *
+ * @requires sonner — peer dependency.
+ *
  * @component
  * @example
  * import { Toaster } from '@saasflare/core';

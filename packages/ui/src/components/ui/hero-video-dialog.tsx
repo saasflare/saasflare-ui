@@ -29,7 +29,7 @@
  */
 
 import { useState, useCallback, type KeyboardEvent } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { PlayIcon, XIcon } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
@@ -108,7 +108,7 @@ export function HeroVideoDialog({
       {/* Video dialog */}
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             initial={reduced ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={reduced ? { opacity: 0 } : { opacity: 0 }}
@@ -131,7 +131,7 @@ export function HeroVideoDialog({
             </button>
 
             {/* Video container */}
-            <motion.div
+            <m.div
               initial={reduced ? false : { scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={reduced ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
@@ -148,8 +148,8 @@ export function HeroVideoDialog({
                   title={thumbnailAlt}
                 />
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -7,6 +7,11 @@
  * @layer core
  *
  * Self-contained implementation using Radix Tabs primitive directly.
+ * The active-tab indicator is a single `m.div` inside `TabsList` that
+ * animates `x`/`y`/`width`/`height` to track the active trigger via a
+ * MutationObserver on `data-state`. No `LayoutGroup` — works under
+ * `LazyMotion features={domAnimation}` strict mode.
+ *
  * Layout indicator animation respects reduced-motion preference.
  *
  * @example
@@ -22,9 +27,9 @@
  */
 
 import * as React from "react"
-import { motion, LayoutGroup } from "framer-motion"
+import { m } from "framer-motion"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Tabs as TabsPrimitive } from "radix-ui"
+import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cn } from "../../lib/utils"
 import { spring, noMotion, useReducedMotion } from "./motion-config"
 
@@ -34,18 +39,16 @@ function Tabs({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Root>) {
   return (
-    <LayoutGroup>
-      <TabsPrimitive.Root
-        data-slot="tabs"
-        data-orientation={orientation}
-        orientation={orientation}
-        className={cn(
-          "group/tabs flex gap-2 data-[orientation=horizontal]:flex-col",
-          className
-        )}
-        {...props}
-      />
-    </LayoutGroup>
+    <TabsPrimitive.Root
+      data-slot="tabs"
+      data-orientation={orientation}
+      orientation={orientation}
+      className={cn(
+        "group/tabs flex gap-2 data-[orientation=horizontal]:flex-col",
+        className
+      )}
+      {...props}
+    />
   )
 }
 
@@ -64,24 +67,106 @@ const tabsListVariants = cva(
   }
 )
 
+interface IndicatorPos {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 function TabsList({
   className,
   variant = "default",
+  children,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List> &
   VariantProps<typeof tabsListVariants>) {
+  const listRef = React.useRef<HTMLDivElement>(null)
+  const reduced = useReducedMotion()
+  const [pos, setPos] = React.useState<IndicatorPos | null>(null)
+
+  React.useLayoutEffect(() => {
+    const list = listRef.current
+    if (!list) return
+
+    const measure = () => {
+      const active = list.querySelector<HTMLElement>(
+        '[data-slot="tabs-trigger"][data-state="active"]'
+      )
+      if (!active) {
+        setPos(null)
+        return
+      }
+      const listRect = list.getBoundingClientRect()
+      const activeRect = active.getBoundingClientRect()
+      const next: IndicatorPos = {
+        x: activeRect.left - listRect.left,
+        y: activeRect.top - listRect.top,
+        width: activeRect.width,
+        height: activeRect.height,
+      }
+      setPos((prev) =>
+        prev &&
+        prev.x === next.x &&
+        prev.y === next.y &&
+        prev.width === next.width &&
+        prev.height === next.height
+          ? prev
+          : next
+      )
+    }
+
+    measure()
+
+    const mutationObserver = new MutationObserver(measure)
+    mutationObserver.observe(list, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-state"],
+    })
+
+    const resizeObserver = new ResizeObserver(measure)
+    resizeObserver.observe(list)
+
+    return () => {
+      mutationObserver.disconnect()
+      resizeObserver.disconnect()
+    }
+  }, [])
+
   return (
     <TabsPrimitive.List
+      ref={listRef}
       data-slot="tabs-list"
       data-variant={variant}
       className={cn(tabsListVariants({ variant }), className)}
       {...props}
-    />
+    >
+      {pos !== null && (
+        <m.div
+          data-slot="tabs-indicator"
+          aria-hidden
+          initial={false}
+          animate={{
+            x: pos.x,
+            y: pos.y,
+            width: pos.width,
+            height: pos.height,
+          }}
+          transition={reduced ? noMotion : spring}
+          className="pointer-events-none absolute top-0 left-0 rounded-md bg-background shadow-sm dark:border dark:border-input dark:bg-input/30"
+          style={{ zIndex: 0 }}
+        />
+      )}
+      {children}
+    </TabsPrimitive.List>
   )
 }
 
 /**
- * Tab trigger with animated active indicator.
+ * Tab trigger. The active-tab indicator is rendered once at the
+ * `TabsList` level and animates between triggers via measured position;
+ * triggers themselves only own their content + state styling.
  *
  * @component
  * @layer core
@@ -89,40 +174,19 @@ function TabsList({
 function TabsTrigger({
   className,
   children,
-  value,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
-  const reduced = useReducedMotion()
-
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
-      value={value}
       className={cn(
-        "relative inline-flex h-[calc(100%-1px)] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-colors group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative z-10 inline-flex h-[calc(100%-1px)] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-colors group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "data-[state=active]:text-foreground dark:data-[state=active]:text-foreground",
         className
       )}
       {...props}
     >
       {children}
-      <TabsPrimitive.Trigger
-        value={value}
-        asChild
-        data-slot="tabs-indicator"
-        className="pointer-events-none absolute inset-0"
-        tabIndex={-1}
-        aria-hidden
-      >
-        <span>
-          <motion.span
-            layoutId="sf-tab-indicator"
-            className="absolute inset-0 rounded-md bg-background shadow-sm dark:border dark:border-input dark:bg-input/30"
-            style={{ zIndex: -1 }}
-            transition={reduced ? noMotion : spring}
-          />
-        </span>
-      </TabsPrimitive.Trigger>
     </TabsPrimitive.Trigger>
   )
 }

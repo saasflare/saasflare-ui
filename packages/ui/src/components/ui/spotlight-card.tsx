@@ -25,7 +25,7 @@
  */
 
 import { useRef, useState, type ReactNode } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 import { useMousePosition } from "../../hooks/use-mouse-position"
@@ -68,7 +68,7 @@ export function SpotlightCard({
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <motion.div
+    <m.div
       ref={cardRef}
       onMouseEnter={reduced ? undefined : () => setIsHovered(true)}
       onMouseLeave={reduced ? undefined : () => setIsHovered(false)}
@@ -95,6 +95,6 @@ export function SpotlightCard({
 
       {/* Content */}
       <div className="relative z-10">{children}</div>
-    </motion.div>
+    </m.div>
   )
 }

@@ -21,7 +21,7 @@
  */
 
 import { useEffect, useState, useCallback } from "react"
-import { motion, useMotionValue, useSpring } from "framer-motion"
+import { m, useMotionValue, useSpring } from "framer-motion"
 import { useReducedMotion } from "../../../hooks/use-reduced-motion"
 
 /** Props for the AnimatedCursor component. */
@@ -123,7 +123,7 @@ export function AnimatedCursor({
       <style>{`* { cursor: none !important; }`}</style>
 
       {/* Inner dot */}
-      <motion.div
+      <m.div
         aria-hidden="true"
         style={{
           x: dotX,
@@ -143,7 +143,7 @@ export function AnimatedCursor({
       />
 
       {/* Outer ring */}
-      <motion.div
+      <m.div
         aria-hidden="true"
         style={{
           x: ringX,

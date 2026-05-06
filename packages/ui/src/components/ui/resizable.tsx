@@ -5,6 +5,8 @@
  * @module packages/core/components/ui/resizable
  * @layer core
  *
+ * @requires react-resizable-panels — peer dependency.
+ *
  * @component
  * @example
  * import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@saasflare/core';

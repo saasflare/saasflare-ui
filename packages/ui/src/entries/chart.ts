@@ -1,12 +1,11 @@
-// @draft
 /**
  * @fileoverview Subpath export for chart components. Requires `recharts` peer dep.
  * @author Saasflare™
- * @module packages/ui/entries/charts
+ * @module packages/ui/entries/chart
  * @package ui
  *
  * @example
- * import { ChartContainer, ChartTooltip } from '@saasflare/ui/charts';
+ * import { ChartContainer, ChartTooltip } from '@saasflare/ui/chart';
  */
 
 export {

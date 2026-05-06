@@ -24,7 +24,11 @@ async function prependUseClient(): Promise<void> {
 }
 
 export default defineConfig({
-    entry: ['src/index.ts'],
+    entry: [
+        'src/index.ts',
+        'src/entries/chart.ts',
+        'src/entries/carousel.ts',
+    ],
     format: ['cjs', 'esm'],
     dts: true,
     splitting: true,

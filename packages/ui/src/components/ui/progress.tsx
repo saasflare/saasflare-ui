@@ -15,8 +15,8 @@
  */
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { Progress as ProgressPrimitive } from "radix-ui"
+import { m } from "framer-motion"
+import * as ProgressPrimitive from "@radix-ui/react-progress"
 import { cn } from "../../lib/utils"
 import { spring, noMotion, useReducedMotion } from "./motion-config"
 
@@ -48,7 +48,7 @@ function Progress({
       {...props}
     >
       <ProgressPrimitive.Indicator data-slot="progress-indicator" asChild>
-        <motion.div
+        <m.div
           className="h-full bg-primary"
           initial={{ width: "0%" }}
           animate={{ width: `${value ?? 0}%` }}

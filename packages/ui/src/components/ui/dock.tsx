@@ -37,7 +37,7 @@ import {
   type MouseEvent as ReactMouseEvent,
 } from "react"
 import {
-  motion,
+  m,
   useMotionValue,
   useSpring,
   useTransform,
@@ -99,7 +99,7 @@ export function Dock({
 
   return (
     <DockContext.Provider value={{ mouseX, magnification, distance, reduced }}>
-      <motion.nav
+      <m.nav
         onMouseMove={(e: ReactMouseEvent) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         className={cn(
@@ -111,7 +111,7 @@ export function Dock({
         data-slot="dock"
       >
         {children}
-      </motion.nav>
+      </m.nav>
     </DockContext.Provider>
   )
 }
@@ -169,7 +169,7 @@ export function DockItem({
   const size = useSpring(sizeTransform, { stiffness: 300, damping: 25 })
 
   return (
-    <motion.button
+    <m.button
       ref={ref}
       onClick={onClick}
       style={reduced ? { width: BASE_SIZE, height: BASE_SIZE } : { width: size, height: size }}
@@ -190,6 +190,6 @@ export function DockItem({
       >
         {label}
       </span>
-    </motion.button>
+    </m.button>
   )
 }

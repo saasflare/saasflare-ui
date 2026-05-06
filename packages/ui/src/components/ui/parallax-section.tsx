@@ -17,7 +17,7 @@
  */
 
 import { useRef, type ReactNode } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { m, useScroll, useTransform } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "../../hooks/use-reduced-motion"
 
@@ -63,9 +63,9 @@ export function ParallaxSection({
 
   return (
     <div ref={ref} className={cn("relative overflow-hidden", className)} data-slot="parallax-section">
-      <motion.div style={{ y }}>
+      <m.div style={{ y }}>
         {children}
-      </motion.div>
+      </m.div>
     </div>
   )
 }

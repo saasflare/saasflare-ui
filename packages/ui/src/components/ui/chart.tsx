@@ -7,9 +7,12 @@
  * @module packages/core/components/ui/chart
  * @layer core
  *
+ * @requires recharts — peer dependency. Shipped via the `/chart` subpath:
+ *   `import { ChartContainer } from "@saasflare/ui/chart"`.
+ *
  * @component
  * @example
- * import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@saasflare/core';
+ * import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@saasflare/ui/chart';
  * const config = { revenue: { label: "Revenue", color: "#2563eb" } };
  * <ChartContainer config={config}>
  *   <BarChart data={data}>

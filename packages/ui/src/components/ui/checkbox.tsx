@@ -19,9 +19,9 @@
  */
 
 import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { m, AnimatePresence } from "framer-motion"
 import { CheckIcon } from "lucide-react"
-import { Checkbox as CheckboxPrimitive } from "radix-ui"
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"
 
@@ -43,14 +43,14 @@ function Checkbox({
         className="grid place-content-center text-current"
         asChild
       >
-        <motion.span
+        <m.span
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={springBouncy}
         >
           <CheckIcon className="size-3.5" />
-        </motion.span>
+        </m.span>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

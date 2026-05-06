@@ -18,8 +18,8 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
-import { HoverCard as HoverCardPrimitive } from "radix-ui"
+import { m } from "framer-motion"
+import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"
 
@@ -50,7 +50,7 @@ function HoverCardContent({
         asChild
         {...props}
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.95, y: 4 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95 }}

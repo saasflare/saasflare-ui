@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Subpath export for carousel components. Requires `embla-carousel-react` peer dep.
  * @author Saasflare™

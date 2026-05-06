@@ -12,12 +12,12 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { cn } from "../../lib/utils"
 
 function Textarea({ className, ...props }: Omit<React.ComponentProps<"textarea">, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>) {
   return (
-    <motion.textarea
+    <m.textarea
       data-slot="textarea"
       whileFocus={{ boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}

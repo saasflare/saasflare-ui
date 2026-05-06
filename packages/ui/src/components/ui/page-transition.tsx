@@ -25,7 +25,7 @@
  */
 
 import { type ReactNode } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "../../hooks/use-reduced-motion"
 
@@ -94,7 +94,7 @@ export function PageTransition({
 
   return (
     <AnimatePresence mode="wait">
-      <motion.div
+      <m.div
         key={transitionKey}
         initial={preset.initial}
         animate={preset.animate}
@@ -103,7 +103,7 @@ export function PageTransition({
         className={cn("will-change-[opacity,transform]", className)}
       >
         {children}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   )
 }

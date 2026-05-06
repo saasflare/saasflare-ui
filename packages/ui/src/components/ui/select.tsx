@@ -20,9 +20,9 @@
 "use client"
 
 import * as React from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 import { ChevronDownIcon, ChevronUpIcon, CheckIcon } from "lucide-react"
-import { Select as SelectPrimitive } from "radix-ui"
+import * as SelectPrimitive from "@radix-ui/react-select"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"
 
@@ -85,7 +85,7 @@ function SelectContent({
         asChild
         {...props}
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.96, y: -4 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={springBouncy}
@@ -106,7 +106,7 @@ function SelectContent({
             {children}
           </SelectPrimitive.Viewport>
           <SelectScrollDownButton />
-        </motion.div>
+        </m.div>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   )

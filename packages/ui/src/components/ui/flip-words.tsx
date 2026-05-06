@@ -26,7 +26,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
 
@@ -88,7 +88,7 @@ export function FlipWords({
       <span className="invisible" aria-hidden="true">{longestWord}</span>
 
       <AnimatePresence mode="wait">
-        <motion.span
+        <m.span
           key={words[index]}
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -98,7 +98,7 @@ export function FlipWords({
           aria-live="polite"
         >
           {words[index]}
-        </motion.span>
+        </m.span>
       </AnimatePresence>
     </span>
   )

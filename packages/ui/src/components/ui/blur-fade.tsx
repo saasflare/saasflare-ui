@@ -26,7 +26,7 @@
  */
 
 import { useRef, type ReactNode } from "react"
-import { motion, useInView } from "framer-motion"
+import { m, useInView } from "framer-motion"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 
@@ -77,7 +77,7 @@ export function BlurFade({
   }
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       initial={{ opacity: 0, y: yOffset, filter: `blur(${blur}px)` }}
       animate={
@@ -90,6 +90,6 @@ export function BlurFade({
       data-slot="blur-fade"
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }

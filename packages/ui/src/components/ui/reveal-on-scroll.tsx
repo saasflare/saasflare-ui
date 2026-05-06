@@ -24,7 +24,7 @@
  */
 
 import { type ReactNode } from "react"
-import { motion, useInView } from "framer-motion"
+import { m, useInView } from "framer-motion"
 import { useRef } from "react"
 import { cn } from "../../lib/utils"
 import { springGentle, noMotion, useReducedMotion } from "./motion-config"
@@ -87,7 +87,7 @@ export function RevealOnScroll({
   const offset = DIRECTION_OFFSET[direction]
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       initial={{ opacity: 0, x: offset.x, y: offset.y }}
       animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x: offset.x, y: offset.y }}
@@ -96,6 +96,6 @@ export function RevealOnScroll({
       data-slot="reveal-on-scroll"
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }
