@@ -21,7 +21,7 @@
  */
 
 import { useRef, type ReactNode } from "react"
-import { m, useScroll, useTransform } from "framer-motion"
+import { m, useScroll, useTransform } from "motion/react"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 

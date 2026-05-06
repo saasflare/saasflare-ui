@@ -25,7 +25,7 @@
  */
 
 import { useRef, useState, type ReactNode } from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "./motion-config"
 import { useMousePosition } from "../../hooks/use-mouse-position"

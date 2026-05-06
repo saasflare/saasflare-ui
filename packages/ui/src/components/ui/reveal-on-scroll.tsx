@@ -24,7 +24,7 @@
  */
 
 import { type ReactNode } from "react"
-import { m, useInView } from "framer-motion"
+import { m, useInView } from "motion/react"
 import { useRef } from "react"
 import { cn } from "../../lib/utils"
 import { springGentle, noMotion, useReducedMotion } from "./motion-config"

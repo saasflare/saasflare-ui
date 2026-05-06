@@ -1,8 +1,8 @@
 /**
- * @fileoverview Motion tokens + animation kill-switch.
+ * @fileoverview Motion tokens, animation kill-switch, and entrance/exit utilities.
  * @module packages/ui/styles/motion
  * @package ui
- * @reviewed 2026-04-19
+ * @reviewed 2026-05-06
  *
  * Duration and easing tokens consumed by components and utility classes.
  * The [data-animated="false"] attribute — set by SaasflareProvider on <html> —
@@ -11,6 +11,11 @@
  *
  * Reduced-motion media query is an additional safety net for users with an
  * OS-level preference, regardless of the provider's `animated` prop.
+ *
+ * Entrance/exit utilities below are derived from tw-animate-css (MIT,
+ * © 2025 Wombosvideo). Vendored to drop the runtime dependency; only the
+ * surface actually used by this package is kept (animate-in/out, fade,
+ * zoom, slide on cardinal axes, plus accordion-down/up and caret-blink).
  */
 
 :root {
@@ -50,4 +55,151 @@
         transition-duration: 0ms !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* ============================================
+ * Entrance / Exit animations
+ *
+ * The `animate-in` / `animate-out` utilities run shared `enter` / `exit`
+ * keyframes that interpolate four CSS variables (opacity, translate-x,
+ * translate-y, scale). Modifier utilities like `fade-in-0`, `slide-in-from-top-2`,
+ * `zoom-in-95` set those variables to non-default values so the same keyframes
+ * cover every entrance/exit combination — including stacked modifiers like
+ * `animate-in fade-in-0 zoom-in-95 slide-in-from-top-2`.
+ * ============================================ */
+
+@property --tw-enter-opacity { syntax: "*"; inherits: false; initial-value: 1; }
+@property --tw-enter-scale { syntax: "*"; inherits: false; initial-value: 1; }
+@property --tw-enter-translate-x { syntax: "*"; inherits: false; initial-value: 0; }
+@property --tw-enter-translate-y { syntax: "*"; inherits: false; initial-value: 0; }
+@property --tw-exit-opacity { syntax: "*"; inherits: false; initial-value: 1; }
+@property --tw-exit-scale { syntax: "*"; inherits: false; initial-value: 1; }
+@property --tw-exit-translate-x { syntax: "*"; inherits: false; initial-value: 0; }
+@property --tw-exit-translate-y { syntax: "*"; inherits: false; initial-value: 0; }
+
+@theme inline {
+    /* Percentage scale used by zoom-in-*, zoom-out-*, fade-in-*, fade-out-*. */
+    --percentage-0: 0;
+    --percentage-50: 0.5;
+    --percentage-90: 0.9;
+    --percentage-95: 0.95;
+    --percentage-100: 1;
+
+    /* `animate-in` / `animate-out` — run the shared enter/exit keyframes. */
+    --animate-in: enter 0.15s ease;
+    --animate-out: exit 0.15s ease;
+
+    /* Component-specific named animations. */
+    --animate-accordion-down: accordion-down 0.2s ease-out;
+    --animate-accordion-up: accordion-up 0.2s ease-out;
+    --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+}
+
+@keyframes enter {
+    from {
+        opacity: var(--tw-enter-opacity, 1);
+        transform: translate3d(
+                var(--tw-enter-translate-x, 0),
+                var(--tw-enter-translate-y, 0),
+                0
+            )
+            scale3d(
+                var(--tw-enter-scale, 1),
+                var(--tw-enter-scale, 1),
+                var(--tw-enter-scale, 1)
+            );
+    }
+}
+
+@keyframes exit {
+    to {
+        opacity: var(--tw-exit-opacity, 1);
+        transform: translate3d(
+                var(--tw-exit-translate-x, 0),
+                var(--tw-exit-translate-y, 0),
+                0
+            )
+            scale3d(
+                var(--tw-exit-scale, 1),
+                var(--tw-exit-scale, 1),
+                var(--tw-exit-scale, 1)
+            );
+    }
+}
+
+@keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height, auto); }
+}
+
+@keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height, auto); }
+    to { height: 0; }
+}
+
+@keyframes caret-blink {
+    0%, 70%, 100% { opacity: 1; }
+    20%, 50% { opacity: 0; }
+}
+
+/* Modifier utilities — set the enter/exit CSS vars consumed by the keyframes.
+ * Each parametric utility tries two resolution paths in order; CSS cascade
+ * keeps whichever resolves last. This matches tw-animate-css behavior so that
+ * both `fade-in-50` (namespace lookup → 0.5) and `fade-in-[0.7]` (arbitrary
+ * value) work. */
+
+@utility fade-in { --tw-enter-opacity: 0; }
+@utility fade-in-* {
+    --tw-enter-opacity: calc(--value(number)/100);
+    --tw-enter-opacity: --value(--percentage-*,[*]);
+}
+@utility fade-out { --tw-exit-opacity: 0; }
+@utility fade-out-* {
+    --tw-exit-opacity: calc(--value(number)/100);
+    --tw-exit-opacity: --value(--percentage-*,[*]);
+}
+
+@utility zoom-in { --tw-enter-scale: 0; }
+@utility zoom-in-* {
+    --tw-enter-scale: calc(--value(number)*1%);
+    --tw-enter-scale: --value(--percentage-*,[*]);
+}
+@utility zoom-out { --tw-exit-scale: 0; }
+@utility zoom-out-* {
+    --tw-exit-scale: calc(--value(number)*1%);
+    --tw-exit-scale: --value(--percentage-*,[*]);
+}
+
+@utility slide-in-from-top { --tw-enter-translate-y: -100%; }
+@utility slide-in-from-top-* {
+    --tw-enter-translate-y: calc(--value(integer)*var(--spacing)*-1);
+}
+@utility slide-in-from-bottom { --tw-enter-translate-y: 100%; }
+@utility slide-in-from-bottom-* {
+    --tw-enter-translate-y: calc(--value(integer)*var(--spacing));
+}
+@utility slide-in-from-left { --tw-enter-translate-x: -100%; }
+@utility slide-in-from-left-* {
+    --tw-enter-translate-x: calc(--value(integer)*var(--spacing)*-1);
+}
+@utility slide-in-from-right { --tw-enter-translate-x: 100%; }
+@utility slide-in-from-right-* {
+    --tw-enter-translate-x: calc(--value(integer)*var(--spacing));
+}
+
+@utility slide-out-to-top { --tw-exit-translate-y: -100%; }
+@utility slide-out-to-top-* {
+    --tw-exit-translate-y: calc(--value(integer)*var(--spacing)*-1);
+}
+@utility slide-out-to-bottom { --tw-exit-translate-y: 100%; }
+@utility slide-out-to-bottom-* {
+    --tw-exit-translate-y: calc(--value(integer)*var(--spacing));
+}
+@utility slide-out-to-left { --tw-exit-translate-x: -100%; }
+@utility slide-out-to-left-* {
+    --tw-exit-translate-x: calc(--value(integer)*var(--spacing)*-1);
+}
+@utility slide-out-to-right { --tw-exit-translate-x: 100%; }
+@utility slide-out-to-right-* {
+    --tw-exit-translate-x: calc(--value(integer)*var(--spacing));
 }

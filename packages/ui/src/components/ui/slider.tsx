@@ -12,7 +12,7 @@
 "use client"
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../lib/utils"
 import { springBouncy } from "./motion-config"

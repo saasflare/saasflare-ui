@@ -29,7 +29,7 @@
 
 import { createContext, useCallback, useContext, useEffect, type ReactNode } from "react"
 import { ThemeProvider, useTheme } from "next-themes"
-import { LazyMotion, domAnimation } from "framer-motion"
+import { LazyMotion, domAnimation } from "motion/react"
 import { hexToOklch, isHex } from "../lib"
 import { SAASFLARE_DATA_ATTR, UI_PREFS_STORAGE_KEY, THEME_STORAGE_KEY } from "../lib/constants"
 import { useLocalStorage } from "../hooks/use-local-storage"

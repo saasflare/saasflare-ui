@@ -27,7 +27,7 @@
  */
 
 import { useEffect, useCallback } from "react"
-import { m, useMotionValue, useSpring } from "framer-motion"
+import { m, useMotionValue, useSpring } from "motion/react"
 import { cn } from "../../lib/utils"
 import { useReducedMotion } from "../../hooks/use-reduced-motion"
 

@@ -26,7 +26,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from "react"
-import { AnimatePresence, m } from "framer-motion"
+import { AnimatePresence, m } from "motion/react"
 import { cn } from "../../lib/utils"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
 

@@ -26,7 +26,7 @@
  */
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import { cn } from "../../lib/utils"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"

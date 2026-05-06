@@ -13,7 +13,7 @@
 "use client"
 
 import * as React from "react"
-import { m } from "framer-motion"
+import { m } from "motion/react"
 import { cn } from "../../lib/utils"
 
 function Input({ className, type, ...props }: Omit<React.ComponentProps<"input">, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>) {

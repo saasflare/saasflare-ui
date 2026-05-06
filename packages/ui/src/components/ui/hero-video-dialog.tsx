@@ -29,7 +29,7 @@
  */
 
 import { useState, useCallback, type KeyboardEvent } from "react"
-import { AnimatePresence, m } from "framer-motion"
+import { AnimatePresence, m } from "motion/react"
 import { PlayIcon, XIcon } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
