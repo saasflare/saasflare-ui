@@ -1,5 +1,15 @@
 # @saasflare/ui
 
+## 1.1.1
+
+### Patch Changes
+
+- Bump `lucide-react` floor from `^0.577.0` to `^1.14.0`. Lucide cut its `1.0` stability release in March 2026; the API surface and React peer range are unchanged. Verified by `pnpm -F @saasflare/ui typecheck` + `build` and `pnpm -F @saasflare/demo-ui typecheck` against all 34 internal icon imports.
+
+  If a consumer previously installed `lucide-react` directly with a `^0.x` range, they should align to `^1.x` to avoid duplicate copies in their tree.
+
+  No other dependency or peer range changes — every other package stays in its existing caret range, and the resolved versions on `pnpm install` are already current.
+
 ## 1.1.0
 
 ### Minor Changes
