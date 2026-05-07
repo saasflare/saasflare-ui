@@ -39,8 +39,14 @@ async function prependUseClient(): Promise<void> {
 export default defineConfig({
     entry: [
         'src/index.ts',
-        'src/entries/chart.ts',
+        'src/entries/calendar.ts',
         'src/entries/carousel.ts',
+        'src/entries/chart.ts',
+        'src/entries/command.ts',
+        'src/entries/drawer.ts',
+        'src/entries/input-otp.ts',
+        'src/entries/resizable.ts',
+        'src/entries/sonner.ts',
     ],
     format: ['cjs', 'esm'],
     dts: true,

@@ -103,18 +103,7 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "./dropdown-menu"
-export {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerPortal,
-  DrawerTitle,
-  DrawerTrigger,
-} from "./drawer"
+// Drawer moved to subpath: import from "@saasflare/ui/drawer"
 export {
   Sheet,
   SheetClose,
@@ -187,12 +176,13 @@ export { Skeleton } from "./skeleton"
 export { Toggle, toggleVariants } from "./toggle"
 export { ToggleGroup, ToggleGroupItem } from "./toggle-group"
 // Carousel moved to subpath: import from "@saasflare/ui/carousel"
-export { Calendar, CalendarDayButton } from "./calendar"
+// Calendar moved to subpath: import from "@saasflare/ui/calendar"
 export { RadioGroup, RadioGroupItem } from "./radio-group"
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsible"
 export { Spinner } from "./spinner"
 export { ScrollArea, ScrollBar } from "./scroll-area"
-export { Toaster } from "./sonner"
+// Toaster moved to subpath: import from "@saasflare/ui/sonner"
+// (sonner has no sideEffects:false declaration → bundlers can't tree-shake unused Toaster)
 
 // Tier C: Re-exports
 export { AspectRatio } from "./aspect-ratio"
@@ -223,17 +213,7 @@ export {
   ComboboxEmpty,
   ComboboxSeparator,
 } from "./combobox"
-export {
-  Command,
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandShortcut,
-  CommandSeparator,
-} from "./command"
+// Command moved to subpath: import from "@saasflare/ui/command"
 export { DirectionProvider, useDirection } from "./direction"
 export {
   Empty,
@@ -274,12 +254,7 @@ export {
   InputGroupInput,
   InputGroupTextarea,
 } from "./input-group"
-export {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-  InputOTPSeparator,
-} from "./input-otp"
+// InputOTP moved to subpath: import from "@saasflare/ui/input-otp"
 export {
   Item,
   ItemMedia,
@@ -308,11 +283,7 @@ export {
   PaginationNext,
   PaginationEllipsis,
 } from "./pagination"
-export {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "./resizable"
+// Resizable moved to subpath: import from "@saasflare/ui/resizable"
 export { Separator } from "./separator"
 export {
   Table,

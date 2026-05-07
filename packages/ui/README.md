@@ -57,30 +57,33 @@ pnpm add react react-dom next next-themes framer-motion
 `tailwindcss` is **not** a peer dependency — it's a build-time tool. Install it
 in your app and add a `@source` directive (see Setup below).
 
-### Optional (per-component)
+### Optional (in main barrel — tree-shake-friendly)
 
-These peers are only needed if you import the matching components.
-`peerDependenciesMeta.optional` is set, so package managers won't warn if you
-skip them.
+`Form` lives in the main barrel because `react-hook-form` declares
+`"sideEffects": false`, so consumer bundlers reliably eliminate the import when
+`Form` is unused. Install only if you use it. `peerDependenciesMeta.optional`
+is set, so package managers won't warn if you skip it.
 
-| Component(s)              | Install                                                  |
-| ------------------------- | -------------------------------------------------------- |
-| `Form` + resolvers        | `react-hook-form@^7`, `@hookform/resolvers@^5`, `zod@^4` |
-| `Toast` (`Toaster`)       | `sonner@^2`                                              |
-| `Drawer`                  | `vaul@^1`                                                |
-| `Calendar`                | `react-day-picker@^9`, `date-fns@^4`                     |
-| `Resizable`               | `react-resizable-panels@^4`                              |
+| Component          | Install                                                  |
+| ------------------ | -------------------------------------------------------- |
+| `Form` + resolvers | `react-hook-form@^7`, `@hookform/resolvers@^5`, `zod@^4` |
 
-### Subpath imports (heavy peers — install only when used)
+### Subpath imports (heavy, low-frequency, or non-tree-shakeable peers)
 
-| Subpath                  | Install                          |
-| ------------------------ | -------------------------------- |
-| `@saasflare/ui/chart`    | `recharts@^3` (~95 KB gzip)       |
-| `@saasflare/ui/carousel` | `embla-carousel-react@^8` (~25 KB) |
+These components are **not in the main barrel** — import them via their
+subpath. This keeps the peer (and its side-effects, e.g. CSS injection) out of
+consumers who don't use the component.
 
-These two components are deliberately **not** in the main barrel — importing
-them through their subpath keeps the heavy peer out of consumers who don't use
-them.
+| Subpath                    | Install                                  | Notes                                    |
+| -------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `@saasflare/ui/chart`      | `recharts@^3`                            | ~95 KB gzip peer                         |
+| `@saasflare/ui/carousel`   | `embla-carousel-react@^8`                | ~25 KB peer                              |
+| `@saasflare/ui/calendar`   | `react-day-picker@^9`, `date-fns@^4`     | ~30 KB peer combined                     |
+| `@saasflare/ui/drawer`     | `vaul@^1`                                | Mobile drawer / bottom sheet             |
+| `@saasflare/ui/command`    | (no extra install — `cmdk` bundled)       | Full Command palette / cmdk-based modal  |
+| `@saasflare/ui/input-otp`  | `input-otp@^1`                           | OTP / 2FA input                          |
+| `@saasflare/ui/resizable`  | `react-resizable-panels@^4`              | Split-view panels                        |
+| `@saasflare/ui/sonner`     | `sonner@^2`                              | Toaster (sonner injects CSS — no tree-shake) |
 
 ---
 
@@ -152,11 +155,17 @@ export function Example() {
 }
 ```
 
-For chart/carousel:
+Components with heavy or low-frequency peers ship as subpaths:
 
 ```tsx
 import { ChartContainer, ChartTooltip } from "@saasflare/ui/chart";
 import { Carousel, CarouselContent, CarouselItem } from "@saasflare/ui/carousel";
+import { Calendar } from "@saasflare/ui/calendar";
+import { Drawer, DrawerContent, DrawerTrigger } from "@saasflare/ui/drawer";
+import { Command, CommandInput, CommandList } from "@saasflare/ui/command";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@saasflare/ui/input-otp";
+import { ResizablePanel, ResizablePanelGroup } from "@saasflare/ui/resizable";
+import { Toaster } from "@saasflare/ui/sonner";
 ```
 
 ---
@@ -215,9 +224,15 @@ the design system pick them up automatically.
 
 | Path                              | What it is                                                          |
 | --------------------------------- | ------------------------------------------------------------------- |
-| `@saasflare/ui`                   | Core: components, hooks, providers, utilities                       |
+| `@saasflare/ui`                   | Core: components, hooks, providers, utilities (incl. Form, Toaster) |
+| `@saasflare/ui/calendar`          | Calendar (requires `react-day-picker`, `date-fns`)                  |
+| `@saasflare/ui/carousel`          | Carousel (requires `embla-carousel-react`)                          |
 | `@saasflare/ui/chart`             | Chart primitives (requires `recharts`)                              |
-| `@saasflare/ui/carousel`          | Carousel primitives (requires `embla-carousel-react`)               |
+| `@saasflare/ui/command`           | Command palette / cmdk modal                                        |
+| `@saasflare/ui/drawer`            | Mobile drawer (requires `vaul`)                                     |
+| `@saasflare/ui/input-otp`         | OTP input (requires `input-otp`)                                    |
+| `@saasflare/ui/resizable`         | Resizable panels (requires `react-resizable-panels`)                |
+| `@saasflare/ui/sonner`            | Toaster (requires `sonner`)                                         |
 | `@saasflare/ui/styles`            | Full CSS bundle (alias for `globals.css`)                           |
 | `@saasflare/ui/globals.css`       | Same as above, explicit                                             |
 | `@saasflare/ui/theme.css`         | Token root only (advanced use)                                      |
@@ -239,9 +254,10 @@ the design system pick them up automatically.
   `Density`, …)
 - **Composed widgets:** `ScrollToTopButton`, `ThemeModeToggle`,
   `TopLoadingBar`, `UserAvatar`
-- **All core UI primitives** from `components/ui` (Chart and Carousel are
-  *not* here — see Subpath imports above) — full list and live examples in
-  the [catalog](https://ui.saasflare.io).
+- **All core UI primitives** from `components/ui` (Calendar, Carousel, Chart,
+  Command, Drawer, InputOTP, Resizable, and Toaster are *not* here — see
+  Subpath imports above) — full list and live examples in the
+  [catalog](https://ui.saasflare.io).
 
 ---
 

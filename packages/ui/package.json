@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=20"
   },
-  "sideEffects": false,
+  "sideEffects": ["**/*.css"],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org",
@@ -59,15 +59,45 @@
     "./fonts/distinctive": "./fonts/presets/distinctive.ts",
     "./fonts/neutral": "./fonts/presets/neutral.ts",
     "./fonts/*": null,
-    "./chart": {
-      "types": "./dist/entries/chart.d.ts",
-      "import": "./dist/entries/chart.mjs",
-      "require": "./dist/entries/chart.js"
+    "./calendar": {
+      "types": "./dist/entries/calendar.d.ts",
+      "import": "./dist/entries/calendar.mjs",
+      "require": "./dist/entries/calendar.js"
     },
     "./carousel": {
       "types": "./dist/entries/carousel.d.ts",
       "import": "./dist/entries/carousel.mjs",
       "require": "./dist/entries/carousel.js"
+    },
+    "./chart": {
+      "types": "./dist/entries/chart.d.ts",
+      "import": "./dist/entries/chart.mjs",
+      "require": "./dist/entries/chart.js"
+    },
+    "./command": {
+      "types": "./dist/entries/command.d.ts",
+      "import": "./dist/entries/command.mjs",
+      "require": "./dist/entries/command.js"
+    },
+    "./drawer": {
+      "types": "./dist/entries/drawer.d.ts",
+      "import": "./dist/entries/drawer.mjs",
+      "require": "./dist/entries/drawer.js"
+    },
+    "./input-otp": {
+      "types": "./dist/entries/input-otp.d.ts",
+      "import": "./dist/entries/input-otp.mjs",
+      "require": "./dist/entries/input-otp.js"
+    },
+    "./resizable": {
+      "types": "./dist/entries/resizable.d.ts",
+      "import": "./dist/entries/resizable.mjs",
+      "require": "./dist/entries/resizable.js"
+    },
+    "./sonner": {
+      "types": "./dist/entries/sonner.d.ts",
+      "import": "./dist/entries/sonner.mjs",
+      "require": "./dist/entries/sonner.js"
     },
     "./package.json": "./package.json"
   },
@@ -114,7 +144,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "input-otp": "^1.4.2",
     "lucide-react": "^1.14.0",
     "tailwind-merge": "^3.5.0"
   },
@@ -122,6 +151,7 @@
     "@hookform/resolvers": "^5.0.0",
     "date-fns": "^4.0.0",
     "embla-carousel-react": "^8.0.0",
+    "input-otp": "^1.4.2",
     "motion": "^12.0.0",
     "next": "^15.0.0 || ^16.0.0",
     "next-themes": "^0.4.0",
@@ -146,7 +176,7 @@
     "embla-carousel-react": {
       "optional": true
     },
-    "motion": {
+    "input-otp": {
       "optional": true
     },
     "react-day-picker": {
