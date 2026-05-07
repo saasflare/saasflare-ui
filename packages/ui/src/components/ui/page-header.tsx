@@ -21,9 +21,10 @@
 
 import * as React from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the PageHeader component */
-interface PageHeaderProps extends React.ComponentProps<"div"> {
+interface PageHeaderProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Page title */
   title: string
   /** Optional description below the title */
@@ -64,13 +65,21 @@ function PageHeader({
   breadcrumbs,
   actions,
   className,
+  surface,
+  radius,
+  animated,
   ...props
 }: PageHeaderProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
-      data-slot="page-header"
-      className={cn("flex flex-col gap-1", className)}
       {...props}
+      data-slot="page-header"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn("flex flex-col gap-1", className)}
     >
       {breadcrumbs && (
         <div data-slot="page-header-breadcrumbs" className="mb-2">

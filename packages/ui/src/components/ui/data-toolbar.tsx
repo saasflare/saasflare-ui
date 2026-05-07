@@ -25,6 +25,9 @@
 
 import * as React from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+interface DataToolbarProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
 /**
  * Toolbar container for data views.
@@ -40,15 +43,20 @@ import { cn } from "../../lib"
  *   </DataToolbarActions>
  * </DataToolbar>
  */
-function DataToolbar({ className, ...props }: React.ComponentProps<"div">) {
+function DataToolbar({ className, surface, radius, animated, ...props }: DataToolbarProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
+      {...props}
       data-slot="data-toolbar"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
         className
       )}
-      {...props}
     />
   )
 }
@@ -106,4 +114,5 @@ export {
   DataToolbarSearch,
   DataToolbarFilters,
   DataToolbarActions,
+  type DataToolbarProps,
 }

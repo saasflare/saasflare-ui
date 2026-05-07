@@ -26,9 +26,10 @@
 import * as React from "react"
 import { CheckIcon } from "lucide-react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the PricingCard component */
-interface PricingCardProps extends React.ComponentProps<"div"> {
+interface PricingCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Plan name (e.g. "Starter", "Pro", "Enterprise") */
   name: string
   /** Formatted price (e.g. "$29", "Free", "$99") */
@@ -79,17 +80,25 @@ function PricingCard({
   cta,
   featured = false,
   className,
+  surface,
+  radius,
+  animated,
   ...props
 }: PricingCardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
+      {...props}
       data-slot="pricing-card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "relative flex flex-col rounded-xl border bg-card p-6 text-card-foreground shadow-sm",
         featured && "border-primary shadow-md ring-1 ring-primary/20",
         className
       )}
-      {...props}
     >
       {featured && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-xs font-medium text-primary-foreground">

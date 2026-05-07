@@ -22,9 +22,10 @@
 
 import * as React from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the SettingsSection component */
-interface SettingsSectionProps extends React.ComponentProps<"div"> {
+interface SettingsSectionProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Setting label */
   label: string
   /** Optional description of the setting */
@@ -53,16 +54,24 @@ function SettingsSection({
   description,
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
 }: SettingsSectionProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
+      {...props}
       data-slot="settings-section"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6",
         className
       )}
-      {...props}
     >
       <div className="space-y-0.5">
         <div className="text-sm font-medium">{label}</div>

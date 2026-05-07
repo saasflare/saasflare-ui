@@ -23,9 +23,10 @@
 
 import * as React from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the EmptyState component */
-interface EmptyStateProps extends React.ComponentProps<"div"> {
+interface EmptyStateProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Icon or illustration element */
   icon?: React.ReactNode
   /** Title text */
@@ -61,16 +62,24 @@ function EmptyState({
   description,
   action,
   className,
+  surface,
+  radius,
+  animated,
   ...props
 }: EmptyStateProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
+      {...props}
       data-slot="empty-state"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex flex-col items-center justify-center gap-4 py-12 text-center",
         className
       )}
-      {...props}
     >
       {icon && (
         <div className="text-muted-foreground [&_svg]:size-12">{icon}</div>

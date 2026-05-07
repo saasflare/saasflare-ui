@@ -23,6 +23,7 @@
 
 import * as React from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Trend indicator data */
 interface MetricTrend {
@@ -33,7 +34,7 @@ interface MetricTrend {
 }
 
 /** Props for the MetricCard component */
-interface MetricCardProps extends React.ComponentProps<"div"> {
+interface MetricCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Metric label (e.g. "Revenue", "Active Users") */
   label: string
   /** Formatted metric value (e.g. "$12,345", "1,234") */
@@ -80,16 +81,24 @@ function MetricCard({
   trend,
   icon,
   className,
+  surface,
+  radius,
+  animated,
   ...props
 }: MetricCardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
+      {...props}
       data-slot="metric-card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex flex-col gap-2 rounded-xl border bg-card p-6 text-card-foreground shadow-sm",
         className
       )}
-      {...props}
     >
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium text-muted-foreground">{label}</span>
