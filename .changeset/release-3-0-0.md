@@ -2,7 +2,7 @@
 "@saasflare/ui": major
 ---
 
-Sweet-spot bundle architecture: 8 peer-heavy components moved to subpath imports.
+Sweet-spot bundle architecture: 7 peer-heavy components moved to subpath imports; `sonner` bundled directly.
 
 **Breaking change.** The following components are no longer exported from the main barrel `@saasflare/ui`. Import them via their dedicated subpath instead:
 
@@ -15,9 +15,10 @@ Sweet-spot bundle architecture: 8 peer-heavy components moved to subpath imports
 | `Drawer*` | `from "@saasflare/ui"` | `from "@saasflare/ui/drawer"` |
 | `InputOTP*` | `from "@saasflare/ui"` | `from "@saasflare/ui/input-otp"` |
 | `Resizable*` | `from "@saasflare/ui"` | `from "@saasflare/ui/resizable"` |
-| `Toaster` | `from "@saasflare/ui"` | `from "@saasflare/ui/sonner"` |
 
-`Form` **remains** in the main barrel — `react-hook-form` declares `sideEffects: false`, so consumer bundlers reliably tree-shake the import when `Form` is unused. `sonner` does not declare `sideEffects: false` and injects CSS at module-load time, so `Toaster` had to move to a subpath to keep `sonner` (and its CSS) out of bundles that don't render toasts.
+`Form` and `Toaster` **remain** in the main barrel:
+- `Form` is tree-shake-safe because `react-hook-form` declares `sideEffects: false`.
+- `Toaster` (sonner-based) is now bundled directly into `@saasflare/ui` via tsup `noExternal: ['sonner']`. Consumers no longer need to install `sonner` — it ships with the package. Trade-off: ~13 KB gzip extra in the main barrel for all consumers (including those who don't render `<Toaster />`), because sonner injects CSS at module-load time and cannot be tree-shaken. Justified by >80 % Toaster usage in practice.
 
 **Why:** Subpaths guarantee a worst-case bundle ceiling: consumers who never import a subpath can't accidentally pull in the heavy peer or its wrapper code, even when their bundler's tree-shaker is conservative. The package's main `index.mjs` drops from 201 KB → 184 KB raw (34 KB → 30 KB gzip), and consumers opt into peer dependencies through type-system-enforced imports.
 

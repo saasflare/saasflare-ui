@@ -68,6 +68,15 @@ is set, so package managers won't warn if you skip it.
 | ------------------ | -------------------------------------------------------- |
 | `Form` + resolvers | `react-hook-form@^7`, `@hookform/resolvers@^5`, `zod@^4` |
 
+### Bundled (no install required)
+
+`Toaster` (sonner-based toast notifications) is bundled directly into
+`@saasflare/ui` — no separate `sonner` install needed. Sonner injects ~6 KB
+of toast CSS into the document at module load, which adds ~13 KB gzip to the
+main barrel for all consumers, including those who don't render `<Toaster />`.
+We accepted this trade-off because Toaster usage is >80 % across the Saasflare
+codebase and consumers; the extra-import friction was worse than the byte cost.
+
 ### Subpath imports (heavy, low-frequency, or non-tree-shakeable peers)
 
 These components are **not in the main barrel** — import them via their
@@ -83,7 +92,6 @@ consumers who don't use the component.
 | `@saasflare/ui/command`    | (no extra install — `cmdk` bundled)       | Full Command palette / cmdk-based modal  |
 | `@saasflare/ui/input-otp`  | `input-otp@^1`                           | OTP / 2FA input                          |
 | `@saasflare/ui/resizable`  | `react-resizable-panels@^4`              | Split-view panels                        |
-| `@saasflare/ui/sonner`     | `sonner@^2`                              | Toaster (sonner injects CSS — no tree-shake) |
 
 ---
 
@@ -165,7 +173,6 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@saasflare/ui/drawer";
 import { Command, CommandInput, CommandList } from "@saasflare/ui/command";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@saasflare/ui/input-otp";
 import { ResizablePanel, ResizablePanelGroup } from "@saasflare/ui/resizable";
-import { Toaster } from "@saasflare/ui/sonner";
 ```
 
 ---
@@ -232,7 +239,6 @@ the design system pick them up automatically.
 | `@saasflare/ui/drawer`            | Mobile drawer (requires `vaul`)                                     |
 | `@saasflare/ui/input-otp`         | OTP input (requires `input-otp`)                                    |
 | `@saasflare/ui/resizable`         | Resizable panels (requires `react-resizable-panels`)                |
-| `@saasflare/ui/sonner`            | Toaster (requires `sonner`)                                         |
 | `@saasflare/ui/styles`            | Full CSS bundle (alias for `globals.css`)                           |
 | `@saasflare/ui/globals.css`       | Same as above, explicit                                             |
 | `@saasflare/ui/theme.css`         | Token root only (advanced use)                                      |
@@ -255,9 +261,8 @@ the design system pick them up automatically.
 - **Composed widgets:** `ScrollToTopButton`, `ThemeModeToggle`,
   `TopLoadingBar`, `UserAvatar`
 - **All core UI primitives** from `components/ui` (Calendar, Carousel, Chart,
-  Command, Drawer, InputOTP, Resizable, and Toaster are *not* here — see
-  Subpath imports above) — full list and live examples in the
-  [catalog](https://ui.saasflare.io).
+  Command, Drawer, InputOTP, and Resizable are *not* here — see Subpath imports
+  above) — full list and live examples in the [catalog](https://ui.saasflare.io).
 
 ---
 

@@ -103,7 +103,6 @@ export default defineConfig({
         'src/entries/drawer.ts',
         'src/entries/input-otp.ts',
         'src/entries/resizable.ts',
-        'src/entries/sonner.ts',
     ],
     format: ['cjs', 'esm'],
     dts: true,
@@ -111,6 +110,7 @@ export default defineConfig({
     sourcemap: false,
     clean: true,
     external: ['react', 'react-dom'],
+    noExternal: ['sonner'],
     treeshake: true,
     onSuccess: injectUseClient,
 });

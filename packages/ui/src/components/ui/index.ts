@@ -181,8 +181,7 @@ export { RadioGroup, RadioGroupItem } from "./radio-group"
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsible"
 export { Spinner } from "./spinner"
 export { ScrollArea, ScrollBar } from "./scroll-area"
-// Toaster moved to subpath: import from "@saasflare/ui/sonner"
-// (sonner has no sideEffects:false declaration → bundlers can't tree-shake unused Toaster)
+export { Toaster } from "./sonner"
 
 // Tier C: Re-exports
 export { AspectRatio } from "./aspect-ratio"
