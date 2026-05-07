@@ -24,9 +24,10 @@
 import * as React from "react"
 import { SearchIcon, XIcon, Loader2Icon } from "lucide-react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the SearchField component */
-interface SearchFieldProps extends Omit<React.ComponentProps<"input">, "type"> {
+interface SearchFieldProps extends Omit<React.ComponentProps<"input">, "type" | keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Show loading spinner instead of search icon */
   loading?: boolean
   /** Callback when clear button is clicked */
@@ -57,12 +58,22 @@ function SearchField({
   loading = false,
   onClear,
   value,
+  surface,
+  radius,
+  animated,
   ...props
 }: SearchFieldProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const hasValue = typeof value === "string" ? value.length > 0 : false
 
   return (
-    <div data-slot="search-field" className={cn("relative", className)}>
+    <div
+      data-slot="search-field"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn("relative", className)}
+    >
       <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
         {loading ? (
           <Loader2Icon className="size-4 animate-spin" aria-hidden="true" />

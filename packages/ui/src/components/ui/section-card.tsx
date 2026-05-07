@@ -20,9 +20,10 @@
 
 import * as React from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the SectionCard component */
-interface SectionCardProps extends React.ComponentProps<"div"> {
+interface SectionCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Section title */
   title: string
   /** Optional description below the title */
@@ -60,16 +61,24 @@ function SectionCard({
   headerAction,
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
 }: SectionCardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
+      {...props}
       data-slot="section-card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "rounded-xl border bg-card text-card-foreground shadow-sm",
         className
       )}
-      {...props}
     >
       <div className="flex items-start justify-between gap-4 border-b px-6 py-4">
         <div className="space-y-1">
