@@ -35,7 +35,7 @@ import {
   useSaasflareProps,
   type SaasflareComponentProps,
 } from "../../providers"
-import { spring, noMotion, useReducedMotion } from "./motion-config"
+import { spring, useSaasflareMotion } from "./motion-config"
 
 /**
  * Motion-wrapped Slot.Root for the asChild + animated path. MUST be defined
@@ -180,17 +180,18 @@ function Button({
   loading = false,
   fullWidth = false,
   surface,
+  radius,
   animated,
   disabled,
   children,
   ...props
 }: ButtonProps) {
-  const sfProps = useSaasflareProps({ surface, animated })
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, spring, disabled ?? false, loading)
 
   /* ── Surface → variant promotion (only when variant is not explicit) ── */
   const effectiveVariant: string =
-    variantProp ?? (sfProps.surface === "glass" ? "glass" : "solid")
+    variantProp ?? (sf.surface === "glass" ? "glass" : "solid")
 
   /* ── Backward compat: map legacy variant names ── */
   let resolvedVariant = effectiveVariant
@@ -204,28 +205,26 @@ function Button({
     }
   }
 
-  /* ── Motion gating: any of the four disablers kills hover/tap ── */
-  const motionDisabled = !sfProps.animated || reduced || disabled || loading
-  const transition = !sfProps.animated || reduced ? noMotion : spring
-
   /* ── Slot rendering (Pattern A: animated asChild via m.create(Slot.Root)) ── */
   if (asChild) {
     return (
       <MotionSlot
+        {...props}
         data-slot="button"
         data-variant={resolvedVariant}
         data-intent={resolvedIntent}
         data-size={size}
-        data-surface={sfProps.surface}
-        whileHover={motionDisabled ? undefined : { scale: 1.02 }}
-        whileTap={motionDisabled ? undefined : { scale: 0.97 }}
-        transition={transition}
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
+        whileHover={motion.disabled ? undefined : { scale: 1.02 }}
+        whileTap={motion.disabled ? undefined : { scale: 0.97 }}
+        transition={motion.transition}
         className={cn(
           buttonVariants({ variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"], size }),
           fullWidth && "w-full",
           className
         )}
-        {...props}
       >
         {children}
       </MotionSlot>
@@ -238,10 +237,12 @@ function Button({
       data-variant={resolvedVariant}
       data-intent={resolvedIntent}
       data-size={size}
-      data-surface={sfProps.surface}
-      whileHover={motionDisabled ? undefined : { scale: 1.02 }}
-      whileTap={motionDisabled ? undefined : { scale: 0.97 }}
-      transition={transition}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      whileHover={motion.disabled ? undefined : { scale: 1.02 }}
+      whileTap={motion.disabled ? undefined : { scale: 0.97 }}
+      transition={motion.transition}
       className={cn(
         buttonVariants({ variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"], size }),
         fullWidth && "w-full",
