@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Boolean state with toggle, setTrue, and setFalse controls.
  * @author Saasflare™

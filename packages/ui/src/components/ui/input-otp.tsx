@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview InputOTP primitive — one-time password input with individual character slots.
  * Built on the input-otp library. Part of the Saasflare base component layer.

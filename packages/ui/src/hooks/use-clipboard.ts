@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Copy-to-clipboard hook with "copied!" feedback state.
  * @author Saasflare™

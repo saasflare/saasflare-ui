@@ -1,4 +1,6 @@
 // @reviewed 2026-04-17
+"use client"
+
 /**
  * @fileoverview Hook to detect user's reduced-motion preference.
  * @module packages/core/hooks/use-reduced-motion

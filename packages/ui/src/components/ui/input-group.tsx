@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview InputGroup primitive — composes an input with inline addons, buttons,
  * and prefix/suffix elements into a single visual unit. Supports focus, error, and

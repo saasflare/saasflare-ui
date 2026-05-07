@@ -1,4 +1,6 @@
 // @reviewed 2026-04-19
+"use client"
+
 /**
  * @fileoverview Base props and resolver hook for Saasflare components.
  * @module packages/ui/providers/use-saasflare-props

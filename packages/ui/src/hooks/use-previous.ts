@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Returns the previous value of a variable.
  * @author Saasflare™

@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview ButtonGroup primitive — groups multiple buttons or inputs into a
  * visually connected strip with shared border radii and separator support.

@@ -1,4 +1,6 @@
 // @reviewed 2026-04-19
+"use client"
+
 /**
  * @fileoverview Pre-hydration script — eliminates palette/style/radius/animation FOUT.
  * @module packages/ui/providers/saasflare-script

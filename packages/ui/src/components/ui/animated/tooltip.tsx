@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview AnimatedTooltip primitive — renders circular avatar images with a
  * mouse-tracking parallax tooltip on hover. Uses Framer Motion for smooth tilt and

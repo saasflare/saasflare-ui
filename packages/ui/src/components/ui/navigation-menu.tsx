@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview NavigationMenu primitive — site navigation with animated dropdowns, viewport support, and active indicators.
  * Built on Radix UI NavigationMenu. Part of the Saasflare base component layer.

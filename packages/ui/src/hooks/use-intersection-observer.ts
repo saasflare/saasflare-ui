@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview IntersectionObserver hook for viewport visibility detection.
  * @author Saasflare™

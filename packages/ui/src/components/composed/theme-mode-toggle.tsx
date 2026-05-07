@@ -1,4 +1,6 @@
 // @reviewd 2026-04-11
+"use client"
+
 /**
  * @fileoverview Theme toggle button for switching between light and dark mode.
  * Uses next-themes for hydration-safe theme detection and switching.

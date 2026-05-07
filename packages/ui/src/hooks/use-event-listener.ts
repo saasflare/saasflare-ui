@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Type-safe addEventListener with automatic cleanup.
  * @author Saasflare™

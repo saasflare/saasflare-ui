@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview HoverCard — premium animated hover-triggered popover card with Framer Motion spring entrance for previewing content on hover.
  * @module packages/core/components/ui/hover-card

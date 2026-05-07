@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Track browser online/offline network status.
  * @author Saasflare™

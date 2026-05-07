@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview TypewriterText primitive — word-by-word text reveal animation with
  * a blinking cursor effect. Supports configurable word delay, skip animation,

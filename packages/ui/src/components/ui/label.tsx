@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Label primitive — accessible form label with disabled state awareness.
  * Built on Radix UI Label. Part of the Saasflare base component layer.

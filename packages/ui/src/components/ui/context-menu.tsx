@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview ContextMenu primitive — right-click menu with items, sub-menus, checkboxes, and radio groups.
  * Built on Radix UI ContextMenu. Part of the Saasflare base component layer.

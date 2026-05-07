@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview RadioGroup — accessible radio button group with polished styling and focus states.
  * @module packages/core/components/ui/radio-group

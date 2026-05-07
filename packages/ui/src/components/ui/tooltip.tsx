@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Tooltip — animated contextual hint with spring entrance, arrow support, and configurable delay.
  * @module packages/core/components/ui/tooltip

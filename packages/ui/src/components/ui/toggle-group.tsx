@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview ToggleGroup — grouped toggle buttons with shared state, variant styling, and configurable spacing.
  * @module packages/core/components/ui/toggle-group

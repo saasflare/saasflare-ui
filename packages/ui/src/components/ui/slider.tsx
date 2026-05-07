@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Slider — range input with spring-animated thumb and track fill.
  * @module packages/core/components/ui/slider

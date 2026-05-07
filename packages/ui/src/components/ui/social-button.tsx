@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Branded social login button with provider icons.
  * @author Saasflare™

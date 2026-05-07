@@ -1,4 +1,6 @@
 // @reviewed 2026-04-19
+"use client"
+
 /**
  * @fileoverview Unified Saasflare provider — light/dark mode, brand palette, surface, radius, animation.
  * @module packages/ui/providers/saasflare-provider

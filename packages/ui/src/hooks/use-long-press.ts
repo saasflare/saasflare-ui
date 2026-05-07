@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Long press gesture detection for mouse and touch.
  * @author Saasflare™

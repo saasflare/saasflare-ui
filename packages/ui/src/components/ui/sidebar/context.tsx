@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Sidebar context — React context, provider, cookie-based persistence, and trigger for the sidebar system.
  * Manages sidebar open/collapsed state across desktop and mobile with keyboard shortcut support.

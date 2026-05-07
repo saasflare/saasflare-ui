@@ -1,4 +1,6 @@
 // @reviewed 2026-05-06
+"use client"
+
 /**
  * @fileoverview Top loading bar that shows progress during route transitions.
  *

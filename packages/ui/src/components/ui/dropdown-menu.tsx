@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview DropdownMenu — premium animated dropdown menu with Framer Motion spring transitions, sub-menus, checkbox/radio items, and keyboard navigation.
  * @module packages/core/components/ui/dropdown-menu

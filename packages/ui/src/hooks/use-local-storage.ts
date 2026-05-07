@@ -1,4 +1,6 @@
 // @reviewed 2026-04-11
+"use client"
+
 /**
  * @fileoverview Typed localStorage hook with SSR safety, same-tab + cross-tab sync.
  * @author Saasflare™

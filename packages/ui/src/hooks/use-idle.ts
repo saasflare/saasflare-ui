@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Detect user inactivity after a configurable timeout.
  * @author Saasflare™

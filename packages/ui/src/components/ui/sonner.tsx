@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Toaster primitive — themed toast notification container.
  * Built on the Sonner toast library with Lucide icons and next-themes integration.

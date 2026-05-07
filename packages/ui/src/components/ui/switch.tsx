@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Switch — animated toggle switch with spring physics and size variants.
  * @module packages/core/components/ui/switch

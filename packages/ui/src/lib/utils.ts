@@ -1,4 +1,6 @@
 // @reviewed 2026-04-17
+"use client"
+
 /**
  * @fileoverview Core utility functions for the Saasflare design system.
  * @module @saasflare/ui/lib/utils

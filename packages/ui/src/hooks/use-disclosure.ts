@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Controlled/uncontrolled open-close state machine for
  * dialogs, drawers, popovers, and sheets. Exposes onOpen/onClose/onToggle

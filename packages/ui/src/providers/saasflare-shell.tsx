@@ -1,4 +1,6 @@
 // @reviewed 2026-04-19
+"use client"
+
 /**
  * @fileoverview Document shell — html + body + provider in one component.
  * @module packages/ui/providers/saasflare-shell

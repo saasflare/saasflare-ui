@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Hook that returns true after component mounts (SSR/hydration safety).
  * @author Saasflare™

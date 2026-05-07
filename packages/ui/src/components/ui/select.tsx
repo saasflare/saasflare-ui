@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Select — animated dropdown select with spring transitions and grouped options.
  * @module packages/core/components/ui/select

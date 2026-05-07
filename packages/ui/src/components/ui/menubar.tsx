@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Menubar primitive — horizontal menu bar with dropdown menus, checkbox items, and keyboard navigation.
  * Built on Radix UI Menubar. Part of the Saasflare base component layer.

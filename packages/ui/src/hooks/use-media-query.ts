@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Generic media query hook with SSR safety.
  * @author Saasflare™

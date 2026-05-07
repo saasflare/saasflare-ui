@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Sidebar layout components — main sidebar shell, rail, inset area, header, footer, content groups, and input.
  * Provides the structural layout primitives for the sidebar. Part of the Saasflare base component layer.

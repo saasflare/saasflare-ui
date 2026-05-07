@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Input — premium text input with Framer Motion animated focus ring and spring transition for polished form interactions.
  * @module packages/core/components/ui/input

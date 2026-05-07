@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview AspectRatio primitive — constrains content to a specified width-to-height ratio.
  * Built on Radix UI AspectRatio. Part of the Saasflare base component layer.

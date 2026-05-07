@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Direction primitive — provides LTR/RTL direction context via Radix UI.
  * Wraps Radix DirectionProvider and useDirection hook for bidirectional layout support.

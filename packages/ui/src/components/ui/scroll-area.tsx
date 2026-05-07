@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview ScrollArea primitive — custom scrollable container with styled scrollbar thumb.
  * Built on Radix UI ScrollArea. Part of the Saasflare base component layer.

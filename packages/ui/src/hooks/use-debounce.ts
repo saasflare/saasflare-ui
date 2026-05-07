@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Debounce hooks for values and callbacks.
  * @author Saasflare™

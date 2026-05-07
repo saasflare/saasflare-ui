@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Carousel primitive — scrollable content carousel with navigation controls.
  * Built on Embla Carousel. Supports horizontal and vertical orientation,

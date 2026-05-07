@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Calendar primitive — date picker grid with month navigation and day selection.
  * Built on react-day-picker. Part of the Saasflare base component layer.

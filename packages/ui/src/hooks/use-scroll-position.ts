@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Track scroll position and direction with optional throttling.
  * @author Saasflare™

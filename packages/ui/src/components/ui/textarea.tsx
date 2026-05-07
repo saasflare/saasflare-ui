@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Textarea — multi-line text input with spring-animated focus ring and auto-sizing support.
  * @module packages/core/components/ui/textarea

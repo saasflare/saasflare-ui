@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Simplified viewport visibility hook — returns a boolean.
  * @author Saasflare™

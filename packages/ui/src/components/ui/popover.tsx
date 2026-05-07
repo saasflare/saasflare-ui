@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Popover — premium animated popover with Framer Motion spring entrance for tooltips, menus, and floating content panels.
  * @module packages/core/components/ui/popover

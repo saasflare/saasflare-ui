@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview requestAnimationFrame loop with automatic cleanup.
  * @author Saasflare™

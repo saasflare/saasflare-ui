@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Lock/unlock body scroll (for modals, drawers, overlays).
  * @author Saasflare™

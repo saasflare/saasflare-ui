@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Toggle — two-state button with pressed/unpressed styling, size variants, and outline mode.
  * @module packages/core/components/ui/toggle

@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Reactive window dimensions with optional debounce.
  * @author Saasflare™

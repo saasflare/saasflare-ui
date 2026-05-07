@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Pagination range calculation with controlled/uncontrolled
  * support. Returns the visible range (with `'dots'` ellipsis markers) and

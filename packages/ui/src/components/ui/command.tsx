@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Command primitive — searchable command palette with keyboard navigation and grouping.
  * Built on cmdk. Includes a dialog variant for modal command menus.

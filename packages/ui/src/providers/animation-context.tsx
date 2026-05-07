@@ -1,4 +1,6 @@
 // @reviewed 2026-04-19
+"use client"
+
 /**
  * @fileoverview Animation context — exposes the resolved `animated` flag.
  * @module packages/ui/providers/animation-context

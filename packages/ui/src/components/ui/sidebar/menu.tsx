@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Sidebar menu components — menu items, buttons with tooltip support, sub-menus, actions, badges, and skeletons.
  * Provides the interactive menu primitives for the sidebar. Part of the Saasflare base component layer.

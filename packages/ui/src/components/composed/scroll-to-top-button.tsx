@@ -1,4 +1,6 @@
 // @reviewed 2026-04-18
+"use client"
+
 /**
  * @fileoverview Floating scroll-to-top button with theme-aware styling.
  * Appears after the user scrolls past a configurable offset. Supports both

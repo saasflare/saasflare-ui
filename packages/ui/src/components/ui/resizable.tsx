@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Resizable primitive — drag-to-resize panel groups with optional grip handles.
  * Built on react-resizable-panels. Part of the Saasflare base component layer.

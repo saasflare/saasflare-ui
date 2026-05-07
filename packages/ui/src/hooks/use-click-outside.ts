@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Detect clicks outside a referenced element.
  * @author Saasflare™

@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Separator primitive — visual divider line for horizontal or vertical content separation.
  * Built on Radix UI Separator. Part of the Saasflare base component layer.

@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Dynamically set the document title with optional restore on unmount.
  * @author Saasflare™

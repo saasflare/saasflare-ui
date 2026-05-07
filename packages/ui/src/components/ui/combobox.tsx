@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Combobox primitive — searchable dropdown built on Radix Popover + cmdk.
  * Thin compositional wrapper: `Combobox` is `Popover.Root`, `ComboboxContent` mounts a

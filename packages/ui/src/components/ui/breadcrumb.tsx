@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Breadcrumb primitive — navigation trail showing the current page hierarchy.
  * Pure Tailwind component with Radix UI Slot for flexible link rendering.

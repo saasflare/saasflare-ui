@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Track mouse/pointer position relative to an element or the window.
  * @author Saasflare™

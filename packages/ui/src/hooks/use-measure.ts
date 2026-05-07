@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview ResizeObserver-backed element measurement hook. Returns a
  * callback ref and live width/height/bounding-rect values that update when

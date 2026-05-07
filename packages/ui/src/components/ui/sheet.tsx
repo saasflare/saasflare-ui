@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Sheet primitive — slide-in panel overlay from any edge of the viewport.
  * Built on Radix UI Dialog. Part of the Saasflare base component layer.

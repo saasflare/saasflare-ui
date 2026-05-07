@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Hook to detect mobile viewport via media query.
  * @module packages/core/hooks/use-mobile

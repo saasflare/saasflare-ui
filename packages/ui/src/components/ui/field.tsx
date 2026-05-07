@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Field primitive — structured form field layout with label, description,
  * error message, and fieldset/legend support. Provides consistent spacing and

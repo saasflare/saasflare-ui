@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Chart primitive — themed chart container and tooltip/legend components for data visualization.
  * Built on Recharts. Provides a ChartConfig-driven theming system with

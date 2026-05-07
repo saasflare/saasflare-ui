@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Item primitive — versatile list item component with icon, label,
  * description, and action slots. Supports multiple variants (default, link, button)

@@ -1,4 +1,6 @@
 // @draft
+"use client"
+
 /**
  * @fileoverview Register keyboard shortcuts with modifier key support and cleanup.
  * @author Saasflare™

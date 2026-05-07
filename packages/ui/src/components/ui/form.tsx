@@ -1,4 +1,6 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Form primitive — form field wrappers integrating React Hook Form with accessible labels,
  * descriptions, and error messages. Uses Radix UI Slot for composable form controls.
