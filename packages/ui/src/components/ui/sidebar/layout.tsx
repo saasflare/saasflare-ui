@@ -27,6 +27,7 @@
 import * as React from "react"
 import * as Slot from "@radix-ui/react-slot"
 import { cn } from "../../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../../providers"
 import { Input } from "../input"
 import { Separator } from "../separator"
 import {
@@ -42,29 +43,38 @@ import { useSidebar, SIDEBAR_WIDTH_MOBILE } from "./context"
 // MAIN SIDEBAR
 // ============================================================================
 
+export interface SidebarProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  side?: "left" | "right"
+  variant?: "sidebar" | "floating" | "inset"
+  collapsible?: "offcanvas" | "icon" | "none"
+}
+
 export function Sidebar({
   side = "left",
   variant = "sidebar",
   collapsible = "offcanvas",
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<"div"> & {
-  side?: "left" | "right"
-  variant?: "sidebar" | "floating" | "inset"
-  collapsible?: "offcanvas" | "icon" | "none"
-}) {
+}: SidebarProps) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const sf = useSaasflareProps({ surface, radius, animated })
 
   if (collapsible === "none") {
     return (
       <div
+        {...props}
         data-slot="sidebar"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         className={cn(
           "bg-sidebar text-sidebar-foreground flex h-full w-(--sidebar-width) flex-col",
           className
         )}
-        {...props}
       >
         {children}
       </div>
@@ -104,6 +114,9 @@ export function Sidebar({
       data-variant={variant}
       data-side={side}
       data-slot="sidebar"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       {/* This is what handles the sidebar gap on desktop */}
       <div

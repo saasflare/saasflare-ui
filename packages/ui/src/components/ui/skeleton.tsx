@@ -22,11 +22,12 @@
 
 import type { CSSProperties } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Component the skeleton imitates — drives radius from the design tokens. */
 type SkeletonAs = "avatar" | "text" | "card"
 
-interface SkeletonProps extends React.ComponentProps<"div"> {
+interface SkeletonProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /**
    * Component shape to imitate. When set, radius follows the design-system
    * scale (and at `data-radius="pill"`, all variants collapse to fully rounded
@@ -53,22 +54,27 @@ const RADIUS_BY_AS: Record<SkeletonAs, string> = {
  * @component
  * @package ui
  */
-function Skeleton({ as, className, style, ...props }: SkeletonProps) {
+function Skeleton({ as, className, style, surface, radius, animated, ...props }: SkeletonProps) {
+  const sf = useSaasflareProps({ radius, animated })
+
   const radiusStyle: CSSProperties | undefined = as
     ? { borderRadius: RADIUS_BY_AS[as], ...style }
     : style
+
   return (
     <div
+      {...props}
       data-slot="skeleton"
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         !as && "rounded-md",
         "bg-gradient-to-r from-accent/80 via-accent/40 to-accent/80 bg-[length:200%_100%] animate-[shimmer_2s_ease-in-out_infinite] motion-reduce:animate-none motion-reduce:bg-accent/60",
         className,
       )}
       style={radiusStyle}
-      {...props}
     />
   )
 }
 
-export { Skeleton }
+export { Skeleton, type SkeletonProps }

@@ -31,7 +31,13 @@ import {
 } from "react-day-picker"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Button, buttonVariants } from "./button"
+
+type CalendarProps = React.ComponentProps<typeof DayPicker> &
+  SaasflareComponentProps & {
+    buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  }
 
 function Calendar({
   className,
@@ -41,14 +47,20 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"]
-}) {
+}: CalendarProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const defaultClassNames = getDefaultClassNames()
 
   return (
     <DayPicker
+      data-slot="calendar"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       showOutsideDays={showOutsideDays}
       className={cn(
         "group/calendar bg-background p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -235,4 +247,4 @@ function CalendarDayButton({
   )
 }
 
-export { Calendar, CalendarDayButton }
+export { Calendar, CalendarDayButton, type CalendarProps }

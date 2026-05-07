@@ -24,19 +24,30 @@ import { GripVerticalIcon } from "lucide-react"
 import * as ResizablePrimitive from "react-resizable-panels"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+type ResizablePanelGroupProps = ResizablePrimitive.GroupProps & SaasflareComponentProps
 
 function ResizablePanelGroup({
   className,
+  surface,
+  radius,
+  animated,
   ...props
-}: ResizablePrimitive.GroupProps) {
+}: ResizablePanelGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <ResizablePrimitive.Group
+      {...props}
       data-slot="resizable-panel-group"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex h-full w-full aria-[orientation=vertical]:flex-col",
         className
       )}
-      {...props}
     />
   )
 }
@@ -70,4 +81,4 @@ function ResizableHandle({
   )
 }
 
-export { ResizableHandle, ResizablePanel, ResizablePanelGroup }
+export { ResizableHandle, ResizablePanel, ResizablePanelGroup, type ResizablePanelGroupProps }

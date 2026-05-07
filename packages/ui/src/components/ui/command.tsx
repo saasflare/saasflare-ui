@@ -27,6 +27,7 @@ import { Command as CommandPrimitive } from "cmdk"
 import { SearchIcon } from "lucide-react"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import {
   Dialog,
   DialogContent,
@@ -35,18 +36,30 @@ import {
   DialogTitle,
 } from "./dialog"
 
+interface CommandProps
+  extends Omit<React.ComponentProps<typeof CommandPrimitive>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function Command({
   className,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive>) {
+}: CommandProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <CommandPrimitive
+      {...props}
       data-slot="command"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
         className
       )}
-      {...props}
     />
   )
 }
@@ -200,4 +213,5 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
+  type CommandProps,
 }

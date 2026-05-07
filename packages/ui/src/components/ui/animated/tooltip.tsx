@@ -18,6 +18,8 @@
 import Image from 'next/image';
 import React, { JSX, useState } from 'react';
 import { m, useTransform, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
+import { useSaasflareProps, type SaasflareComponentProps } from '../../../providers';
+import { useSaasflareMotion } from '../motion-config';
 
 /**
  * Shape of a single tooltip item.
@@ -55,11 +57,17 @@ export interface TooltipItem {
  * />
  * ```
  */
+export interface AnimatedTooltipProps extends SaasflareComponentProps {
+    items: TooltipItem[];
+}
+
 export const AnimatedTooltip = ({
     items,
-}: {
-    items: TooltipItem[];
-}): JSX.Element => {
+    animated,
+}: AnimatedTooltipProps): JSX.Element => {
+    const sf = useSaasflareProps({ animated });
+    const motion = useSaasflareMotion(sf.animated, { type: 'spring', stiffness: 260, damping: 10 });
+
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const springConfig = { stiffness: 100, damping: 5 };
     const x = useMotionValue(0); // going to set this value on mouse move
@@ -84,18 +92,16 @@ export const AnimatedTooltip = ({
                     <AnimatePresence>
                         {hoveredIndex === item.id && (
                             <m.div
-                                initial={{ opacity: 0, y: 20, scale: 0.6 }}
+                                data-slot="animated-tooltip"
+                                data-animated={String(sf.animated)}
+                                initial={motion.disabled ? false : { opacity: 0, y: 20, scale: 0.6 }}
                                 animate={{
                                     opacity: 1,
                                     y: 0,
                                     scale: 1,
-                                    transition: {
-                                        type: 'spring',
-                                        stiffness: 260,
-                                        damping: 10,
-                                    },
+                                    transition: motion.transition,
                                 }}
-                                exit={{ opacity: 0, y: 20, scale: 0.6 }}
+                                exit={motion.disabled ? undefined : { opacity: 0, y: 20, scale: 0.6 }}
                                 style={{
                                     translateX: translateX,
                                     rotate: rotate,

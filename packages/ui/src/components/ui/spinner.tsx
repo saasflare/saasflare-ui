@@ -11,19 +11,28 @@
  * import { Spinner } from '@saasflare/core';
  * <Spinner className="size-6" />
  */
+"use client"
+
 import { Loader2Icon } from "lucide-react"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
-function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
+interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Spinner({ className, surface, radius, animated, ...props }: SpinnerProps) {
+  const sf = useSaasflareProps({ animated })
+
   return (
     <Loader2Icon
+      {...props}
       role="status"
       aria-label="Loading"
+      data-slot="spinner"
+      data-animated={String(sf.animated)}
       className={cn("size-4 animate-spin", className)}
-      {...props}
     />
   )
 }
 
-export { Spinner }
+export { Spinner, type SpinnerProps }

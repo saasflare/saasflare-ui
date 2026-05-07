@@ -23,6 +23,7 @@
 
 import * as React from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import type { Intent } from "./button"
 
 /** Intent-specific styles for the alert soft treatment */
@@ -36,7 +37,7 @@ const INTENT_STYLES: Record<string, string> = {
 }
 
 /** Props for the Saasflare Alert component */
-interface AlertProps extends React.ComponentProps<"div"> {
+interface AlertProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /** Semantic color intent */
   intent?: Intent | "neutral"
   /**
@@ -72,8 +73,13 @@ function Alert({
   className,
   intent: intentProp,
   variant,
+  surface,
+  radius,
+  animated,
   ...props
 }: AlertProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   /* ── Backward compat: map legacy variant to intent ── */
   let resolvedIntent: string = intentProp ?? "neutral"
   if (!intentProp && variant === "destructive") {
@@ -84,15 +90,18 @@ function Alert({
 
   return (
     <div
+      {...props}
       data-slot="alert"
       data-intent={resolvedIntent !== "neutral" ? resolvedIntent : undefined}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       role="alert"
       className={cn(
         "relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-lg border px-4 py-3 text-sm has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
         intentStyle,
         className
       )}
-      {...props}
     />
   )
 }

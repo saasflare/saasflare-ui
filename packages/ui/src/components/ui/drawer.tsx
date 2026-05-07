@@ -27,6 +27,7 @@
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 function Drawer({
   ...props
@@ -68,21 +69,33 @@ function DrawerOverlay({
   )
 }
 
+interface DrawerContentProps
+  extends Omit<React.ComponentProps<typeof DrawerPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function DrawerContent({
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+}: DrawerContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <DrawerPortal>
       <DrawerOverlay />
       <DrawerPrimitive.Content
+        {...props}
         data-slot="drawer-content"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         className={cn(
           "group/drawer-content fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[96dvh] flex-col rounded-t-lg border-t bg-background",
           className
         )}
-        {...props}
       >
         <div className="mx-auto mt-4 h-1.5 w-12 shrink-0 rounded-full bg-muted" />
         {children}
@@ -148,4 +161,5 @@ export {
   DrawerPortal,
   DrawerTitle,
   DrawerTrigger,
+  type DrawerContentProps,
 }
