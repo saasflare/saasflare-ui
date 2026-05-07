@@ -27,24 +27,37 @@ import { ChevronDownIcon } from "lucide-react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+interface NavigationMenuProps
+  extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  viewport?: boolean
+}
 
 function NavigationMenu({
   className,
   children,
   viewport = true,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Root> & {
-  viewport?: boolean
-}) {
+}: NavigationMenuProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <NavigationMenuPrimitive.Root
+      {...props}
       data-slot="navigation-menu"
       data-viewport={viewport}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",
         className
       )}
-      {...props}
     >
       {children}
       {viewport && <NavigationMenuViewport />}
@@ -180,6 +193,7 @@ function NavigationMenuIndicator({
 
 export {
   NavigationMenu,
+  type NavigationMenuProps,
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuContent,

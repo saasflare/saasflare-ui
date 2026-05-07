@@ -20,17 +20,30 @@ import * as React from "react"
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+interface ScrollAreaProps
+  extends Omit<React.ComponentProps<typeof ScrollAreaPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 function ScrollArea({
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+}: ScrollAreaProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <ScrollAreaPrimitive.Root
-      data-slot="scroll-area"
-      className={cn("relative", className)}
       {...props}
+      data-slot="scroll-area"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn("relative", className)}
     >
       <ScrollAreaPrimitive.Viewport
         data-slot="scroll-area-viewport"
@@ -71,4 +84,4 @@ function ScrollBar({
   )
 }
 
-export { ScrollArea, ScrollBar }
+export { ScrollArea, ScrollBar, type ScrollAreaProps }

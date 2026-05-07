@@ -20,16 +20,29 @@ import * as React from "react"
 import { CircleIcon } from "lucide-react"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+interface RadioGroupProps
+  extends Omit<React.ComponentProps<typeof RadioGroupPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 function RadioGroup({
   className,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
+}: RadioGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <RadioGroupPrimitive.Root
-      data-slot="radio-group"
-      className={cn("grid gap-3", className)}
       {...props}
+      data-slot="radio-group"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn("grid gap-3", className)}
     />
   )
 }
@@ -57,4 +70,4 @@ function RadioGroupItem({
   )
 }
 
-export { RadioGroup, RadioGroupItem }
+export { RadioGroup, RadioGroupItem, type RadioGroupProps }
