@@ -91,13 +91,13 @@
     --ring: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
 
     /* ── Semantic (fixed hues, brand-independent) ── */
-    --destructive: oklch(0.577 0.245 27.325);
+    --destructive: oklch(0.583 0.239 28.476);
     --destructive-foreground: oklch(1 0 0);
-    --success: oklch(0.59 0.17 149);
-    --success-foreground: oklch(1 0 0);
-    --warning: oklch(0.75 0.17 65);
-    --warning-foreground: oklch(0.22 0.05 65);
-    --info: oklch(0.68 0.15 230);
+    --success: oklch(0.750 0.146 161.279);
+    --success-foreground: oklch(0.22 0.05 161);
+    --warning: oklch(0.849 0.144 93.533);
+    --warning-foreground: oklch(0.22 0.05 93);
+    --info: oklch(0.590 0.133 254.001);
     --info-foreground: oklch(1 0 0);
 
     /* ── Charts (offsets from primary hue) ── */
@@ -149,14 +149,14 @@
     --input: oklch(1 0 0 / 0.15);
     --ring: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
 
-    --destructive: oklch(0.704 0.191 22.216);
-    --destructive-foreground: oklch(0.15 0.03 27);
-    --success: oklch(0.68 0.19 149);
-    --success-foreground: oklch(0.15 0.03 149);
-    --warning: oklch(0.8 0.17 65);
-    --warning-foreground: oklch(0.2 0.04 65);
-    --info: oklch(0.72 0.15 230);
-    --info-foreground: oklch(0.15 0.03 230);
+    --destructive: oklch(0.700 0.200 28.476);
+    --destructive-foreground: oklch(1 0 0);
+    --success: oklch(0.770 0.146 161.279);
+    --success-foreground: oklch(0.22 0.05 161);
+    --warning: oklch(0.830 0.150 93.533);
+    --warning-foreground: oklch(0.22 0.05 93);
+    --info: oklch(0.680 0.140 254.001);
+    --info-foreground: oklch(1 0 0);
 
     --chart-1: oklch(var(--primary-l) var(--primary-c) var(--primary-h));
     --chart-2: oklch(0.68 0.19 calc(var(--primary-h) - 110));
@@ -341,7 +341,7 @@ textarea,
  * and wins by specificity — intentional escape hatch.
  * ============================================ */
 :root[data-radius="sharp"]   { --radius: 0;        }
-:root[data-radius="soft"]    { --radius: 0.25rem;  }
+:root[data-radius="soft"]    { --radius: 0.35rem;  }
 :root[data-radius="rounded"] { --radius: 0.625rem; }
 :root[data-radius="pill"] {
     --radius: 9999px;
@@ -355,33 +355,49 @@ textarea,
  * Intent color system — components set
  * data-intent="primary|success|warning|…" to
  * activate intent-aware coloring via --intent.
+ *
+ * Three tokens per intent:
+ *   --intent       fill color (used as background in solid/shadow variants)
+ *   --intent-fg    paired text color readable on top of --intent
+ *   --intent-text  text color when rendered without a fill (transparent bg)
+ *
+ * For colored intents --intent-text === --intent (the saturated brand color
+ * is itself readable as text on a page background). For neutral, --intent
+ * is a light surface, so --intent-text falls back to --secondary-foreground
+ * (dark gray) so soft/outline/ghost/link/glass variants stay legible.
  * ============================================ */
 [data-intent="primary"] {
     --intent: var(--primary);
     --intent-fg: var(--primary-foreground);
+    --intent-text: var(--primary);
 }
 
 [data-intent="neutral"] {
     --intent: var(--secondary);
     --intent-fg: var(--secondary-foreground);
+    --intent-text: var(--secondary-foreground);
 }
 
 [data-intent="success"] {
     --intent: var(--success);
     --intent-fg: var(--success-foreground);
+    --intent-text: var(--success);
 }
 
 [data-intent="warning"] {
     --intent: var(--warning);
     --intent-fg: var(--warning-foreground);
+    --intent-text: var(--warning);
 }
 
 [data-intent="danger"] {
     --intent: var(--destructive);
     --intent-fg: var(--destructive-foreground);
+    --intent-text: var(--destructive);
 }
 
 [data-intent="info"] {
     --intent: var(--info);
     --intent-fg: var(--info-foreground);
+    --intent-text: var(--info);
 }

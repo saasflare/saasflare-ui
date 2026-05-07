@@ -71,15 +71,15 @@ const buttonVariants = cva(
         solid:
           "bg-[var(--intent)] text-[var(--intent-fg)] shadow-xs hover:brightness-110 dark:hover:brightness-125",
         soft:
-          "bg-[var(--intent)]/15 text-[var(--intent)] hover:bg-[var(--intent)]/25 dark:bg-[var(--intent)]/20 dark:hover:bg-[var(--intent)]/30",
+          "bg-[var(--intent)]/15 text-[var(--intent-text)] hover:bg-[var(--intent)]/25 dark:bg-[var(--intent)]/20 dark:hover:bg-[var(--intent)]/30",
         outline:
-          "border border-[var(--intent)]/30 text-[var(--intent)] shadow-xs hover:bg-[var(--intent)]/10 dark:border-[var(--intent)]/40 dark:hover:bg-[var(--intent)]/15",
+          "border border-[var(--intent-text)]/30 text-[var(--intent-text)] shadow-xs hover:bg-[var(--intent-text)]/10 dark:border-[var(--intent-text)]/40 dark:hover:bg-[var(--intent-text)]/15",
         ghost:
-          "text-[var(--intent)] hover:bg-[var(--intent)]/10 dark:hover:bg-[var(--intent)]/15",
+          "text-[var(--intent-text)] hover:bg-[var(--intent-text)]/10 dark:hover:bg-[var(--intent-text)]/15",
         link:
-          "text-[var(--intent)] underline-offset-4 hover:underline",
+          "text-[var(--intent-text)] underline-offset-4 hover:underline",
         glass:
-          "bg-[var(--glass-bg)] text-[var(--intent)] border border-[var(--glass-border)] backdrop-blur-lg shadow-[var(--glass-shadow)] hover:bg-[var(--glass-bg-hover)] hover:border-[var(--glass-border-hover)]",
+          "bg-[var(--glass-bg)] text-[var(--intent-text)] border border-[var(--glass-border)] backdrop-blur-lg shadow-[var(--glass-shadow)] hover:bg-[var(--glass-bg-hover)] hover:border-[var(--glass-border-hover)]",
         shadow:
           "bg-[var(--intent)] text-[var(--intent-fg)] shadow-[var(--btn-shadow)] hover:shadow-[var(--btn-shadow-hover)] hover:brightness-110 dark:hover:brightness-125",
       },

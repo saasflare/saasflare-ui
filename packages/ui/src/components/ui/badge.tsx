@@ -48,9 +48,9 @@ const badgeVariants = cva(
         solid:
           "bg-[var(--intent)] text-[var(--intent-fg)] [a&]:hover:brightness-110",
         soft:
-          "bg-[var(--intent)]/15 text-[var(--intent)] [a&]:hover:bg-[var(--intent)]/25 dark:bg-[var(--intent)]/20 dark:hover:bg-[var(--intent)]/30",
+          "bg-[var(--intent)]/15 text-[var(--intent-text)] [a&]:hover:bg-[var(--intent)]/25 dark:bg-[var(--intent)]/20 dark:hover:bg-[var(--intent)]/30",
         outline:
-          "border-[var(--intent)]/30 text-[var(--intent)] [a&]:hover:bg-[var(--intent)]/10",
+          "border-[var(--intent-text)]/30 text-[var(--intent-text)] [a&]:hover:bg-[var(--intent-text)]/10",
       },
       size: {
         sm: "px-1.5 py-px text-[10px]",
