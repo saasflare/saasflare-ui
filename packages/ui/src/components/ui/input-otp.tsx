@@ -31,23 +31,34 @@ import { OTPInput, OTPInputContext } from "input-otp"
 import { MinusIcon } from "lucide-react"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+type InputOTPProps = React.ComponentProps<typeof OTPInput> & SaasflareComponentProps & {
+  containerClassName?: string
+}
 
 function InputOTP({
   className,
   containerClassName,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof OTPInput> & {
-  containerClassName?: string
-}) {
+}: InputOTPProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <OTPInput
+      {...props}
       data-slot="input-otp"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       containerClassName={cn(
         "flex items-center gap-2 has-disabled:opacity-50",
         containerClassName
       )}
       className={cn("disabled:cursor-not-allowed", className)}
-      {...props}
     />
   )
 }
@@ -100,4 +111,4 @@ function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator }
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, type InputOTPProps }

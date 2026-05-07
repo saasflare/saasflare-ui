@@ -29,6 +29,7 @@ import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
@@ -59,24 +60,33 @@ function useChart() {
   return context
 }
 
+interface ChartContainerProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  config: ChartConfig
+  children: React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>["children"]
+}
+
 function ChartContainer({
   id,
   className,
   children,
   config,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<"div"> & {
-  config: ChartConfig
-  children: React.ComponentProps<
-    typeof RechartsPrimitive.ResponsiveContainer
-  >["children"]
-}) {
+}: ChartContainerProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
 
   return (
     <ChartContext.Provider value={{ config }}>
       <div
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         data-slot="chart"
         data-chart={chartId}
         className={cn(
@@ -413,4 +423,5 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
+  type ChartContainerProps,
 }

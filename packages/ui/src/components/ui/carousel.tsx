@@ -33,6 +33,7 @@ import useEmblaCarousel, {
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Button } from "./button"
 
 type CarouselApi = UseEmblaCarouselType[1]
@@ -40,7 +41,7 @@ type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 type CarouselOptions = UseCarouselParameters[0]
 type CarouselPlugin = UseCarouselParameters[1]
 
-type CarouselProps = {
+type CarouselProps = SaasflareComponentProps & {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
@@ -75,8 +76,12 @@ function Carousel({
   plugins,
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<"div"> & CarouselProps) {
+}: Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps> & CarouselProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
@@ -145,12 +150,15 @@ function Carousel({
       }}
     >
       <div
+        {...props}
         onKeyDownCapture={handleKeyDown}
         className={cn("relative", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
-        {...props}
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
       >
         {children}
       </div>

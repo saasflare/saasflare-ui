@@ -23,9 +23,23 @@ import { ChevronRight, MoreHorizontal } from "lucide-react"
 import * as Slot from "@radix-ui/react-slot"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
-function Breadcrumb({ ...props }: React.ComponentProps<"nav">) {
-  return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />
+interface BreadcrumbProps extends Omit<React.ComponentProps<"nav">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Breadcrumb({ surface, radius, animated, ...props }: BreadcrumbProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
+  return (
+    <nav
+      {...props}
+      aria-label="breadcrumb"
+      data-slot="breadcrumb"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+    />
+  )
 }
 
 function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
@@ -126,4 +140,5 @@ export {
   BreadcrumbPage,
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
+  type BreadcrumbProps,
 }

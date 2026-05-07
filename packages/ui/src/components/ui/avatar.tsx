@@ -23,23 +23,36 @@
 import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+interface AvatarProps
+  extends Omit<React.ComponentProps<typeof AvatarPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  size?: "default" | "sm" | "lg"
+}
 
 function Avatar({
   className,
   size = "default",
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Root> & {
-  size?: "default" | "sm" | "lg"
-}) {
+}: AvatarProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <AvatarPrimitive.Root
+      {...props}
       data-slot="avatar"
       data-size={size}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "group/avatar relative flex size-8 shrink-0 overflow-hidden rounded-full select-none transition-transform duration-200 hover:scale-105 data-[size=lg]:size-10 data-[size=sm]:size-6",
         className
       )}
-      {...props}
     />
   )
 }
@@ -125,4 +138,5 @@ export {
   AvatarBadge,
   AvatarGroup,
   AvatarGroupCount,
+  type AvatarProps,
 }

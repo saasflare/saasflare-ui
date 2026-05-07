@@ -29,17 +29,25 @@
 import * as React from "react"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+interface TableProps extends Omit<React.ComponentProps<"table">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Table({ className, surface, radius, animated, ...props }: TableProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
       data-slot="table-container"
       className="relative w-full overflow-x-auto"
     >
       <table
-        data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
         {...props}
+        data-slot="table"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
+        className={cn("w-full caption-bottom text-sm", className)}
       />
     </div>
   )
@@ -139,4 +147,5 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+  type TableProps,
 }

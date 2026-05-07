@@ -24,8 +24,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '../../lib';
+import { useSaasflareProps, type SaasflareComponentProps } from '../../providers';
 
-interface TypewriterTextProps {
+interface TypewriterTextProps extends SaasflareComponentProps {
   text: string;
   /** Delay between each word in ms (default: 40) */
   wordDelay?: number;
@@ -46,9 +47,13 @@ export function TypewriterText({
   skipAnimation = false,
   onComplete,
   className,
+  animated,
 }: TypewriterTextProps) {
+  const sf = useSaasflareProps({ animated });
+  const effectiveSkip = skipAnimation || !sf.animated;
+
   const [displayedWords, setDisplayedWords] = useState<string[]>([]);
-  const [isComplete, setIsComplete] = useState(skipAnimation);
+  const [isComplete, setIsComplete] = useState(effectiveSkip);
   const words = useRef(text.split(' '));
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -56,7 +61,7 @@ export function TypewriterText({
     // Reset when text changes
     words.current = text.split(' ');
 
-    if (skipAnimation) {
+    if (effectiveSkip) {
       setDisplayedWords(words.current);
       setIsComplete(true);
       return;
@@ -86,10 +91,14 @@ export function TypewriterText({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [text, wordDelay, skipAnimation, onComplete]);
+  }, [text, wordDelay, effectiveSkip, onComplete]);
 
   return (
-    <span className={cn('inline', className)}>
+    <span
+      data-slot="typewriter-text"
+      data-animated={String(sf.animated)}
+      className={cn('inline', className)}
+    >
       {displayedWords.join(' ')}
       {!isComplete && (
         <span className="inline-block w-0.5 h-4 bg-primary ml-0.5 animate-pulse" />
