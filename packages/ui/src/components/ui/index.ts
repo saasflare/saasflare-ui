@@ -20,6 +20,8 @@ export {
   slideUp,
   slideDown,
   useReducedMotion,
+  useSaasflareMotion,
+  type SaasflareMotion,
 } from "./motion-config"
 
 // Tier A: Framer Motion Enhanced (with intent system)

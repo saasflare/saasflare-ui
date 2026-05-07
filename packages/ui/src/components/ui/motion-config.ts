@@ -19,8 +19,11 @@
  * <motion.div transition={reduced ? { duration: 0 } : spring} />
  */
 
+import type { Transition } from "motion/react"
+import { useReducedMotion } from "../../hooks/use-reduced-motion"
+
 /** Re-export reduced-motion hook for convenience */
-export { useReducedMotion } from "../../hooks/use-reduced-motion"
+export { useReducedMotion }
 
 /** Snappy spring — default for buttons, badges, interactive feedback */
 export const spring = { type: "spring", stiffness: 400, damping: 25 } as const
@@ -41,3 +44,51 @@ export const scaleIn = { initial: { opacity: 0, scale: 0.95 }, animate: { opacit
 export const slideUp = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 } } as const
 /** Slide down preset (mount animation) */
 export const slideDown = { initial: { opacity: 0, y: -8 }, animate: { opacity: 1, y: 0 } } as const
+
+// ---------------------------------------------------------------------------
+// useSaasflareMotion — single resolver for component motion
+// ---------------------------------------------------------------------------
+
+/** Resolved motion settings for a Saasflare component. */
+export interface SaasflareMotion {
+    /** Spring or noMotion — drop directly onto `transition={…}`. */
+    transition: Transition
+    /** True when motion should be skipped — gate `whileHover`, `initial`, etc. */
+    disabled: boolean
+}
+
+/**
+ * Resolves the active transition for a component.
+ *
+ * Disables motion when **any** of these are true:
+ *   - Consumer opted out (`animated={false}` from prop or `<SaasflareProvider>`)
+ *   - OS reports `prefers-reduced-motion: reduce`
+ *   - Any `extraDisablers` (e.g. `disabled`, `loading`) is `true`
+ *
+ * Single tuning point — when later we differentiate spring tokens per component
+ * (`springBouncy.checkbox`, `springSnappy.dialog`), the variants live next to
+ * this hook and components don't change.
+ *
+ * @example
+ * const sf = useSaasflareProps({ surface, radius, animated })
+ * const motion = useSaasflareMotion(sf.animated, springBouncy)
+ *
+ * // …
+ * <m.span
+ *   initial={motion.disabled ? false : { scale: 0 }}
+ *   animate={motion.disabled ? false : { scale: 1 }}
+ *   transition={motion.transition}
+ * />
+ *
+ * @example // Button-style with extra disablers
+ * const motion = useSaasflareMotion(sf.animated, spring, disabled, loading)
+ */
+export function useSaasflareMotion(
+    animated: boolean,
+    base: Transition = spring,
+    ...extraDisablers: boolean[]
+): SaasflareMotion {
+    const reduced = useReducedMotion()
+    const disabled = !animated || reduced || extraDisablers.some(Boolean)
+    return { transition: disabled ? noMotion : base, disabled }
+}
