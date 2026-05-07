@@ -27,7 +27,7 @@ export const metadata: Metadata = {
  */
 export default function RootLayout({children}: { children: React.ReactNode }) {
     return (
-        <SaasflareShell theme="dark" palette="achromatic" surface="flat" className={fontVariables} animated smoothScrolling>
+        <SaasflareShell theme="dark" palette="saasflare" surface="flat" radius="pill" className={fontVariables} animated smoothScrolling>
             <TopLoadingBar/>
             <ThemeModeToggle/>
             {children}

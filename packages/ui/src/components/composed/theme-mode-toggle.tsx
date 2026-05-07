@@ -66,6 +66,7 @@ export function ThemeModeToggle({
     return (
         <Button
             variant="ghost"
+            intent="neutral"
             size={showText ? 'sm' : 'icon'}
             className={cn('cursor-pointer', className)}
             onClick={toggleTheme}
