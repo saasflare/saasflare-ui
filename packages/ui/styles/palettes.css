@@ -122,6 +122,10 @@
 :root[data-palette="teal"]      { --primary-h: 185; --primary-c: 0.15; --primary-l: 0.60; }
 :root[data-palette="teal"].dark { --primary-l: 0.70; }
 
+/* ─── Sage (dusty teal, Saasflare alt-brand) ────── */
+:root[data-palette="sage"]      { --primary-h: 169.28; --primary-c: 0.082; --primary-l: 0.586; }
+:root[data-palette="sage"].dark { --primary-l: 0.70; }
+
 /* ─── Iris ──────────────────────────────────────── */
 :root[data-palette="iris"]      { --primary-h: 255; --primary-c: 0.16; --primary-l: 0.60; }
 :root[data-palette="iris"].dark { --primary-l: 0.70; }
