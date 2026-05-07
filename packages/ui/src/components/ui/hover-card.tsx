@@ -23,7 +23,8 @@ import * as React from "react"
 import { m } from "motion/react"
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 import { cn } from "../../lib"
-import { springBouncy } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
 
 function HoverCard({
   ...props
@@ -37,26 +38,39 @@ function HoverCardTrigger({
   return <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
 }
 
+interface HoverCardContentProps
+  extends Omit<React.ComponentProps<typeof HoverCardPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function HoverCardContent({
   className,
   align = "center",
   sideOffset = 4,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
+}: HoverCardContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
+
   return (
     <HoverCardPrimitive.Portal>
       <HoverCardPrimitive.Content
+        {...props}
         data-slot="hover-card-content"
         align={align}
         sideOffset={sideOffset}
         asChild
-        {...props}
       >
         <m.div
-          initial={{ opacity: 0, scale: 0.95, y: 4 }}
+          data-surface={sf.surface}
+          data-radius={sf.radius}
+          data-animated={String(sf.animated)}
+          initial={motion.disabled ? false : { opacity: 0, scale: 0.95, y: 4 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={springBouncy}
+          exit={motion.disabled ? undefined : { opacity: 0, scale: 0.95 }}
+          transition={motion.transition}
           className={cn(
             "z-50 w-64 origin-[var(--radix-hover-card-content-transform-origin)] rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden",
             className
@@ -67,4 +81,4 @@ function HoverCardContent({
   )
 }
 
-export { HoverCard, HoverCardTrigger, HoverCardContent }
+export { HoverCard, HoverCardTrigger, HoverCardContent, type HoverCardContentProps }

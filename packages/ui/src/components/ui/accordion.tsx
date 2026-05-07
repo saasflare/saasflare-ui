@@ -24,7 +24,8 @@ import { m } from "motion/react"
 import { ChevronDownIcon } from "lucide-react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cn } from "../../lib"
-import { springBouncy, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
 
 function Accordion({
   ...props
@@ -32,15 +33,27 @@ function Accordion({
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />
 }
 
+interface AccordionItemProps
+  extends Omit<React.ComponentProps<typeof AccordionPrimitive.Item>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function AccordionItem({
   className,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Item>) {
+}: AccordionItemProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <AccordionPrimitive.Item
-      data-slot="accordion-item"
-      className={cn("border-b last:border-b-0", className)}
       {...props}
+      data-slot="accordion-item"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn("border-b last:border-b-0", className)}
     />
   )
 }
@@ -56,23 +69,24 @@ function AccordionTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps()
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
+        {...props}
         data-slot="accordion-trigger"
         className={cn(
           "flex flex-1 cursor-pointer items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className
         )}
-        {...props}
       >
         {children}
         <m.div
           className="pointer-events-none shrink-0 translate-y-0.5 text-muted-foreground"
           animate={{ rotate: 0 }}
-          transition={reduced ? { duration: 0 } : springBouncy}
+          transition={motion.transition}
         >
           <ChevronDownIcon className="size-4" />
         </m.div>
@@ -92,18 +106,19 @@ function AccordionContent({
   children,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps()
+  const motion = useSaasflareMotion(sf.animated, { delay: 0.1, duration: 0.2 })
 
   return (
     <AccordionPrimitive.Content
+      {...props}
       data-slot="accordion-content"
       className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-      {...props}
     >
       <m.div
-        initial={reduced ? false : { opacity: 0 }}
+        initial={motion.disabled ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={reduced ? { duration: 0 } : { delay: 0.1, duration: 0.2 }}
+        transition={motion.transition}
         className={cn("pt-0 pb-4", className)}
       >
         {children}
@@ -112,4 +127,4 @@ function AccordionContent({
   )
 }
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent, type AccordionItemProps }

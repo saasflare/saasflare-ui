@@ -17,7 +17,12 @@ import * as React from "react"
 import { m } from "motion/react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
 import { cn } from "../../lib"
-import { springBouncy } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
+
+interface SliderProps
+  extends Omit<React.ComponentProps<typeof SliderPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 function Slider({
   className,
@@ -25,8 +30,14 @@ function Slider({
   value,
   min = 0,
   max = 100,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: SliderProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
+
   const _values = React.useMemo(
     () => value ?? defaultValue ?? [min],
     [value, defaultValue, min]
@@ -34,7 +45,11 @@ function Slider({
 
   return (
     <SliderPrimitive.Root
+      {...props}
       data-slot="slider"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       defaultValue={defaultValue}
       value={value}
       min={min}
@@ -43,7 +58,6 @@ function Slider({
         "relative flex w-full touch-none items-center select-none data-[orientation=horizontal]:h-5 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-5 data-[orientation=horizontal]:flex-row data-[orientation=vertical]:flex-col data-[disabled]:opacity-50",
         className
       )}
-      {...props}
     >
       <SliderPrimitive.Track
         data-slot="slider-track"
@@ -62,9 +76,9 @@ function Slider({
         >
           <m.span
             className="block size-4 shrink-0 cursor-grab rounded-full border border-primary/50 bg-background shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:cursor-grabbing"
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            transition={springBouncy}
+            whileHover={motion.disabled ? undefined : { scale: 1.2 }}
+            whileTap={motion.disabled ? undefined : { scale: 0.9 }}
+            transition={motion.transition}
           />
         </SliderPrimitive.Thumb>
       ))}
@@ -72,4 +86,4 @@ function Slider({
   )
 }
 
-export { Slider }
+export { Slider, type SliderProps }

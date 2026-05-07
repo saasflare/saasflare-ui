@@ -27,6 +27,7 @@ import { XIcon } from "lucide-react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
@@ -66,21 +67,34 @@ function SheetOverlay({
   )
 }
 
+interface SheetContentProps
+  extends Omit<React.ComponentProps<typeof SheetPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  side?: "top" | "right" | "bottom" | "left"
+  showCloseButton?: boolean
+}
+
 function SheetContent({
   className,
   children,
   side = "right",
   showCloseButton = true,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof SheetPrimitive.Content> & {
-  side?: "top" | "right" | "bottom" | "left"
-  showCloseButton?: boolean
-}) {
+}: SheetContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <SheetPortal>
       <SheetOverlay />
       <SheetPrimitive.Content
+        {...props}
         data-slot="sheet-content"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         className={cn(
           "fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:animate-in data-[state=open]:duration-500",
           side === "right" &&
@@ -93,7 +107,6 @@ function SheetContent({
             "inset-x-0 bottom-0 h-auto border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
           className
         )}
-        {...props}
       >
         {children}
         {showCloseButton && (
@@ -162,4 +175,5 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
+  type SheetContentProps,
 }

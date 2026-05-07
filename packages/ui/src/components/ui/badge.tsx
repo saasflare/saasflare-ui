@@ -22,7 +22,8 @@ import { m } from "motion/react"
 import { cva, type VariantProps } from "class-variance-authority"
 import * as Slot from "@radix-ui/react-slot"
 import { cn } from "../../lib"
-import { spring, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, spring } from "./motion-config"
 import type { Intent } from "./button"
 
 /* ── Backward-compat variant mapping ── */
@@ -65,8 +66,12 @@ const badgeVariants = cva(
 
 /** Props for the Saasflare Badge component */
 interface BadgeProps
-  extends Omit<React.ComponentProps<"span">, "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd">,
-    VariantProps<typeof badgeVariants> {
+  extends Omit<
+      React.ComponentProps<"span">,
+      "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd" | keyof SaasflareComponentProps
+    >,
+    VariantProps<typeof badgeVariants>,
+    SaasflareComponentProps {
   /** Render as child element (Radix Slot pattern) */
   asChild?: boolean
   /** Semantic color intent */
@@ -97,9 +102,13 @@ function Badge({
   size = "md",
   intent: intentProp = "primary",
   asChild = false,
+  surface,
+  radius,
+  animated,
   ...props
 }: BadgeProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, spring)
 
   /* ── Backward compat: map legacy variant names ── */
   let resolvedVariant = variantProp as string
@@ -116,24 +125,30 @@ function Badge({
   if (asChild) {
     return (
       <Slot.Root
+        {...props}
         data-slot="badge"
         data-variant={resolvedVariant}
         data-intent={resolvedIntent}
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         className={cn(badgeVariants({ variant: resolvedVariant as VariantProps<typeof badgeVariants>["variant"], size }), className)}
-        {...props}
       />
     )
   }
 
   return (
     <m.span
+      {...props}
       data-slot="badge"
       data-variant={resolvedVariant}
       data-intent={resolvedIntent}
-      whileHover={reduced ? undefined : { scale: 1.05 }}
-      transition={reduced ? noMotion : spring}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      whileHover={motion.disabled ? undefined : { scale: 1.05 }}
+      transition={motion.transition}
       className={cn(badgeVariants({ variant: resolvedVariant as VariantProps<typeof badgeVariants>["variant"], size }), className)}
-      {...props}
     />
   )
 }
