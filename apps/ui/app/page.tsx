@@ -24,7 +24,7 @@ export default function Page() {
         <Button variant="shadow">Button</Button>
         <Button variant="outline" intent="neutral">Button</Button>
         <Button variant="outline" fullWidth loading={loading}>Button</Button>
-        <span className="text-secondary">Test</span>
+        <span className="text-secondary-foreground">Test</span>
       <UserAvatar src={"https://media.licdn.com/dms/image/v2/D4E03AQGEs8OYEo0j5g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1726815764755?e=1779926400&v=beta&t=jr6oR9MlZ0h1WRbwP00i2hngT1s888ypaz-CMOLoovs"} name={"Dr. Chris"} initials={"CM"}/>
     </main>
   );
