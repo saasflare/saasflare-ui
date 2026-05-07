@@ -24,7 +24,8 @@ import { m } from "motion/react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
 import { cn } from "../../lib"
-import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
 
 function Dialog({
   ...props
@@ -66,6 +67,10 @@ function DialogOverlay({
   )
 }
 
+interface DialogContentProps
+  extends Omit<React.ComponentProps<typeof DialogPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 /**
  * Dialog content panel with spring entry animation.
  *
@@ -75,23 +80,30 @@ function DialogOverlay({
 function DialogContent({
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content>) {
-  const reduced = useReducedMotion()
+}: DialogContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
+        {...props}
         data-slot="dialog-content"
         asChild
-        {...props}
       >
         <m.div
-          initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.95, y: 10 }}
+          data-surface={sf.surface}
+          data-radius={sf.radius}
+          data-animated={String(sf.animated)}
+          initial={motion.disabled ? { opacity: 1 } : { opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
-          transition={reduced ? noMotion : springBouncy}
+          exit={motion.disabled ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
+          transition={motion.transition}
           className={cn(
             "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg sm:max-w-lg",
             className
@@ -165,4 +177,5 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
+  type DialogContentProps,
 }

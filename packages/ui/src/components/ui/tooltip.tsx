@@ -22,7 +22,8 @@ import * as React from "react"
 import { m, AnimatePresence } from "motion/react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import { cn } from "../../lib"
-import { springBouncy } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
 
 function TooltipProvider({
   delayDuration = 0,
@@ -49,25 +50,38 @@ function TooltipTrigger({
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
 }
 
+interface TooltipContentProps
+  extends Omit<React.ComponentProps<typeof TooltipPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function TooltipContent({
   className,
   sideOffset = 6,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+}: TooltipContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
+
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
+        {...props}
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         asChild
-        {...props}
       >
         <m.div
-          initial={{ opacity: 0, scale: 0.92, y: 2 }}
+          data-surface={sf.surface}
+          data-radius={sf.radius}
+          data-animated={String(sf.animated)}
+          initial={motion.disabled ? false : { opacity: 0, scale: 0.92, y: 2 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.92 }}
-          transition={springBouncy}
+          exit={motion.disabled ? undefined : { opacity: 0, scale: 0.92 }}
+          transition={motion.transition}
           className={cn(
             "z-50 w-fit overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md",
             className
@@ -80,4 +94,4 @@ function TooltipContent({
   )
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, type TooltipContentProps }

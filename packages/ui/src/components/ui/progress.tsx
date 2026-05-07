@@ -18,7 +18,12 @@ import * as React from "react"
 import { m } from "motion/react"
 import * as ProgressPrimitive from "@radix-ui/react-progress"
 import { cn } from "../../lib"
-import { spring, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, spring } from "./motion-config"
+
+interface ProgressProps
+  extends Omit<React.ComponentProps<typeof ProgressPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 /**
  * Progress bar with smooth spring animation.
@@ -34,29 +39,36 @@ import { spring, noMotion, useReducedMotion } from "./motion-config"
 function Progress({
   className,
   value,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof ProgressPrimitive.Root>) {
-  const reduced = useReducedMotion()
+}: ProgressProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, spring)
 
   return (
     <ProgressPrimitive.Root
+      {...props}
       data-slot="progress"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "relative h-2 w-full overflow-hidden rounded-full bg-primary/20",
         className
       )}
-      {...props}
     >
       <ProgressPrimitive.Indicator data-slot="progress-indicator" asChild>
         <m.div
           className="h-full bg-primary"
-          initial={{ width: "0%" }}
+          initial={motion.disabled ? false : { width: "0%" }}
           animate={{ width: `${value ?? 0}%` }}
-          transition={reduced ? noMotion : spring}
+          transition={motion.transition}
         />
       </ProgressPrimitive.Indicator>
     </ProgressPrimitive.Root>
   )
 }
 
-export { Progress }
+export { Progress, type ProgressProps }

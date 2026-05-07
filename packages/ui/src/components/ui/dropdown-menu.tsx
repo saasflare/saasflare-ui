@@ -25,7 +25,8 @@ import { m } from "motion/react"
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cn } from "../../lib"
-import { springBouncy } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
 
 function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
@@ -46,24 +47,37 @@ function DropdownMenuRadioGroup({ ...props }: React.ComponentProps<typeof Dropdo
   return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />
 }
 
+interface DropdownMenuContentProps
+  extends Omit<React.ComponentProps<typeof DropdownMenuPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function DropdownMenuContent({
   className,
   sideOffset = 4,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: DropdownMenuContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
+
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
+        {...props}
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
         asChild
-        {...props}
       >
         <m.div
-          initial={{ opacity: 0, scale: 0.95, y: -4 }}
+          data-surface={sf.surface}
+          data-radius={sf.radius}
+          data-animated={String(sf.animated)}
+          initial={motion.disabled ? false : { opacity: 0, scale: 0.95, y: -4 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: -4 }}
-          transition={springBouncy}
+          exit={motion.disabled ? undefined : { opacity: 0, scale: 0.95, y: -4 }}
+          transition={motion.transition}
           className={cn(
             "z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] origin-[var(--radix-dropdown-menu-content-transform-origin)] overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
             className
@@ -207,4 +221,5 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
+  type DropdownMenuContentProps,
 }

@@ -29,7 +29,8 @@ import * as React from "react"
 import { m } from "motion/react"
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import { cn } from "../../lib"
-import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
 import { buttonVariants } from "./button"
 
 function AlertDialog({
@@ -66,26 +67,37 @@ function AlertDialogOverlay({
   )
 }
 
+interface AlertDialogContentProps
+  extends Omit<React.ComponentProps<typeof AlertDialogPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function AlertDialogContent({
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
-  const reduced = useReducedMotion()
+}: AlertDialogContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />
       <AlertDialogPrimitive.Content
+        {...props}
         data-slot="alert-dialog-content"
         asChild
-        {...props}
       >
         <m.div
-          initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 0.95, y: 10 }}
+          data-surface={sf.surface}
+          data-radius={sf.radius}
+          data-animated={String(sf.animated)}
+          initial={motion.disabled ? { opacity: 1 } : { opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
-          transition={reduced ? noMotion : springBouncy}
+          exit={motion.disabled ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
+          transition={motion.transition}
           className={cn(
             "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg sm:max-w-lg",
             className
@@ -182,4 +194,5 @@ export {
   AlertDialogPortal,
   AlertDialogTitle,
   AlertDialogTrigger,
+  type AlertDialogContentProps,
 }

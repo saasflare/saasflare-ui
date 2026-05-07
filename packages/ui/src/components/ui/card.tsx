@@ -22,7 +22,15 @@
 import * as React from "react"
 import { m } from "motion/react"
 import { cn } from "../../lib"
-import { springGentle, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springGentle } from "./motion-config"
+
+/** Framer-motion event overrides that conflict with React HTML events */
+type MotionConflicts = "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
+
+interface CardProps
+  extends Omit<React.ComponentProps<"div">, MotionConflicts | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 /**
  * Card container with subtle hover-lift animation.
@@ -36,22 +44,23 @@ import { springGentle, noMotion, useReducedMotion } from "./motion-config"
  *   <CardContent>Content here</CardContent>
  * </Card>
  */
-/** Framer-motion event overrides that conflict with React HTML events */
-type MotionConflicts = "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
-
-function Card({ className, ...props }: Omit<React.ComponentProps<"div">, MotionConflicts>) {
-  const reduced = useReducedMotion()
+function Card({ className, surface, radius, animated, ...props }: CardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springGentle)
 
   return (
     <m.div
+      {...props}
       data-slot="card"
-      whileHover={reduced ? undefined : { y: -2, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
-      transition={reduced ? noMotion : springGentle}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      whileHover={motion.disabled ? undefined : { y: -2, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
+      transition={motion.transition}
       className={cn(
         "flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm transition-[border-color] duration-300 hover:border-primary/20",
         className
       )}
-      {...props}
     />
   )
 }
@@ -166,4 +175,5 @@ export {
   CardAction,
   CardDescription,
   CardContent,
+  type CardProps,
 }

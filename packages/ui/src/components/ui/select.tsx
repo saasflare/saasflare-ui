@@ -26,7 +26,8 @@ import { m } from "motion/react"
 import { ChevronDownIcon, ChevronUpIcon, CheckIcon } from "lucide-react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cn } from "../../lib"
-import { springBouncy } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
 
 function Select({
   ...props
@@ -73,24 +74,37 @@ function SelectTrigger({
   )
 }
 
+interface SelectContentProps
+  extends Omit<React.ComponentProps<typeof SelectPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function SelectContent({
   className,
   children,
   position = "popper",
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: SelectContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
+
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
+        {...props}
         data-slot="select-content"
         position={position}
         asChild
-        {...props}
       >
         <m.div
-          initial={{ opacity: 0, scale: 0.96, y: -4 }}
+          data-surface={sf.surface}
+          data-radius={sf.radius}
+          data-animated={String(sf.animated)}
+          initial={motion.disabled ? false : { opacity: 0, scale: 0.96, y: -4 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={springBouncy}
+          transition={motion.transition}
           className={cn(
             "relative z-50 max-h-[min(var(--radix-select-content-available-height),24rem)] min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md",
             position === "popper" &&
@@ -205,4 +219,5 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
+  type SelectContentProps,
 }

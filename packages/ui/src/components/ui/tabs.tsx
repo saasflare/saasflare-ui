@@ -31,23 +31,36 @@ import { m } from "motion/react"
 import { cva, type VariantProps } from "class-variance-authority"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cn } from "../../lib"
-import { spring, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, spring } from "./motion-config"
+
+interface TabsProps
+  extends Omit<React.ComponentProps<typeof TabsPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 function Tabs({
   className,
   orientation = "horizontal",
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+}: TabsProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <TabsPrimitive.Root
+      {...props}
       data-slot="tabs"
       data-orientation={orientation}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       orientation={orientation}
       className={cn(
         "group/tabs flex gap-2 data-[orientation=horizontal]:flex-col",
         className
       )}
-      {...props}
     />
   )
 }
@@ -82,7 +95,8 @@ function TabsList({
 }: React.ComponentProps<typeof TabsPrimitive.List> &
   VariantProps<typeof tabsListVariants>) {
   const listRef = React.useRef<HTMLDivElement>(null)
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps()
+  const motion = useSaasflareMotion(sf.animated, spring)
   const [pos, setPos] = React.useState<IndicatorPos | null>(null)
 
   React.useLayoutEffect(() => {
@@ -153,7 +167,7 @@ function TabsList({
             width: pos.width,
             height: pos.height,
           }}
-          transition={reduced ? noMotion : spring}
+          transition={motion.transition}
           className="pointer-events-none absolute top-0 left-0 rounded-md bg-background shadow-sm dark:border dark:border-input dark:bg-input/30"
           style={{ zIndex: 0 }}
         />
@@ -204,4 +218,4 @@ function TabsContent({
   )
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants }
+export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants, type TabsProps }
