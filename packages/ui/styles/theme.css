@@ -70,7 +70,7 @@
     --primary-foreground: oklch(1 0 0);
 
     /* ── Secondary / Accent / Muted (from neutral axis) ── */
-    --secondary: oklch(0.965 var(--neutral-c) var(--neutral-h));
+    --secondary: oklch(0.92 calc(var(--neutral-c) * 1.5) var(--neutral-h));
     --secondary-foreground: oklch(0.24 calc(var(--neutral-c) * 2) var(--neutral-h));
 
     --accent: oklch(0.95 calc(var(--neutral-c) * 1.6) var(--neutral-h));
