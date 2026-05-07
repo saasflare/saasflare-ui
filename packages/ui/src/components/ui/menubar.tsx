@@ -27,19 +27,32 @@ import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
 import * as MenubarPrimitive from "@radix-ui/react-menubar"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+interface MenubarProps
+  extends Omit<React.ComponentProps<typeof MenubarPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 function Menubar({
   className,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Root>) {
+}: MenubarProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <MenubarPrimitive.Root
+      {...props}
       data-slot="menubar"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex h-9 items-center gap-1 rounded-md border bg-background p-1 shadow-xs",
         className
       )}
-      {...props}
     />
   )
 }
@@ -86,17 +99,30 @@ function MenubarTrigger({
   )
 }
 
+interface MenubarContentProps
+  extends Omit<React.ComponentProps<typeof MenubarPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
 function MenubarContent({
   className,
   align = "start",
   alignOffset = -4,
   sideOffset = 8,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof MenubarPrimitive.Content>) {
+}: MenubarContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <MenubarPortal>
       <MenubarPrimitive.Content
+        {...props}
         data-slot="menubar-content"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         align={align}
         alignOffset={alignOffset}
         sideOffset={sideOffset}
@@ -104,7 +130,6 @@ function MenubarContent({
           "z-50 min-w-[12rem] origin-(--radix-menubar-content-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           className
         )}
-        {...props}
       />
     </MenubarPortal>
   )
@@ -280,6 +305,8 @@ function MenubarSubContent({
 
 export {
   Menubar,
+  type MenubarProps,
+  type MenubarContentProps,
   MenubarPortal,
   MenubarMenu,
   MenubarTrigger,

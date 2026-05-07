@@ -15,9 +15,14 @@
  *   <CollapsibleContent>Hidden content revealed on toggle.</CollapsibleContent>
  * </Collapsible>
  */
-"use client"
 
+import * as React from "react"
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+
+interface CollapsibleContentProps
+  extends Omit<React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 function Collapsible({
   ...props
@@ -37,14 +42,22 @@ function CollapsibleTrigger({
 }
 
 function CollapsibleContent({
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {
+}: CollapsibleContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <CollapsiblePrimitive.CollapsibleContent
-      data-slot="collapsible-content"
       {...props}
+      data-slot="collapsible-content"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     />
   )
 }
 
-export { Collapsible, CollapsibleTrigger, CollapsibleContent }
+export { Collapsible, CollapsibleTrigger, CollapsibleContent, type CollapsibleContentProps }
