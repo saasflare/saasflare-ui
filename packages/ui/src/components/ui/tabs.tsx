@@ -30,7 +30,7 @@ import * as React from "react"
 import { m } from "motion/react"
 import { cva, type VariantProps } from "class-variance-authority"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { spring, noMotion, useReducedMotion } from "./motion-config"
 
 function Tabs({

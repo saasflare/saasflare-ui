@@ -41,7 +41,7 @@ import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { Command as CommandPrimitive } from "cmdk"
 import { CheckIcon, SearchIcon } from "lucide-react"
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 const Combobox = PopoverPrimitive.Root
 

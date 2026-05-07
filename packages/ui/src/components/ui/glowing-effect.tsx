@@ -26,7 +26,7 @@
  */
 
 import { useRef, useState } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
 import { useMousePosition } from "../../hooks/use-mouse-position"
 

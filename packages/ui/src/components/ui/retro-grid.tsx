@@ -20,7 +20,7 @@
  * <RetroGrid gridColor="hsl(var(--primary))" gridSize={40} angle={70} />
  */
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the RetroGrid component. */
 export interface RetroGridProps {

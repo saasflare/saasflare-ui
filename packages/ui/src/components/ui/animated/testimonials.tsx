@@ -27,7 +27,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { AnimatePresence, m } from "motion/react"
 import { ChevronLeftIcon, ChevronRightIcon, QuoteIcon } from "lucide-react"
-import { cn } from "../../../lib/utils"
+import { cn } from "../../../lib"
 import { springGentle, noMotion, useReducedMotion } from "../motion-config"
 
 /** A single testimonial entry. */

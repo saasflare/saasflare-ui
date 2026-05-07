@@ -23,7 +23,7 @@
 // =============================================================================
 
 import { useState, useEffect, useRef } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '../../lib';
 
 interface TypewriterTextProps {
   text: string;

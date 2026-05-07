@@ -20,7 +20,7 @@
  */
 
 import * as React from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the PageHeader component */
 interface PageHeaderProps extends React.ComponentProps<"div"> {

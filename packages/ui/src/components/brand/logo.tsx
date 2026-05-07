@@ -14,7 +14,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { cn } from '../../lib/utils';
+import { cn } from '../../lib';
 
 export type LogoProps = {
     size?: 'icon' | 'xs' | 'xxs' | 'sm' | 'md' | 'lg';

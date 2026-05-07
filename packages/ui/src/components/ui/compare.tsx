@@ -29,7 +29,7 @@
  */
 
 import { useState, useRef, useCallback, type ReactNode, type PointerEvent } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the Compare component. */
 export interface CompareProps {

@@ -16,7 +16,7 @@
  * />
  */
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the ImageSwapHover component. */
 export interface ImageSwapHoverProps {

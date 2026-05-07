@@ -16,7 +16,7 @@
  * <Countdown days={days} hours={hours} minutes={minutes} seconds={seconds} />
  */
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the Countdown component. */
 export interface CountdownProps {

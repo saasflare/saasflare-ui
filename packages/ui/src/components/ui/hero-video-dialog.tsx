@@ -31,7 +31,7 @@
 import { useState, useCallback, type KeyboardEvent } from "react"
 import { AnimatePresence, m } from "motion/react"
 import { PlayIcon, XIcon } from "lucide-react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
 
 /** Props for the HeroVideoDialog component. */

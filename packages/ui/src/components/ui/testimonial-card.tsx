@@ -17,7 +17,7 @@
  * />
  */
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the TestimonialCard component. */
 export interface TestimonialCardProps {

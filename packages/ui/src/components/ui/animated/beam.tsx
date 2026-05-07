@@ -24,7 +24,7 @@
  */
 
 import { useEffect, useState, useCallback, type RefObject } from "react"
-import { cn } from "../../../lib/utils"
+import { cn } from "../../../lib"
 import { useReducedMotion } from "../motion-config"
 
 /** Props for the AnimatedBeam component. */

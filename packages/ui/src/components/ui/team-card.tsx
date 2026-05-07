@@ -20,7 +20,7 @@
  */
 
 import { type ReactNode } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** A social link entry. */
 export interface SocialLink {

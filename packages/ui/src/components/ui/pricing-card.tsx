@@ -25,7 +25,7 @@
 
 import * as React from "react"
 import { CheckIcon } from "lucide-react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the PricingCard component */
 interface PricingCardProps extends React.ComponentProps<"div"> {

@@ -24,7 +24,7 @@
 import * as React from "react"
 import { PanelLeftIcon } from "lucide-react"
 import { useIsMobile } from '../../../hooks/use-mobile';
-import { cn } from "../../../lib/utils"
+import { cn } from "../../../lib"
 import { Button } from "../button"
 import {
   TooltipProvider,

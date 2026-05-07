@@ -20,7 +20,7 @@
  */
 
 import { Children, type ReactNode, type ReactElement } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the Steps container. */
 export interface StepsProps {

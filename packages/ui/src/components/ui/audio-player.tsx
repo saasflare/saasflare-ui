@@ -16,7 +16,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react"
 import { PlayIcon, PauseIcon } from "lucide-react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the AudioPlayer component. */
 export interface AudioPlayerProps {

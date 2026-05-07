@@ -28,7 +28,7 @@
 
 import { useEffect, useCallback } from "react"
 import { m, useMotionValue, useSpring } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "../../hooks/use-reduced-motion"
 
 /** Props for the MouseGradientBlob component. */

@@ -11,7 +11,7 @@
  * import { Kbd, KbdGroup } from '@saasflare/core';
  * <KbdGroup><Kbd>Ctrl</Kbd><Kbd>S</Kbd></KbdGroup>
  */
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
   return (

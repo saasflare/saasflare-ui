@@ -26,7 +26,7 @@
 
 import { type ReactNode } from "react"
 import { AnimatePresence, m } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "../../hooks/use-reduced-motion"
 
 /** Animation variant presets for page transitions. */

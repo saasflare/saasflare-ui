@@ -21,7 +21,7 @@
 
 import * as React from "react"
 import { m } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { springGentle, noMotion, useReducedMotion } from "./motion-config"
 
 /**

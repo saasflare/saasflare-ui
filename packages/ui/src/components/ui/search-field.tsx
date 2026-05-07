@@ -23,7 +23,7 @@
 
 import * as React from "react"
 import { SearchIcon, XIcon, Loader2Icon } from "lucide-react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the SearchField component */
 interface SearchFieldProps extends Omit<React.ComponentProps<"input">, "type"> {

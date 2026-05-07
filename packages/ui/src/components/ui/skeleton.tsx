@@ -21,7 +21,7 @@
  */
 
 import type { CSSProperties } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Component the skeleton imitates — drives radius from the design tokens. */
 type SkeletonAs = "avatar" | "text" | "card"

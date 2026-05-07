@@ -26,7 +26,7 @@
 
 import { useMemo, useRef } from "react"
 import { m, useInView } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the TextGenerateEffect component. */

@@ -15,7 +15,7 @@
 
 import * as React from "react"
 import { m } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 function Textarea({ className, ...props }: Omit<React.ComponentProps<"textarea">, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>) {
   return (

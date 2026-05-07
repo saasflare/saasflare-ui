@@ -17,7 +17,7 @@
  */
 
 import { type ComponentProps } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Supported social login providers. */
 export type SocialProvider = "google" | "apple" | "github" | "microsoft" | "twitter"

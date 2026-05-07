@@ -23,7 +23,7 @@ import * as React from "react"
 import { m } from "motion/react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
 
 function Dialog({

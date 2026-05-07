@@ -16,7 +16,7 @@
 
 import * as React from "react"
 import { m } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 function Input({ className, type, ...props }: Omit<React.ComponentProps<"input">, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd'>) {
   return (

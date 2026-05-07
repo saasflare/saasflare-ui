@@ -17,7 +17,7 @@
 import * as React from "react"
 import { m } from "motion/react"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { springBouncy } from "./motion-config"
 
 function Switch({

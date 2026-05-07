@@ -28,7 +28,7 @@
  */
 
 import { type ReactNode } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the GradientText component. */

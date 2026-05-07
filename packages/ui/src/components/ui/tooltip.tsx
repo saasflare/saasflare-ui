@@ -21,7 +21,7 @@
 import * as React from "react"
 import { m, AnimatePresence } from "motion/react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { springBouncy } from "./motion-config"
 
 function TooltipProvider({

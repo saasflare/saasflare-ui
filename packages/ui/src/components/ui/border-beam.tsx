@@ -25,7 +25,7 @@
  * </div>
  */
 
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the BorderBeam component. */

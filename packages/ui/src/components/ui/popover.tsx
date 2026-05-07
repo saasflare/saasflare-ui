@@ -22,7 +22,7 @@
 import * as React from "react"
 import { m } from "motion/react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { springBouncy } from "./motion-config"
 
 function Popover({

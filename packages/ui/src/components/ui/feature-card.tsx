@@ -17,7 +17,7 @@
  */
 
 import { type ReactNode } from "react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 
 /** Props for the FeatureCard component. */
 export interface FeatureCardProps {

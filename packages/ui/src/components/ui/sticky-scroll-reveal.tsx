@@ -22,7 +22,7 @@
 
 import { useRef, type ReactNode } from "react"
 import { m, useScroll, useTransform } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
 
 /** A single item in the sticky scroll reveal. */

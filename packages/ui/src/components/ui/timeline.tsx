@@ -24,7 +24,7 @@
 
 import { useRef, type ReactNode } from "react"
 import { m, useScroll, useTransform } from "motion/react"
-import { cn } from "../../lib/utils"
+import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the Timeline container. */
