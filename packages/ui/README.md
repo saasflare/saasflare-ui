@@ -115,7 +115,11 @@ light/dark surface variables, and motion tokens.
 > content: ["./node_modules/@saasflare/ui/dist/**/*.{js,mjs}", /* ... */]
 > ```
 
-### 2. Wrap your app in `SaasflareShell` *(mandatory)*
+### 2. Make `SaasflareShell` your document root *(mandatory)*
+
+`SaasflareShell` **is the document** — it renders `<html>` and `<body>`
+itself, plus the design-system context inside. Do **not** wrap it in your
+own `<html>`/`<body>` tags; replace them entirely.
 
 ```tsx
 // app/layout.tsx
@@ -125,24 +129,39 @@ import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={fontVariables} data-palette="saasflare" suppressHydrationWarning>
-      <body>
-        <SaasflareShell>{children}</SaasflareShell>
-      </body>
-    </html>
+    <SaasflareShell
+      lang="en"
+      palette="saasflare"
+      theme="dark"
+      className={fontVariables}
+    >
+      {children}
+    </SaasflareShell>
   );
 }
 ```
 
-> **⚠️ The wrapper is required, not optional.** `@saasflare/ui` uses
-> `LazyMotion features={domAnimation} strict` to keep the framer-motion bundle
-> tight. Animated components use the `m.*` API (e.g. `m.button`) which throws
-> at runtime if the `LazyMotion` provider is missing. `SaasflareShell` (or
-> `SaasflareProvider` directly) provides it. Without one, every `Button`,
-> `Card`, `Dialog`, etc. will error on mount.
+`SaasflareShell` accepts `palette`, `theme`, `surface`, `radius`,
+`animated`, `smoothScrolling`, `storageKey`, plus a `lang`, `className`
+(applied to `<html>`), `bodyClassName`, and a `head` slot for `<head>`
+content. The chosen `palette`/`surface`/`radius`/`animated` props are
+baked into the SSR HTML as `data-*` attributes, so there is **zero FOUT**
+and the pre-hydration script is disabled by default.
 
-`SaasflareShell` also owns the theme class, smooth-scroll context, and the
-animation kill-switch context.
+> **⚠️ Required, not optional.** `@saasflare/ui` uses `LazyMotion
+> features={domAnimation} strict` to keep the motion bundle tight.
+> Animated components use the `m.*` API (e.g. `m.button`) which throws at
+> runtime if `LazyMotion` is missing. `SaasflareShell` (or
+> `SaasflareProvider` directly, when you need to own `<html>`/`<body>`
+> yourself) provides it. Without one, every `Button`, `Card`, `Dialog`,
+> etc. will error on mount.
+
+**When to use `SaasflareProvider` instead:** if you need a runtime palette
+switcher (user picks a palette via a toggle, persisted in localStorage),
+keep your own `<html>`/`<body>` and wrap children in `SaasflareProvider`.
+The provider's pre-hydration script reads localStorage before paint.
+`SaasflareShell` is for brand-locked apps where the palette is decided at
+SSR time.
 
 ### 3. Use components
 
