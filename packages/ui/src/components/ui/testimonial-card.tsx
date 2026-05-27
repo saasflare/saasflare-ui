@@ -18,9 +18,10 @@
  */
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the TestimonialCard component. */
-export interface TestimonialCardProps {
+export interface TestimonialCardProps extends SaasflareComponentProps {
   /** The testimonial quote text. */
   quote: string
   /** Name of the person. */
@@ -48,23 +49,29 @@ export function TestimonialCard({
   avatar,
   rating,
   className,
+  surface,
+  radius,
+  animated,
 }: TestimonialCardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   return (
     <div
+      data-slot="testimonial-card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       className={cn(
-        "flex flex-col rounded-card border border-border-subtle bg-glass-2 p-6",
-        "transition-all duration-200 hover:border-border-hover hover:shadow-card-hover hover:-translate-y-px",
+        "flex flex-col rounded-xl border surface-card p-6",
+        "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
         "motion-reduce:hover:transform-none",
         className,
       )}
-      data-slot="testimonial-card"
     >
       {rating && (
         <div className="mb-3 flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
           {Array.from({ length: 5 }, (_, i) => (
             <svg
               key={i}
-              className={cn("size-4", i < rating ? "text-yellow-400" : "text-muted-foreground/20")}
+              className={cn("size-4", i < rating ? "text-warning" : "text-muted-foreground/20")}
               viewBox="0 0 20 20"
               fill="currentColor"
               aria-hidden="true"

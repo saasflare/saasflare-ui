@@ -19,12 +19,13 @@
  */
 import * as React from "react"
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react"
+  CaretLeftIcon,
+  CaretRightIcon,
+  DotsThreeIcon,
+} from "./phosphor"
 
 import { cn } from "../../lib"
+import { useSaasflareProps } from "../../providers"
 import { buttonVariants } from "./button"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
@@ -88,6 +89,7 @@ function PaginationPrevious({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
+  const sf = useSaasflareProps()
   return (
     <PaginationLink
       aria-label="Go to previous page"
@@ -95,7 +97,7 @@ function PaginationPrevious({
       className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       {...props}
     >
-      <ChevronLeftIcon />
+      <CaretLeftIcon weight={sf.iconWeight} />
       <span className="hidden sm:block">Previous</span>
     </PaginationLink>
   )
@@ -105,6 +107,7 @@ function PaginationNext({
   className,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
+  const sf = useSaasflareProps()
   return (
     <PaginationLink
       aria-label="Go to next page"
@@ -113,7 +116,7 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">Next</span>
-      <ChevronRightIcon />
+      <CaretRightIcon weight={sf.iconWeight} />
     </PaginationLink>
   )
 }
@@ -122,6 +125,7 @@ function PaginationEllipsis({
   className,
   ...props
 }: React.ComponentProps<"span">) {
+  const sf = useSaasflareProps()
   return (
     <span
       aria-hidden
@@ -129,7 +133,7 @@ function PaginationEllipsis({
       className={cn("flex size-9 items-center justify-center", className)}
       {...props}
     >
-      <MoreHorizontalIcon className="size-4" />
+      <DotsThreeIcon weight={sf.iconWeight} className="size-4" />
       <span className="sr-only">More pages</span>
     </span>
   )

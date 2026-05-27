@@ -26,6 +26,7 @@
 @import "tailwindcss";
 @import "./motion.css";
 @import "./surfaces.css";
+@import "./aurora.css";
 @import "./palettes.css";
 
 /* Tailwind v4 source discovery — scan the package itself so consumers
@@ -330,20 +331,25 @@ textarea,
 }
 
 /* ============================================
- * Radius axis — discrete preset switched via [data-radius] on <html>.
+ * Radius axis — discrete preset switched via [data-radius].
  *
  * Baseline default is "rounded" (set in :root above as --radius: 0.625rem).
  * "pill" overrides the entire derived scale explicitly: relying on calc()
  * would give 9995–10003px for sm/lg, which is visually pill on tall elements
  * but NOT pill on a 200px-wide component. Lock the whole scale instead.
  *
+ * The selectors deliberately drop the `:root` prefix so a per-component
+ * `data-radius` attribute (e.g. `<Button radius="pill">`) creates its own
+ * cascade scope and overrides the inherited page-wide value. Without that
+ * scope a component-level `radius` prop would have no visible effect.
+ *
  * Custom per-palette override (CustomPalette.radius) sets --radius inline
  * and wins by specificity — intentional escape hatch.
  * ============================================ */
-:root[data-radius="sharp"]   { --radius: 0;        }
-:root[data-radius="soft"]    { --radius: 0.35rem;  }
-:root[data-radius="rounded"] { --radius: 0.625rem; }
-:root[data-radius="pill"] {
+[data-radius="sharp"]   { --radius: 0;        }
+[data-radius="soft"]    { --radius: 0.35rem;  }
+[data-radius="rounded"] { --radius: 0.625rem; }
+[data-radius="pill"] {
     --radius: 9999px;
     --radius-sm: 9999px;
     --radius-md: 9999px;

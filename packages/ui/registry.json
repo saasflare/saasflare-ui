@@ -1,0 +1,343 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry.json",
+    "name": "saasflare-ui",
+    "homepage": "https://ui.saasflare.io",
+    "items": [
+        {
+            "name": "feature-card",
+            "type": "registry:ui",
+            "title": "Feature Card",
+            "description": "Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/feature-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/feature-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "pricing-card",
+            "type": "registry:ui",
+            "title": "Pricing Card",
+            "description": "Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/pricing-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/pricing-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "testimonial-card",
+            "type": "registry:ui",
+            "title": "Testimonial Card",
+            "description": "Customer testimonial card with quote, author name, role, and optional avatar.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/testimonial-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/testimonial-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "team-card",
+            "type": "registry:ui",
+            "title": "Team Card",
+            "description": "Team member card with photo, name, role, bio, and social links.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/team-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/team-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "spotlight-card",
+            "type": "registry:ui",
+            "title": "Spotlight Card",
+            "description": "Card with a cursor-following spotlight gradient effect on hover.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/spotlight-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/spotlight-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "bento-grid",
+            "type": "registry:ui",
+            "title": "Bento Grid",
+            "description": "Bento-style grid layout for feature galleries with mixed sizes.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/bento-grid.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/bento-grid.tsx"
+                }
+            ]
+        },
+        {
+            "name": "stat-card",
+            "type": "registry:ui",
+            "title": "Stat Card",
+            "description": "KPI / metric card with icon, large value, label, and optional delta indicator.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/stat-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/stat-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "metric-card",
+            "type": "registry:ui",
+            "title": "Metric Card",
+            "description": "Dashboard metric card with sparkline support and trend indicator.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/metric-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/metric-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "section-card",
+            "type": "registry:ui",
+            "title": "Section Card",
+            "description": "Composable section/landing card with header, content, and footer slots.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/section-card.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/section-card.tsx"
+                }
+            ]
+        },
+        {
+            "name": "progress-circle",
+            "type": "registry:ui",
+            "title": "Progress Circle",
+            "description": "Circular progress indicator. Radial counterpart to Progress, common for KPI rings.",
+            "dependencies": ["@saasflare/ui", "motion"],
+            "files": [
+                {
+                    "path": "src/components/ui/progress-circle.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/progress-circle.tsx"
+                }
+            ]
+        },
+        {
+            "name": "bar-list",
+            "type": "registry:ui",
+            "title": "Bar List",
+            "description": "Horizontal 'top N' ranking list with proportional bar fills. Dashboard staple.",
+            "dependencies": ["@saasflare/ui", "motion"],
+            "files": [
+                {
+                    "path": "src/components/ui/bar-list.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/bar-list.tsx"
+                }
+            ]
+        },
+        {
+            "name": "spark-chart",
+            "type": "registry:ui",
+            "title": "Spark Chart",
+            "description": "Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/spark-chart.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/spark-chart.tsx"
+                }
+            ]
+        },
+        {
+            "name": "tracker",
+            "type": "registry:ui",
+            "title": "Tracker",
+            "description": "Uptime/status segment grid. Each block is one period (day/hour) colored by status.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/tracker.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/tracker.tsx"
+                }
+            ]
+        },
+        {
+            "name": "dropzone",
+            "type": "registry:ui",
+            "title": "Dropzone",
+            "description": "Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/dropzone.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/dropzone.tsx"
+                }
+            ]
+        },
+        {
+            "name": "date-range-picker",
+            "type": "registry:ui",
+            "title": "Date Range Picker",
+            "description": "Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/date-range-picker.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/date-range-picker.tsx"
+                }
+            ]
+        },
+        {
+            "name": "date-picker",
+            "type": "registry:ui",
+            "title": "Date Picker",
+            "description": "Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/date-picker.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/date-picker.tsx"
+                }
+            ]
+        },
+        {
+            "name": "callout",
+            "type": "registry:ui",
+            "title": "Callout",
+            "description": "Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/callout.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/callout.tsx"
+                }
+            ]
+        },
+        {
+            "name": "tag-input",
+            "type": "registry:ui",
+            "title": "Tag Input",
+            "description": "Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/tag-input.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/tag-input.tsx"
+                }
+            ]
+        },
+        {
+            "name": "number-input",
+            "type": "registry:ui",
+            "title": "Number Input",
+            "description": "Numeric input with ± stepper buttons, min/max clamping, configurable step + precision.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/number-input.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/number-input.tsx"
+                }
+            ]
+        },
+        {
+            "name": "rating",
+            "type": "registry:ui",
+            "title": "Rating",
+            "description": "Star rating input with half-star precision, keyboard arrows, and read-only display mode.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/rating.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/rating.tsx"
+                }
+            ]
+        },
+        {
+            "name": "category-bar",
+            "type": "registry:ui",
+            "title": "Category Bar",
+            "description": "Segmented progress bar with per-segment colors and optional labels. Useful for resource breakdowns.",
+            "dependencies": ["@saasflare/ui", "motion"],
+            "files": [
+                {
+                    "path": "src/components/ui/category-bar.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/category-bar.tsx"
+                }
+            ]
+        },
+        {
+            "name": "tree-view",
+            "type": "registry:ui",
+            "title": "Tree View",
+            "description": "Recursive expand/collapse tree with keyboard navigation, controlled/uncontrolled expansion + selection.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/tree-view.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/tree-view.tsx"
+                }
+            ]
+        },
+        {
+            "name": "code-block",
+            "type": "registry:ui",
+            "title": "Code Block",
+            "description": "Code-block chrome: filename header, language badge, copy button, optional line numbers. BYO highlighter.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/code-block.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/code-block.tsx"
+                }
+            ]
+        },
+        {
+            "name": "notification-center",
+            "type": "registry:ui",
+            "title": "Notification Center",
+            "description": "Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge.",
+            "dependencies": ["@saasflare/ui"],
+            "files": [
+                {
+                    "path": "src/components/ui/notification-center.tsx",
+                    "type": "registry:ui",
+                    "target": "components/ui/notification-center.tsx"
+                }
+            ]
+        }
+    ]
+}

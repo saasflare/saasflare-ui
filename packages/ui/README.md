@@ -29,9 +29,69 @@ yarn add @saasflare/ui
 - **Tailwind v4 native** — tokens declared via `@theme`, no `tailwind.config.ts`
   extension required.
 - **Theming via CSS variables** — switch palettes by setting `data-palette="…"`
-  on `<html>`. 17 presets shipped, custom palettes are one CSS block.
+  on `<html>`. 20 presets shipped, custom palettes are one CSS block.
 - **Light / dark out of the box** — driven by `next-themes`.
 - **TypeScript strict** — full types, no `any`.
+- **AI-codegen friendly** — shadcn-compatible registry (`npx shadcn add https://ui.saasflare.io/r/<name>.json`) lets AI tools (v0, Lovable, Bolt, Cursor, Claude) pull component source straight into your project. `llms.txt` and `llms-full.txt` published for LLM discovery.
+
+---
+
+## For AI codegen tools
+
+This library publishes three artifacts AI generators can consume:
+
+| URL | Purpose |
+|---|---|
+| [`https://ui.saasflare.io/llms.txt`](https://ui.saasflare.io/llms.txt) | Concise index (per [llmstxt.org](https://llmstxt.org)) |
+| [`https://ui.saasflare.io/llms-full.txt`](https://ui.saasflare.io/llms-full.txt) | Full component reference — props, types, examples |
+| [`https://ui.saasflare.io/registry.json`](https://ui.saasflare.io/registry.json) | shadcn-compatible registry index — list of every installable component |
+| `https://ui.saasflare.io/api/mcp` | Remote MCP server — let Claude / Cursor / Claude Code query the catalog live (see "MCP server" below) |
+
+### MCP server
+
+Add the endpoint URL to any MCP-aware client and your agent can call `list_components`, `get_component`, `search_components`, `recommend_for_use_case`, `get_install_command`, `list_palettes`, `get_palette`, and `list_hooks` directly.
+
+**Claude Code**
+```bash
+claude mcp add --transport http saasflare-ui https://ui.saasflare.io/api/mcp
+```
+
+**Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json`)
+```json
+{
+  "mcpServers": {
+    "saasflare-ui": { "url": "https://ui.saasflare.io/api/mcp" }
+  }
+}
+```
+
+**Cursor** (`.cursor/mcp.json`)
+```json
+{
+  "mcpServers": {
+    "saasflare-ui": { "url": "https://ui.saasflare.io/api/mcp" }
+  }
+}
+```
+
+To pull a component's source into a project (the AI-friendly path):
+
+```bash
+pnpm add @saasflare/ui                                              # runtime, providers, motion bundle
+npx shadcn add https://ui.saasflare.io/r/feature-card.json          # source of one component
+npx shadcn add https://ui.saasflare.io/r/pricing-card.json          # …and another
+```
+
+The imported files land in your project's `components/ui/` (or wherever your `components.json` aliases point) with all internal imports already rewritten to `@saasflare/ui`. No further wiring needed.
+
+To regenerate locally:
+
+```bash
+pnpm --filter @saasflare/ui build:registry   # writes apps/ui/public/r/*.json
+pnpm --filter @saasflare/ui build:llms       # writes apps/ui/public/llms{,-full}.txt
+```
+
+To add a new component to the registry, append an entry to `packages/ui/registry.json` and rebuild.
 
 ---
 
@@ -206,7 +266,13 @@ import { ResizablePanel, ResizablePanelGroup } from "@saasflare/ui/resizable";
 
 Built-in presets: `saasflare` (default), `ocean`, `ink`, `aurora`, `indigo`,
 `emerald`, `violet`, `coral`, `stone`, `jade`, `cobalt`, `amber`, `fuchsia`,
-`honey`, `teal`, `iris`, `ruby`.
+`honey`, `teal`, `iris`, `ruby`, `colorful`, `craivo`.
+
+`colorful` is special: switching to it auto-applies a soft pastel gradient
+on hover (peach → blush → lavender → cyan) wrapped in a matching
+color-aura glow, to all outline buttons, feature/testimonial/team/spotlight
+cards, and feature-card icon chips on the page. Cards get a gradient
+border ring; buttons fill with the pastel sweep. No component-side opt-in.
 
 ### Define a custom palette
 

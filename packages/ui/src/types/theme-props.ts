@@ -11,7 +11,7 @@
  * Do NOT add a hex `color` field here; it will drift from palettes.css.
  */
 
-/** All 16 available color palette ids and display names. */
+/** All available color palette ids and display names. */
 export const PALETTES = [
     { id: "ocean", name: "Ocean" },
     { id: "achromatic", name: "Achromatic" },
@@ -31,6 +31,8 @@ export const PALETTES = [
     { id: "teal", name: "Teal" },
     { id: "iris", name: "Iris" },
     { id: "ruby", name: "Ruby" },
+    { id: "colorful", name: "Colorful" },
+    { id: "craivo", name: "Craivo" },
 ] as const
 
 /** Union of all preset color palette IDs. */
@@ -44,13 +46,14 @@ export type PaletteId = (typeof PALETTES)[number]["id"]
  * app's globals.css are accepted without a type patch, while preset
  * ids keep their autocomplete.
  */
-export type StyleVariant = "flat" | "glass" | (string & {})
+export type StyleVariant = "flat" | "glass" | "clay" | (string & {})
 
 /** All available built-in surface style variants. */
 export const STYLES = [
     { id: "flat", name: "Flat" },
     { id: "glass", name: "Glass" },
-] as const satisfies ReadonlyArray<{ id: "flat" | "glass"; name: string }>
+    { id: "clay", name: "Clay" },
+] as const satisfies ReadonlyArray<{ id: "flat" | "glass" | "clay"; name: string }>
 
 /**
  * Radius preset — orthogonal to {@link Surface} (geometry vs. material).
@@ -130,7 +133,7 @@ export type Palette = PaletteId | (string & {}) | CustomPalette
  * Accepted values for the `surface` prop.
  *
  * - omit (undefined)   → defers to persisted user preference, then "flat" baseline
- * - StyleVariant       → "flat" | "glass" | app-registered custom surface
+ * - StyleVariant       → "flat" | "glass" | "clay" | app-registered custom surface
  */
 export type Surface = StyleVariant
 

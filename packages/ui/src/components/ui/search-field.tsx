@@ -22,7 +22,7 @@
  */
 
 import * as React from "react"
-import { SearchIcon, XIcon, Loader2Icon } from "lucide-react"
+import { MagnifyingGlassIcon, XIcon, CircleNotchIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
@@ -61,9 +61,10 @@ function SearchField({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SearchFieldProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const hasValue = typeof value === "string" ? value.length > 0 : false
 
   return (
@@ -76,9 +77,9 @@ function SearchField({
     >
       <div className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
         {loading ? (
-          <Loader2Icon className="size-4 animate-spin" aria-hidden="true" />
+          <CircleNotchIcon className="size-4 animate-spin" aria-hidden="true" />
         ) : (
-          <SearchIcon className="size-4" aria-hidden="true" />
+          <MagnifyingGlassIcon weight={sf.iconWeight} className="size-4" aria-hidden="true" />
         )}
       </div>
       <input
@@ -96,7 +97,7 @@ function SearchField({
           className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Clear search"
         >
-          <XIcon className="size-3.5" />
+          <XIcon weight={sf.iconWeight} className="size-3.5" />
         </button>
       )}
     </div>

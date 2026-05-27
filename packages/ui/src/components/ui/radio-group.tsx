@@ -17,7 +17,7 @@
 "use client"
 
 import * as React from "react"
-import { CircleIcon } from "lucide-react"
+import { CircleIcon } from "./phosphor"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -31,9 +31,10 @@ function RadioGroup({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: RadioGroupProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <RadioGroupPrimitive.Root
@@ -51,6 +52,7 @@ function RadioGroupItem({
   className,
   ...props
 }: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
+  const sf = useSaasflareProps()
   return (
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
@@ -64,7 +66,7 @@ function RadioGroupItem({
         data-slot="radio-group-indicator"
         className="relative flex items-center justify-center"
       >
-        <CircleIcon className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-primary animate-in zoom-in-50 duration-150" />
+        <CircleIcon weight={sf.iconWeight} className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-primary animate-in zoom-in-50 duration-150" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )

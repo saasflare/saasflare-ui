@@ -23,7 +23,7 @@
 
 import * as React from "react"
 import { m } from "motion/react"
-import { ChevronDownIcon, ChevronUpIcon, CheckIcon } from "lucide-react"
+import { CaretDownIcon, CaretUpIcon, CheckIcon } from "./phosphor"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -55,6 +55,7 @@ function SelectTrigger({
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "sm" | "default"
 }) {
+  const sf = useSaasflareProps()
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -68,7 +69,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        <CaretDownIcon weight={sf.iconWeight} className="size-4 opacity-50" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
@@ -85,9 +86,10 @@ function SelectContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SelectContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
@@ -146,6 +148,7 @@ function SelectItem({
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  const sf = useSaasflareProps()
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
@@ -157,7 +160,7 @@ function SelectItem({
     >
       <span className="absolute right-2 flex size-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon weight={sf.iconWeight} className="size-4" />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -182,13 +185,14 @@ function SelectScrollUpButton({
   className,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
+  const sf = useSaasflareProps()
   return (
     <SelectPrimitive.ScrollUpButton
       data-slot="select-scroll-up-button"
       className={cn("flex cursor-default items-center justify-center py-1", className)}
       {...props}
     >
-      <ChevronUpIcon className="size-4" />
+      <CaretUpIcon weight={sf.iconWeight} className="size-4" />
     </SelectPrimitive.ScrollUpButton>
   )
 }
@@ -197,13 +201,14 @@ function SelectScrollDownButton({
   className,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+  const sf = useSaasflareProps()
   return (
     <SelectPrimitive.ScrollDownButton
       data-slot="select-scroll-down-button"
       className={cn("flex cursor-default items-center justify-center py-1", className)}
       {...props}
     >
-      <ChevronDownIcon className="size-4" />
+      <CaretDownIcon weight={sf.iconWeight} className="size-4" />
     </SelectPrimitive.ScrollDownButton>
   )
 }

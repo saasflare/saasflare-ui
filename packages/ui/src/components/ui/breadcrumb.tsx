@@ -19,7 +19,7 @@
  * </Breadcrumb>
  */
 import * as React from "react"
-import { ChevronRight, MoreHorizontal } from "lucide-react"
+import { CaretRightIcon, DotsThreeIcon } from "./phosphor"
 import * as Slot from "@radix-ui/react-slot"
 
 import { cn } from "../../lib"
@@ -27,8 +27,8 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 
 interface BreadcrumbProps extends Omit<React.ComponentProps<"nav">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Breadcrumb({ surface, radius, animated, ...props }: BreadcrumbProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Breadcrumb({ surface, radius, animated, iconWeight, ...props }: BreadcrumbProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <nav
@@ -101,6 +101,7 @@ function BreadcrumbSeparator({
   className,
   ...props
 }: React.ComponentProps<"li">) {
+  const sf = useSaasflareProps()
   return (
     <li
       data-slot="breadcrumb-separator"
@@ -109,7 +110,7 @@ function BreadcrumbSeparator({
       className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? <ChevronRight />}
+      {children ?? <CaretRightIcon weight={sf.iconWeight} />}
     </li>
   )
 }
@@ -118,6 +119,7 @@ function BreadcrumbEllipsis({
   className,
   ...props
 }: React.ComponentProps<"span">) {
+  const sf = useSaasflareProps()
   return (
     <span
       data-slot="breadcrumb-ellipsis"
@@ -126,7 +128,7 @@ function BreadcrumbEllipsis({
       className={cn("flex size-9 items-center justify-center", className)}
       {...props}
     >
-      <MoreHorizontal className="size-4" />
+      <DotsThreeIcon weight={sf.iconWeight} className="size-4" />
       <span className="sr-only">More</span>
     </span>
   )

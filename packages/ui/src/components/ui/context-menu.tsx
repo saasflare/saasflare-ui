@@ -21,7 +21,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
+import { CheckIcon, CaretRightIcon, CircleIcon } from "./phosphor"
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
 
 import { cn } from "../../lib"
@@ -82,6 +82,7 @@ function ContextMenuSubTrigger({
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
   inset?: boolean
 }) {
+  const sf = useSaasflareProps()
   return (
     <ContextMenuPrimitive.SubTrigger
       data-slot="context-menu-sub-trigger"
@@ -93,7 +94,7 @@ function ContextMenuSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRightIcon className="ml-auto" />
+      <CaretRightIcon weight={sf.iconWeight} className="ml-auto" />
     </ContextMenuPrimitive.SubTrigger>
   )
 }
@@ -123,9 +124,10 @@ function ContextMenuContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ContextMenuContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <ContextMenuPrimitive.Portal>
@@ -173,6 +175,7 @@ function ContextMenuCheckboxItem({
   checked,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
+  const sf = useSaasflareProps()
   return (
     <ContextMenuPrimitive.CheckboxItem
       data-slot="context-menu-checkbox-item"
@@ -185,7 +188,7 @@ function ContextMenuCheckboxItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <ContextMenuPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon weight={sf.iconWeight} className="size-4" />
         </ContextMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -198,6 +201,7 @@ function ContextMenuRadioItem({
   children,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
+  const sf = useSaasflareProps()
   return (
     <ContextMenuPrimitive.RadioItem
       data-slot="context-menu-radio-item"
@@ -209,7 +213,7 @@ function ContextMenuRadioItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <ContextMenuPrimitive.ItemIndicator>
-          <CircleIcon className="size-2 fill-current" />
+          <CircleIcon weight={sf.iconWeight} className="size-2 fill-current" />
         </ContextMenuPrimitive.ItemIndicator>
       </span>
       {children}

@@ -28,6 +28,7 @@ import { useContext } from "react"
 import { AnimationContext } from "./animation-context"
 import { useSaasflareTheme } from "./saasflare-provider"
 import type { Radius, StyleVariant } from "../types"
+import type { IconWeight } from "../components/ui/phosphor"
 
 // ---------------------------------------------------------------------------
 // Base props — every Saasflare component extends SaasflareComponentProps
@@ -41,6 +42,14 @@ export interface SaasflareComponentProps {
     radius?: Radius
     /** Animation override. Omit to inherit from provider. */
     animated?: boolean
+    /**
+     * Icon weight override for any Phosphor icons rendered inside the component.
+     * Omit to inherit from provider (which defaults to "regular").
+     *
+     * Some components (e.g. Spinner) hardcode a weight that's part of their
+     * visual identity and intentionally ignore this prop.
+     */
+    iconWeight?: IconWeight
 }
 
 // ---------------------------------------------------------------------------
@@ -57,6 +66,8 @@ export interface ResolvedSaasflareProps {
     animated: boolean
     /** Active brand palette id (null = global.css baseline). */
     palette: string | null
+    /** Active icon weight for component-rendered Phosphor icons. */
+    iconWeight: IconWeight
 }
 
 // ---------------------------------------------------------------------------
@@ -81,5 +92,6 @@ export function useSaasflareProps(
         radius: props.radius ?? ctx.radius,
         animated: props.animated ?? anim?.animated ?? true,
         palette: ctx.palette,
+        iconWeight: props.iconWeight ?? ctx.iconWeight,
     }
 }

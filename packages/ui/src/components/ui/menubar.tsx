@@ -23,7 +23,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
+import { CheckIcon, CaretRightIcon, CircleIcon } from "./phosphor"
 import * as MenubarPrimitive from "@radix-ui/react-menubar"
 
 import { cn } from "../../lib"
@@ -38,9 +38,10 @@ function Menubar({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: MenubarProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <MenubarPrimitive.Root
@@ -111,9 +112,10 @@ function MenubarContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: MenubarContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <MenubarPortal>
@@ -164,6 +166,7 @@ function MenubarCheckboxItem({
   checked,
   ...props
 }: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>) {
+  const sf = useSaasflareProps()
   return (
     <MenubarPrimitive.CheckboxItem
       data-slot="menubar-checkbox-item"
@@ -176,7 +179,7 @@ function MenubarCheckboxItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon weight={sf.iconWeight} className="size-4" />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}
@@ -189,6 +192,7 @@ function MenubarRadioItem({
   children,
   ...props
 }: React.ComponentProps<typeof MenubarPrimitive.RadioItem>) {
+  const sf = useSaasflareProps()
   return (
     <MenubarPrimitive.RadioItem
       data-slot="menubar-radio-item"
@@ -200,7 +204,7 @@ function MenubarRadioItem({
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <MenubarPrimitive.ItemIndicator>
-          <CircleIcon className="size-2 fill-current" />
+          <CircleIcon weight={sf.iconWeight} className="size-2 fill-current" />
         </MenubarPrimitive.ItemIndicator>
       </span>
       {children}
@@ -271,6 +275,7 @@ function MenubarSubTrigger({
 }: React.ComponentProps<typeof MenubarPrimitive.SubTrigger> & {
   inset?: boolean
 }) {
+  const sf = useSaasflareProps()
   return (
     <MenubarPrimitive.SubTrigger
       data-slot="menubar-sub-trigger"
@@ -282,7 +287,7 @@ function MenubarSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRightIcon className="ml-auto h-4 w-4" />
+      <CaretRightIcon weight={sf.iconWeight} className="ml-auto h-4 w-4" />
     </MenubarPrimitive.SubTrigger>
   )
 }

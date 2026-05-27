@@ -29,9 +29,10 @@ import { m } from "motion/react"
 import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
 import { useMousePosition } from "../../hooks/use-mouse-position"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the SpotlightCard component. */
-export interface SpotlightCardProps {
+export interface SpotlightCardProps extends SaasflareComponentProps {
   /** Card content. */
   children: ReactNode
   /** Spotlight gradient color. Default: `"hsl(var(--primary))"` */
@@ -61,7 +62,11 @@ export function SpotlightCard({
   spotlightSize = 250,
   spotlightOpacity = 0.08,
   className,
+  surface,
+  radius,
+  animated,
 }: SpotlightCardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const reduced = useReducedMotion()
   const cardRef = useRef<HTMLDivElement>(null)
   const position = useMousePosition({ ref: cardRef, enabled: !reduced })
@@ -72,13 +77,15 @@ export function SpotlightCard({
       ref={cardRef}
       onMouseEnter={reduced ? undefined : () => setIsHovered(true)}
       onMouseLeave={reduced ? undefined : () => setIsHovered(false)}
+      data-slot="spotlight-card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       className={cn(
-        "relative overflow-hidden rounded-card border border-border-subtle bg-glass-2 p-6 text-card-foreground",
-        "transition-all duration-200 hover:border-border-hover hover:shadow-card-hover hover:-translate-y-px",
+        "relative overflow-hidden rounded-xl border surface-card p-6 text-card-foreground",
+        "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
         "motion-reduce:hover:transform-none",
         className,
       )}
-      data-slot="spotlight-card"
     >
       {/* Spotlight gradient overlay */}
       {!reduced && (

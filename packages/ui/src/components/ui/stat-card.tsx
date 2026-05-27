@@ -18,9 +18,10 @@
 
 import { type ReactNode } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the StatCard component. */
-export interface StatCardProps {
+export interface StatCardProps extends SaasflareComponentProps {
   /** The stat value (e.g. "10K+", "99.9%", "$2.4M"). */
   value: string
   /** Label describing the stat. */
@@ -42,16 +43,22 @@ export function StatCard({
   label,
   icon,
   className,
+  surface,
+  radius,
+  animated,
 }: StatCardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   return (
     <div
+      data-slot="stat-card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       className={cn(
-        "flex flex-col items-center rounded-card border border-border-subtle bg-glass-2 p-6 text-center",
-        "transition-all duration-200 hover:border-border-hover hover:shadow-card-hover hover:-translate-y-px",
+        "flex flex-col items-center rounded-xl border surface-card p-6 text-center",
+        "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
         "motion-reduce:hover:transform-none",
         className,
       )}
-      data-slot="stat-card"
     >
       {icon && (
         <div className="mb-3 text-primary [&_svg]:size-6">{icon}</div>

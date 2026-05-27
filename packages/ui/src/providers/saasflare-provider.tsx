@@ -47,6 +47,7 @@ import type {
     StyleVariant,
     Surface,
 } from "../types"
+import type { IconWeight } from "../components/ui/phosphor"
 
 // ---------------------------------------------------------------------------
 // Saasflare context (palette + surface + radius)
@@ -60,22 +61,28 @@ interface SaasflareThemeContextType {
     surface: StyleVariant
     /** Active radius preset. */
     radius: Radius
+    /** Active icon weight for component-rendered Phosphor icons. */
+    iconWeight: IconWeight
     /** Set the active brand palette (persists to localStorage). */
     setPalette: (id: string) => void
     /** Set the active surface style (persists to localStorage). */
     setSurface: (style: StyleVariant) => void
     /** Set the active radius preset (persists to localStorage). */
     setRadius: (radius: Radius) => void
+    /** Set the active icon weight (persists to localStorage). */
+    setIconWeight: (weight: IconWeight) => void
 }
 
 /** Safe defaults when no provider is mounted. */
 const DEFAULT_CONTEXT: SaasflareThemeContextType = {
     palette: null,
     surface: "flat",
-    radius: "rounded",
+    radius: "soft",
+    iconWeight: "regular",
     setPalette: () => {},
     setSurface: () => {},
     setRadius: () => {},
+    setIconWeight: () => {},
 }
 
 const SaasflareThemeContext = createContext<SaasflareThemeContextType>(DEFAULT_CONTEXT)
@@ -186,6 +193,7 @@ interface PersistedPrefs {
     surface: StyleVariant | null
     radius: Radius | null
     animated: boolean | null
+    iconWeight: IconWeight | null
 }
 
 const PERSISTED_DEFAULTS: PersistedPrefs = {
@@ -193,6 +201,7 @@ const PERSISTED_DEFAULTS: PersistedPrefs = {
     surface: null,
     radius: null,
     animated: null,
+    iconWeight: null,
 }
 
 /** Props for SaasflareProvider. */
@@ -223,9 +232,19 @@ export interface SaasflareProviderProps {
      * - Omit to defer: uses persisted preference if any, otherwise "rounded"
      */
     radius?: RadiusProp
-    /** Global animation kill switch. @default true */
+    /**
+     * Default icon weight for component-rendered Phosphor icons.
+     * - IconWeight ("regular" | "bold" | "fill" | "duotone") → forces the value
+     * - Omit to defer: uses persisted preference if any, otherwise "regular"
+     */
+    iconWeight?: IconWeight
+    /**
+     * Global animation kill switch.
+     * - boolean → forces the value
+     * - Omit to defer: uses persisted preference if any, otherwise `true`
+     */
     animated?: boolean
-    /** Enable smooth scrolling site-wide. @default false */
+    /** Enable smooth scrolling site-wide. @default true */
     smoothScrolling?: boolean
     /**
      * Skip rendering the pre-hydration FOUT-prevention script.
@@ -272,8 +291,9 @@ export function SaasflareProvider({
                                       palette,
                                       surface,
                                       radius,
-                                      animated = true,
-                                      smoothScrolling = false,
+                                      iconWeight,
+                                      animated,
+                                      smoothScrolling = true,
                                       disableScript = false,
                                       scriptNonce,
                                       storageKey = UI_PREFS_STORAGE_KEY,
@@ -308,7 +328,19 @@ export function SaasflareProvider({
 
     const currentStyle: StyleVariant = surface ?? persisted.surface ?? "flat"
 
-    const currentRadius: Radius = radius ?? persisted.radius ?? "rounded"
+    const currentRadius: Radius = radius ?? persisted.radius ?? "soft"
+
+    const currentIconWeight: IconWeight =
+        iconWeight ?? persisted.iconWeight ?? "regular"
+
+    // `animated` must follow the same prop > persisted > default chain as the
+    // other axes so runtime toggles (catalog/header switches writing to the
+    // persisted storageKey) actually flip the AnimationContext value for JS
+    // consumers (Framer Motion, conditional Spring). Without the persisted
+    // fallback, a `undefined` prop collapsed to a hardcoded `true` and the
+    // context could never go to `false` from anywhere except the prop.
+    const currentAnimated: boolean =
+        animated ?? persisted.animated ?? true
 
     const setPalette = useCallback(
         (id: string) => setPersisted(prev => ({ ...prev, palette: id })),
@@ -325,9 +357,14 @@ export function SaasflareProvider({
         [setPersisted],
     )
 
-    // Respect prefers-reduced-motion regardless of the `animated` prop.
+    const setIconWeight = useCallback(
+        (w: IconWeight) => setPersisted(prev => ({ ...prev, iconWeight: w })),
+        [setPersisted],
+    )
+
+    // Respect prefers-reduced-motion regardless of the resolved `animated` value.
     const prefersReduced = useReducedMotion()
-    const effectiveAnimated = animated && !prefersReduced
+    const effectiveAnimated = currentAnimated && !prefersReduced
 
     // Sole authority for data-palette / data-style / data-radius / data-animated.
     // Intentionally no cleanup: attributes stay on <html> across re-renders,
@@ -351,7 +388,7 @@ export function SaasflareProvider({
             <ThemeProvider
                 attribute="class"
                 defaultTheme={theme}
-                enableSystem={theme === "system"}
+                enableSystem
                 storageKey={themeStorageKey}
                 disableTransitionOnChange
             >
@@ -366,9 +403,11 @@ export function SaasflareProvider({
                         palette: currentPalette,
                         surface: currentStyle,
                         radius: currentRadius,
+                        iconWeight: currentIconWeight,
                         setPalette,
                         setSurface,
                         setRadius,
+                        setIconWeight,
                     }}
                 >
                     <AnimationContext.Provider value={{ animated: effectiveAnimated }}>

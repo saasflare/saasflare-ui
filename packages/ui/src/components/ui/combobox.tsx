@@ -39,9 +39,10 @@
 import * as React from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { Command as CommandPrimitive } from "cmdk"
-import { CheckIcon, SearchIcon } from "lucide-react"
+import { CheckIcon, MagnifyingGlassIcon } from "./phosphor"
 
 import { cn } from "../../lib"
+import { useSaasflareProps } from "../../providers"
 
 const Combobox = PopoverPrimitive.Root
 
@@ -81,12 +82,13 @@ function ComboboxInput({
   className,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
+  const sf = useSaasflareProps()
   return (
     <div
       data-slot="combobox-input-wrapper"
       className="flex h-9 items-center gap-2 border-b px-3"
     >
-      <SearchIcon className="size-4 shrink-0 opacity-50" />
+      <MagnifyingGlassIcon weight={sf.iconWeight} className="size-4 shrink-0 opacity-50" />
       <CommandPrimitive.Input
         data-slot="combobox-input"
         className={cn(
@@ -124,6 +126,7 @@ function ComboboxItem({
   /** Show a leading check indicator. Lets consumers render selection state without a separate Indicator slot. */
   selected?: boolean
 }) {
+  const sf = useSaasflareProps()
   return (
     <CommandPrimitive.Item
       data-slot="combobox-item"
@@ -136,6 +139,7 @@ function ComboboxItem({
       {children}
       {selected ? (
         <CheckIcon
+          weight={sf.iconWeight}
           data-slot="combobox-item-indicator"
           className="absolute right-2 size-4"
         />

@@ -20,7 +20,7 @@
 
 import * as React from "react"
 import { m, AnimatePresence } from "motion/react"
-import { CheckIcon } from "lucide-react"
+import { CheckIcon } from "./phosphor"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -35,9 +35,10 @@ function Checkbox({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: CheckboxProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
@@ -63,7 +64,7 @@ function Checkbox({
           exit={motion.disabled ? undefined : { scale: 0, opacity: 0 }}
           transition={motion.transition}
         >
-          <CheckIcon className="size-3.5" />
+          <CheckIcon weight={sf.iconWeight} className="size-3.5" />
         </m.span>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

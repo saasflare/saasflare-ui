@@ -20,10 +20,10 @@
 
 import * as React from "react"
 import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "lucide-react"
+  CaretDownIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+} from "./phosphor"
 import {
   DayPicker,
   getDefaultClassNames,
@@ -50,9 +50,10 @@ function Calendar({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: CalendarProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const defaultClassNames = getDefaultClassNames()
 
   return (
@@ -175,13 +176,18 @@ function Calendar({
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return (
-              <ChevronLeftIcon className={cn("size-4", className)} {...props} />
+              <CaretLeftIcon
+                weight={sf.iconWeight}
+                className={cn("size-4", className)}
+                {...props}
+              />
             )
           }
 
           if (orientation === "right") {
             return (
-              <ChevronRightIcon
+              <CaretRightIcon
+                weight={sf.iconWeight}
                 className={cn("size-4", className)}
                 {...props}
               />
@@ -189,7 +195,11 @@ function Calendar({
           }
 
           return (
-            <ChevronDownIcon className={cn("size-4", className)} {...props} />
+            <CaretDownIcon
+              weight={sf.iconWeight}
+              className={cn("size-4", className)}
+              {...props}
+            />
           )
         },
         DayButton: CalendarDayButton,

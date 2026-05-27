@@ -30,8 +30,9 @@
 
 import { useState, useCallback, type KeyboardEvent } from "react"
 import { AnimatePresence, m } from "motion/react"
-import { PlayIcon, XIcon } from "lucide-react"
+import { PlayIcon, XIcon } from "./phosphor"
 import { cn } from "../../lib"
+import { useSaasflareProps } from "../../providers"
 import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
 
 /** Props for the HeroVideoDialog component. */
@@ -67,6 +68,7 @@ export function HeroVideoDialog({
   className,
 }: HeroVideoDialogProps) {
   const reduced = useReducedMotion()
+  const sf = useSaasflareProps()
   const [open, setOpen] = useState(false)
 
   const close = useCallback(() => setOpen(false), [])
@@ -100,7 +102,7 @@ export function HeroVideoDialog({
         {/* Play button overlay */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
           <div className="flex size-16 items-center justify-center rounded-full bg-white/90 shadow-xl backdrop-blur-sm transition-transform group-hover:scale-110">
-            <PlayIcon className="ml-1 size-7 text-foreground" fill="currentColor" />
+            <PlayIcon weight={sf.iconWeight} className="ml-1 size-7 text-foreground" />
           </div>
         </div>
       </button>
@@ -127,7 +129,7 @@ export function HeroVideoDialog({
               className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
               aria-label="Close video"
             >
-              <XIcon className="size-6" />
+              <XIcon weight={sf.iconWeight} className="size-6" />
             </button>
 
             {/* Video container */}

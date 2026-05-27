@@ -11,7 +11,7 @@
  *
  * @example
  * import { EmptyState } from "@saasflare/core";
- * import { InboxIcon } from "lucide-react";
+ * import { InboxIcon } from "./phosphor";
  *
  * <EmptyState
  *   icon={<InboxIcon />}

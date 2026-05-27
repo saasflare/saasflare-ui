@@ -28,7 +28,7 @@
 
 import * as React from "react"
 import { OTPInput, OTPInputContext } from "input-otp"
-import { MinusIcon } from "lucide-react"
+import { MinusIcon } from "./phosphor"
 
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -43,9 +43,10 @@ function InputOTP({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: InputOTPProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <OTPInput
@@ -104,9 +105,10 @@ function InputOTPSlot({
 }
 
 function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
+  const sf = useSaasflareProps()
   return (
     <div data-slot="input-otp-separator" role="separator" {...props}>
-      <MinusIcon />
+      <MinusIcon weight={sf.iconWeight} />
     </div>
   )
 }

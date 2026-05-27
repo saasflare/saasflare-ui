@@ -21,7 +21,7 @@
 
 import * as React from "react"
 import { m } from "motion/react"
-import { ChevronDownIcon } from "lucide-react"
+import { CaretDownIcon } from "./phosphor"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -42,9 +42,10 @@ function AccordionItem({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: AccordionItemProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <AccordionPrimitive.Item
@@ -88,7 +89,7 @@ function AccordionTrigger({
           animate={{ rotate: 0 }}
           transition={motion.transition}
         >
-          <ChevronDownIcon className="size-4" />
+          <CaretDownIcon weight={sf.iconWeight} className="size-4" />
         </m.div>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

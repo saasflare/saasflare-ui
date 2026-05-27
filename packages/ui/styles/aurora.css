@@ -1,0 +1,47 @@
+/**
+ * @fileoverview Aurora drift animations for AuroraBackground showcase backdrop.
+ * @module packages/ui/styles/aurora
+ * @package ui
+ *
+ * Three independent keyframe cycles with staggered periods (24/28/32s) and
+ * negative delays so the blobs never synchronise. Drift is small (max ±6%)
+ * to feel like ambient motion, not active animation.
+ *
+ * Animation only activates when the component sets `data-animated="true"`.
+ * `prefers-reduced-motion: reduce` always wins.
+ */
+
+@keyframes aurora-drift-1 {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(4%, 6%); }
+}
+
+@keyframes aurora-drift-2 {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(-5%, 3%); }
+}
+
+@keyframes aurora-drift-3 {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(3%, -5%); }
+}
+
+[data-slot="aurora-background"][data-animated="true"] .aurora-blob-1 {
+    animation: aurora-drift-1 24s ease-in-out infinite;
+}
+
+[data-slot="aurora-background"][data-animated="true"] .aurora-blob-2 {
+    animation: aurora-drift-2 28s ease-in-out infinite;
+    animation-delay: -8s;
+}
+
+[data-slot="aurora-background"][data-animated="true"] .aurora-blob-3 {
+    animation: aurora-drift-3 32s ease-in-out infinite;
+    animation-delay: -16s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-slot="aurora-background"] .aurora-blob {
+        animation: none !important;
+    }
+}

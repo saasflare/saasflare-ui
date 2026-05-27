@@ -28,7 +28,7 @@
 'use client';
 
 import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
-import { ArrowUpIcon } from 'lucide-react';
+import { ArrowUpIcon } from '../ui/phosphor';
 import { AnimatePresence, m } from 'motion/react';
 import { cn } from '../../lib';
 import {
@@ -71,7 +71,7 @@ export function ScrollToTopButton({
     className,
     ...sfProps
 }: ScrollToTopButtonProps): JSX.Element {
-    const { animated, surface } = useSaasflareProps(sfProps);
+    const { animated, surface, iconWeight } = useSaasflareProps(sfProps);
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -115,10 +115,14 @@ export function ScrollToTopButton({
     };
 
     // Surface variant — primary color carries the CTA semantic in both modes.
-    // Glass adds backdrop-blur and subtle transparency; flat is opaque.
+    // Glass adds backdrop-blur and subtle transparency; clay keeps the primary
+    // fill (CTA identity) but inherits the pillow shadow stack from surface
+    // tokens for the soft 3D finish; flat is opaque.
     const surfaceClass =
         surface === 'glass'
             ? 'bg-primary/85 text-primary-foreground backdrop-blur-md border border-[oklch(1_0_0_/_0.15)] shadow-[var(--surface-shadow)]'
+            : surface === 'clay'
+            ? 'bg-primary text-primary-foreground border-0 shadow-[var(--surface-shadow)] active:translate-y-px'
             : 'bg-primary text-primary-foreground shadow-lg';
 
     // Animated=false → zero-duration transitions, Framer still owns AnimatePresence
@@ -141,7 +145,7 @@ export function ScrollToTopButton({
                         className,
                     )}
                 >
-                    <ArrowUpIcon className="h-5 w-5" />
+                    <ArrowUpIcon weight={iconWeight} className="h-5 w-5" />
                 </m.button>
             )}
         </AnimatePresence>

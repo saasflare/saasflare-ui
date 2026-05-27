@@ -18,9 +18,10 @@
 
 import { type ReactNode } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the FeatureCard component. */
-export interface FeatureCardProps {
+export interface FeatureCardProps extends SaasflareComponentProps {
   /** Icon element displayed at the top. */
   icon?: ReactNode
   /** Feature title. */
@@ -42,16 +43,22 @@ export function FeatureCard({
   title,
   description,
   className,
+  surface,
+  radius,
+  animated,
 }: FeatureCardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   return (
     <div
+      data-slot="feature-card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       className={cn(
-        "rounded-card border border-border-subtle bg-glass-2 p-6",
-        "transition-all duration-200 hover:border-border-hover hover:shadow-card-hover hover:-translate-y-px",
+        "rounded-xl border surface-card p-6",
+        "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
         "motion-reduce:hover:transform-none",
         className,
       )}
-      data-slot="feature-card"
     >
       {icon && (
         <div className="mb-4 flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary [&_svg]:size-5">

@@ -93,7 +93,7 @@ function DrawerContent({
         data-radius={sf.radius}
         data-animated={String(sf.animated)}
         className={cn(
-          "group/drawer-content fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[96dvh] flex-col rounded-t-lg border-t bg-background",
+          "group/drawer-content fixed inset-x-0 bottom-0 z-50 mt-24 flex max-h-[96dvh] flex-col rounded-t-lg border-t surface-card",
           className
         )}
       >

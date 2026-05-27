@@ -15,11 +15,12 @@
  */
 
 import { useRef, useState, useEffect, useCallback } from "react"
-import { PlayIcon, PauseIcon } from "lucide-react"
+import { PlayIcon, PauseIcon } from "./phosphor"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the AudioPlayer component. */
-export interface AudioPlayerProps {
+export interface AudioPlayerProps extends SaasflareComponentProps {
   /** Audio source URL. */
   src: string
   /** Track title. */
@@ -46,7 +47,11 @@ export function AudioPlayer({
   src,
   title,
   className,
+  surface,
+  radius,
+  animated,
 }: AudioPlayerProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
   const [current, setCurrent] = useState(0)
@@ -91,12 +96,14 @@ export function AudioPlayer({
 
   return (
     <div
+      data-slot="audio-player"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       className={cn(
-        "flex items-center gap-3 rounded-card border border-border-subtle bg-glass-2 px-4 py-3",
-        "transition-all duration-200 hover:border-border-hover hover:shadow-card-hover",
+        "flex items-center gap-3 rounded-xl border surface-card px-4 py-3",
+        "transition-all duration-200 hover:shadow-md",
         className,
       )}
-      data-slot="audio-player"
     >
       <audio ref={audioRef} src={src} preload="metadata" />
 
@@ -107,9 +114,9 @@ export function AudioPlayer({
         aria-label={playing ? "Pause" : "Play"}
       >
         {playing ? (
-          <PauseIcon className="size-4" fill="currentColor" />
+          <PauseIcon weight={sf.iconWeight} className="size-4" />
         ) : (
-          <PlayIcon className="ml-0.5 size-4" fill="currentColor" />
+          <PlayIcon weight={sf.iconWeight} className="ml-0.5 size-4" />
         )}
       </button>
 

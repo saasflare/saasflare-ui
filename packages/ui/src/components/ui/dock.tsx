@@ -45,6 +45,7 @@ import {
 } from "motion/react"
 import { cn } from "../../lib"
 import { useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /* ── Dock context ── */
 
@@ -66,7 +67,7 @@ function useDock(): DockContextValue {
 /* ── Dock ── */
 
 /** Props for the Dock container. */
-export interface DockProps {
+export interface DockProps extends SaasflareComponentProps {
   /** Dock items. */
   children: ReactNode
   /** Maximum scale factor for magnified items. Default: `1.5` */
@@ -93,7 +94,11 @@ export function Dock({
   magnification = 1.5,
   distance = 100,
   className,
+  surface,
+  radius,
+  animated,
 }: DockProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const reduced = useReducedMotion()
   const mouseX = useMotionValue(Infinity)
 
@@ -102,13 +107,15 @@ export function Dock({
       <m.nav
         onMouseMove={(e: ReactMouseEvent) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
+        data-slot="dock"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
         className={cn(
-          "mx-auto flex h-14 items-end gap-2 rounded-2xl border bg-background/80 px-3 pb-2 shadow-lg backdrop-blur-md",
+          "mx-auto flex h-14 items-end gap-2 rounded-2xl border surface-card px-3 pb-2",
           className,
         )}
         role="toolbar"
         aria-label="Dock"
-        data-slot="dock"
       >
         {children}
       </m.nav>

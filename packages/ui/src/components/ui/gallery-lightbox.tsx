@@ -25,8 +25,9 @@
 
 import { useEffect, useCallback } from "react"
 import { AnimatePresence, m } from "motion/react"
-import { XIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
+import { XIcon, CaretLeftIcon, CaretRightIcon } from "./phosphor"
 import { cn } from "../../lib"
+import { useSaasflareProps } from "../../providers"
 
 /** Props for the GalleryLightbox component. */
 export interface GalleryLightboxProps {
@@ -58,6 +59,7 @@ export function GalleryLightbox({
   onIndexChange,
   className,
 }: GalleryLightboxProps) {
+  const sf = useSaasflareProps()
   const prev = useCallback(() => {
     onIndexChange((index - 1 + images.length) % images.length)
   }, [index, images.length, onIndexChange])
@@ -109,7 +111,7 @@ export function GalleryLightbox({
             className="absolute right-4 top-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
             aria-label="Close gallery"
           >
-            <XIcon className="size-6" />
+            <XIcon weight={sf.iconWeight} className="size-6" />
           </button>
 
           {/* Prev */}
@@ -120,7 +122,7 @@ export function GalleryLightbox({
               className="absolute left-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
               aria-label="Previous image"
             >
-              <ChevronLeftIcon className="size-6" />
+              <CaretLeftIcon weight={sf.iconWeight} className="size-6" />
             </button>
           )}
 
@@ -145,7 +147,7 @@ export function GalleryLightbox({
               className="absolute right-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
               aria-label="Next image"
             >
-              <ChevronRightIcon className="size-6" />
+              <CaretRightIcon weight={sf.iconWeight} className="size-6" />
             </button>
           )}
 
