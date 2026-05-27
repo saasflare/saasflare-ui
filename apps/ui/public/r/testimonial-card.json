@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "testimonial-card",
+  "type": "registry:ui",
+  "title": "Testimonial Card",
+  "description": "Customer testimonial card with quote, author name, role, and optional avatar.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/testimonial-card.tsx",
+      "type": "registry:ui",
+      "content": "// @draft\n/**\n * @fileoverview Testimonial card with avatar, quote, and optional star rating.\n * @author Saasflare™\n * @module packages/ui/components/ui/testimonial-card\n * @package ui\n *\n * @component\n * @example\n * import { TestimonialCard } from '@saasflare/ui';\n * <TestimonialCard\n *   quote=\"Amazing product!\"\n *   name=\"Jane Doe\"\n *   role=\"CEO at Acme\"\n *   avatar=\"/jane.jpg\"\n *   rating={5}\n * />\n */\n\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\n/** Props for the TestimonialCard component. */\nexport interface TestimonialCardProps extends SaasflareComponentProps {\n  /** The testimonial quote text. */\n  quote: string\n  /** Name of the person. */\n  name: string\n  /** Role/title of the person. */\n  role?: string\n  /** Avatar image URL. */\n  avatar?: string\n  /** Star rating (1–5). Omit to hide stars. */\n  rating?: 1 | 2 | 3 | 4 | 5\n  /** Additional class names. */\n  className?: string\n}\n\n/**\n * Testimonial card with avatar, quote, attribution, and optional star rating.\n *\n * @component\n * @package ui\n */\nexport function TestimonialCard({\n  quote,\n  name,\n  role,\n  avatar,\n  rating,\n  className,\n  surface,\n  radius,\n  animated,\n}: TestimonialCardProps) {\n  const sf = useSaasflareProps({ surface, radius, animated })\n  return (\n    <div\n      data-slot=\"testimonial-card\"\n      data-surface={sf.surface}\n      data-radius={sf.radius}\n      className={cn(\n        \"flex flex-col rounded-xl border surface-card p-6\",\n        \"transition-all duration-200 hover:-translate-y-px hover:shadow-md\",\n        \"motion-reduce:hover:transform-none\",\n        className,\n      )}\n    >\n      {rating && (\n        <div className=\"mb-3 flex gap-0.5\" aria-label={`${rating} out of 5 stars`}>\n          {Array.from({ length: 5 }, (_, i) => (\n            <svg\n              key={i}\n              className={cn(\"size-4\", i < rating ? \"text-yellow-400\" : \"text-muted-foreground/20\")}\n              viewBox=\"0 0 20 20\"\n              fill=\"currentColor\"\n              aria-hidden=\"true\"\n            >\n              <path d=\"M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z\" />\n            </svg>\n          ))}\n        </div>\n      )}\n\n      <blockquote className=\"flex-1 text-sm leading-relaxed text-foreground\">\n        &ldquo;{quote}&rdquo;\n      </blockquote>\n\n      <div className=\"mt-4 flex items-center gap-3\">\n        {avatar && (\n          <img\n            src={avatar}\n            alt={name}\n            className=\"size-10 rounded-full object-cover\"\n          />\n        )}\n        <div>\n          <p className=\"text-sm font-semibold\">{name}</p>\n          {role && <p className=\"text-xs text-muted-foreground\">{role}</p>}\n        </div>\n      </div>\n    </div>\n  )\n}\n",
+      "target": "components/ui/testimonial-card.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/testimonial-card.json"
+  }
+}

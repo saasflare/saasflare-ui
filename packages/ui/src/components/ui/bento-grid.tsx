@@ -31,6 +31,7 @@ import { type ReactNode } from "react"
 import { m } from "motion/react"
 import { cn } from "../../lib"
 import { springGentle, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the BentoGrid container. */
 export interface BentoGridProps {
@@ -83,7 +84,7 @@ export function BentoGrid({
 }
 
 /** Props for a BentoGridItem. */
-export interface BentoGridItemProps {
+export interface BentoGridItemProps extends SaasflareComponentProps {
   /** Item content. */
   children: ReactNode
   /** Number of columns to span (1–4). Default: `1` */
@@ -127,7 +128,11 @@ export function BentoGridItem({
   rowSpan = 1,
   index = 0,
   className,
+  surface,
+  radius,
+  animated,
 }: BentoGridItemProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const reduced = useReducedMotion()
 
   return (
@@ -136,15 +141,17 @@ export function BentoGridItem({
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={reduced ? noMotion : { ...springGentle, delay: index * 0.08 }}
+      data-slot="bento-grid-item"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       className={cn(
-        "rounded-card border border-border-subtle bg-glass-2 p-6 text-card-foreground",
-        "transition-all duration-200 hover:border-border-hover hover:shadow-card-hover hover:-translate-y-px",
+        "rounded-xl border surface-card p-6 text-card-foreground",
+        "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
         "motion-reduce:hover:transform-none",
         COL_SPAN_MAP[colSpan],
         ROW_SPAN_MAP[rowSpan],
         className,
       )}
-      data-slot="bento-grid-item"
     >
       {children}
     </m.div>

@@ -1,7 +1,8 @@
 // @toreview
 /**
- * @fileoverview Spinner primitive — animated loading indicator built on the Lucide
- * Loader2 icon. Applies a continuous spin animation with accessible status role.
+ * @fileoverview Spinner primitive — animated loading indicator built on the
+ * Phosphor CircleNotch icon. Applies a continuous spin animation with accessible
+ * status role.
  * Part of the Saasflare base component layer.
  * @module packages/core/components/ui/spinner
  * @layer core
@@ -13,7 +14,7 @@
  */
 "use client"
 
-import { Loader2Icon } from "lucide-react"
+import { CircleNotchIcon } from "./phosphor"
 
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -24,7 +25,7 @@ function Spinner({ className, surface, radius, animated, ...props }: SpinnerProp
   const sf = useSaasflareProps({ animated })
 
   return (
-    <Loader2Icon
+    <CircleNotchIcon
       {...props}
       role="status"
       aria-label="Loading"

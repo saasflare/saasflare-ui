@@ -22,7 +22,7 @@
 import * as React from "react"
 import { m } from "motion/react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { XIcon } from "lucide-react"
+import { XIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
@@ -83,9 +83,10 @@ function DialogContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: DialogContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
@@ -105,13 +106,13 @@ function DialogContent({
           exit={motion.disabled ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
           transition={motion.transition}
           className={cn(
-            "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border bg-background p-6 shadow-lg sm:max-w-lg",
+            "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border surface-card p-6 sm:max-w-lg",
             className
           )}
         >
           {children}
           <DialogPrimitive.Close className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none cursor-pointer [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
-            <XIcon />
+            <XIcon weight={sf.iconWeight} />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         </m.div>

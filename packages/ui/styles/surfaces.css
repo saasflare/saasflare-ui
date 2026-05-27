@@ -1,20 +1,26 @@
 /**
- * @fileoverview Surface system — flat / glass as semantic overlay.
+ * @fileoverview Surface system — flat / glass / clay as semantic overlay.
  * @module packages/ui/styles/surfaces
  * @package ui
- * @reviewed 2026-04-19
+ * @reviewed 2026-05-26
  *
  * Components bind to four surface tokens:
- *   --surface-bg         background color or gradient
+ *   --surface-bg         background color or gradient (resolved via `background:`)
  *   --surface-border     border color
  *   --surface-backdrop   backdrop-filter value (blur/saturate) or "none"
- *   --surface-shadow     box-shadow value
+ *   --surface-shadow     box-shadow value (may stack multiple layers)
  *
- * Switching [data-style="…"] on <html> swaps the tokens without touching
- * any component. Extend by adding a new selector block:
+ * Two attributes activate the surface tokens:
+ *   - [data-style="…"]    — used on <html> by SaasflareShell (page-wide default)
+ *   - [data-surface="…"]  — used on individual components for per-element override
  *
- *   [data-style="neumorphic"] { --surface-bg: …; … }
+ * Both feed the same rule blocks so swapping at either level swaps the tokens
+ * without touching any component. A component-level `data-surface` re-defines
+ * the tokens for its subtree, overriding the cascaded page-wide value — that's
+ * how `<Button surface="glass">` wins over `<html data-style="flat">`.
  *
+ * Extend by adding a new selector block:
+ *   [data-style="neumorphic"], [data-surface="neumorphic"] { --surface-bg: …; … }
  * and registering the id in the StyleVariant union (types.ts).
  */
 
@@ -25,14 +31,16 @@
     --surface-shadow: 0 1px 2px oklch(0 0 0 / 0.05);
 }
 
-[data-style="flat"] {
+[data-style="flat"],
+[data-surface="flat"] {
     --surface-bg: var(--card);
     --surface-border: var(--border);
     --surface-backdrop: none;
     --surface-shadow: 0 1px 2px oklch(0 0 0 / 0.05);
 }
 
-[data-style="glass"] {
+[data-style="glass"],
+[data-surface="glass"] {
     --surface-bg: oklch(0.99 0.005 var(--neutral-h) / 0.6);
     --surface-border: oklch(1 0 0 / 0.2);
     --surface-backdrop: blur(12px) saturate(140%);
@@ -42,10 +50,81 @@
 }
 
 [data-style="glass"].dark,
-.dark [data-style="glass"] {
+.dark [data-style="glass"],
+[data-surface="glass"].dark,
+.dark [data-surface="glass"] {
     --surface-bg: oklch(0.2 0.015 var(--neutral-h) / 0.5);
     --surface-border: oklch(1 0 0 / 0.1);
     --surface-shadow:
         0 8px 32px oklch(0 0 0 / 0.4),
         inset 0 1px 0 oklch(1 0 0 / 0.08);
+}
+
+/* ============================================
+ * Clay — palette-agnostic pillow finish. Color comes from the active palette
+ * via --card (surface base) and --accent (shadow tint). Four-layer shadow
+ * stack creates the 3D pillow effect:
+ *   1. Outer drop  — accent-tinted soft elevation
+ *   2. Outer ambient — neutral contact shadow
+ *   3. Inner top   — bright highlight, like top-lit edge
+ *   4. Inner bottom — accent-tinted shade, like underside
+ * Background is a vertical micro-gradient so the surface feels rounded rather
+ * than printed-flat. NO transparency, NO backdrop-filter.
+ * ============================================ */
+[data-style="clay"],
+[data-surface="clay"] {
+    --surface-bg: linear-gradient(
+        180deg,
+        oklch(from var(--card) calc(l + 0.02) c h),
+        oklch(from var(--card) calc(l - 0.02) c h)
+    );
+    --surface-border: transparent;
+    --surface-backdrop: none;
+    --surface-shadow:
+        0 8px 24px -8px oklch(from var(--accent) 0.4 c h / 0.35),
+        0 2px 4px oklch(0 0 0 / 0.06),
+        inset 0 2px 3px oklch(1 0 0 / 0.6),
+        inset 0 -2px 4px oklch(from var(--accent) 0.3 c h / 0.15);
+}
+
+[data-style="clay"].dark,
+.dark [data-style="clay"],
+[data-surface="clay"].dark,
+.dark [data-surface="clay"] {
+    --surface-bg: linear-gradient(
+        180deg,
+        oklch(from var(--card) calc(l + 0.025) c h),
+        oklch(from var(--card) calc(l - 0.015) c h)
+    );
+    --surface-border: transparent;
+    --surface-backdrop: none;
+    --surface-shadow:
+        0 8px 24px -8px oklch(from var(--accent) 0.5 c h / 0.4),
+        0 2px 4px oklch(0 0 0 / 0.3),
+        inset 0 1px 0 oklch(1 0 0 / 0.06),
+        inset 0 -2px 4px oklch(from var(--accent) 0.4 c h / 0.18);
+}
+
+/* ============================================
+ * Surface utility classes — let any component opt into the active surface
+ * tokens with one className, no useSaasflareProps roundtrip required.
+ *
+ * Use `.surface-card` on the root of card-like elements (FeatureCard,
+ * TestimonialCard, StatCard, …). The class consumes whichever
+ * `--surface-*` values are currently active in the cascade — `flat`
+ * defaults from :root, `glass` overrides from <html data-style="glass">,
+ * or a local `data-surface` attribute on an ancestor.
+ *
+ * Pair with Tailwind `border` to make `--surface-border` visible. Border
+ * width is intentionally not baked in so consumers can pick `border`,
+ * `border-2`, or `border-0` per design.
+ * ============================================ */
+@layer utilities {
+    .surface-card {
+        background: var(--surface-bg);
+        border-color: var(--surface-border);
+        backdrop-filter: var(--surface-backdrop);
+        -webkit-backdrop-filter: var(--surface-backdrop);
+        box-shadow: var(--surface-shadow);
+    }
 }

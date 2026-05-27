@@ -30,7 +30,7 @@ import * as React from "react"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { ArrowLeftIcon, ArrowRightIcon } from "./phosphor"
 
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -79,9 +79,10 @@ function Carousel({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps> & CarouselProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
@@ -211,6 +212,7 @@ function CarouselPrevious({
   size = "icon",
   ...props
 }: React.ComponentProps<typeof Button>) {
+  const sf = useSaasflareProps()
   const { orientation, scrollPrev, canScrollPrev } = useCarousel()
 
   return (
@@ -229,7 +231,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
+      <ArrowLeftIcon weight={sf.iconWeight} />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -241,6 +243,7 @@ function CarouselNext({
   size = "icon",
   ...props
 }: React.ComponentProps<typeof Button>) {
+  const sf = useSaasflareProps()
   const { orientation, scrollNext, canScrollNext } = useCarousel()
 
   return (
@@ -259,7 +262,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      <ArrowRightIcon weight={sf.iconWeight} />
       <span className="sr-only">Next slide</span>
     </Button>
   )

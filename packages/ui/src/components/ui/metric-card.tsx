@@ -11,7 +11,7 @@
  *
  * @example
  * import { MetricCard } from "@saasflare/core";
- * import { UsersIcon } from "lucide-react";
+ * import { UsersIcon } from "./phosphor";
  *
  * <MetricCard
  *   label="Active Users"

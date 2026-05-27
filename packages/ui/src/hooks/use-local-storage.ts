@@ -94,38 +94,64 @@ export function useLocalStorage<T>(
     }
   }, [key, deserialize, handleError]);
 
-  // Lazy initializer — reads from localStorage on first render
-  const [storedValue, setStoredValue] = useState<T>(() => readValue());
+  // SSR-safe: first render (server AND client) always returns initialValue so
+  // the hydrated DOM matches the server-rendered HTML. The persisted value is
+  // read in the post-hydration effect below. Without this, a persisted value
+  // that differs from initialValue would cause a hydration mismatch (e.g. a
+  // <ToggleGroup value={...}> rendering different active items on each side).
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
 
   const setValue = useCallback(
     (value: T | ((prev: T) => T)) => {
-      try {
-        setStoredValue((prev) => {
-          const next = typeof value === 'function' ? (value as (prev: T) => T)(prev) : value;
-          if (typeof window !== 'undefined') {
-            window.localStorage.setItem(key, serialize(next));
-            // Same-tab sync — notify sibling hook instances using this key
-            window.dispatchEvent(new CustomEvent(`${SYNC_PREFIX}${key}`));
-          }
-          return next;
-        });
-      } catch (error) {
-        handleError(error, 'write');
+      // Read the current value from localStorage (canonical source) instead
+      // of using a setStoredValue updater — updater functions run during
+      // React's update phase, and any side effect there can be misclassified
+      // as "setState during render" when sibling hooks listening to the
+      // dispatched `sf-ls:` event call setStoredValue on a different tree.
+      let prev: T;
+      if (typeof window === 'undefined') {
+        prev = initialRef.current;
+      } else {
+        try {
+          const raw = window.localStorage.getItem(key);
+          prev = raw !== null ? deserialize(raw) : initialRef.current;
+        } catch {
+          prev = initialRef.current;
+        }
       }
+      const next = typeof value === 'function' ? (value as (prev: T) => T)(prev) : value;
+      setStoredValue(next);
+      if (typeof window === 'undefined') return;
+      try {
+        window.localStorage.setItem(key, serialize(next));
+      } catch (err) {
+        handleError(err, 'write');
+        return;
+      }
+      // Defer the same-tab sync event to the next macrotask. setTimeout(0)
+      // is the only deferral guaranteed to run outside React's render +
+      // effect phases under concurrent rendering — `queueMicrotask` can
+      // still fire inside the same task as a React update and trip the
+      // sibling-setState-during-render warning.
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent(`${SYNC_PREFIX}${key}`));
+      }, 0);
     },
-    [key, serialize, handleError],
+    [key, serialize, deserialize, handleError],
   );
 
   const removeValue = useCallback(() => {
+    setStoredValue(initialRef.current);
+    if (typeof window === 'undefined') return;
     try {
-      if (typeof window !== 'undefined') {
-        window.localStorage.removeItem(key);
-        window.dispatchEvent(new CustomEvent(`${SYNC_PREFIX}${key}`));
-      }
-      setStoredValue(initialRef.current);
-    } catch (error) {
-      handleError(error, 'remove');
+      window.localStorage.removeItem(key);
+    } catch (err) {
+      handleError(err, 'remove');
+      return;
     }
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent(`${SYNC_PREFIX}${key}`));
+    }, 0);
   }, [key, handleError]);
 
   useEffect(() => {

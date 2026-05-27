@@ -12,6 +12,9 @@
  *
  * Precedence for resolved theme props: component prop > provider context > hardcoded default.
  *
+ * Stateful concerns (loading, async pending) live in
+ * {@link StatefulButton} — this file stays purely presentational.
+ *
  * @example
  * import { Button } from "@saasflare/ui";
  *
@@ -21,12 +24,10 @@
  * <Button surface="glass">Inherits glass surface</Button>
  * <Button animated={false}>No motion</Button>
  * <Button variant="shadow">Elevated Shadow</Button>
- * <Button loading>Saving...</Button>
- * <Button variant="ghost" size="icon"><SearchIcon /></Button>
+ * <Button variant="ghost" size="icon"><MagnifyingGlassIcon /></Button>
  */
 
 import * as React from "react"
-import { Loader2Icon } from "lucide-react"
 import { m } from "motion/react"
 import { cva, type VariantProps } from "class-variance-authority"
 import * as Slot from "@radix-ui/react-slot"
@@ -59,7 +60,7 @@ const LEGACY_VARIANT_MAP: Record<string, { variant: string; intent?: Intent }> =
  * Button variant definitions using the 3-axis system.
  *
  * Axes:
- *   variant — visual treatment: solid, soft, outline, ghost, link, glass, shadow
+ *   variant — visual treatment: solid, soft, outline, ghost, link, glass, clay, shadow
  *   intent  — color intent via data-intent attribute + CSS tokens
  *   size    — dimensional: xs, sm, md, lg, xl, icon, icon-xs, icon-sm, icon-lg
  */
@@ -79,7 +80,9 @@ const buttonVariants = cva(
         link:
           "text-[var(--intent-text)] underline-offset-4 hover:underline",
         glass:
-          "bg-[var(--glass-bg)] text-[var(--intent-text)] border border-[var(--glass-border)] backdrop-blur-lg shadow-[var(--glass-shadow)] hover:bg-[var(--glass-bg-hover)] hover:border-[var(--glass-border-hover)]",
+          "bg-[var(--surface-bg)] text-[var(--intent-text)] border border-[var(--surface-border)] [backdrop-filter:var(--surface-backdrop)] [-webkit-backdrop-filter:var(--surface-backdrop)] shadow-[var(--surface-shadow)] hover:brightness-110 dark:hover:brightness-125",
+        clay:
+          "bg-[var(--intent)] text-[var(--intent-fg)] shadow-[var(--surface-shadow)] hover:brightness-110 active:translate-y-px dark:hover:brightness-125",
         shadow:
           "bg-[var(--intent)] text-[var(--intent-fg)] shadow-[var(--btn-shadow)] hover:shadow-[var(--btn-shadow-hover)] hover:brightness-110 dark:hover:brightness-125",
       },
@@ -119,31 +122,30 @@ interface ButtonProps
   asChild?: boolean
   /** Semantic color intent */
   intent?: Intent
-  /** Show loading spinner (replaces left icon, keeps text visible) */
-  loading?: boolean
   /** Stretch to full width of container */
   fullWidth?: boolean
 }
 
 /**
- * Primary interactive button with motion, loading, and intent support.
+ * Primary interactive button with motion and intent support.
  *
  * Resolves `surface` and `animated` via {@link useSaasflareProps} with the
  * precedence: component prop > <SaasflareProvider> context > hardcoded default.
  *
- * When no explicit `variant` is set and the resolved surface is `"glass"`, the
- * button promotes itself to `variant="glass"`. An explicit `variant` prop always
- * wins over the surface-based promotion.
+ * When no explicit `variant` is set and the resolved surface is `"glass"` or
+ * `"clay"`, the button promotes itself to that matching variant. An explicit
+ * `variant` prop always wins over the surface-based promotion.
+ *
+ * For loading / pending states use {@link StatefulButton}.
  *
  * @component
  * @layer ui
  *
- * @param {string} variant - Visual treatment: "solid" | "soft" | "outline" | "ghost" | "link" | "glass" | "shadow"
+ * @param {string} variant - Visual treatment: "solid" | "soft" | "outline" | "ghost" | "link" | "glass" | "clay" | "shadow"
  * @param {string} intent - Color intent: "primary" | "neutral" | "success" | "warning" | "danger" | "info"
  * @param {string} size - Button size: "xs" | "sm" | "md" | "lg" | "xl" | "icon" | "icon-xs" | "icon-sm" | "icon-lg"
- * @param {string} surface - Surface style override: "flat" | "glass" (inherits from provider when omitted)
+ * @param {string} surface - Surface style override: "flat" | "glass" | "clay" (inherits from provider when omitted)
  * @param {boolean} animated - Gate motion effects (inherits from provider when omitted)
- * @param {boolean} loading - Shows spinner, sets aria-busy, preserves width
  * @param {boolean} fullWidth - Stretches to container width
  * @param {boolean} asChild - Render as child element (Slot pattern)
  *
@@ -160,10 +162,6 @@ interface ButtonProps
  * <SaasflareProvider surface="glass"><Button>Frosted</Button></SaasflareProvider>
  *
  * @example
- * // Loading state
- * <Button loading>Processing...</Button>
- *
- * @example
  * // Icon button
  * <Button variant="ghost" size="icon"><SettingsIcon /></Button>
  *
@@ -177,21 +175,22 @@ function Button({
   size = "md",
   intent: intentProp = "primary",
   asChild = false,
-  loading = false,
   fullWidth = false,
   surface,
+  iconWeight,
   radius,
   animated,
   disabled,
   children,
   ...props
 }: ButtonProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
-  const motion = useSaasflareMotion(sf.animated, spring, disabled ?? false, loading)
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, spring, disabled ?? false)
 
   /* ── Surface → variant promotion (only when variant is not explicit) ── */
   const effectiveVariant: string =
-    variantProp ?? (sf.surface === "glass" ? "glass" : "solid")
+    variantProp ??
+    (sf.surface === "glass" ? "glass" : sf.surface === "clay" ? "clay" : "solid")
 
   /* ── Backward compat: map legacy variant names ── */
   let resolvedVariant = effectiveVariant
@@ -205,26 +204,32 @@ function Button({
     }
   }
 
+  const dataAttrs = {
+    "data-slot": "button",
+    "data-variant": resolvedVariant,
+    "data-intent": resolvedIntent,
+    "data-size": size,
+    "data-surface": sf.surface,
+    "data-radius": sf.radius,
+    "data-animated": String(sf.animated),
+  }
+
+  const classes = cn(
+    buttonVariants({ variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"], size }),
+    fullWidth && "w-full",
+    className
+  )
+
   /* ── Slot rendering (Pattern A: animated asChild via m.create(Slot.Root)) ── */
   if (asChild) {
     return (
       <MotionSlot
         {...props}
-        data-slot="button"
-        data-variant={resolvedVariant}
-        data-intent={resolvedIntent}
-        data-size={size}
-        data-surface={sf.surface}
-        data-radius={sf.radius}
-        data-animated={String(sf.animated)}
+        {...dataAttrs}
         whileHover={motion.disabled ? undefined : { scale: 1.02 }}
         whileTap={motion.disabled ? undefined : { scale: 0.97 }}
         transition={motion.transition}
-        className={cn(
-          buttonVariants({ variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"], size }),
-          fullWidth && "w-full",
-          className
-        )}
+        className={classes}
       >
         {children}
       </MotionSlot>
@@ -233,29 +238,14 @@ function Button({
 
   return (
     <m.button
-      data-slot="button"
-      data-variant={resolvedVariant}
-      data-intent={resolvedIntent}
-      data-size={size}
-      data-surface={sf.surface}
-      data-radius={sf.radius}
-      data-animated={String(sf.animated)}
+      {...dataAttrs}
       whileHover={motion.disabled ? undefined : { scale: 1.02 }}
       whileTap={motion.disabled ? undefined : { scale: 0.97 }}
       transition={motion.transition}
-      className={cn(
-        buttonVariants({ variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"], size }),
-        fullWidth && "w-full",
-        className
-      )}
+      className={classes}
       disabled={disabled}
-      aria-busy={loading || undefined}
-      aria-disabled={disabled || undefined}
       {...props}
     >
-      {loading && (
-        <Loader2Icon className="animate-spin" aria-hidden="true" />
-      )}
       {children}
     </m.button>
   )

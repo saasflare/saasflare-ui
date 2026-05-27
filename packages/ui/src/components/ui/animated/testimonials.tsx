@@ -26,8 +26,9 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { AnimatePresence, m } from "motion/react"
-import { ChevronLeftIcon, ChevronRightIcon, QuoteIcon } from "lucide-react"
+import { CaretLeftIcon, CaretRightIcon, QuotesIcon } from "../phosphor"
 import { cn } from "../../../lib"
+import { useSaasflareProps } from "../../../providers"
 import { springGentle, noMotion, useReducedMotion } from "../motion-config"
 
 /** A single testimonial entry. */
@@ -74,6 +75,7 @@ export function AnimatedTestimonials({
   className,
 }: AnimatedTestimonialsProps) {
   const reduced = useReducedMotion()
+  const sf = useSaasflareProps()
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
 
@@ -103,7 +105,8 @@ export function AnimatedTestimonials({
       data-slot="animated-testimonials"
     >
       <div className="relative min-h-[220px] overflow-hidden rounded-2xl border bg-card p-8 shadow-sm md:p-12">
-        <QuoteIcon
+        <QuotesIcon
+          weight={sf.iconWeight}
           className="absolute right-6 top-6 size-10 text-muted-foreground/10"
           aria-hidden="true"
         />
@@ -149,7 +152,7 @@ export function AnimatedTestimonials({
             className="rounded-full border p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label="Previous testimonial"
           >
-            <ChevronLeftIcon className="size-4" />
+            <CaretLeftIcon weight={sf.iconWeight} className="size-4" />
           </button>
 
           {/* Dots */}
@@ -178,7 +181,7 @@ export function AnimatedTestimonials({
             className="rounded-full border p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             aria-label="Next testimonial"
           >
-            <ChevronRightIcon className="size-4" />
+            <CaretRightIcon weight={sf.iconWeight} className="size-4" />
           </button>
         </div>
       )}

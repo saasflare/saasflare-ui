@@ -10,3 +10,6 @@ dist
 coverage
 .vercel
 /.idea/
+.claude/
+.playwright-mcp/
+apps/ui/.source/

@@ -22,9 +22,10 @@
 // ============================================================================
 
 import * as React from "react"
-import { PanelLeftIcon } from "lucide-react"
+import { SidebarSimpleIcon } from "../phosphor"
 import { useIsMobile } from '../../../hooks/use-mobile';
 import { cn } from "../../../lib"
+import { useSaasflareProps } from "../../../providers"
 import { Button } from "../button"
 import {
   TooltipProvider,
@@ -209,6 +210,7 @@ export function SidebarTrigger({
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { toggleSidebar } = useSidebar()
+  const sf = useSaasflareProps()
 
   return (
     <Button
@@ -223,7 +225,7 @@ export function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <SidebarSimpleIcon weight={sf.iconWeight} />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

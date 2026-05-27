@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tracker",
+  "type": "registry:ui",
+  "title": "Tracker",
+  "description": "Uptime/status segment grid. Each block is one period (day/hour) colored by status.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/tracker.tsx",
+      "type": "registry:ui",
+      "content": "// @draft\n\"use client\"\n\n/**\n * @fileoverview Saasflare Tracker — uptime/status segment grid.\n * @author Saasflare™\n *\n * Renders an array of equal-width segments, each colored by status. The\n * canonical use case is an uptime graph (each segment = one day, color =\n * up/down/degraded). Tooltips on hover surface the per-segment context.\n * A pattern shadcn/HeroUI/Mantine don't ship — popularized by Tremor.\n *\n * @module packages/ui/components/ui/tracker\n * @package ui\n * @layer core\n *\n * @example\n * <Tracker\n *   data={[\n *     { color: \"emerald\", tooltip: \"Apr 1 — Operational\" },\n *     { color: \"emerald\", tooltip: \"Apr 2 — Operational\" },\n *     { color: \"amber\",   tooltip: \"Apr 3 — Degraded performance\" },\n *     { color: \"red\",     tooltip: \"Apr 4 — Major outage\" },\n *   ]}\n * />\n */\n\nimport { type ReactNode } from \"react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\n/** Named colors map to OKLCH tokens — keeps trackers in-theme without\n * forcing consumers to import CSS vars by name. Pass any CSS color via\n * `color` to override. */\nconst NAMED_COLORS: Record<string, string> = {\n    emerald: \"oklch(0.68 0.17 155)\",\n    teal: \"oklch(0.70 0.15 185)\",\n    blue: \"oklch(0.65 0.18 230)\",\n    amber: \"oklch(0.72 0.17 50)\",\n    red: \"oklch(0.62 0.21 25)\",\n    rose: \"oklch(0.65 0.20 10)\",\n    gray: \"oklch(0.70 0 0)\",\n    neutral: \"oklch(0.70 0 0)\",\n}\n\n/** A single tracker block. */\nexport interface TrackerBlock {\n    /** Named color key (emerald|teal|blue|amber|red|rose|gray) or any CSS color. */\n    color?: string\n    /** Tooltip text shown on hover. */\n    tooltip?: ReactNode\n    /** Custom key (helps React when blocks rearrange). */\n    key?: string | number\n}\n\n/** Props for the Tracker component. */\nexport interface TrackerProps extends SaasflareComponentProps {\n    /** Blocks to render, left-to-right. */\n    data: TrackerBlock[]\n    /** Height of each block in px. Default: `32`. */\n    blockHeight?: number\n    /** Gap between blocks in px. Default: `2`. */\n    gap?: number\n    /** Additional class names. */\n    className?: string\n}\n\n/**\n * Status segment grid (uptime/incident timeline).\n *\n * @component\n * @layer core\n */\nexport function Tracker({\n    data,\n    blockHeight = 32,\n    gap = 2,\n    className,\n    surface,\n    radius,\n    animated,\n}: TrackerProps) {\n    const sf = useSaasflareProps({ surface, radius, animated })\n\n    return (\n        <div\n            data-slot=\"tracker\"\n            data-surface={sf.surface}\n            data-radius={sf.radius}\n            data-animated={String(sf.animated)}\n            className={cn(\"flex w-full items-stretch\", className)}\n            style={{ gap, height: blockHeight }}\n            role=\"group\"\n            aria-label=\"Status tracker\"\n        >\n            {data.map((block, i) => {\n                const color = block.color\n                    ? NAMED_COLORS[block.color] ?? block.color\n                    : NAMED_COLORS.gray\n                return (\n                    <div\n                        key={block.key ?? i}\n                        data-slot=\"tracker-block\"\n                        title={typeof block.tooltip === \"string\" ? block.tooltip : undefined}\n                        className={cn(\n                            \"flex-1 rounded-sm transition-[transform,opacity]\",\n                            \"hover:scale-y-110 hover:opacity-90\",\n                            \"motion-reduce:hover:transform-none\",\n                        )}\n                        style={{ backgroundColor: color }}\n                    />\n                )\n            })}\n        </div>\n    )\n}\n",
+      "target": "components/ui/tracker.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/tracker.json"
+  }
+}

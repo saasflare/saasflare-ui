@@ -22,7 +22,7 @@
 
 import * as React from "react"
 import { m } from "motion/react"
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
+import { CheckIcon, CaretRightIcon, CircleIcon } from "./phosphor"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -57,9 +57,10 @@ function DropdownMenuContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: DropdownMenuContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
@@ -104,6 +105,7 @@ function DropdownMenuItem({ className, inset, variant = "default", ...props }: R
 }
 
 function DropdownMenuCheckboxItem({ className, children, checked, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
+  const sf = useSaasflareProps()
   return (
     <DropdownMenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
@@ -116,7 +118,7 @@ function DropdownMenuCheckboxItem({ className, children, checked, ...props }: Re
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon weight={sf.iconWeight} className="size-4" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -125,6 +127,7 @@ function DropdownMenuCheckboxItem({ className, children, checked, ...props }: Re
 }
 
 function DropdownMenuRadioItem({ className, children, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
+  const sf = useSaasflareProps()
   return (
     <DropdownMenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
@@ -136,7 +139,7 @@ function DropdownMenuRadioItem({ className, children, ...props }: React.Componen
     >
       <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <CircleIcon className="size-2 fill-current" />
+          <CircleIcon weight={sf.iconWeight} className="size-2 fill-current" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -176,6 +179,7 @@ function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"spa
 }
 
 function DropdownMenuSubTrigger({ className, inset, children, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & { inset?: boolean }) {
+  const sf = useSaasflareProps()
   return (
     <DropdownMenuPrimitive.SubTrigger
       data-slot="dropdown-menu-sub-trigger"
@@ -187,7 +191,7 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }: React.
       {...props}
     >
       {children}
-      <ChevronRightIcon className="ml-auto size-4" />
+      <CaretRightIcon weight={sf.iconWeight} className="ml-auto size-4" />
     </DropdownMenuPrimitive.SubTrigger>
   )
 }

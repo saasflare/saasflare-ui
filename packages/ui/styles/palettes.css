@@ -1,5 +1,5 @@
 /**
- * @fileoverview 16 preset brand palettes — activate via [data-palette="id"] on <html>.
+ * @fileoverview 20 preset brand palettes — activate via [data-palette="id"] on <html>.
  * @module packages/ui/styles/palettes
  * @package ui
  * @reviewed 2026-04-19
@@ -134,18 +134,498 @@
 :root[data-palette="ruby"]      { --primary-h: 10; --primary-c: 0.21; --primary-l: 0.58; }
 :root[data-palette="ruby"].dark { --primary-l: 0.68; }
 
+/* ─── Sky (HeroUI-style pastel blue) ────────────── */
+:root[data-palette="sky"]      { --primary-h: 210; --primary-c: 0.12; --primary-l: 0.72; }
+:root[data-palette="sky"].dark { --primary-l: 0.80; }
+
+/* ─── Lavender (HeroUI-style pastel violet) ─────── */
+:root[data-palette="lavender"]      { --primary-h: 280; --primary-c: 0.10; --primary-l: 0.72; }
+:root[data-palette="lavender"].dark { --primary-l: 0.80; }
+
+/* ─── Mint (HeroUI-style pastel green) ──────────── */
+:root[data-palette="mint"]      { --primary-h: 155; --primary-c: 0.10; --primary-l: 0.72; }
+:root[data-palette="mint"].dark { --primary-l: 0.80; }
+
+/* ─── Snow (near-white, ultra-low chroma) ───────── */
+/* For an outline-forward, low-contrast feel. Primary lands near-white so the
+ * UI leans on borders/dividers instead of filled accent surfaces. */
+:root[data-palette="snow"] {
+    --primary-h: 0;
+    --primary-c: 0.005;
+    --primary-l: 0.93;
+    --neutral-h: 0;
+    --neutral-c: 0;
+    --primary-foreground: oklch(0.2 0 0);    /* dark text on near-white */
+}
+:root[data-palette="snow"].dark {
+    --primary-l: 0.95;
+    --primary-foreground: oklch(0.2 0 0);
+}
+
+/* ─── Craivo (cool cyan → magenta brand) ─────────── */
+/* Brand hue anchored in cool cyan-blue; gradient-text / progress should
+ * layer to magenta via component-level from/to props. Neutrals are pure
+ * grey (no brand tint). Dark canvas is pushed below the system default
+ * to land near-black, matching the Craivo landing page. */
+:root[data-palette="craivo"] {
+    --primary-h: 200;
+    --primary-c: 0.18;
+    --primary-l: 0.62;
+    --neutral-h: 200;
+    --neutral-c: 0;
+}
+:root[data-palette="craivo"].dark {
+    --primary-l: 0.72;
+    --background: oklch(0.12 0 0);           /* near-black canvas */
+}
+
+/* Chart palette: spans cyan → magenta with a lime success-accent, matching
+ * the electric-cool spectrum used across Craivo's metric/progress visuals. */
+:root[data-palette="craivo"] {
+    --chart-1: oklch(0.70 0.18 200);         /* cyan (brand) */
+    --chart-2: oklch(0.68 0.22 330);         /* magenta */
+    --chart-3: oklch(0.78 0.20 140);         /* lime */
+    --chart-4: oklch(0.72 0.20 60);          /* amber */
+    --chart-5: oklch(0.66 0.22 290);         /* violet */
+}
+
 /* ============================================
  * Chart palette overrides for achromatic palettes
  *
  * With --primary-c: 0, the derived chart colors collapse to grayscale.
- * Give Ink and Stone a fixed distinguishable 5-hue palette.
+ * Give Ink, Stone, Black and Snow a fixed distinguishable 5-hue palette.
  * ============================================ */
 :root[data-palette="ink"],
 :root[data-palette="stone"],
-:root[data-palette="black"] {
+:root[data-palette="black"],
+:root[data-palette="snow"] {
     --chart-1: oklch(0.60 0.18 230);  /* blue */
     --chart-2: oklch(0.65 0.17  55);  /* orange */
     --chart-3: oklch(0.60 0.15 155);  /* green */
     --chart-4: oklch(0.58 0.20  25);  /* red */
     --chart-5: oklch(0.60 0.18 290);  /* violet */
+}
+
+/* ─── Colorful (minimal at rest, soft pastel-gradient glow on hover) ─── */
+/* Inspired by htgf.de — surfaces are quiet and outline-forward at rest,
+ * then on hover bloom with a SOFT pastel gradient (peach → pink → lavender
+ * → cyan) wrapped in a matching color-aura glow. Text stays dark; the
+ * effect reads as "warm cloud appears behind the button." Token --primary
+ * is kept as a warm red so swatches in palette pickers stay legible; the
+ * pastel sweep lives only in the hover rules below. */
+:root[data-palette="colorful"] {
+    --primary-h: 25;
+    --primary-c: 0.21;
+    --primary-l: 0.58;
+    --neutral-h: 0;
+    --neutral-c: 0;
+
+    /* --primary itself is transparent — primary surfaces don't carry a
+     * solid color. Instead, the resting state gets the gradient as an
+     * almost-transparent background-image wash (see rules below). On
+     * hover/active, the full-opacity gradient kicks in. */
+    --primary: transparent;
+    --primary-foreground: oklch(0.2 0 0);
+
+    /* Full-opacity pastel sweep — peach, blush, lavender, cyan. Used on
+     * hover and on active/checked states. */
+    --colorful-gradient: linear-gradient(95deg, #ffd4a3 0%, #ffb8c5 35%, #d4bce8 65%, #b8d8e5 100%);
+
+    /* Almost-transparent variant of the same sweep for resting "primary
+     * fill" surfaces (~18% alpha). Visible enough to identify the
+     * surface, quiet enough not to compete with surrounding content. */
+    --colorful-gradient-faint: linear-gradient(95deg,
+        rgba(255, 212, 163, 0.20) 0%,
+        rgba(255, 184, 197, 0.20) 35%,
+        rgba(212, 188, 232, 0.20) 65%,
+        rgba(184, 216, 229, 0.20) 100%);
+}
+:root[data-palette="colorful"].dark {
+    --primary-l: 0.68;
+    --primary: transparent;
+    --primary-foreground: oklch(0.95 0 0);
+    /* Slightly stronger alpha in dark mode so the faint wash still
+     * reads against the darker canvas. */
+    --colorful-gradient-faint: linear-gradient(95deg,
+        rgba(255, 212, 163, 0.14) 0%,
+        rgba(255, 184, 197, 0.14) 35%,
+        rgba(212, 188, 232, 0.14) 65%,
+        rgba(184, 216, 229, 0.14) 100%);
+}
+
+/* Apply the faint gradient as the resting "primary fill". Covers both
+ * the token-driven path (Buttons use bg-[var(--intent)]) and the direct
+ * utility-class path (Tooltip / Calendar selected days / PricingCard
+ * pill / scroll-to-top / etc. use bare bg-primary). Hover and active
+ * states win via higher-specificity rules further down. */
+:root[data-palette="colorful"] [data-slot="button"][data-intent="primary"][data-variant="solid"]:not(:hover):not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-intent="primary"][data-variant="soft"]:not(:hover):not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-intent="primary"][data-variant="shadow"]:not(:hover):not(:disabled),
+:root[data-palette="colorful"] .bg-primary:not(:hover) {
+    background-image: var(--colorful-gradient-faint);
+}
+
+/* Palette-scoped hover retrofits. Specificity 0,2,0 from the
+ * :root[data-palette] prefix beats the variant utility's 0,1,0 — same
+ * mechanism every preset above uses to override base tokens. Scoped via
+ * the data-slot + data-variant attributes the components already emit. */
+
+/* With --primary: transparent, the primary-intent token chain resolves
+ * --intent-text = --primary = transparent, which would render invisible
+ * text on every non-filled variant (outline, ghost, link, glass). Route
+ * primary-intent text through --foreground so it always reads against
+ * the page background. The fill (--intent) stays transparent so solid
+ * surfaces still behave as the user requested. */
+:root[data-palette="colorful"] [data-intent="primary"] {
+    --intent-text: var(--foreground);
+}
+
+/* Discoverability for transparent primary buttons. Solid / soft / shadow
+ * variants of primary intent would otherwise be invisible at rest — the
+ * fill is transparent and they ship without a border. Add a hairline
+ * border + soft drop shadow so the button's footprint reads against the
+ * page without compromising the "quiet at rest" feel. Outline already
+ * has its own border; glass has the surface treatment; ghost / link are
+ * intentionally chromeless and stay so. */
+:root[data-palette="colorful"] [data-slot="button"][data-variant="solid"][data-intent="primary"]:not(:hover):not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-variant="soft"][data-intent="primary"]:not(:hover):not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-variant="shadow"][data-intent="primary"]:not(:hover):not(:disabled) {
+    border: 1px solid oklch(0 0 0 / 0.12);
+    box-shadow:
+        0 1px 2px oklch(0 0 0 / 0.06),
+        0 4px 12px -2px oklch(0 0 0 / 0.05);
+}
+:root[data-palette="colorful"].dark [data-slot="button"][data-variant="solid"][data-intent="primary"]:not(:hover):not(:disabled),
+:root[data-palette="colorful"].dark [data-slot="button"][data-variant="soft"][data-intent="primary"]:not(:hover):not(:disabled),
+:root[data-palette="colorful"].dark [data-slot="button"][data-variant="shadow"][data-intent="primary"]:not(:hover):not(:disabled) {
+    border: 1px solid oklch(1 0 0 / 0.14);
+    box-shadow:
+        0 1px 2px oklch(0 0 0 / 0.25),
+        0 4px 12px -2px oklch(0 0 0 / 0.20);
+}
+
+/* Colorful hover bloom — shared across every Button variant when the
+ * intent is primary, plus every outline-variant button regardless of
+ * intent. Variants targeted here:
+ *   - outline (all intents): minimal-at-rest is already the variant's
+ *     resting style; hover swaps the passive tint for the pastel sweep.
+ *   - solid / soft / ghost / shadow / glass with intent="primary": the
+ *     filled/tinted resting state is invisible under --primary:transparent,
+ *     so the gradient is what gives these variants a hover personality.
+ *     (link stays a pure-text variant — the underline is its own affordance.)
+ * Multi-layer box-shadow simulates the diffused warm/cool color aura
+ * around the button seen on htgf.de. */
+:root[data-palette="colorful"] [data-slot="button"][data-variant="outline"]:hover:not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-variant="solid"][data-intent="primary"]:hover:not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-variant="soft"][data-intent="primary"]:hover:not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-variant="ghost"][data-intent="primary"]:hover:not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-variant="shadow"][data-intent="primary"]:hover:not(:disabled),
+:root[data-palette="colorful"] [data-slot="button"][data-variant="glass"][data-intent="primary"]:hover:not(:disabled) {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+    border-color: transparent;
+    color: #1a1a1a;
+    box-shadow:
+        -8px 0 24px -4px rgba(255, 180, 140, 0.55),
+         8px 0 24px -4px rgba(160, 210, 230, 0.55),
+         0 4px 16px -2px rgba(220, 180, 230, 0.40);
+}
+
+/* Rest-state safety net: with --primary: transparent, any utility that
+ * resolves to var(--primary) (bg-primary, text-primary, border-primary)
+ * would render as invisible. Add a neutral fallback only where the
+ * components ship with primary-tinted resting surfaces, so icons and
+ * chips remain visible until the hover gradient takes over. */
+:root[data-palette="colorful"] [data-slot="feature-card"] > div:first-of-type {
+    background-color: oklch(0 0 0 / 0.05);
+    color: oklch(0.2 0 0);
+}
+:root[data-palette="colorful"].dark [data-slot="feature-card"] > div:first-of-type {
+    background-color: oklch(1 0 0 / 0.08);
+    color: oklch(0.95 0 0);
+}
+
+/* Cards: pastel gradient border ring on hover. background-clip trick keeps
+ * the inner fill as the card surface and lets only the 1px border bloom
+ * into the gradient. Mirrors the same warm-aura glow used on buttons. */
+:root[data-palette="colorful"] [data-slot="feature-card"]:hover,
+:root[data-palette="colorful"] [data-slot="testimonial-card"]:hover,
+:root[data-palette="colorful"] [data-slot="team-card"]:hover,
+:root[data-palette="colorful"] [data-slot="spotlight-card"]:hover {
+    border-color: transparent;
+    background-image:
+        linear-gradient(var(--card), var(--card)),
+        var(--colorful-gradient);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow:
+        -12px 0 32px -6px rgba(255, 180, 140, 0.30),
+         12px 0 32px -6px rgba(160, 210, 230, 0.30),
+         0 8px 24px -4px rgba(220, 180, 230, 0.25);
+}
+
+/* Feature-card icon chip: soft tint at rest, pastel gradient fill on card hover.
+ * Resting style at feature-card.tsx:64 is bg-primary/10 text-primary; this
+ * swaps the chip surface to the pastel sweep and keeps the icon dark. */
+:root[data-palette="colorful"] [data-slot="feature-card"]:hover > div:first-of-type {
+    background-image: var(--colorful-gradient);
+    color: #1a1a1a;
+}
+
+/* ── "On / checked / filled" state identity ──────────────────────────────
+ * Every form control that ships with bg-primary as its active-state fill
+ * would render invisibly under --primary: transparent. Instead, use the
+ * pastel gradient as the brand identity for the active state — switches
+ * on, checkboxes checked, radio dots, sliders filled, progress bars,
+ * avatar badges, the pricing card's "popular" pill. Resting/empty states
+ * fall back to a neutral muted surface so the control is still readable. */
+
+/* Switch — checked = gradient, thumb tinted dark for contrast. */
+:root[data-palette="colorful"] [data-slot="switch"][data-state="checked"] {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+}
+:root[data-palette="colorful"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+    background-color: oklch(0.2 0 0);
+}
+:root[data-palette="colorful"].dark [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+    background-color: oklch(0.98 0 0);
+}
+
+/* Checkbox — checked = gradient, indicator (the tick) flips to dark/light. */
+:root[data-palette="colorful"] [data-slot="checkbox"][data-state="checked"] {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+    border-color: transparent;
+    color: oklch(0.2 0 0);
+}
+:root[data-palette="colorful"].dark [data-slot="checkbox"][data-state="checked"] {
+    color: oklch(0.2 0 0);
+}
+
+/* Radio group — checked ring border + indicator dot need a visible color. */
+:root[data-palette="colorful"] [data-slot="radio-group-item"][data-state="checked"] {
+    border-color: oklch(0.5 0.15 25);
+}
+:root[data-palette="colorful"] [data-slot="radio-group-item"] {
+    color: oklch(0.5 0.15 25);
+}
+:root[data-palette="colorful"].dark [data-slot="radio-group-item"][data-state="checked"] {
+    border-color: oklch(0.7 0.15 25);
+}
+:root[data-palette="colorful"].dark [data-slot="radio-group-item"] {
+    color: oklch(0.7 0.15 25);
+}
+
+/* Slider — filled range = gradient, thumb gets a visible border. */
+:root[data-palette="colorful"] [data-slot="slider-range"] {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+}
+:root[data-palette="colorful"] [data-slot="slider-thumb"] {
+    border-color: oklch(0.5 0.15 25 / 0.6);
+}
+:root[data-palette="colorful"].dark [data-slot="slider-thumb"] {
+    border-color: oklch(0.7 0.15 25 / 0.7);
+}
+
+/* Progress — track = soft muted, fill = gradient. */
+:root[data-palette="colorful"] [data-slot="progress"] {
+    background-color: oklch(0 0 0 / 0.08);
+}
+:root[data-palette="colorful"].dark [data-slot="progress"] {
+    background-color: oklch(1 0 0 / 0.12);
+}
+:root[data-palette="colorful"] [data-slot="progress-indicator"] {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+}
+
+/* Avatar status badge — solid dark/light dot since the surface is tiny
+ * and a gradient on it would be visually noisy at this scale. */
+:root[data-palette="colorful"] [data-slot="avatar-badge"] {
+    background-color: oklch(0.2 0 0);
+    color: oklch(0.98 0 0);
+}
+:root[data-palette="colorful"].dark [data-slot="avatar-badge"] {
+    background-color: oklch(0.98 0 0);
+    color: oklch(0.2 0 0);
+}
+
+/* Pricing card "Popular" pill — the only badge that uses bg-primary
+ * directly. Render as the pastel gradient pill with dark text. */
+:root[data-palette="colorful"] [data-slot="pricing-card"] > div:first-child {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+    color: oklch(0.2 0 0);
+}
+
+/* Tooltip — bg-primary text-primary-foreground would be invisible. A
+ * dark slate surface reads cleanly without needing the gradient
+ * (gradients on tiny tooltip surfaces look noisy at this scale). */
+:root[data-palette="colorful"] [data-slot="tooltip-content"] {
+    background-color: oklch(0.2 0 0);
+    color: oklch(0.98 0 0);
+}
+:root[data-palette="colorful"].dark [data-slot="tooltip-content"] {
+    background-color: oklch(0.98 0 0);
+    color: oklch(0.2 0 0);
+}
+
+/* Calendar — selected single, range-start, range-end days use bg-primary.
+ * Promote the selection to the pastel gradient so it stays consistent
+ * with switches / progress / checkboxes. */
+:root[data-palette="colorful"] [data-slot="calendar"] [data-selected-single="true"],
+:root[data-palette="colorful"] [data-slot="calendar"] [data-range-start="true"],
+:root[data-palette="colorful"] [data-slot="calendar"] [data-range-end="true"] {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+    color: oklch(0.2 0 0);
+}
+
+/* Scroll-to-top button — pinned floating action that uses bg-primary as
+ * its filled surface. Promote to gradient + dark icon. */
+:root[data-palette="colorful"] [data-slot="scroll-to-top-button"],
+:root[data-palette="colorful"] [data-slot="scroll-to-top"] {
+    background-image: var(--colorful-gradient);
+    background-color: transparent;
+    color: oklch(0.2 0 0);
+}
+
+/* Generic text-primary safety net — Tailwind's text-primary utility
+ * resolves to var(--primary), which is transparent under this palette
+ * and would render invisible text wherever it's used directly (link
+ * hovers in <Empty>, custom prose, downstream apps, etc.). Route it
+ * through --foreground so the text stays readable. Specific data-slot
+ * rules above still win for active states that need the gradient. */
+:root[data-palette="colorful"] .text-primary {
+    color: var(--foreground);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Audit pass — close remaining utility + intent gaps so no element
+ * renders invisibly under --primary: transparent. See the audit table
+ * in the plan file for the per-component reasoning.
+ * ───────────────────────────────────────────────────────────────────── */
+
+/* .border-primary — Steps circles, Card hover ring, Field checked,
+ * Timeline dots, PricingCard featured border. */
+:root[data-palette="colorful"] .border-primary {
+    border-color: oklch(0.5 0.15 25 / 0.4);
+}
+:root[data-palette="colorful"].dark .border-primary {
+    border-color: oklch(0.7 0.15 25 / 0.5);
+}
+
+/* .fill-primary — inline SVG fills (e.g. icons.tsx success glyph). */
+:root[data-palette="colorful"] .fill-primary {
+    fill: var(--foreground);
+}
+
+/* Text-selection color — input / textarea / native-select apply
+ * selection:bg-primary selection:text-primary-foreground, which is
+ * invisible without an explicit color. Use a soft warm-tinted highlight. */
+:root[data-palette="colorful"] ::selection {
+    background-color: oklch(0.85 0.10 25 / 0.5);
+    color: oklch(0.2 0 0);
+}
+:root[data-palette="colorful"].dark ::selection {
+    background-color: oklch(0.55 0.12 25 / 0.55);
+    color: oklch(0.98 0 0);
+}
+
+/* PricingCard featured: ring-primary/20 uses --color-primary and goes
+ * invisible. Restore the elevated featured look with a soft pastel
+ * ring + ambient shadow. Targets the .border-primary class the
+ * component applies when featured (pricing-card.tsx:100). */
+:root[data-palette="colorful"] [data-slot="pricing-card"].border-primary {
+    box-shadow:
+        0 1px 2px oklch(0 0 0 / 0.06),
+        0 0 0 1px oklch(0.5 0.15 25 / 0.25),
+        0 8px 24px -4px oklch(0.5 0.15 25 / 0.10);
+}
+
+/* Typewriter cursor — 2px wide blinking caret. The faint gradient is
+ * invisible at this scale; solid foreground keeps the cursor readable. */
+:root[data-palette="colorful"] [data-slot="typewriter-text"] .bg-primary,
+:root[data-palette="colorful"] .animate-pulse.bg-primary {
+    background-color: var(--foreground);
+    background-image: none;
+}
+
+/* Alert primary intent — all three derived utilities (bg/text/border)
+ * resolve through transparent --intent. Replace with a coherent
+ * gradient-tinted surface that reads as the primary-intent tone. */
+:root[data-palette="colorful"] [data-slot="alert"][data-intent="primary"] {
+    background-image: var(--colorful-gradient-faint);
+    background-color: transparent;
+    border-color: oklch(0.5 0.15 25 / 0.3);
+    color: var(--foreground);
+}
+:root[data-palette="colorful"] [data-slot="alert"][data-intent="primary"] [data-slot="alert-description"] {
+    color: oklch(0.4 0 0);
+}
+:root[data-palette="colorful"].dark [data-slot="alert"][data-intent="primary"] [data-slot="alert-description"] {
+    color: oklch(0.75 0 0);
+}
+
+/* Badge primary intent — uses the full hover-color gradient
+ * (--colorful-gradient: peach → blush → lavender → cyan) as the brand
+ * identity, matching what the buttons + cards bloom into on hover.
+ *   - solid:   full gradient pill + dark text + soft drop shadow
+ *   - soft:    faint version of the same gradient + foreground text
+ *   - outline: gradient border ring (background-clip trick) + dark text
+ * All three carry the same identity so the user can pick the weight
+ * (heavy / soft / outline) without losing the "colorful" feel. */
+
+:root[data-palette="colorful"] [data-slot="badge"][data-intent="primary"][data-variant="solid"] {
+    /* Mid-alpha pastel sweep (~60%) — quieter than the full gradient
+     * used on buttons, so the badge doesn't compete with surrounding
+     * content. Dark mode keeps the full gradient since the dark canvas
+     * already absorbs intensity. */
+    background-image: linear-gradient(95deg,
+        rgba(255, 212, 163, 0.60) 0%,
+        rgba(255, 184, 197, 0.60) 35%,
+        rgba(212, 188, 232, 0.60) 65%,
+        rgba(184, 216, 229, 0.60) 100%);
+    background-color: transparent;
+    color: oklch(0.2 0 0);
+    border-color: transparent;
+    /* Warm-left / cool-right color aura, also softened for light mode. */
+    box-shadow:
+        inset 0 1px 0 oklch(1 0 0 / 0.40),
+        -6px 0 18px -4px rgba(255, 180, 140, 0.35),
+         6px 0 18px -4px rgba(160, 210, 230, 0.35),
+         0 3px 12px -2px rgba(220, 180, 230, 0.25);
+    letter-spacing: 0.01em;
+}
+:root[data-palette="colorful"].dark [data-slot="badge"][data-intent="primary"][data-variant="solid"] {
+    color: oklch(0.2 0 0);
+    box-shadow:
+        inset 0 1px 0 oklch(1 0 0 / 0.25),
+        -6px 0 18px -4px rgba(255, 180, 140, 0.35),
+         6px 0 18px -4px rgba(160, 210, 230, 0.35),
+         0 3px 12px -2px rgba(220, 180, 230, 0.25);
+}
+
+:root[data-palette="colorful"] [data-slot="badge"][data-intent="primary"][data-variant="soft"] {
+    background-image: var(--colorful-gradient-faint);
+    background-color: transparent;
+    color: var(--foreground);
+    border-color: oklch(0.5 0.12 25 / 0.18);
+    letter-spacing: 0.01em;
+}
+:root[data-palette="colorful"].dark [data-slot="badge"][data-intent="primary"][data-variant="soft"] {
+    border-color: oklch(0.7 0.10 25 / 0.20);
+}
+
+:root[data-palette="colorful"] [data-slot="badge"][data-intent="primary"][data-variant="outline"] {
+    background-image:
+        linear-gradient(var(--background), var(--background)),
+        var(--colorful-gradient);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-color: transparent;
+    color: var(--foreground);
+    letter-spacing: 0.01em;
 }

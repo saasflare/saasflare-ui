@@ -39,7 +39,8 @@ Every component that **renders visibly** (puts its own JSX element on the screen
 | 3 | **Surface only** | Avatar, Alert, Kbd, NativeSelect, Empty, Table, Breadcrumb | ✓ | ✓ | – | **C** |
 | 4 | **Motion only** | Spinner, TypewriterText, AnimatedTooltip; **Skeleton** also `radius` | – (Skel: ✓) | (Skel: ✓) | ✓ | **C** |
 | 5a | **Subpath-Primitives, own motion** | see sub-table below | ✓ | ✓ | ✓ | **A** / **B** / **C** |
-| 5b | **Composed-SaaS-Widgets**, no own motion | PricingCard, MetricCard, SectionCard, PageHeader, SettingsSection, EmptyState, SearchField, DataToolbar | ✓ | ✓ | – | **C-Lite** (surface + radius) |
+| 5b | **Composed-SaaS-Widgets**, no own motion | PricingCard, MetricCard, SectionCard, PageHeader, SettingsSection, EmptyState, SearchField, DataToolbar, FeatureCard, TestimonialCard, TeamCard, StatCard, AudioPlayer | ✓ | ✓ | – | **C-Lite** (surface + radius) |
+| 5c | **Composed marketing-widgets with own motion** | SpotlightCard, BentoGridItem, Dock | ✓ | ✓ | ✓ | **A** |
 | 6 | **Pure pass-through** | Pagination, Combobox, ButtonGroup, InputGroup, Separator, Label, Item | – | – | – | none |
 | 7 | **Renderless** | Form, Field, AspectRatio, DirectionProvider | – | – | – | none |
 
@@ -65,12 +66,13 @@ Every component that **renders visibly** (puts its own JSX element on the screen
 | Cat 3 — Surface only | 7 |
 | Cat 4 — Motion only | 4 |
 | Cat 5a — Subpath-Primitives | 8 |
-| Cat 5b — Composed-Widgets | 8 |
+| Cat 5b — Composed-Widgets | 13 |
+| Cat 5c — Composed marketing-widgets w/ motion | 3 |
 | Cat 6 — Pass-through | 7 |
 | Cat 7 — Renderless | 4 |
-| **Total** | **66** |
+| **Total** | **74** |
 
-**Active-pattern components (Cat 1–5b):** 55. **No-pattern (Cat 6+7):** 11.
+**Active-pattern components (Cat 1–5c):** 63. **No-pattern (Cat 6+7):** 11.
 
 ---
 
@@ -306,6 +308,29 @@ This makes Pattern B *automatically* compliant — no per-component code, no ren
 ### `data-animated` granularity
 
 → **Boolean** (`"true"` / `"false"`). The "reduced" middle state is handled by `prefers-reduced-motion: reduce` in the CSS layer. If a 3-state enum (`'on' | 'off' | 'reduced'`) becomes necessary later, it's an additive non-breaking change. Not for 3.1.0.
+
+---
+
+## `.surface-card` utility — one-liner surface adoption
+
+`styles/surfaces.css` exposes a `.surface-card` Tailwind v4 utility that paints
+the four surface tokens (`--surface-bg / --surface-border / --surface-backdrop
+/ --surface-shadow`) onto any element. Components inside a `<SaasflareShell
+surface="glass">` automatically inherit the glass tokens via cascade — no
+`useSaasflareProps()` call required when the component itself doesn't need
+to forward a per-component `surface` prop.
+
+Convention:
+
+- **Cat 1 / 2 / 5a / 5c** — use `useSaasflareProps()` *and* set `data-surface`
+  on the root *and* opt the root into `.surface-card` (or inline the four
+  `var(--surface-*)` references). Forwards per-component override.
+- **Cat 5b** — same pattern (the marketing-card cluster all forwards surface).
+- **Bare DOM helpers** in app code — drop `.surface-card` in the className and
+  call it a day.
+
+The utility lives in `@layer utilities` so Tailwind composition rules apply
+(class order does not matter; `surface-card border-2` works as expected).
 
 ---
 

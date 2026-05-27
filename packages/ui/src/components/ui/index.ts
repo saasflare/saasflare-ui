@@ -72,6 +72,11 @@ export { Textarea } from "./textarea"
 export { Checkbox } from "./checkbox"
 export { Switch } from "./switch"
 export { Progress } from "./progress"
+export {
+  ProgressCircle,
+  type ProgressCircleProps,
+  type ProgressCircleSize,
+} from "./progress-circle"
 export { Badge, badgeVariants, type BadgeProps } from "./badge"
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip"
 export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "./popover"
@@ -248,6 +253,37 @@ export {
 } from "./form"
 export { Icons } from "./icons"
 export {
+  IconBase,
+  type IconWeight,
+  type PhosphorIconProps,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ArrowUpIcon,
+  CaretDownIcon,
+  CaretLeftIcon,
+  CaretRightIcon,
+  CaretUpIcon,
+  CheckIcon,
+  CheckCircleIcon,
+  CircleIcon,
+  CircleNotchIcon,
+  DotsSixVerticalIcon,
+  DotsThreeIcon,
+  InfoIcon,
+  MagnifyingGlassIcon,
+  MinusIcon,
+  MonitorIcon,
+  MoonIcon,
+  PauseIcon,
+  PlayIcon,
+  QuotesIcon,
+  SidebarSimpleIcon,
+  SunIcon,
+  WarningIcon,
+  XIcon,
+  XCircleIcon,
+} from "./phosphor"
+export {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
@@ -329,6 +365,37 @@ export {
 export { PageHeader, type PageHeaderProps } from "./page-header"
 export { SectionCard, type SectionCardProps } from "./section-card"
 export { MetricCard, type MetricCardProps, type MetricTrend } from "./metric-card"
+export { BarList, type BarListItem, type BarListProps } from "./bar-list"
+export { SparkChart, type SparkChartProps, type SparkChartVariant } from "./spark-chart"
+export { Tracker, type TrackerBlock, type TrackerProps } from "./tracker"
+export {
+  Dropzone,
+  type DropzoneProps,
+  type DropzoneRejection,
+  type DropzoneRejectionReason,
+} from "./dropzone"
+export {
+  DateRangePicker,
+  type DateRange,
+  type DateRangePickerProps,
+} from "./date-range-picker"
+export { DatePicker, type DatePickerProps } from "./date-picker"
+export { Callout, type CalloutIntent, type CalloutProps } from "./callout"
+export { TagInput, type TagInputProps } from "./tag-input"
+export { NumberInput, type NumberInputProps } from "./number-input"
+export { Rating, type RatingProps, type RatingSize } from "./rating"
+export {
+  CategoryBar,
+  type CategoryBarProps,
+  type CategoryBarSegment,
+} from "./category-bar"
+export { TreeView, type TreeNode, type TreeViewProps } from "./tree-view"
+export { CodeBlock, type CodeBlockProps } from "./code-block"
+export {
+  NotificationCenter,
+  type NotificationCenterProps,
+  type NotificationItem,
+} from "./notification-center"
 export { EmptyState, type EmptyStateProps } from "./empty-state"
 export { SearchField, type SearchFieldProps } from "./search-field"
 export { SettingsSection, type SettingsSectionProps } from "./settings-section"
@@ -339,3 +406,4 @@ export {
   DataToolbarFilters,
   DataToolbarActions,
 } from "./data-toolbar"
+export { AuroraBackground, type AuroraBackgroundProps } from "./aurora-background"

@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Toaster primitive — themed toast notification container.
- * Built on the Sonner toast library with Lucide icons and next-themes integration.
+ * Built on the Sonner toast library with Phosphor icons and next-themes integration.
  * Part of the Saasflare base component layer.
  * @module packages/core/components/ui/sonner
  * @layer core
@@ -18,21 +18,21 @@
 "use client"
 
 import {
-  CircleCheckIcon,
+  CheckCircleIcon,
   InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
-  TriangleAlertIcon,
-} from "lucide-react"
+  CircleNotchIcon,
+  XCircleIcon,
+  WarningIcon,
+} from "./phosphor"
 import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 interface SaasflareToasterProps extends Omit<ToasterProps, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-const Toaster = ({ surface, radius, animated, ...props }: SaasflareToasterProps) => {
+const Toaster = ({ surface, radius, animated, iconWeight, ...props }: SaasflareToasterProps) => {
   const { theme = "system" } = useTheme()
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <Sonner
@@ -43,11 +43,11 @@ const Toaster = ({ surface, radius, animated, ...props }: SaasflareToasterProps)
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       icons={{
-        success: <CircleCheckIcon className="size-4" />,
-        info: <InfoIcon className="size-4" />,
-        warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <CheckCircleIcon weight={sf.iconWeight} className="size-4" />,
+        info: <InfoIcon weight={sf.iconWeight} className="size-4" />,
+        warning: <WarningIcon weight={sf.iconWeight} className="size-4" />,
+        error: <XCircleIcon weight={sf.iconWeight} className="size-4" />,
+        loading: <CircleNotchIcon className="size-4 animate-spin" />,
       }}
       style={
         {

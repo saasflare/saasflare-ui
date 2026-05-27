@@ -1,0 +1,57 @@
+# saasflare-ui
+
+> Production-ready React UI library for Next.js + Tailwind v4. 100+ components, 20 palettes, copy-paste registry, 3-axis variant system (variant × intent × size), animated by default via Framer Motion.
+
+Two installation paths: install the npm package once for the runtime (`pnpm add @saasflare/ui`), then optionally pull individual component source code into your project via the shadcn-compatible registry — so AI codegen tools (v0, Lovable, Bolt, Cursor, Claude) can read and rewrite the source.
+
+## Docs
+
+- [README](https://ui.saasflare.io): library overview, installation, theming primer
+- [llms-full.txt](https://ui.saasflare.io/llms-full.txt): every registry component expanded with props, types, and an example
+- [Registry index](https://ui.saasflare.io/registry.json): JSON manifest of every component available via `npx shadcn add`
+- [MCP endpoint](https://ui.saasflare.io/api/mcp): remote MCP server — wire into Claude Code / Cursor / Claude Desktop to query the catalog live
+
+## Components (registry)
+
+- [Feature Card](https://ui.saasflare.io/r/feature-card.json): Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.
+- [Pricing Card](https://ui.saasflare.io/r/pricing-card.json): Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.
+- [Testimonial Card](https://ui.saasflare.io/r/testimonial-card.json): Customer testimonial card with quote, author name, role, and optional avatar.
+- [Team Card](https://ui.saasflare.io/r/team-card.json): Team member card with photo, name, role, bio, and social links.
+- [Spotlight Card](https://ui.saasflare.io/r/spotlight-card.json): Card with a cursor-following spotlight gradient effect on hover.
+- [Bento Grid](https://ui.saasflare.io/r/bento-grid.json): Bento-style grid layout for feature galleries with mixed sizes.
+- [Stat Card](https://ui.saasflare.io/r/stat-card.json): KPI / metric card with icon, large value, label, and optional delta indicator.
+- [Metric Card](https://ui.saasflare.io/r/metric-card.json): Dashboard metric card with sparkline support and trend indicator.
+- [Section Card](https://ui.saasflare.io/r/section-card.json): Composable section/landing card with header, content, and footer slots.
+- [Progress Circle](https://ui.saasflare.io/r/progress-circle.json): Circular progress indicator. Radial counterpart to Progress, common for KPI rings.
+- [Bar List](https://ui.saasflare.io/r/bar-list.json): Horizontal 'top N' ranking list with proportional bar fills. Dashboard staple.
+- [Spark Chart](https://ui.saasflare.io/r/spark-chart.json): Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.
+- [Tracker](https://ui.saasflare.io/r/tracker.json): Uptime/status segment grid. Each block is one period (day/hour) colored by status.
+- [Dropzone](https://ui.saasflare.io/r/dropzone.json): Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).
+- [Date Range Picker](https://ui.saasflare.io/r/date-range-picker.json): Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar.
+- [Date Picker](https://ui.saasflare.io/r/date-picker.json): Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.
+- [Callout](https://ui.saasflare.io/r/callout.json): Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog.
+- [Tag Input](https://ui.saasflare.io/r/tag-input.json): Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.
+- [Number Input](https://ui.saasflare.io/r/number-input.json): Numeric input with ± stepper buttons, min/max clamping, configurable step + precision.
+- [Rating](https://ui.saasflare.io/r/rating.json): Star rating input with half-star precision, keyboard arrows, and read-only display mode.
+- [Category Bar](https://ui.saasflare.io/r/category-bar.json): Segmented progress bar with per-segment colors and optional labels. Useful for resource breakdowns.
+- [Tree View](https://ui.saasflare.io/r/tree-view.json): Recursive expand/collapse tree with keyboard navigation, controlled/uncontrolled expansion + selection.
+- [Code Block](https://ui.saasflare.io/r/code-block.json): Code-block chrome: filename header, language badge, copy button, optional line numbers. BYO highlighter.
+- [Notification Center](https://ui.saasflare.io/r/notification-center.json): Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge.
+
+## Theming
+
+- [Palettes](https://ui.saasflare.io/docs/theming/palettes): 20 presets switched via `<html data-palette="…">`. Includes a special `colorful` palette with a pastel-gradient hover identity.
+- [Surfaces](https://ui.saasflare.io/docs/theming/surfaces): `flat` and `glass` material variants, switched via `<html data-style="…">`.
+- [Custom palette runtime API](https://ui.saasflare.io/docs/theming/custom): pass a hex/OKLCH primary to `<SaasflareProvider palette={{ name, primary }} />` and the whole token chain rederives.
+
+## Install per component
+
+```bash
+# Install the runtime (providers, context, motion bundle) once:
+pnpm add @saasflare/ui
+
+# Then pull source into your project per component:
+npx shadcn add https://ui.saasflare.io/r/feature-card.json
+npx shadcn add https://ui.saasflare.io/r/pricing-card.json
+```
+

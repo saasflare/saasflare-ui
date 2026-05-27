@@ -104,7 +104,9 @@
     "fonts"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && pnpm build:registry && pnpm build:llms",
+    "build:registry": "node scripts/build-registry.mjs",
+    "build:llms": "node scripts/build-llms.mjs",
     "dev": "tsup --watch",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -141,7 +143,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "lucide-react": "^1.14.0",
     "sonner": "^2.0.0",
     "tailwind-merge": "^3.5.0"
   },

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "callout",
+  "type": "registry:ui",
+  "title": "Callout",
+  "description": "Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/callout.tsx",
+      "type": "registry:ui",
+      "content": "// @draft\n\"use client\"\n\n/**\n * @fileoverview Saasflare Callout — emphasized info / warning / success box.\n * @author Saasflare™\n *\n * Sits between Alert (passive page-level notification) and Dialog (modal\n * interruption). A callout reads as \"pay attention to this paragraph\"\n * inside flowing content — common in docs, onboarding screens, and\n * inline form guidance.\n *\n * @module packages/ui/components/ui/callout\n * @package ui\n * @layer core\n *\n * @example\n * <Callout intent=\"warning\" title=\"Heads up\">\n *   This action is irreversible. Make sure you've exported your data first.\n * </Callout>\n */\n\nimport { type ReactNode } from \"react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\nconst INTENTS = [\"primary\", \"neutral\", \"success\", \"warning\", \"danger\", \"info\"] as const\nexport type CalloutIntent = (typeof INTENTS)[number]\n\n/** Props for the Callout component. */\nexport interface CalloutProps extends SaasflareComponentProps {\n    /** Color intent. Default: `\"info\"`. */\n    intent?: CalloutIntent\n    /** Bold title rendered above the body. */\n    title?: ReactNode\n    /** Leading icon (rendered in the same color as the intent stripe). */\n    icon?: ReactNode\n    /** Body content. */\n    children?: ReactNode\n    /** Additional class names. */\n    className?: string\n}\n\n/**\n * Inline emphasized message box with intent-driven coloring.\n *\n * @component\n * @layer core\n *\n * @example\n * <Callout intent=\"success\" title=\"Saved\">Your changes are live.</Callout>\n */\nexport function Callout({\n    intent = \"info\",\n    title,\n    icon,\n    children,\n    className,\n    surface,\n    radius,\n    animated,\n    iconWeight,\n}: CalloutProps) {\n    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })\n\n    return (\n        <div\n            data-slot=\"callout\"\n            data-intent={intent}\n            data-surface={sf.surface}\n            data-radius={sf.radius}\n            data-animated={String(sf.animated)}\n            role=\"note\"\n            className={cn(\n                \"relative flex gap-3 rounded-lg border-l-4 p-4\",\n                \"border-l-[var(--intent)] bg-[var(--intent)]/8\",\n                \"text-foreground\",\n                \"[&_a]:underline [&_a]:underline-offset-2 [&_a]:text-[var(--intent-text)]\",\n                className,\n            )}\n        >\n            {icon !== undefined && (\n                <div\n                    data-slot=\"callout-icon\"\n                    className=\"mt-0.5 shrink-0 text-[var(--intent-text)] [&_svg]:size-5\"\n                >\n                    {icon}\n                </div>\n            )}\n            <div data-slot=\"callout-body\" className=\"flex-1 space-y-1\">\n                {title !== undefined && (\n                    <p\n                        data-slot=\"callout-title\"\n                        className=\"font-semibold leading-tight text-[var(--intent-text)]\"\n                    >\n                        {title}\n                    </p>\n                )}\n                {children !== undefined && (\n                    <div data-slot=\"callout-content\" className=\"text-sm leading-relaxed text-muted-foreground\">\n                        {children}\n                    </div>\n                )}\n            </div>\n        </div>\n    )\n}\n",
+      "target": "components/ui/callout.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/callout.json"
+  }
+}

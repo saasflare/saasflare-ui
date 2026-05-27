@@ -24,7 +24,7 @@
  */
 
 import * as React from "react"
-import { CheckIcon } from "lucide-react"
+import { CheckIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
@@ -83,9 +83,10 @@ function PricingCard({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: PricingCardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -120,7 +121,7 @@ function PricingCard({
       <ul className="mt-6 space-y-2.5" role="list">
         {features.map((feature) => (
           <li key={feature} className="flex items-start gap-2 text-sm">
-            <CheckIcon className="mt-0.5 size-4 shrink-0 text-success" aria-hidden="true" />
+            <CheckIcon weight={sf.iconWeight} className="mt-0.5 size-4 shrink-0 text-success" aria-hidden="true" />
             <span>{feature}</span>
           </li>
         ))}

@@ -1,15 +1,19 @@
 /**
- * @fileoverview Demo UI app — global stylesheet entry.
- * @module apps/demo/ui/app/globals
- * @package demo
- * @reviewed 2026-04-19
+ * @fileoverview UI catalog app — global stylesheet entry.
+ * @module apps/ui/app/globals
+ * @package ui
+ * @reviewed 2026-05-08
  *
- * Single-line consumer of the Saasflare UI design system.
- * App-specific overrides (custom tokens, demo-only utilities)
- * MUST go after the import below.
+ * Layer order (matters):
+ *   1. Saasflare design tokens & Tailwind theme  (@saasflare/ui/globals.css)
+ *   2. Fumadocs UI preset                         (animations + generated utilities)
+ *   3. Fumadocs shadcn theme bridge               (maps --color-fd-* → --background, etc.)
+ *
+ * Saasflare uses the same semantic token names as shadcn (--background, --primary,
+ * --muted, …), so Fumadocs' built-in shadcn theme is a drop-in adapter — no
+ * hand-maintained bridge needed. Re-themes (palette swap, dark/light) propagate
+ * automatically into the docs surface.
  */
 @import "@saasflare/ui/globals.css";
-
-/* Scan @saasflare/mvp/landing for Tailwind class usage so navbar/footer
- * markup is included in the generated stylesheet. */
-@source "../../../packages/mvp/src/landing";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-ui/css/shadcn.css";

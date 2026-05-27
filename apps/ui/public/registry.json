@@ -1,0 +1,175 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "saasflare-ui",
+  "homepage": "https://ui.saasflare.io",
+  "items": [
+    {
+      "name": "feature-card",
+      "type": "registry:ui",
+      "title": "Feature Card",
+      "description": "Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.",
+      "url": "https://ui.saasflare.io/r/feature-card.json"
+    },
+    {
+      "name": "pricing-card",
+      "type": "registry:ui",
+      "title": "Pricing Card",
+      "description": "Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.",
+      "url": "https://ui.saasflare.io/r/pricing-card.json"
+    },
+    {
+      "name": "testimonial-card",
+      "type": "registry:ui",
+      "title": "Testimonial Card",
+      "description": "Customer testimonial card with quote, author name, role, and optional avatar.",
+      "url": "https://ui.saasflare.io/r/testimonial-card.json"
+    },
+    {
+      "name": "team-card",
+      "type": "registry:ui",
+      "title": "Team Card",
+      "description": "Team member card with photo, name, role, bio, and social links.",
+      "url": "https://ui.saasflare.io/r/team-card.json"
+    },
+    {
+      "name": "spotlight-card",
+      "type": "registry:ui",
+      "title": "Spotlight Card",
+      "description": "Card with a cursor-following spotlight gradient effect on hover.",
+      "url": "https://ui.saasflare.io/r/spotlight-card.json"
+    },
+    {
+      "name": "bento-grid",
+      "type": "registry:ui",
+      "title": "Bento Grid",
+      "description": "Bento-style grid layout for feature galleries with mixed sizes.",
+      "url": "https://ui.saasflare.io/r/bento-grid.json"
+    },
+    {
+      "name": "stat-card",
+      "type": "registry:ui",
+      "title": "Stat Card",
+      "description": "KPI / metric card with icon, large value, label, and optional delta indicator.",
+      "url": "https://ui.saasflare.io/r/stat-card.json"
+    },
+    {
+      "name": "metric-card",
+      "type": "registry:ui",
+      "title": "Metric Card",
+      "description": "Dashboard metric card with sparkline support and trend indicator.",
+      "url": "https://ui.saasflare.io/r/metric-card.json"
+    },
+    {
+      "name": "section-card",
+      "type": "registry:ui",
+      "title": "Section Card",
+      "description": "Composable section/landing card with header, content, and footer slots.",
+      "url": "https://ui.saasflare.io/r/section-card.json"
+    },
+    {
+      "name": "progress-circle",
+      "type": "registry:ui",
+      "title": "Progress Circle",
+      "description": "Circular progress indicator. Radial counterpart to Progress, common for KPI rings.",
+      "url": "https://ui.saasflare.io/r/progress-circle.json"
+    },
+    {
+      "name": "bar-list",
+      "type": "registry:ui",
+      "title": "Bar List",
+      "description": "Horizontal 'top N' ranking list with proportional bar fills. Dashboard staple.",
+      "url": "https://ui.saasflare.io/r/bar-list.json"
+    },
+    {
+      "name": "spark-chart",
+      "type": "registry:ui",
+      "title": "Spark Chart",
+      "description": "Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.",
+      "url": "https://ui.saasflare.io/r/spark-chart.json"
+    },
+    {
+      "name": "tracker",
+      "type": "registry:ui",
+      "title": "Tracker",
+      "description": "Uptime/status segment grid. Each block is one period (day/hour) colored by status.",
+      "url": "https://ui.saasflare.io/r/tracker.json"
+    },
+    {
+      "name": "dropzone",
+      "type": "registry:ui",
+      "title": "Dropzone",
+      "description": "Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).",
+      "url": "https://ui.saasflare.io/r/dropzone.json"
+    },
+    {
+      "name": "date-range-picker",
+      "type": "registry:ui",
+      "title": "Date Range Picker",
+      "description": "Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar.",
+      "url": "https://ui.saasflare.io/r/date-range-picker.json"
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "Date Picker",
+      "description": "Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.",
+      "url": "https://ui.saasflare.io/r/date-picker.json"
+    },
+    {
+      "name": "callout",
+      "type": "registry:ui",
+      "title": "Callout",
+      "description": "Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog.",
+      "url": "https://ui.saasflare.io/r/callout.json"
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:ui",
+      "title": "Tag Input",
+      "description": "Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.",
+      "url": "https://ui.saasflare.io/r/tag-input.json"
+    },
+    {
+      "name": "number-input",
+      "type": "registry:ui",
+      "title": "Number Input",
+      "description": "Numeric input with ± stepper buttons, min/max clamping, configurable step + precision.",
+      "url": "https://ui.saasflare.io/r/number-input.json"
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "title": "Rating",
+      "description": "Star rating input with half-star precision, keyboard arrows, and read-only display mode.",
+      "url": "https://ui.saasflare.io/r/rating.json"
+    },
+    {
+      "name": "category-bar",
+      "type": "registry:ui",
+      "title": "Category Bar",
+      "description": "Segmented progress bar with per-segment colors and optional labels. Useful for resource breakdowns.",
+      "url": "https://ui.saasflare.io/r/category-bar.json"
+    },
+    {
+      "name": "tree-view",
+      "type": "registry:ui",
+      "title": "Tree View",
+      "description": "Recursive expand/collapse tree with keyboard navigation, controlled/uncontrolled expansion + selection.",
+      "url": "https://ui.saasflare.io/r/tree-view.json"
+    },
+    {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "Code Block",
+      "description": "Code-block chrome: filename header, language badge, copy button, optional line numbers. BYO highlighter.",
+      "url": "https://ui.saasflare.io/r/code-block.json"
+    },
+    {
+      "name": "notification-center",
+      "type": "registry:ui",
+      "title": "Notification Center",
+      "description": "Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge.",
+      "url": "https://ui.saasflare.io/r/notification-center.json"
+    }
+  ]
+}

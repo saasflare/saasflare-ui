@@ -23,7 +23,7 @@
  */
 import * as React from "react"
 import { cva } from "class-variance-authority"
-import { ChevronDownIcon } from "lucide-react"
+import { CaretDownIcon } from "./phosphor"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 
 import { cn } from "../../lib"
@@ -42,9 +42,10 @@ function NavigationMenu({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: NavigationMenuProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <NavigationMenuPrimitive.Root
@@ -103,6 +104,7 @@ function NavigationMenuTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
+  const sf = useSaasflareProps()
   return (
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
@@ -110,7 +112,7 @@ function NavigationMenuTrigger({
       {...props}
     >
       {children}{" "}
-      <ChevronDownIcon
+      <CaretDownIcon weight={sf.iconWeight}
         className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
         aria-hidden="true"
       />

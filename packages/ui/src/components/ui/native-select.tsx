@@ -15,7 +15,7 @@
  * </NativeSelect>
  */
 import * as React from "react"
-import { ChevronDownIcon } from "lucide-react"
+import { CaretDownIcon } from "./phosphor"
 
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -32,9 +32,10 @@ function NativeSelect({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: NativeSelectProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -55,7 +56,7 @@ function NativeSelect({
           className
         )}
       />
-      <ChevronDownIcon
+      <CaretDownIcon weight={sf.iconWeight}
         className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50 select-none"
         aria-hidden="true"
         data-slot="native-select-icon"

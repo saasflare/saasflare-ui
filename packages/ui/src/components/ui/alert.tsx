@@ -12,7 +12,7 @@
  *
  * @example
  * import { Alert, AlertTitle, AlertDescription } from "@saasflare/core";
- * import { InfoIcon } from "lucide-react";
+ * import { InfoIcon } from "./phosphor";
  *
  * <Alert intent="info">
  *   <InfoIcon />
@@ -76,9 +76,10 @@ function Alert({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: AlertProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   /* ── Backward compat: map legacy variant to intent ── */
   let resolvedIntent: string = intentProp ?? "neutral"
