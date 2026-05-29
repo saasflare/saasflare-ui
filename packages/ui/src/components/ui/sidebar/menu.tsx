@@ -8,7 +8,7 @@
  * @package ui
  *
  * @example
- * import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@saasflare/core';
+ * import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@saasflare/ui';
  * <SidebarMenu>
  *   <SidebarMenuItem>
  *     <SidebarMenuButton tooltip="Dashboard" isActive>

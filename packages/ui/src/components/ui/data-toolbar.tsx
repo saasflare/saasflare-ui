@@ -10,7 +10,7 @@
  * Provides slots for search, filters, view toggles, and bulk actions.
  *
  * @example
- * import { DataToolbar, DataToolbarSearch, DataToolbarActions, DataToolbarFilters } from "@saasflare/core";
+ * import { DataToolbar, DataToolbarSearch, DataToolbarActions, DataToolbarFilters } from "@saasflare/ui";
  *
  * <DataToolbar>
  *   <DataToolbarSearch placeholder="Search users..." />

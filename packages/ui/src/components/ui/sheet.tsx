@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@saasflare/core';
+ * import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@saasflare/ui';
  * <Sheet>
  *   <SheetTrigger>Open</SheetTrigger>
  *   <SheetContent side="right">

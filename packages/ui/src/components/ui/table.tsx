@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@saasflare/core';
+ * import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@saasflare/ui';
  * <Table>
  *   <TableHeader>
  *     <TableRow>

@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Statistic card with number, label, and optional icon.
  * @author Saasflare™

@@ -10,7 +10,7 @@
  * control (toggle, select, input) on the right. Stacks vertically on mobile.
  *
  * @example
- * import { SettingsSection } from "@saasflare/core";
+ * import { SettingsSection } from "@saasflare/ui";
  *
  * <SettingsSection
  *   label="Email Notifications"

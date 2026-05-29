@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { ToggleGroup, ToggleGroupItem } from '@saasflare/core';
+ * import { ToggleGroup, ToggleGroupItem } from '@saasflare/ui';
  * <ToggleGroup type="single" defaultValue="center">
  *   <ToggleGroupItem value="left">Left</ToggleGroupItem>
  *   <ToggleGroupItem value="center">Center</ToggleGroupItem>

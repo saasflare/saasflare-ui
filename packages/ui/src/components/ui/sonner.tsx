@@ -12,7 +12,7 @@
  *
  * @component
  * @example
- * import { Toaster } from '@saasflare/core';
+ * import { Toaster } from '@saasflare/ui';
  * <Toaster position="top-right" />
  */
 "use client"

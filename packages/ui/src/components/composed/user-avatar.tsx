@@ -5,7 +5,7 @@
  * @package ui
  *
  * @example
- * import { UserAvatar } from '@saasflare/core';
+ * import { UserAvatar } from '@saasflare/ui';
  * <UserAvatar src={user.avatar} name={user.name} initials="JD" size="md" />
  */
 'use client';

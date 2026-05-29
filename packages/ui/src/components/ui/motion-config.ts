@@ -14,7 +14,7 @@
  *   Use `useReducedMotion()` to disable springs when the user prefers reduced motion.
  *
  * @example
- * import { spring, useReducedMotion } from "@saasflare/core";
+ * import { spring, useReducedMotion } from "@saasflare/ui";
  * const reduced = useReducedMotion();
  * <motion.div transition={reduced ? { duration: 0 } : spring} />
  */

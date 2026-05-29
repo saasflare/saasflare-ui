@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Team member card with photo, name, role, and social links.
  * @author Saasflare™

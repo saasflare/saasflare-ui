@@ -10,7 +10,7 @@
  * Entry animation respects reduced-motion preference.
  *
  * @example
- * import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@saasflare/core";
+ * import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@saasflare/ui";
  * <Dialog>
  *   <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
  *   <DialogContent>

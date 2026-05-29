@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { HoverCard, HoverCardTrigger, HoverCardContent } from '@saasflare/core';
+ * import { HoverCard, HoverCardTrigger, HoverCardContent } from '@saasflare/ui';
  *
  * <HoverCard>
  *   <HoverCardTrigger>Hover me</HoverCardTrigger>

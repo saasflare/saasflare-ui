@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { ScrollArea } from '@saasflare/core';
+ * import { ScrollArea } from '@saasflare/ui';
  * <ScrollArea className="h-72">
  *   <div>Scrollable content here</div>
  * </ScrollArea>

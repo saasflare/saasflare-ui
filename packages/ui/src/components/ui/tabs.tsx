@@ -15,7 +15,7 @@
  * Layout indicator animation respects reduced-motion preference.
  *
  * @example
- * import { Tabs, TabsList, TabsTrigger, TabsContent } from "@saasflare/core";
+ * import { Tabs, TabsList, TabsTrigger, TabsContent } from "@saasflare/ui";
  * <Tabs defaultValue="overview">
  *   <TabsList>
  *     <TabsTrigger value="overview">Overview</TabsTrigger>

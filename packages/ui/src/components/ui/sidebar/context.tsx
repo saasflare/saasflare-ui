@@ -8,7 +8,7 @@
  * @package ui
  *
  * @example
- * import { SidebarProvider, useSidebar, SidebarTrigger } from '@saasflare/core';
+ * import { SidebarProvider, useSidebar, SidebarTrigger } from '@saasflare/ui';
  * <SidebarProvider>
  *   <SidebarTrigger />
  *   {children}

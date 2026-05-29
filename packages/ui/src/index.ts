@@ -29,6 +29,7 @@ export {
     type UseIntervalReturn,
 } from './hooks/use-interval';
 export { useFocusTrap } from './hooks/use-focus-trap';
+export { useCountdown, type CountdownValue } from './hooks/use-countdown';
 export {
     useFileDialog,
     type UseFileDialogOptions,

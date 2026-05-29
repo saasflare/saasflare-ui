@@ -11,7 +11,7 @@
  * Intent controls the color: neutral (default), info, success, warning, danger.
  *
  * @example
- * import { Alert, AlertTitle, AlertDescription } from "@saasflare/core";
+ * import { Alert, AlertTitle, AlertDescription } from "@saasflare/ui";
  * import { InfoIcon } from "./phosphor";
  *
  * <Alert intent="info">

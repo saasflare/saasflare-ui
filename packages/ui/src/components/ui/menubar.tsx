@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from '@saasflare/core';
+ * import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from '@saasflare/ui';
  * <Menubar>
  *   <MenubarMenu>
  *     <MenubarTrigger>File</MenubarTrigger>

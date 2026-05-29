@@ -10,7 +10,7 @@
  * Used in dashboard overviews, analytics panels, and summary sections.
  *
  * @example
- * import { MetricCard } from "@saasflare/core";
+ * import { MetricCard } from "@saasflare/ui";
  * import { UsersIcon } from "./phosphor";
  *
  * <MetricCard

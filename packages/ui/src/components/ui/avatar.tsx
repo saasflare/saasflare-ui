@@ -12,7 +12,7 @@
  *
  * @component
  * @example
- * import { Avatar, AvatarImage, AvatarFallback } from "@saasflare/core";
+ * import { Avatar, AvatarImage, AvatarFallback } from "@saasflare/ui";
  *
  * <Avatar size="lg">
  *   <AvatarImage src="/user.jpg" alt="User" />

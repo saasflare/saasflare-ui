@@ -14,7 +14,7 @@
  *
  * @component
  * @example
- * import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@saasflare/core';
+ * import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@saasflare/ui';
  * <Form {...form}>
  *   <FormField control={form.control} name="email" render={({ field }) => (
  *     <FormItem>

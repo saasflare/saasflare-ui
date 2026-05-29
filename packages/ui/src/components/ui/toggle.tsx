@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Toggle } from '@saasflare/core';
+ * import { Toggle } from '@saasflare/ui';
  * <Toggle variant="outline" aria-label="Toggle bold">
  *   <BoldIcon className="size-4" />
  * </Toggle>

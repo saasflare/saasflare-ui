@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { TypewriterText } from '@saasflare/core';
+ * import { TypewriterText } from '@saasflare/ui';
  * <TypewriterText text="Hello, welcome to Saasflare." wordDelay={60} />
  */
 'use client';
@@ -106,5 +106,3 @@ export function TypewriterText({
     </span>
   );
 }
-
-export default TypewriterText;

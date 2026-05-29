@@ -1,10 +1,12 @@
 {
-  "name": "@saasflare/demo-ui",
+  "name": "@saasflare/ui-app",
   "version": "1.0.0",
   "private": true,
   "description": "Saasflare UI Catalog – ui.saasflare.io",
   "scripts": {
     "dev": "next dev --turbopack --port 3001",
+    "build:docs": "node scripts/build-props.mjs && node scripts/build-demos.mjs && node scripts/build-doc-pages.mjs",
+    "prebuild": "pnpm build:docs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -21,6 +23,9 @@
     "next-themes": "^0.4.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-hook-form": "7.74.0",
+    "recharts": "^3.8.1",
+    "sonner": "^2.0.0",
     "tailwindcss": "^4.2.1",
     "zod": "^4.4.3"
   },
@@ -29,6 +34,7 @@
     "@types/mdx": "^2.0.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "react-docgen-typescript": "^2.4.0",
     "typescript": "^6.0.3"
   }
 }

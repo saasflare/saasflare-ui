@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Kbd, KbdGroup } from '@saasflare/core';
+ * import { Kbd, KbdGroup } from '@saasflare/ui';
  * <KbdGroup><Kbd>Ctrl</Kbd><Kbd>S</Kbd></KbdGroup>
  */
 import { cn } from "../../lib"

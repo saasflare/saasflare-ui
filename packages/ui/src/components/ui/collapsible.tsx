@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@saasflare/core';
+ * import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@saasflare/ui';
  * <Collapsible>
  *   <CollapsibleTrigger>Toggle</CollapsibleTrigger>
  *   <CollapsibleContent>Hidden content revealed on toggle.</CollapsibleContent>

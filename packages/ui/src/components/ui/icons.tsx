@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Icons } from '@saasflare/core';
+ * import { Icons } from '@saasflare/ui';
  * <Icons.chat className="h-5 w-5 text-muted-foreground" />
  */
 "use client";

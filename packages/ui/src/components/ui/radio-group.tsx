@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { RadioGroup, RadioGroupItem } from '@saasflare/core';
+ * import { RadioGroup, RadioGroupItem } from '@saasflare/ui';
  * <RadioGroup defaultValue="option-1">
  *   <RadioGroupItem value="option-1" />
  *   <RadioGroupItem value="option-2" />

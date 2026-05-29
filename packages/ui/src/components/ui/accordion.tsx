@@ -10,7 +10,7 @@
  * Content fade animation respects reduced-motion preference.
  *
  * @example
- * import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@saasflare/core";
+ * import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@saasflare/ui";
  * <Accordion type="single" collapsible>
  *   <AccordionItem value="faq-1">
  *     <AccordionTrigger>Is it accessible?</AccordionTrigger>

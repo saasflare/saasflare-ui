@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "empty-state",
+  "type": "registry:ui",
+  "title": "Empty State",
+  "description": "Polished zero-data view — icon or illustration, title, description, and a call-to-action button.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/empty-state.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview Saasflare EmptyState — placeholder for empty views.\n * @module packages/core/components/ui/empty-state\n * @layer core\n *\n * Displays a centered icon/illustration, title, description, and optional\n * action button when a list, table, or section has no data.\n *\n * @example\n * import { EmptyState } from \"@saasflare/ui\";\n * import { InboxIcon } from \"@saasflare/ui\";\n *\n * <EmptyState\n *   icon={<InboxIcon />}\n *   title=\"No messages\"\n *   description=\"You haven't received any messages yet.\"\n *   action={<Button>Compose</Button>}\n * />\n */\n\nimport * as React from \"react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\n/** Props for the EmptyState component */\ninterface EmptyStateProps extends Omit<React.ComponentProps<\"div\">, keyof SaasflareComponentProps>, SaasflareComponentProps {\n  /** Icon or illustration element */\n  icon?: React.ReactNode\n  /** Title text */\n  title: string\n  /** Description text */\n  description?: string\n  /** Action element (button, link, etc.) */\n  action?: React.ReactNode\n}\n\n/**\n * Empty state placeholder with icon, text, and call-to-action.\n *\n * @component\n * @layer core\n *\n * @param {React.ReactNode} icon - Icon or illustration\n * @param {string} title - Title text\n * @param {string} description - Description text\n * @param {React.ReactNode} action - Optional CTA button\n *\n * @example\n * <EmptyState\n *   icon={<FileIcon className=\"size-12\" />}\n *   title=\"No documents\"\n *   description=\"Upload your first document to get started.\"\n *   action={<Button>Upload File</Button>}\n * />\n */\nfunction EmptyState({\n  icon,\n  title,\n  description,\n  action,\n  className,\n  surface,\n  radius,\n  animated,\n  ...props\n}: EmptyStateProps) {\n  const sf = useSaasflareProps({ surface, radius, animated })\n\n  return (\n    <div\n      {...props}\n      data-slot=\"empty-state\"\n      data-surface={sf.surface}\n      data-radius={sf.radius}\n      data-animated={String(sf.animated)}\n      className={cn(\n        \"flex flex-col items-center justify-center gap-4 py-12 text-center\",\n        className\n      )}\n    >\n      {icon && (\n        <div className=\"text-muted-foreground [&_svg]:size-12\">{icon}</div>\n      )}\n      <div className=\"space-y-1\">\n        <h3 className=\"text-lg font-semibold\">{title}</h3>\n        {description && (\n          <p className=\"max-w-sm text-sm text-muted-foreground\">{description}</p>\n        )}\n      </div>\n      {action && <div className=\"mt-2\">{action}</div>}\n    </div>\n  )\n}\n\nexport { EmptyState, type EmptyStateProps }\n",
+      "target": "components/ui/empty-state.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/empty-state.json"
+  }
+}

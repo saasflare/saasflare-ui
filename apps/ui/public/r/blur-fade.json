@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "blur-fade",
+  "type": "registry:ui",
+  "title": "Blur Fade",
+  "description": "Entrance animation combining blur, fade, and offset — for elegant on-mount and on-scroll reveals.",
+  "dependencies": [
+    "@saasflare/ui",
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "components/ui/blur-fade.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\n/**\n * @fileoverview Staggered blur + fade entrance animation wrapper.\n * @author Saasflare™\n * Combines a blur filter with opacity and vertical offset for a polished\n * entrance effect. Supports stagger delay for list items.\n * @module packages/ui/components/ui/blur-fade\n * @package ui\n *\n * @component\n * @example\n * import { BlurFade } from '@saasflare/ui';\n * <BlurFade>\n *   <Card>Fades in with blur</Card>\n * </BlurFade>\n *\n * @example\n * // Staggered list\n * {items.map((item, i) => (\n *   <BlurFade key={item.id} delay={i * 0.1}>\n *     <ListItem {...item} />\n *   </BlurFade>\n * ))}\n */\n\nimport { useRef, type ReactNode } from \"react\"\nimport { m, useInView } from \"motion/react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useReducedMotion } from \"@saasflare/ui\"\n\n/** Props for the BlurFade component. */\nexport interface BlurFadeProps {\n  /** Content to animate. */\n  children: ReactNode\n  /** Animation delay in seconds (use for staggering). Default: `0` */\n  delay?: number\n  /** Initial blur amount in pixels. Default: `8` */\n  blur?: number\n  /** Vertical offset in pixels. Default: `12` */\n  yOffset?: number\n  /** Animation duration in seconds. Default: `0.5` */\n  duration?: number\n  /** Whether animation triggers only once. Default: `true` */\n  once?: boolean\n  /** Additional class names. */\n  className?: string\n}\n\n/**\n * Entrance animation that combines blur, opacity, and vertical slide.\n *\n * - Great for staggered reveals: pass incrementing `delay` values\n * - Blur clears simultaneously with the fade for a cohesive effect\n * - Renders children statically when reduced motion is preferred\n * - Uses Intersection Observer to trigger on viewport entry\n *\n * @component\n * @package ui\n */\nexport function BlurFade({\n  children,\n  delay = 0,\n  blur = 8,\n  yOffset = 12,\n  duration = 0.5,\n  once = true,\n  className,\n}: BlurFadeProps) {\n  const reduced = useReducedMotion()\n  const ref = useRef<HTMLDivElement>(null)\n  const isInView = useInView(ref, { once, margin: \"-50px\" })\n\n  if (reduced) {\n    return <div className={className}>{children}</div>\n  }\n\n  return (\n    <m.div\n      ref={ref}\n      initial={{ opacity: 0, y: yOffset, filter: `blur(${blur}px)` }}\n      animate={\n        isInView\n          ? { opacity: 1, y: 0, filter: \"blur(0px)\" }\n          : { opacity: 0, y: yOffset, filter: `blur(${blur}px)` }\n      }\n      transition={{ duration, delay, ease: \"easeOut\" }}\n      className={cn(\"will-change-[opacity,transform,filter]\", className)}\n      data-slot=\"blur-fade\"\n    >\n      {children}\n    </m.div>\n  )\n}\n",
+      "target": "components/ui/blur-fade.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/blur-fade.json"
+  }
+}

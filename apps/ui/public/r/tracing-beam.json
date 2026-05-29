@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "tracing-beam",
+  "type": "registry:ui",
+  "title": "Tracing Beam",
+  "description": "Animated vertical line that traces the reader's scroll progress alongside long-form content.",
+  "dependencies": [
+    "@saasflare/ui",
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "components/ui/tracing-beam.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\n/**\n * @fileoverview Scroll-following vertical beam for long-form content.\n * @author Saasflare™\n * A vertical line that fills as the user scrolls through the content.\n * Ideal for blog posts, documentation, and changelog pages.\n * @module packages/ui/components/ui/tracing-beam\n * @package ui\n *\n * @component\n * @example\n * import { TracingBeam } from '@saasflare/ui';\n * <TracingBeam>\n *   <article>\n *     <h1>Getting Started</h1>\n *     <p>Long form content here...</p>\n *   </article>\n * </TracingBeam>\n */\n\nimport { useRef, type ReactNode } from \"react\"\nimport { m, useScroll, useTransform } from \"motion/react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useReducedMotion } from \"@saasflare/ui\"\n\n/** Props for the TracingBeam component. */\nexport interface TracingBeamProps {\n  /** Content alongside the beam. */\n  children: ReactNode\n  /** Beam color. Default: `\"hsl(var(--primary))\"` */\n  color?: string\n  /** Track (background line) color. Default: `\"hsl(var(--border))\"` */\n  trackColor?: string\n  /** Additional class names. */\n  className?: string\n}\n\n/**\n * Vertical scroll-progress beam alongside content.\n *\n * - Fills from top to bottom as the user scrolls\n * - Renders on the left side with content offset\n * - Includes a dot indicator at the current scroll position\n * - Falls back to a simple left border when reduced motion is preferred\n *\n * @component\n * @package ui\n */\nexport function TracingBeam({\n  children,\n  color = \"hsl(var(--primary))\",\n  trackColor = \"hsl(var(--border))\",\n  className,\n}: TracingBeamProps) {\n  const reduced = useReducedMotion()\n  const containerRef = useRef<HTMLDivElement>(null)\n  const { scrollYProgress } = useScroll({\n    target: containerRef,\n    offset: [\"start 20%\", \"end 80%\"],\n  })\n\n  const beamHeight = useTransform(scrollYProgress, [0, 1], [\"0%\", \"100%\"])\n  const dotY = useTransform(scrollYProgress, [0, 1], [\"0%\", \"100%\"])\n\n  if (reduced) {\n    return (\n      <div className={cn(\"border-l-2 border-primary/30 pl-8\", className)}>\n        {children}\n      </div>\n    )\n  }\n\n  return (\n    <div\n      ref={containerRef}\n      className={cn(\"relative pl-10\", className)}\n      data-slot=\"tracing-beam\"\n    >\n      {/* Track */}\n      <div\n        className=\"absolute left-3 top-0 h-full w-px\"\n        style={{ backgroundColor: trackColor }}\n      />\n\n      {/* Filled beam */}\n      <m.div\n        className=\"absolute left-3 top-0 w-px\"\n        style={{ height: beamHeight, backgroundColor: color }}\n      />\n\n      {/* Dot indicator */}\n      <m.div\n        className=\"absolute left-[9px] size-1.5 rounded-full\"\n        style={{\n          top: dotY,\n          backgroundColor: color,\n          boxShadow: `0 0 8px ${color}`,\n        }}\n      />\n\n      {children}\n    </div>\n  )\n}\n",
+      "target": "components/ui/tracing-beam.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/tracing-beam.json"
+  }
+}

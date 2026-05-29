@@ -10,7 +10,7 @@
  * title, description, and an action slot for buttons.
  *
  * @example
- * import { PageHeader } from "@saasflare/core";
+ * import { PageHeader } from "@saasflare/ui";
  *
  * <PageHeader
  *   title="Team Settings"

@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { Command, CommandInput, CommandList, CommandItem, CommandGroup } from '@saasflare/core';
+ * import { Command, CommandInput, CommandList, CommandItem, CommandGroup } from '@saasflare/ui';
  * <Command>
  *   <CommandInput placeholder="Search..." />
  *   <CommandList>

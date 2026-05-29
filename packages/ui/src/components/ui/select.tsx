@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@saasflare/core';
+ * import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@saasflare/ui';
  * <Select>
  *   <SelectTrigger>
  *     <SelectValue placeholder="Pick an option" />

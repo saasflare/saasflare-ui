@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "title": "Separator",
+  "description": "Thin horizontal or vertical divider for grouping content and menu sections.",
+  "dependencies": [
+    "@radix-ui/react-separator",
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/separator.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview Separator primitive — visual divider line for horizontal or vertical content separation.\n * Built on Radix UI Separator. Part of the Saasflare base component layer.\n * @module packages/core/components/ui/separator\n * @layer core\n *\n * @component\n * @example\n * import { Separator } from '@saasflare/ui';\n * <Separator orientation=\"horizontal\" />\n */\n\"use client\"\n\nimport * as React from \"react\"\nimport * as SeparatorPrimitive from \"@radix-ui/react-separator\"\n\nimport { cn } from \"@saasflare/ui\"\n\nfunction Separator({\n  className,\n  orientation = \"horizontal\",\n  decorative = true,\n  ...props\n}: React.ComponentProps<typeof SeparatorPrimitive.Root>) {\n  return (\n    <SeparatorPrimitive.Root\n      data-slot=\"separator\"\n      decorative={decorative}\n      orientation={orientation}\n      className={cn(\n        \"shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Separator }\n",
+      "target": "components/ui/separator.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/separator.json"
+  }
+}

@@ -10,7 +10,7 @@
  * Hover lift animation respects reduced-motion preference.
  *
  * @example
- * import { Card, CardHeader, CardTitle, CardContent } from "@saasflare/core";
+ * import { Card, CardHeader, CardTitle, CardContent } from "@saasflare/ui";
  * <Card>
  *   <CardHeader>
  *     <CardTitle>Settings</CardTitle>

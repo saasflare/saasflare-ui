@@ -8,7 +8,7 @@
  * @package ui
  *
  * @example
- * import { Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarFooter, SidebarInset } from '@saasflare/core';
+ * import { Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarFooter, SidebarInset } from '@saasflare/ui';
  * <Sidebar side="left" variant="sidebar" collapsible="offcanvas">
  *   <SidebarHeader>Logo</SidebarHeader>
  *   <SidebarContent>

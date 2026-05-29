@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "countdown",
+  "type": "registry:ui",
+  "title": "Countdown",
+  "description": "Presentational countdown display (days/hours/minutes/seconds) — pair with the useCountdown hook.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/countdown.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\n/**\n * @fileoverview Countdown timer display with days/hours/minutes/seconds boxes.\n * @author Saasflare™\n * Presentational component — pair with the `useCountdown` hook for live ticking.\n * @module packages/ui/components/ui/countdown\n * @package ui\n *\n * @component\n * @example\n * import { Countdown } from '@saasflare/ui';\n * import { useCountdown } from '@saasflare/ui';\n * const { days, hours, minutes, seconds } = useCountdown(targetDate);\n * <Countdown days={days} hours={hours} minutes={minutes} seconds={seconds} />\n */\n\nimport { cn } from \"@saasflare/ui\"\n\n/** Props for the Countdown component. */\nexport interface CountdownProps {\n  /** Number of days remaining. */\n  days: number\n  /** Number of hours remaining (0–23). */\n  hours: number\n  /** Number of minutes remaining (0–59). */\n  minutes: number\n  /** Number of seconds remaining (0–59). */\n  seconds: number\n  /** Show the labels below each box. Default: `true` */\n  showLabels?: boolean\n  /** Additional class names. */\n  className?: string\n}\n\n/** Pads a number to 2 digits. */\nfunction pad(n: number): string {\n  return String(Math.max(0, Math.floor(n))).padStart(2, \"0\")\n}\n\n/**\n * Countdown display with segmented boxes for each time unit.\n *\n * @component\n * @package ui\n */\nexport function Countdown({\n  days,\n  hours,\n  minutes,\n  seconds,\n  showLabels = true,\n  className,\n}: CountdownProps) {\n  const units = [\n    { value: days, label: \"Days\" },\n    { value: hours, label: \"Hours\" },\n    { value: minutes, label: \"Minutes\" },\n    { value: seconds, label: \"Seconds\" },\n  ]\n\n  return (\n    <div\n      className={cn(\"flex items-center gap-2 md:gap-3\", className)}\n      data-slot=\"countdown\"\n      role=\"timer\"\n      aria-label={`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}\n    >\n      {units.map((unit, i) => (\n        <div key={unit.label} className=\"flex items-center gap-2 md:gap-3\">\n          <div className=\"flex flex-col items-center\">\n            <div className=\"flex size-14 items-center justify-center rounded-lg border bg-card text-2xl font-bold tabular-nums shadow-sm md:size-16 md:text-3xl\">\n              {pad(unit.value)}\n            </div>\n            {showLabels && (\n              <span className=\"mt-1.5 text-[10px] uppercase tracking-wider text-muted-foreground\">\n                {unit.label}\n              </span>\n            )}\n          </div>\n          {i < units.length - 1 && (\n            <span className=\"mb-5 text-xl font-bold text-muted-foreground\" aria-hidden=\"true\">:</span>\n          )}\n        </div>\n      ))}\n    </div>\n  )\n}\n",
+      "target": "components/ui/countdown.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/countdown.json"
+  }
+}

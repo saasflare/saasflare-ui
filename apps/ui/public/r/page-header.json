@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "page-header",
+  "type": "registry:ui",
+  "title": "Page Header",
+  "description": "Page header block with breadcrumbs, title, description, and an action slot for primary buttons.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/page-header.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview Saasflare PageHeader — top-level page title with actions.\n * @module packages/core/components/ui/page-header\n * @layer core\n *\n * Composed component for SaaS page headers with breadcrumbs,\n * title, description, and an action slot for buttons.\n *\n * @example\n * import { PageHeader } from \"@saasflare/ui\";\n *\n * <PageHeader\n *   title=\"Team Settings\"\n *   description=\"Manage your team members and their permissions.\"\n *   actions={<Button>Invite Member</Button>}\n * />\n */\n\nimport * as React from \"react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\n/** Props for the PageHeader component */\ninterface PageHeaderProps extends Omit<React.ComponentProps<\"div\">, keyof SaasflareComponentProps>, SaasflareComponentProps {\n  /** Page title */\n  title: string\n  /** Optional description below the title */\n  description?: string\n  /** Optional breadcrumb element rendered above the title */\n  breadcrumbs?: React.ReactNode\n  /** Action slot (buttons, etc.) aligned to the right */\n  actions?: React.ReactNode\n}\n\n/**\n * Page header with title, description, breadcrumbs, and action slot.\n *\n * @component\n * @layer core\n *\n * @param {string} title - Page title text\n * @param {string} description - Optional subtitle / description\n * @param {React.ReactNode} breadcrumbs - Optional breadcrumb navigation\n * @param {React.ReactNode} actions - Action buttons aligned right\n *\n * @example\n * <PageHeader\n *   breadcrumbs={<Breadcrumb>...</Breadcrumb>}\n *   title=\"Billing\"\n *   description=\"Manage your subscription and payment methods.\"\n *   actions={\n *     <>\n *       <Button variant=\"outline\">Cancel Plan</Button>\n *       <Button>Upgrade</Button>\n *     </>\n *   }\n * />\n */\nfunction PageHeader({\n  title,\n  description,\n  breadcrumbs,\n  actions,\n  className,\n  surface,\n  radius,\n  animated,\n  ...props\n}: PageHeaderProps) {\n  const sf = useSaasflareProps({ surface, radius, animated })\n\n  return (\n    <div\n      {...props}\n      data-slot=\"page-header\"\n      data-surface={sf.surface}\n      data-radius={sf.radius}\n      data-animated={String(sf.animated)}\n      className={cn(\"flex flex-col gap-1\", className)}\n    >\n      {breadcrumbs && (\n        <div data-slot=\"page-header-breadcrumbs\" className=\"mb-2\">\n          {breadcrumbs}\n        </div>\n      )}\n      <div className=\"flex items-start justify-between gap-4\">\n        <div className=\"flex-1 space-y-1\">\n          <h1 className=\"text-2xl font-semibold tracking-tight\">{title}</h1>\n          {description && (\n            <p className=\"text-sm text-muted-foreground\">{description}</p>\n          )}\n        </div>\n        {actions && (\n          <div data-slot=\"page-header-actions\" className=\"flex shrink-0 items-center gap-2\">\n            {actions}\n          </div>\n        )}\n      </div>\n    </div>\n  )\n}\n\nexport { PageHeader, type PageHeaderProps }\n",
+      "target": "components/ui/page-header.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/page-header.json"
+  }
+}

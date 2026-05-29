@@ -132,7 +132,9 @@ function buildLlmsFullTxt() {
     lines.push("")
 
     for (const item of registry.items) {
-        const sourcePath = join(PKG_ROOT, item.files[0].path)
+        // registry.json is a metadata-only overlay now; derive the source path
+        // from the component name (matches build-registry's component dir).
+        const sourcePath = join(PKG_ROOT, "src/components/ui", `${item.name}.tsx`)
         if (!existsSync(sourcePath)) continue
         const source = readFileSync(sourcePath, "utf-8")
         const componentName = toPascalCase(item.name)

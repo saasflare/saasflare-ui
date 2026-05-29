@@ -12,7 +12,7 @@
  *
  * @component
  * @example
- * import { Checkbox } from "@saasflare/core";
+ * import { Checkbox } from "@saasflare/ui";
  *
  * <Checkbox id="terms" />
  * <label htmlFor="terms">Accept terms and conditions</label>

@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { Separator } from '@saasflare/core';
+ * import { Separator } from '@saasflare/ui';
  * <Separator orientation="horizontal" />
  */
 "use client"

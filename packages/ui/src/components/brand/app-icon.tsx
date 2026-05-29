@@ -6,7 +6,7 @@
  *
  * @component
  * @example
- * import { AppIcon } from '@saasflare/core';
+ * import { AppIcon } from '@saasflare/ui';
  * <AppIcon className="h-8 w-auto" />
  */
 import * as React from 'react';

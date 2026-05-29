@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Empty, EmptyHeader, EmptyTitle, EmptyAction } from '@saasflare/core';
+ * import { Empty, EmptyHeader, EmptyTitle, EmptyAction } from '@saasflare/ui';
  * <Empty>
  *   <EmptyHeader>
  *     <EmptyTitle>No items found</EmptyTitle>

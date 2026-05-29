@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { InputGroup, InputGroupInput, InputGroupAddon } from '@saasflare/core';
+ * import { InputGroup, InputGroupInput, InputGroupAddon } from '@saasflare/ui';
  * <InputGroup>
  *   <InputGroupAddon>$</InputGroupAddon>
  *   <InputGroupInput placeholder="Amount" />

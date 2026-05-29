@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { ThemeModeToggle } from '@saasflare/core';
+ * import { ThemeModeToggle } from '@saasflare/ui';
  * <ThemeModeToggle />
  *
  * @example

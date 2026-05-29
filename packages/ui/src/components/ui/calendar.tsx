@@ -12,7 +12,7 @@
  *
  * @component
  * @example
- * import { Calendar } from '@saasflare/core';
+ * import { Calendar } from '@saasflare/ui';
  * const [date, setDate] = React.useState<Date | undefined>(new Date());
  * <Calendar mode="single" selected={date} onSelect={setDate} />
  */

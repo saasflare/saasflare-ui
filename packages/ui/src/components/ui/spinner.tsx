@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { Spinner } from '@saasflare/core';
+ * import { Spinner } from '@saasflare/ui';
  * <Spinner className="size-6" />
  */
 "use client"

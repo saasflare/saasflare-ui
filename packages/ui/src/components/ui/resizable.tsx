@@ -11,7 +11,7 @@
  *
  * @component
  * @example
- * import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@saasflare/core';
+ * import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@saasflare/ui';
  * <ResizablePanelGroup direction="horizontal">
  *   <ResizablePanel>Left</ResizablePanel>
  *   <ResizableHandle withHandle />
