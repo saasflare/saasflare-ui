@@ -34,7 +34,7 @@ import { useReducedMotion } from "./motion-config"
 export interface GradientTextProps {
   /** Text content to apply the gradient to. */
   children: ReactNode
-  /** Gradient color stops. Default: primary → chart-1 → chart-2 tokens */
+  /** Gradient color stops. Default: `--primary` → `--chart-1` → `--chart-2` design tokens (OKLCH). */
   colors?: string[]
   /** Whether to animate the gradient position. Default: `true` */
   animate?: boolean
@@ -60,9 +60,9 @@ export interface GradientTextProps {
 export function GradientText({
   children,
   colors = [
-    "hsl(var(--primary))",
-    "hsl(var(--chart-1))",
-    "hsl(var(--chart-2))",
+    "var(--primary)",
+    "var(--chart-1)",
+    "var(--chart-2)",
   ],
   animate = true,
   speed = 6,

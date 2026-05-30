@@ -16,14 +16,14 @@
  *
  * @example
  * // Custom grid color and size
- * <RetroGrid gridColor="hsl(var(--primary))" gridSize={40} angle={70} />
+ * <RetroGrid gridColor="var(--primary)" gridSize={40} angle={70} />
  */
 
 import { cn } from "../../lib"
 
 /** Props for the RetroGrid component. */
 export interface RetroGridProps {
-  /** Grid line color. Default: `"hsl(var(--border))"` */
+  /** Grid line color. Default: `"var(--border)"` */
   gridColor?: string
   /** Grid cell size in pixels. Default: `60` */
   gridSize?: number
@@ -46,7 +46,7 @@ export interface RetroGridProps {
  * @package ui
  */
 export function RetroGrid({
-  gridColor = "hsl(var(--border))",
+  gridColor = "var(--border)",
   gridSize = 60,
   angle = 65,
   opacity = 0.4,

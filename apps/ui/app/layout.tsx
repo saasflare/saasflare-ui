@@ -25,13 +25,42 @@ import "./globals.css"
 import { SaasflareShell, SaasflareScript, ScrollToTopButton, TopLoadingBar } from "@saasflare/ui"
 import { fontVariables } from "@saasflare/ui/fonts/distinctive"
 import { CATALOG_PREFS_KEY, parseCatalogPrefs, resolveDark } from "../lib/catalog-prefs"
+import { SITE_NAME, SITE_TAGLINE, SITE_URL } from "../lib/site"
+
+const SITE_DESCRIPTION =
+    "117 production-ready React components with an MCP server, llms.txt, and a machine-readable registry. Themeable across 24 palettes. Built on Tailwind v4 and Motion."
 
 export const metadata: Metadata = {
-    title: "Saasflare UI – Component Catalog",
-    description: "Explore the Saasflare design system and component library.",
-    applicationName: "Saasflare UI",
-    keywords: ["saasflare", "ui", "design system", "component library"],
+    metadataBase: new URL(SITE_URL),
+    title: {
+        default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+        template: `%s — ${SITE_NAME}`,
+    },
+    description: SITE_DESCRIPTION,
+    applicationName: SITE_NAME,
+    keywords: [
+        "saasflare",
+        "ui",
+        "design system",
+        "component library",
+        "react",
+        "tailwind",
+        "mcp",
+        "ai",
+    ],
     authors: [{ name: "Saasflare™" }],
+    openGraph: {
+        type: "website",
+        siteName: SITE_NAME,
+        url: SITE_URL,
+        title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+        description: SITE_DESCRIPTION,
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+        description: SITE_DESCRIPTION,
+    },
 }
 
 /**

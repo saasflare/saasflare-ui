@@ -1,0 +1,110 @@
+---
+title: Theming
+description: "24 palettes and 7 orthogonal customization axes — set them once on the provider, override per component, or switch them live at runtime."
+---
+
+Theming is the heart of `@saasflare/ui`. Every visual decision flows through CSS
+design tokens, so the same components render any brand without a rebuild. There
+are **seven orthogonal axes** — change one without touching the others.
+
+<Callout type="info">
+Want to feel it first? The [component catalog](/catalog) and the home page both
+expose a live switcher. Pick a palette and watch the whole page re-theme.
+</Callout>
+
+## The seven axes
+
+| Axis | Values | Default |
+| --- | --- | --- |
+| `palette` | 24 presets (see below) | `saasflare` |
+| `surface` | `flat`, `glass`, `clay` | `flat` |
+| `radius` | `sharp`, `soft`, `rounded`, `pill` | `soft` |
+| `iconWeight` | `regular`, `bold`, `fill`, `duotone` | `regular` |
+| `animated` | `true` / `false` | `true` |
+| `smoothScrolling` | `true` / `false` | `true` |
+| `theme` (light/dark) | `light`, `dark`, `system` | `system` |
+
+### Palettes
+
+`black`, `snow`, `stone`, `ink`, `fuchsia`, `violet`, `lavender`, `indigo`,
+`saasflare`, `iris`, `cobalt`, `ocean`, `sky`, `aurora`, `teal`, `sage`, `jade`,
+`emerald`, `mint`, `honey`, `amber`, `coral`, `ruby`, and `colorful`.
+
+## Set the theme on the provider
+
+The simplest path — pass the axes to `SaasflareShell` (it forwards them to the
+provider and applies them SSR-safe, before first paint):
+
+```tsx title="app/layout.tsx"
+import { SaasflareShell } from "@saasflare/ui"
+import { fontVariables } from "@saasflare/ui/fonts/default"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <SaasflareShell
+      palette="ocean"
+      surface="glass"
+      radius="pill"
+      iconWeight="duotone"
+      theme="dark"
+      className={fontVariables}
+    >
+      {children}
+    </SaasflareShell>
+  )
+}
+```
+
+## Override per component
+
+`surface`, `radius`, and `animated` are also component props — handy for a single
+glass card on an otherwise flat page. They inherit from the provider when omitted:
+
+```tsx
+<Card surface="glass" radius="pill">Glassy, rounded — just this one</Card>
+<Button surface="clay">Inherits the rest from the provider</Button>
+```
+
+## Switch at runtime
+
+`useSaasflareTheme()` exposes the live state and setters. This is exactly what the
+catalog toolbar uses:
+
+```tsx
+"use client"
+import { useSaasflareTheme } from "@saasflare/ui"
+
+export function PaletteToggle() {
+  const { palette, setPalette } = useSaasflareTheme()
+  return (
+    <button onClick={() => setPalette(palette === "ocean" ? "emerald" : "ocean")}>
+      Toggle palette
+    </button>
+  )
+}
+```
+
+## Rebrand: edit the palette, not the components
+
+A palette is a small set of OKLCH anchor tokens (`--primary-h/c/l`, neutrals).
+To change the house brand, edit `:root[data-palette="saasflare"]` in
+`packages/ui/styles/palettes.css` — every component on every consuming app picks
+up the new accent on the next build. Add a new preset by adding a new
+`:root[data-palette="yourbrand"]` block.
+
+<Callout type="warn">
+Don't hardcode colors in component classNames or override tokens app-side. The
+package is the single source of truth for the design system — that's what keeps
+every Saasflare app in lock-step.
+</Callout>
+
+## Dark mode
+
+Light/dark is the `theme` axis, backed by `next-themes` and orthogonal to
+`palette`. Drive it with the `theme` prop (above) or the standard `next-themes`
+`useTheme()` setter for a toggle.
+
+## Next steps
+
+- [AI: MCP server & llms.txt](/docs/ai)
+- [Browse all 117 components](/catalog)

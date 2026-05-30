@@ -19,7 +19,7 @@
  * @example
  * // Custom glow color and spread
  * <div className="relative overflow-hidden rounded-xl border p-6">
- *   <GlowingEffect color="hsl(var(--chart-1))" spread={200} blur={30} />
+ *   <GlowingEffect color="var(--chart-1)" spread={200} blur={30} />
  *   <p>Content</p>
  * </div>
  */
@@ -31,7 +31,7 @@ import { useMousePosition } from "../../hooks/use-mouse-position"
 
 /** Props for the GlowingEffect component. */
 export interface GlowingEffectProps {
-  /** Glow color. Default: `"hsl(var(--primary))"` */
+  /** Glow color. Default: `"var(--primary)"` */
   color?: string
   /** Glow spread diameter in pixels. Default: `150` */
   spread?: number
@@ -57,7 +57,7 @@ export interface GlowingEffectProps {
  * @package ui
  */
 export function GlowingEffect({
-  color = "hsl(var(--primary))",
+  color = "var(--primary)",
   spread = 150,
   blur = 20,
   opacity = 0.4,

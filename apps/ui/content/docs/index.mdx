@@ -1,11 +1,32 @@
 ---
-title: Saasflare UI
-description: Component catalog and design system docs for @saasflare/ui.
+title: Introduction
+description: "@saasflare/ui — the AI-native React design system. 117 themeable, animated, production-ready components."
 ---
 
-# Welcome
+**@saasflare/ui** is the public design system behind Saasflare — and the API
+surface every Saasflare app (and any external consumer) builds on. One package,
+no private fork.
 
-This is the docs section of **ui.saasflare.io**, powered by Fumadocs and themed
-with Saasflare design tokens.
+## What you get
 
-Drop `.mdx` files into `apps/ui/content/docs/` to add pages.
+- **117 components** — primitives, data viz, forms, and scroll-driven motion, all animated by default.
+- **24 palettes, 7 axes** — re-theme the entire UI at runtime without a rebuild. See [Theming](/docs/theming).
+- **AI-native** — an [MCP server](/docs/ai), `llms.txt`, and a machine-readable registry, so your editor and copilot understand the system.
+- **Zero config** — one styles import, one provider, no env vars, no Tailwind config to extend.
+- **Strict TypeScript** — JSDoc on every export for first-try-correct completions.
+
+## Start here
+
+- [Getting Started](/docs/getting-started) — install and render your first component
+- [Installation](/docs/installation) — peers, subpaths, and the shadcn registry
+- [Theming](/docs/theming) — palettes and the customization axes
+- [AI & MCP](/docs/ai) — wire your editor into the design system
+- [Components](/docs/components) — the full catalog
+
+## Principles
+
+Components expose **semantic props only** — no micro-styling, no prop bloat.
+Colors and geometry flow through design tokens, never hardcoded. The package owns
+every primitive (no shadcn runtime dependency), and the design system is the
+single source of truth: rebrand by editing the palette, and every consumer
+adopts it on the next build.

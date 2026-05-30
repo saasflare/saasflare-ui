@@ -31,7 +31,7 @@ export interface AnimatedShinyTextProps {
   children: ReactNode
   /** Animation cycle duration in seconds. Default: `3` */
   speed?: number
-  /** Shimmer highlight color. Default: `"hsl(var(--primary))"` */
+  /** Shimmer highlight color. Default: `"var(--primary)"` */
   shimmerColor?: string
   /** Additional class names. */
   className?: string
@@ -50,7 +50,7 @@ export interface AnimatedShinyTextProps {
 export function AnimatedShinyText({
   children,
   speed = 3,
-  shimmerColor = "hsl(var(--primary))",
+  shimmerColor = "var(--primary)",
   className,
 }: AnimatedShinyTextProps) {
   const reduced = useReducedMotion()

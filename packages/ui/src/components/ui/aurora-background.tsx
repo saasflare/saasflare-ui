@@ -25,7 +25,7 @@
  *
  * @example
  * // Opt-into brand-rotating colors
- * <AuroraBackground colors={["hsl(var(--primary))", "hsl(var(--chart-2))", "hsl(var(--chart-3))"]}>
+ * <AuroraBackground colors={["var(--primary)", "var(--chart-2)", "var(--chart-3)"]}>
  *   <Card>…</Card>
  * </AuroraBackground>
  *

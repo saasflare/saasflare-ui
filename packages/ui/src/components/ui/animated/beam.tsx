@@ -35,7 +35,7 @@ export interface AnimatedBeamProps {
   fromRef: RefObject<HTMLElement | null>
   /** Ref to the target element. */
   toRef: RefObject<HTMLElement | null>
-  /** Beam stroke color. Default: `"hsl(var(--primary))"` */
+  /** Beam stroke color. Default: `"var(--primary)"` */
   color?: string
   /** Beam stroke width. Default: `2` */
   strokeWidth?: number
@@ -62,7 +62,7 @@ export function AnimatedBeam({
   containerRef,
   fromRef,
   toRef,
-  color = "hsl(var(--primary))",
+  color = "var(--primary)",
   strokeWidth = 2,
   curvature = 50,
   duration = 3,

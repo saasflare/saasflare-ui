@@ -18,7 +18,7 @@
  *
  * @example
  * // Custom density and color
- * <ParticlesBackground count={30} color="hsl(var(--chart-2))" maxSize={6} />
+ * <ParticlesBackground count={30} color="var(--chart-2)" maxSize={6} />
  */
 
 import { useMemo } from "react"
@@ -29,7 +29,7 @@ import { useReducedMotion } from "./motion-config"
 export interface ParticlesBackgroundProps {
   /** Number of particles. Default: `20` */
   count?: number
-  /** CSS color of particles. Default: `"hsl(var(--primary))"` */
+  /** CSS color of particles. Default: `"var(--primary)"` */
   color?: string
   /** Maximum particle diameter in pixels. Default: `4` */
   maxSize?: number
@@ -62,7 +62,7 @@ function seededRandom(seed: number): number {
  */
 export function ParticlesBackground({
   count = 20,
-  color = "hsl(var(--primary))",
+  color = "var(--primary)",
   maxSize = 4,
   minSize = 1,
   maxOpacity = 0.3,

@@ -52,7 +52,7 @@ export interface HotspotMarkerProps {
   label: string
   /** Detailed description shown in the tooltip. */
   description?: string
-  /** Marker dot color. Default: `"hsl(var(--primary))"` */
+  /** Marker dot color. Default: `"var(--primary)"` */
   color?: string
   /** Additional class names. */
   className?: string
@@ -69,7 +69,7 @@ export function HotspotMarker({
   y,
   label,
   description,
-  color = "hsl(var(--primary))",
+  color = "var(--primary)",
   className,
 }: HotspotMarkerProps) {
   const [hovered, setHovered] = useState(false)

@@ -28,9 +28,9 @@ import { useReducedMotion } from "./motion-config"
 export interface TracingBeamProps {
   /** Content alongside the beam. */
   children: ReactNode
-  /** Beam color. Default: `"hsl(var(--primary))"` */
+  /** Beam color. Default: `"var(--primary)"` */
   color?: string
-  /** Track (background line) color. Default: `"hsl(var(--border))"` */
+  /** Track (background line) color. Default: `"var(--border)"` */
   trackColor?: string
   /** Additional class names. */
   className?: string
@@ -49,8 +49,8 @@ export interface TracingBeamProps {
  */
 export function TracingBeam({
   children,
-  color = "hsl(var(--primary))",
-  trackColor = "hsl(var(--border))",
+  color = "var(--primary)",
+  trackColor = "var(--border)",
   className,
 }: TracingBeamProps) {
   const reduced = useReducedMotion()

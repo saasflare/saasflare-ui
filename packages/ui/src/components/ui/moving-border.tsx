@@ -18,7 +18,7 @@
  * @example
  * // Custom colors and speed
  * <MovingBorder
- *   colors={["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--primary))"]}
+ *   colors={["var(--chart-1)", "var(--chart-2)", "var(--primary)"]}
  *   duration={4}
  *   borderWidth={2}
  * >
@@ -59,7 +59,7 @@ export interface MovingBorderProps {
  */
 export function MovingBorder({
   children,
-  colors = ["hsl(var(--primary))", "hsl(var(--chart-1))", "hsl(var(--chart-2))"],
+  colors = ["var(--primary)", "var(--chart-1)", "var(--chart-2)"],
   duration = 6,
   borderWidth = 1.5,
   borderRadius = "0.75rem",

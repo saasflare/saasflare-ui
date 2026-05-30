@@ -20,7 +20,7 @@
  * // Custom colors and size
  * <MouseGradientBlob
  *   size={600}
- *   colors={["hsl(var(--primary))", "hsl(var(--chart-2))"]}
+ *   colors={["var(--primary)", "var(--chart-2)"]}
  *   opacity={0.2}
  * />
  */
@@ -57,7 +57,7 @@ export interface MouseGradientBlobProps {
  */
 export function MouseGradientBlob({
   size = 500,
-  colors = ["hsl(var(--primary))", "hsl(var(--chart-2))"],
+  colors = ["var(--primary)", "var(--chart-2)"],
   opacity = 0.15,
   blur = 80,
   className,

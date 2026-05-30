@@ -1,4 +1,13 @@
 {
     "title": "Docs",
-    "pages": ["index", "components"]
+    "pages": [
+        "index",
+        "---Get Started---",
+        "getting-started",
+        "installation",
+        "theming",
+        "ai",
+        "---Catalog---",
+        "components"
+    ]
 }
