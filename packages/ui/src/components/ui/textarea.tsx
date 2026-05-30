@@ -38,7 +38,7 @@ function Textarea({ className, surface, radius, animated, ...props }: TextareaPr
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}
+      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px color-mix(in oklab, var(--ring) 30%, transparent)" }}
       transition={motion.transition}
       className={cn(
         "w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,border-color] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",

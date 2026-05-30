@@ -17,7 +17,7 @@
  *
  * @example
  * // Customized appearance
- * <AnimatedCursor dotSize={8} ringSize={36} ringColor="hsl(var(--primary))" />
+ * <AnimatedCursor dotSize={8} ringSize={36} ringColor="var(--primary)" />
  */
 
 import { useEffect, useState, useCallback } from "react"
@@ -30,9 +30,9 @@ export interface AnimatedCursorProps {
   dotSize?: number
   /** Diameter of the outer ring in pixels. Default: `32` */
   ringSize?: number
-  /** CSS color for the inner dot. Default: `"hsl(var(--primary))"` */
+  /** CSS color for the inner dot. Default: `"var(--primary)"` */
   dotColor?: string
-  /** CSS color for the outer ring border. Default: `"hsl(var(--primary))"` */
+  /** CSS color for the outer ring border. Default: `"var(--primary)"` */
   ringColor?: string
   /** Border width of the outer ring in pixels. Default: `1.5` */
   ringBorderWidth?: number
@@ -52,8 +52,8 @@ export interface AnimatedCursorProps {
 export function AnimatedCursor({
   dotSize = 6,
   ringSize = 32,
-  dotColor = "hsl(var(--primary))",
-  ringColor = "hsl(var(--primary))",
+  dotColor = "var(--primary)",
+  ringColor = "var(--primary)",
   ringBorderWidth = 1.5,
 }: AnimatedCursorProps) {
   const reduced = useReducedMotion()

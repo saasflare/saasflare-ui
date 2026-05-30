@@ -56,7 +56,7 @@ export interface AuroraBackgroundProps {
  */
 export function AuroraBackground({
   children,
-  colors = ["hsl(var(--primary))", "hsl(var(--chart-1))", "hsl(var(--chart-2))"],
+  colors = ["var(--primary)", "var(--chart-1)", "var(--chart-2)"],
   opacity = 0.15,
   speed = 1,
   className,

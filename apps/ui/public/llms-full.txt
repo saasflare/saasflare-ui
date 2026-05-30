@@ -393,7 +393,7 @@ npx shadcn add https://ui.saasflare.io/r/border-beam.json
 
 ```ts
 export interface BorderBeamProps {
-  /** Beam color. Default: `"hsl(var(--primary))"` */
+  /** Beam color. Default: `"var(--primary)"` */
   color?: string
   /** Tail fade color. Default: `"transparent"` */
   colorFrom?: string
@@ -1677,7 +1677,7 @@ npx shadcn add https://ui.saasflare.io/r/glowing-effect.json
 
 ```ts
 export interface GlowingEffectProps {
-  /** Glow color. Default: `"hsl(var(--primary))"` */
+  /** Glow color. Default: `"var(--primary)"` */
   color?: string
   /** Glow spread diameter in pixels. Default: `150` */
   spread?: number
@@ -1720,7 +1720,7 @@ npx shadcn add https://ui.saasflare.io/r/gradient-text.json
 export interface GradientTextProps {
   /** Text content to apply the gradient to. */
   children: ReactNode
-  /** Gradient color stops. Default: primary → chart-1 → chart-2 tokens */
+  /** Gradient color stops. Default: `--primary` → `--chart-1` → `--chart-2` design tokens (OKLCH). */
   colors?: string[]
   /** Whether to animate the gradient position. Default: `true` */
   animate?: boolean
@@ -1910,7 +1910,7 @@ function Input({ className, type, surface, radius, animated, ...props }: InputPr
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}
+      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px color-mix(in oklab, var(--ring) 30%, transparent)" }}
       transition={motion.transition}
       className={cn(
         "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,border-color] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
@@ -2613,7 +2613,7 @@ npx shadcn add https://ui.saasflare.io/r/particles-background.json
 export interface ParticlesBackgroundProps {
   /** Number of particles. Default: `20` */
   count?: number
-  /** CSS color of particles. Default: `"hsl(var(--primary))"` */
+  /** CSS color of particles. Default: `"var(--primary)"` */
   color?: string
   /** Maximum particle diameter in pixels. Default: `4` */
   maxSize?: number
@@ -2924,7 +2924,7 @@ npx shadcn add https://ui.saasflare.io/r/retro-grid.json
 
 ```ts
 export interface RetroGridProps {
-  /** Grid line color. Default: `"hsl(var(--border))"` */
+  /** Grid line color. Default: `"var(--border)"` */
   gridColor?: string
   /** Grid cell size in pixels. Default: `60` */
   gridSize?: number
@@ -3229,7 +3229,7 @@ export interface ShimmerButtonProps extends ComponentProps<"button"> {
   shimmerColor?: string
   /** Shimmer cycle duration in seconds. Default: `2.5` */
   speed?: number
-  /** Background color. Default: `"hsl(var(--primary))"` */
+  /** Background color. Default: `"var(--primary)"` */
   background?: string
 }
 ```
@@ -3471,7 +3471,7 @@ npx shadcn add https://ui.saasflare.io/r/spotlight-card.json
 export interface SpotlightCardProps extends SaasflareComponentProps {
   /** Card content. */
   children: ReactNode
-  /** Spotlight gradient color. Default: `"hsl(var(--primary))"` */
+  /** Spotlight gradient color. Default: `"var(--primary)"` */
   spotlightColor?: string
   /** Spotlight diameter in pixels. Default: `250` */
   spotlightSize?: number
@@ -3936,7 +3936,7 @@ function Textarea({ className, surface, radius, animated, ...props }: TextareaPr
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}
+      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px color-mix(in oklab, var(--ring) 30%, transparent)" }}
       transition={motion.transition}
       className={cn(
         "w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,border-color] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
@@ -4099,9 +4099,9 @@ npx shadcn add https://ui.saasflare.io/r/tracing-beam.json
 export interface TracingBeamProps {
   /** Content alongside the beam. */
   children: ReactNode
-  /** Beam color. Default: `"hsl(var(--primary))"` */
+  /** Beam color. Default: `"var(--primary)"` */
   color?: string
-  /** Track (background line) color. Default: `"hsl(var(--border))"` */
+  /** Track (background line) color. Default: `"var(--border)"` */
   trackColor?: string
   /** Additional class names. */
   className?: string

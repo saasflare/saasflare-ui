@@ -38,7 +38,7 @@ function Input({ className, type, surface, radius, animated, ...props }: InputPr
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}
+      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px color-mix(in oklab, var(--ring) 30%, transparent)" }}
       transition={motion.transition}
       className={cn(
         "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,border-color] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",

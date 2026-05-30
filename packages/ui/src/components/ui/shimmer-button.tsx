@@ -32,7 +32,7 @@ export interface ShimmerButtonProps extends ComponentProps<"button"> {
   shimmerColor?: string
   /** Shimmer cycle duration in seconds. Default: `2.5` */
   speed?: number
-  /** Background color. Default: `"hsl(var(--primary))"` */
+  /** Background color. Default: `"var(--primary)"` */
   background?: string
 }
 
@@ -51,7 +51,7 @@ export function ShimmerButton({
   children,
   shimmerColor = "rgba(255,255,255,0.2)",
   speed = 2.5,
-  background = "hsl(var(--primary))",
+  background = "var(--primary)",
   className,
   ...props
 }: ShimmerButtonProps) {

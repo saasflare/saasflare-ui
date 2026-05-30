@@ -19,7 +19,7 @@
  * @example
  * // Custom color and speed
  * <div className="relative overflow-hidden rounded-xl border p-6">
- *   <BorderBeam color="hsl(var(--chart-1))" duration={8} size={200} />
+ *   <BorderBeam color="var(--chart-1)" duration={8} size={200} />
  *   <p>Content here</p>
  * </div>
  */
@@ -29,7 +29,7 @@ import { useReducedMotion } from "./motion-config"
 
 /** Props for the BorderBeam component. */
 export interface BorderBeamProps {
-  /** Beam color. Default: `"hsl(var(--primary))"` */
+  /** Beam color. Default: `"var(--primary)"` */
   color?: string
   /** Tail fade color. Default: `"transparent"` */
   colorFrom?: string
@@ -54,7 +54,7 @@ export interface BorderBeamProps {
  * @package ui
  */
 export function BorderBeam({
-  color = "hsl(var(--primary))",
+  color = "var(--primary)",
   colorFrom = "transparent",
   duration = 6,
   size = 150,

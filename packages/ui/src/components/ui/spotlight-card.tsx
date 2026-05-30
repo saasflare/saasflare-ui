@@ -18,7 +18,7 @@
  *
  * @example
  * // Custom spotlight color
- * <SpotlightCard spotlightColor="hsl(var(--chart-1))" spotlightSize={300}>
+ * <SpotlightCard spotlightColor="var(--chart-1)" spotlightSize={300}>
  *   <p>Highlighted content</p>
  * </SpotlightCard>
  */
@@ -34,7 +34,7 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 export interface SpotlightCardProps extends SaasflareComponentProps {
   /** Card content. */
   children: ReactNode
-  /** Spotlight gradient color. Default: `"hsl(var(--primary))"` */
+  /** Spotlight gradient color. Default: `"var(--primary)"` */
   spotlightColor?: string
   /** Spotlight diameter in pixels. Default: `250` */
   spotlightSize?: number
@@ -57,7 +57,7 @@ export interface SpotlightCardProps extends SaasflareComponentProps {
  */
 export function SpotlightCard({
   children,
-  spotlightColor = "hsl(var(--primary))",
+  spotlightColor = "var(--primary)",
   spotlightSize = 250,
   spotlightOpacity = 0.08,
   className,
