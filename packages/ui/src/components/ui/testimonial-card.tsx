@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Testimonial card with avatar, quote, and optional star rating.
  * @author Saasflare™

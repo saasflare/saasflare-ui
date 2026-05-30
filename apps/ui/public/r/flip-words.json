@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flip-words",
+  "type": "registry:ui",
+  "title": "Flip Words",
+  "description": "Cycles through a list of words with a vertical flip animation — for dynamic hero headlines.",
+  "dependencies": [
+    "@saasflare/ui",
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "components/ui/flip-words.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\n/**\n * @fileoverview Rotating word animation — \"Build [websites/apps/products] faster\".\n * @author Saasflare™\n * Cycles through an array of words with a vertical flip animation.\n * The container auto-sizes to the longest word to prevent layout shifts.\n * @module packages/ui/components/ui/flip-words\n * @package ui\n *\n * @component\n * @example\n * import { FlipWords } from '@saasflare/ui';\n * <h1>\n *   Build <FlipWords words={[\"websites\", \"apps\", \"products\"]} /> faster\n * </h1>\n *\n * @example\n * // Custom interval and color\n * <FlipWords\n *   words={[\"scalable\", \"reliable\", \"beautiful\"]}\n *   interval={3000}\n *   className=\"text-primary\"\n * />\n */\n\nimport { useState, useEffect, useCallback, useMemo } from \"react\"\nimport { AnimatePresence, m } from \"motion/react\"\nimport { cn } from \"@saasflare/ui\"\nimport { springBouncy, noMotion, useReducedMotion } from \"@saasflare/ui\"\n\n/** Props for the FlipWords component. */\nexport interface FlipWordsProps {\n  /** Array of words to cycle through. */\n  words: string[]\n  /** Cycle interval in milliseconds. Default: `2500` */\n  interval?: number\n  /** Additional class names. */\n  className?: string\n}\n\n/**\n * Inline word rotator with vertical flip animation.\n *\n * - Words flip upward with a spring transition\n * - Container width matches the longest word to prevent layout shifts\n * - Falls back to showing the first word statically when reduced motion is preferred\n * - Renders inline, so it can be placed mid-sentence\n *\n * @component\n * @package ui\n */\nexport function FlipWords({\n  words,\n  interval = 2500,\n  className,\n}: FlipWordsProps) {\n  const reduced = useReducedMotion()\n  const [index, setIndex] = useState(0)\n\n  const next = useCallback(() => {\n    setIndex((prev) => (prev + 1) % words.length)\n  }, [words.length])\n\n  useEffect(() => {\n    if (reduced || words.length <= 1) return\n    const timer = setInterval(next, interval)\n    return () => clearInterval(timer)\n  }, [reduced, words.length, interval, next])\n\n  // Invisible spacer with the longest word to prevent layout shifts\n  const longestWord = useMemo(\n    () => words.reduce((a, b) => (a.length >= b.length ? a : b), \"\"),\n    [words],\n  )\n\n  if (reduced) {\n    return <span className={className}>{words[0]}</span>\n  }\n\n  return (\n    <span\n      className={cn(\"relative inline-block text-left align-baseline\", className)}\n      data-slot=\"flip-words\"\n    >\n      {/* Invisible spacer for width */}\n      <span className=\"invisible\" aria-hidden=\"true\">{longestWord}</span>\n\n      <AnimatePresence mode=\"wait\">\n        <m.span\n          key={words[index]}\n          initial={{ y: \"100%\", opacity: 0 }}\n          animate={{ y: 0, opacity: 1 }}\n          exit={{ y: \"-100%\", opacity: 0 }}\n          transition={springBouncy}\n          className=\"absolute inset-0\"\n          aria-live=\"polite\"\n        >\n          {words[index]}\n        </m.span>\n      </AnimatePresence>\n    </span>\n  )\n}\n",
+      "target": "components/ui/flip-words.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/flip-words.json"
+  }
+}

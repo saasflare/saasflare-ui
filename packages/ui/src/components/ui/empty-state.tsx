@@ -10,7 +10,7 @@
  * action button when a list, table, or section has no data.
  *
  * @example
- * import { EmptyState } from "@saasflare/core";
+ * import { EmptyState } from "@saasflare/ui";
  * import { InboxIcon } from "./phosphor";
  *
  * <EmptyState

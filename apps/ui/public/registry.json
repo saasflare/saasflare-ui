@@ -4,74 +4,60 @@
   "homepage": "https://ui.saasflare.io",
   "items": [
     {
-      "name": "feature-card",
+      "name": "accordion",
       "type": "registry:ui",
-      "title": "Feature Card",
-      "description": "Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.",
-      "url": "https://ui.saasflare.io/r/feature-card.json"
+      "title": "Accordion",
+      "description": "Vertically stacked, collapsible sections for FAQs and disclosure lists. One or many panels open at a time.",
+      "url": "https://ui.saasflare.io/r/accordion.json"
     },
     {
-      "name": "pricing-card",
+      "name": "alert",
       "type": "registry:ui",
-      "title": "Pricing Card",
-      "description": "Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.",
-      "url": "https://ui.saasflare.io/r/pricing-card.json"
+      "title": "Alert",
+      "description": "Inline status banner (info/success/warning/danger) with icon, title, and description for non-blocking messages.",
+      "url": "https://ui.saasflare.io/r/alert.json"
     },
     {
-      "name": "testimonial-card",
+      "name": "alert-dialog",
       "type": "registry:ui",
-      "title": "Testimonial Card",
-      "description": "Customer testimonial card with quote, author name, role, and optional avatar.",
-      "url": "https://ui.saasflare.io/r/testimonial-card.json"
+      "title": "Alert Dialog",
+      "description": "Modal confirmation for destructive or irreversible actions, with required acknowledge and cancel actions.",
+      "url": "https://ui.saasflare.io/r/alert-dialog.json"
     },
     {
-      "name": "team-card",
+      "name": "aspect-ratio",
       "type": "registry:ui",
-      "title": "Team Card",
-      "description": "Team member card with photo, name, role, bio, and social links.",
-      "url": "https://ui.saasflare.io/r/team-card.json"
+      "title": "Aspect Ratio",
+      "description": "Locks content to a fixed width:height ratio — responsive images, video embeds, and media cards.",
+      "url": "https://ui.saasflare.io/r/aspect-ratio.json"
     },
     {
-      "name": "spotlight-card",
+      "name": "audio-player",
       "type": "registry:ui",
-      "title": "Spotlight Card",
-      "description": "Card with a cursor-following spotlight gradient effect on hover.",
-      "url": "https://ui.saasflare.io/r/spotlight-card.json"
+      "title": "Audio Player",
+      "description": "Self-contained audio player UI over the native HTML5 element — play/pause, scrubbing, and volume.",
+      "url": "https://ui.saasflare.io/r/audio-player.json"
     },
     {
-      "name": "bento-grid",
+      "name": "aurora-background",
       "type": "registry:ui",
-      "title": "Bento Grid",
-      "description": "Bento-style grid layout for feature galleries with mixed sizes.",
-      "url": "https://ui.saasflare.io/r/bento-grid.json"
+      "title": "Aurora Background",
+      "description": "Animated aurora backdrop — soft blurred color blobs drifting behind hero content.",
+      "url": "https://ui.saasflare.io/r/aurora-background.json"
     },
     {
-      "name": "stat-card",
+      "name": "avatar",
       "type": "registry:ui",
-      "title": "Stat Card",
-      "description": "KPI / metric card with icon, large value, label, and optional delta indicator.",
-      "url": "https://ui.saasflare.io/r/stat-card.json"
+      "title": "Avatar",
+      "description": "User or brand avatar with image, automatic initials fallback, and size variants.",
+      "url": "https://ui.saasflare.io/r/avatar.json"
     },
     {
-      "name": "metric-card",
+      "name": "badge",
       "type": "registry:ui",
-      "title": "Metric Card",
-      "description": "Dashboard metric card with sparkline support and trend indicator.",
-      "url": "https://ui.saasflare.io/r/metric-card.json"
-    },
-    {
-      "name": "section-card",
-      "type": "registry:ui",
-      "title": "Section Card",
-      "description": "Composable section/landing card with header, content, and footer slots.",
-      "url": "https://ui.saasflare.io/r/section-card.json"
-    },
-    {
-      "name": "progress-circle",
-      "type": "registry:ui",
-      "title": "Progress Circle",
-      "description": "Circular progress indicator. Radial counterpart to Progress, common for KPI rings.",
-      "url": "https://ui.saasflare.io/r/progress-circle.json"
+      "title": "Badge",
+      "description": "Compact label for statuses, counts, and tags, with semantic intent colors and subtle/solid styles.",
+      "url": "https://ui.saasflare.io/r/badge.json"
     },
     {
       "name": "bar-list",
@@ -81,39 +67,53 @@
       "url": "https://ui.saasflare.io/r/bar-list.json"
     },
     {
-      "name": "spark-chart",
+      "name": "bento-grid",
       "type": "registry:ui",
-      "title": "Spark Chart",
-      "description": "Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.",
-      "url": "https://ui.saasflare.io/r/spark-chart.json"
+      "title": "Bento Grid",
+      "description": "Bento-style grid layout for feature galleries with mixed sizes.",
+      "url": "https://ui.saasflare.io/r/bento-grid.json"
     },
     {
-      "name": "tracker",
+      "name": "blur-fade",
       "type": "registry:ui",
-      "title": "Tracker",
-      "description": "Uptime/status segment grid. Each block is one period (day/hour) colored by status.",
-      "url": "https://ui.saasflare.io/r/tracker.json"
+      "title": "Blur Fade",
+      "description": "Entrance animation combining blur, fade, and offset — for elegant on-mount and on-scroll reveals.",
+      "url": "https://ui.saasflare.io/r/blur-fade.json"
     },
     {
-      "name": "dropzone",
+      "name": "border-beam",
       "type": "registry:ui",
-      "title": "Dropzone",
-      "description": "Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).",
-      "url": "https://ui.saasflare.io/r/dropzone.json"
+      "title": "Border Beam",
+      "description": "A glowing gradient beam that travels around an element's border. Premium accent for cards and CTAs.",
+      "url": "https://ui.saasflare.io/r/border-beam.json"
     },
     {
-      "name": "date-range-picker",
+      "name": "breadcrumb",
       "type": "registry:ui",
-      "title": "Date Range Picker",
-      "description": "Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar.",
-      "url": "https://ui.saasflare.io/r/date-range-picker.json"
+      "title": "Breadcrumb",
+      "description": "Hierarchical navigation trail showing the user's location, with truncation and custom separators.",
+      "url": "https://ui.saasflare.io/r/breadcrumb.json"
     },
     {
-      "name": "date-picker",
+      "name": "button",
       "type": "registry:ui",
-      "title": "Date Picker",
-      "description": "Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.",
-      "url": "https://ui.saasflare.io/r/date-picker.json"
+      "title": "Button",
+      "description": "The core action element. Three orthogonal axes — variant × intent × size — plus loading and icon slots.",
+      "url": "https://ui.saasflare.io/r/button.json"
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "Visually connected strip of buttons with shared radii and separators. For segmented actions and toolbars.",
+      "url": "https://ui.saasflare.io/r/button-group.json"
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "Month-grid date calendar (react-day-picker) supporting single, multiple, or range selection.",
+      "url": "https://ui.saasflare.io/r/calendar.json"
     },
     {
       "name": "callout",
@@ -123,25 +123,18 @@
       "url": "https://ui.saasflare.io/r/callout.json"
     },
     {
-      "name": "tag-input",
+      "name": "card",
       "type": "registry:ui",
-      "title": "Tag Input",
-      "description": "Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.",
-      "url": "https://ui.saasflare.io/r/tag-input.json"
+      "title": "Card",
+      "description": "The base surface primitive — header, content, and footer slots — that most composed cards build on.",
+      "url": "https://ui.saasflare.io/r/card.json"
     },
     {
-      "name": "number-input",
+      "name": "carousel",
       "type": "registry:ui",
-      "title": "Number Input",
-      "description": "Numeric input with ± stepper buttons, min/max clamping, configurable step + precision.",
-      "url": "https://ui.saasflare.io/r/number-input.json"
-    },
-    {
-      "name": "rating",
-      "type": "registry:ui",
-      "title": "Rating",
-      "description": "Star rating input with half-star precision, keyboard arrows, and read-only display mode.",
-      "url": "https://ui.saasflare.io/r/rating.json"
+      "title": "Carousel",
+      "description": "Touch/swipe carousel (Embla) with autoplay, looping, and custom controls for galleries and sliders.",
+      "url": "https://ui.saasflare.io/r/carousel.json"
     },
     {
       "name": "category-bar",
@@ -151,11 +144,18 @@
       "url": "https://ui.saasflare.io/r/category-bar.json"
     },
     {
-      "name": "tree-view",
+      "name": "chart",
       "type": "registry:ui",
-      "title": "Tree View",
-      "description": "Recursive expand/collapse tree with keyboard navigation, controlled/uncontrolled expansion + selection.",
-      "url": "https://ui.saasflare.io/r/tree-view.json"
+      "title": "Chart",
+      "description": "Composable Recharts wrapper with themed tooltips, legends, and design-system color tokens.",
+      "url": "https://ui.saasflare.io/r/chart.json"
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Accessible checkbox with indeterminate state, for forms and bulk-select rows.",
+      "url": "https://ui.saasflare.io/r/checkbox.json"
     },
     {
       "name": "code-block",
@@ -165,11 +165,648 @@
       "url": "https://ui.saasflare.io/r/code-block.json"
     },
     {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Single show/hide region with animated open/close. The building block under accordions and disclosures.",
+      "url": "https://ui.saasflare.io/r/collapsible.json"
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable select — a Popover wrapping a cmdk palette. Autocomplete with full keyboard navigation.",
+      "url": "https://ui.saasflare.io/r/combobox.json"
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "⌘K command palette with fuzzy search, groups, and keyboard navigation (cmdk).",
+      "url": "https://ui.saasflare.io/r/command.json"
+    },
+    {
+      "name": "compare",
+      "type": "registry:ui",
+      "title": "Compare",
+      "description": "Before/after image slider with a draggable divider, for comparisons and product demos.",
+      "url": "https://ui.saasflare.io/r/compare.json"
+    },
+    {
+      "name": "confetti",
+      "type": "registry:ui",
+      "title": "Confetti",
+      "description": "CSS-only confetti burst with randomized colors and trajectories — celebrate conversions and milestones.",
+      "url": "https://ui.saasflare.io/r/confetti.json"
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "Right-click menu with items, submenus, checkboxes, and keyboard shortcuts.",
+      "url": "https://ui.saasflare.io/r/context-menu.json"
+    },
+    {
+      "name": "countdown",
+      "type": "registry:ui",
+      "title": "Countdown",
+      "description": "Presentational countdown display (days/hours/minutes/seconds) — pair with the useCountdown hook.",
+      "url": "https://ui.saasflare.io/r/countdown.json"
+    },
+    {
+      "name": "data-toolbar",
+      "type": "registry:ui",
+      "title": "Data Toolbar",
+      "description": "Toolbar layout for tables and data grids — search, filters, and actions in a single bar.",
+      "url": "https://ui.saasflare.io/r/data-toolbar.json"
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "Date Picker",
+      "description": "Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.",
+      "url": "https://ui.saasflare.io/r/date-picker.json"
+    },
+    {
+      "name": "date-range-picker",
+      "type": "registry:ui",
+      "title": "Date Range Picker",
+      "description": "Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar.",
+      "url": "https://ui.saasflare.io/r/date-range-picker.json"
+    },
+    {
+      "name": "device-mock",
+      "type": "registry:ui",
+      "title": "Device Mock",
+      "description": "CSS-only phone, laptop, and browser frames for wrapping product screenshots and demos.",
+      "url": "https://ui.saasflare.io/r/device-mock.json"
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal overlay for focused tasks and forms, with animated enter/exit and focus trapping.",
+      "url": "https://ui.saasflare.io/r/dialog.json"
+    },
+    {
+      "name": "dock",
+      "type": "registry:ui",
+      "title": "Dock",
+      "description": "macOS-style dock bar where icons magnify on cursor proximity. Playful navigation accent.",
+      "url": "https://ui.saasflare.io/r/dock.json"
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "Mobile-first bottom drawer with drag-to-dismiss physics (Vaul). The touch-friendly Sheet.",
+      "url": "https://ui.saasflare.io/r/drawer.json"
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Click-triggered action menu with items, submenus, checkboxes, radio groups, and shortcuts.",
+      "url": "https://ui.saasflare.io/r/dropdown-menu.json"
+    },
+    {
+      "name": "dropzone",
+      "type": "registry:ui",
+      "title": "Dropzone",
+      "description": "Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).",
+      "url": "https://ui.saasflare.io/r/dropzone.json"
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "Empty-state primitive — centered icon, title, description, and action slots for zero-data views.",
+      "url": "https://ui.saasflare.io/r/empty.json"
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "Polished zero-data view — icon or illustration, title, description, and a call-to-action button.",
+      "url": "https://ui.saasflare.io/r/empty-state.json"
+    },
+    {
+      "name": "feature-card",
+      "type": "registry:ui",
+      "title": "Feature Card",
+      "description": "Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.",
+      "url": "https://ui.saasflare.io/r/feature-card.json"
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Form-field wrapper bundling label, control, description, and error message with correct a11y wiring.",
+      "url": "https://ui.saasflare.io/r/field.json"
+    },
+    {
+      "name": "flip-words",
+      "type": "registry:ui",
+      "title": "Flip Words",
+      "description": "Cycles through a list of words with a vertical flip animation — for dynamic hero headlines.",
+      "url": "https://ui.saasflare.io/r/flip-words.json"
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "react-hook-form integration layer — field context, labels, descriptions, and validation messages.",
+      "url": "https://ui.saasflare.io/r/form.json"
+    },
+    {
+      "name": "gallery-lightbox",
+      "type": "registry:ui",
+      "title": "Gallery Lightbox",
+      "description": "Click-to-expand image gallery with a fullscreen overlay, prev/next, and keyboard navigation.",
+      "url": "https://ui.saasflare.io/r/gallery-lightbox.json"
+    },
+    {
+      "name": "glowing-effect",
+      "type": "registry:ui",
+      "title": "Glowing Effect",
+      "description": "Mouse-tracking glow that follows the cursor around a container's edges. Interactive card highlight.",
+      "url": "https://ui.saasflare.io/r/glowing-effect.json"
+    },
+    {
+      "name": "gradient-text",
+      "type": "registry:ui",
+      "title": "Gradient Text",
+      "description": "Animated linear-gradient text fill via background-clip — for headlines and brand accents.",
+      "url": "https://ui.saasflare.io/r/gradient-text.json"
+    },
+    {
+      "name": "hero-video-dialog",
+      "type": "registry:ui",
+      "title": "Hero Video Dialog",
+      "description": "Poster image with a play button that opens an embedded video in a modal. Landing-page hero staple.",
+      "url": "https://ui.saasflare.io/r/hero-video-dialog.json"
+    },
+    {
+      "name": "hotspot",
+      "type": "registry:ui",
+      "title": "Hotspot",
+      "description": "Pulsing marker dots at absolute positions with hover tooltips — annotate screenshots and demos.",
+      "url": "https://ui.saasflare.io/r/hotspot.json"
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "Rich preview popover that opens on hover — user cards, link previews, and definitions.",
+      "url": "https://ui.saasflare.io/r/hover-card.json"
+    },
+    {
+      "name": "image-swap-hover",
+      "type": "registry:ui",
+      "title": "Image Swap Hover",
+      "description": "Crossfades between a primary and alternate image on hover. Product and team-photo flourish.",
+      "url": "https://ui.saasflare.io/r/image-swap-hover.json"
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Single-line text field — the form workhorse — with intent states and full sizing support.",
+      "url": "https://ui.saasflare.io/r/input.json"
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Wraps an input with addons, icons, and prefix/suffix elements into a single bordered unit.",
+      "url": "https://ui.saasflare.io/r/input-group.json"
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "One-time-code input with per-digit slots, paste handling, and auto-advance.",
+      "url": "https://ui.saasflare.io/r/input-otp.json"
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "Generic list/row primitive with leading media, title, description, and trailing action slots.",
+      "url": "https://ui.saasflare.io/r/item.json"
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Inline keyboard-key styling for documenting shortcuts (⌘K, Ctrl+C).",
+      "url": "https://ui.saasflare.io/r/kbd.json"
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Accessible form label wired to its control, with required and disabled styling.",
+      "url": "https://ui.saasflare.io/r/label.json"
+    },
+    {
+      "name": "marquee",
+      "type": "registry:ui",
+      "title": "Marquee",
+      "description": "Infinite-scrolling row of content (logos, testimonials) — pure CSS, no animation frames.",
+      "url": "https://ui.saasflare.io/r/marquee.json"
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "Desktop-style horizontal menu bar (File / Edit / View) with dropdowns and keyboard navigation.",
+      "url": "https://ui.saasflare.io/r/menubar.json"
+    },
+    {
+      "name": "metric-card",
+      "type": "registry:ui",
+      "title": "Metric Card",
+      "description": "Dashboard metric card with sparkline support and trend indicator.",
+      "url": "https://ui.saasflare.io/r/metric-card.json"
+    },
+    {
+      "name": "mouse-gradient-blob",
+      "type": "registry:ui",
+      "title": "Mouse Gradient Blob",
+      "description": "Large blurred gradient blob that trails the cursor with spring physics. Ambient hero background.",
+      "url": "https://ui.saasflare.io/r/mouse-gradient-blob.json"
+    },
+    {
+      "name": "moving-border",
+      "type": "registry:ui",
+      "title": "Moving Border",
+      "description": "Continuously rotating conic-gradient border around an element. Eye-catching CTA wrapper.",
+      "url": "https://ui.saasflare.io/r/moving-border.json"
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "Native Select",
+      "description": "Lightweight native select with a chevron overlay — zero-JS dropdown for simple option lists.",
+      "url": "https://ui.saasflare.io/r/native-select.json"
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "Top-level site navigation with animated mega-menu dropdowns and active-link states.",
+      "url": "https://ui.saasflare.io/r/navigation-menu.json"
+    },
+    {
       "name": "notification-center",
       "type": "registry:ui",
       "title": "Notification Center",
       "description": "Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge.",
       "url": "https://ui.saasflare.io/r/notification-center.json"
+    },
+    {
+      "name": "number-input",
+      "type": "registry:ui",
+      "title": "Number Input",
+      "description": "Numeric input with ± stepper buttons, min/max clamping, configurable step + precision.",
+      "url": "https://ui.saasflare.io/r/number-input.json"
+    },
+    {
+      "name": "page-header",
+      "type": "registry:ui",
+      "title": "Page Header",
+      "description": "Page header block with breadcrumbs, title, description, and an action slot for primary buttons.",
+      "url": "https://ui.saasflare.io/r/page-header.json"
+    },
+    {
+      "name": "page-transition",
+      "type": "registry:ui",
+      "title": "Page Transition",
+      "description": "Wraps route content with enter/exit animations for smooth client-side page transitions.",
+      "url": "https://ui.saasflare.io/r/page-transition.json"
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Page navigation with previous/next, page numbers, and ellipsis truncation for long ranges.",
+      "url": "https://ui.saasflare.io/r/pagination.json"
+    },
+    {
+      "name": "parallax-section",
+      "type": "registry:ui",
+      "title": "Parallax Section",
+      "description": "Scroll-driven parallax where children move at a different rate than the page, adding depth.",
+      "url": "https://ui.saasflare.io/r/parallax-section.json"
+    },
+    {
+      "name": "particles-background",
+      "type": "registry:ui",
+      "title": "Particles Background",
+      "description": "Floating particle field that drifts with subtle parallax. Ambient backdrop for heroes and sections.",
+      "url": "https://ui.saasflare.io/r/particles-background.json"
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Floating panel anchored to a trigger — for pickers, menus, and contextual forms.",
+      "url": "https://ui.saasflare.io/r/popover.json"
+    },
+    {
+      "name": "pricing-card",
+      "type": "registry:ui",
+      "title": "Pricing Card",
+      "description": "Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.",
+      "url": "https://ui.saasflare.io/r/pricing-card.json"
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "Linear determinate progress bar for uploads, completion meters, and loading states.",
+      "url": "https://ui.saasflare.io/r/progress.json"
+    },
+    {
+      "name": "progress-circle",
+      "type": "registry:ui",
+      "title": "Progress Circle",
+      "description": "Circular progress indicator. Radial counterpart to Progress, common for KPI rings.",
+      "url": "https://ui.saasflare.io/r/progress-circle.json"
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Mutually exclusive option set with keyboard arrow navigation and accessible grouping.",
+      "url": "https://ui.saasflare.io/r/radio-group.json"
+    },
+    {
+      "name": "rating",
+      "type": "registry:ui",
+      "title": "Rating",
+      "description": "Star rating input with half-star precision, keyboard arrows, and read-only display mode.",
+      "url": "https://ui.saasflare.io/r/rating.json"
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Draggable split panes with persistent sizes for dashboards and editor layouts.",
+      "url": "https://ui.saasflare.io/r/resizable.json"
+    },
+    {
+      "name": "retro-grid",
+      "type": "registry:ui",
+      "title": "Retro Grid",
+      "description": "CSS-only perspective grid receding to the horizon — a synthwave landing-page backdrop.",
+      "url": "https://ui.saasflare.io/r/retro-grid.json"
+    },
+    {
+      "name": "reveal-on-scroll",
+      "type": "registry:ui",
+      "title": "Reveal On Scroll",
+      "description": "Animates elements into view as they enter the viewport (Intersection Observer + Motion).",
+      "url": "https://ui.saasflare.io/r/reveal-on-scroll.json"
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "Cross-browser custom scrollbars for overflow regions, keeping native scroll performance.",
+      "url": "https://ui.saasflare.io/r/scroll-area.json"
+    },
+    {
+      "name": "search-field",
+      "type": "registry:ui",
+      "title": "Search Field",
+      "description": "Search input with built-in search icon, clear button, and optional loading spinner.",
+      "url": "https://ui.saasflare.io/r/search-field.json"
+    },
+    {
+      "name": "section-card",
+      "type": "registry:ui",
+      "title": "Section Card",
+      "description": "Composable section/landing card with header, content, and footer slots.",
+      "url": "https://ui.saasflare.io/r/section-card.json"
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Dropdown select with option groups and a styled trigger. Radix-backed and fully accessible.",
+      "url": "https://ui.saasflare.io/r/select.json"
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Thin horizontal or vertical divider for grouping content and menu sections.",
+      "url": "https://ui.saasflare.io/r/separator.json"
+    },
+    {
+      "name": "settings-section",
+      "type": "registry:ui",
+      "title": "Settings Section",
+      "description": "Settings row layout — label and description on the left, control on the right. For preference screens.",
+      "url": "https://ui.saasflare.io/r/settings-section.json"
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Edge-anchored slide-in panel (top/right/bottom/left) for filters, details, and side forms.",
+      "url": "https://ui.saasflare.io/r/sheet.json"
+    },
+    {
+      "name": "shimmer-button",
+      "type": "registry:ui",
+      "title": "Shimmer Button",
+      "description": "CTA button with a looping diagonal light sweep. Draws the eye to your primary action.",
+      "url": "https://ui.saasflare.io/r/shimmer-button.json"
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Animated placeholder block for loading states — mirror your content's shape to avoid layout shift.",
+      "url": "https://ui.saasflare.io/r/skeleton.json"
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Draggable value selector with single or range thumbs, steps, and keyboard control.",
+      "url": "https://ui.saasflare.io/r/slider.json"
+    },
+    {
+      "name": "social-button",
+      "type": "registry:ui",
+      "title": "Social Button",
+      "description": "Branded sign-in buttons for 16+ OAuth providers (Google, GitHub, Apple…) with correct logos and colors.",
+      "url": "https://ui.saasflare.io/r/social-button.json"
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Toaster",
+      "description": "Toast notifications — themed, stacked, and promise-aware (Sonner) with Phosphor icons and dark-mode support.",
+      "url": "https://ui.saasflare.io/r/sonner.json"
+    },
+    {
+      "name": "spark-chart",
+      "type": "registry:ui",
+      "title": "Spark Chart",
+      "description": "Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.",
+      "url": "https://ui.saasflare.io/r/spark-chart.json"
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Indeterminate loading spinner (Phosphor CircleNotch) for buttons and async regions.",
+      "url": "https://ui.saasflare.io/r/spinner.json"
+    },
+    {
+      "name": "spotlight-card",
+      "type": "registry:ui",
+      "title": "Spotlight Card",
+      "description": "Card with a cursor-following spotlight gradient effect on hover.",
+      "url": "https://ui.saasflare.io/r/spotlight-card.json"
+    },
+    {
+      "name": "stat-card",
+      "type": "registry:ui",
+      "title": "Stat Card",
+      "description": "KPI / metric card with icon, large value, label, and optional delta indicator.",
+      "url": "https://ui.saasflare.io/r/stat-card.json"
+    },
+    {
+      "name": "steps",
+      "type": "registry:ui",
+      "title": "Steps",
+      "description": "Horizontal or vertical step indicator showing progress through a multi-stage flow or wizard.",
+      "url": "https://ui.saasflare.io/r/steps.json"
+    },
+    {
+      "name": "sticky-scroll-reveal",
+      "type": "registry:ui",
+      "title": "Sticky Scroll Reveal",
+      "description": "Split layout where the left column pins while the right scrolls through synced content steps.",
+      "url": "https://ui.saasflare.io/r/sticky-scroll-reveal.json"
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "On/off toggle for boolean settings, with size variants and accessible labeling.",
+      "url": "https://ui.saasflare.io/r/switch.json"
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Composable data table with header, body, row, cell, and caption sub-components.",
+      "url": "https://ui.saasflare.io/r/table.json"
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Switch between panels of related content with keyboard navigation and an animated active indicator.",
+      "url": "https://ui.saasflare.io/r/tabs.json"
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:ui",
+      "title": "Tag Input",
+      "description": "Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.",
+      "url": "https://ui.saasflare.io/r/tag-input.json"
+    },
+    {
+      "name": "team-card",
+      "type": "registry:ui",
+      "title": "Team Card",
+      "description": "Team member card with photo, name, role, bio, and social links.",
+      "url": "https://ui.saasflare.io/r/team-card.json"
+    },
+    {
+      "name": "testimonial-card",
+      "type": "registry:ui",
+      "title": "Testimonial Card",
+      "description": "Customer testimonial card with quote, author name, role, and optional avatar.",
+      "url": "https://ui.saasflare.io/r/testimonial-card.json"
+    },
+    {
+      "name": "text-generate-effect",
+      "type": "registry:ui",
+      "title": "Text Generate Effect",
+      "description": "Reveals text word-by-word for a typing/AI-generation feel. For hero copy and intros.",
+      "url": "https://ui.saasflare.io/r/text-generate-effect.json"
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Multi-line text field with intent states and auto-sizing support for comments and messages.",
+      "url": "https://ui.saasflare.io/r/textarea.json"
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Vertical scroll-driven timeline whose beam fills as the reader progresses. For changelogs and stories.",
+      "url": "https://ui.saasflare.io/r/timeline.json"
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "Two-state pressable button for toolbars (bold/italic), with outline and size variants.",
+      "url": "https://ui.saasflare.io/r/toggle.json"
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "Set of toggles for single- or multi-select segmented controls (alignment, view modes).",
+      "url": "https://ui.saasflare.io/r/toggle-group.json"
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Hover/focus hint label anchored to any element, with configurable delay and side positioning.",
+      "url": "https://ui.saasflare.io/r/tooltip.json"
+    },
+    {
+      "name": "tracing-beam",
+      "type": "registry:ui",
+      "title": "Tracing Beam",
+      "description": "Animated vertical line that traces the reader's scroll progress alongside long-form content.",
+      "url": "https://ui.saasflare.io/r/tracing-beam.json"
+    },
+    {
+      "name": "tracker",
+      "type": "registry:ui",
+      "title": "Tracker",
+      "description": "Uptime/status segment grid. Each block is one period (day/hour) colored by status.",
+      "url": "https://ui.saasflare.io/r/tracker.json"
+    },
+    {
+      "name": "tree-view",
+      "type": "registry:ui",
+      "title": "Tree View",
+      "description": "Recursive expand/collapse tree with keyboard navigation, controlled/uncontrolled expansion + selection.",
+      "url": "https://ui.saasflare.io/r/tree-view.json"
+    },
+    {
+      "name": "typewriter-text",
+      "type": "registry:ui",
+      "title": "Typewriter Text",
+      "description": "Types out text character-by-character with a blinking cursor. Classic hero headline effect.",
+      "url": "https://ui.saasflare.io/r/typewriter-text.json"
     }
   ]
 }

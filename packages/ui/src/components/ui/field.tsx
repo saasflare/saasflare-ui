@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { Field, FieldLabel, FieldControl, FieldError } from '@saasflare/core';
+ * import { Field, FieldLabel, FieldControl, FieldError } from '@saasflare/ui';
  * <Field>
  *   <FieldLabel>Email</FieldLabel>
  *   <FieldControl><input type="email" /></FieldControl>

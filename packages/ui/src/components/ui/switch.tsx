@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Switch } from '@saasflare/core';
+ * import { Switch } from '@saasflare/ui';
  * <Switch checked={enabled} onCheckedChange={setEnabled} />
  * <Switch size="sm" />
  */

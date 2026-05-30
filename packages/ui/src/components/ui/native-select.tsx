@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { NativeSelect, NativeSelectOption } from '@saasflare/core';
+ * import { NativeSelect, NativeSelectOption } from '@saasflare/ui';
  * <NativeSelect>
  *   <NativeSelectOption value="a">Option A</NativeSelectOption>
  *   <NativeSelectOption value="b">Option B</NativeSelectOption>

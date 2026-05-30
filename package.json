@@ -7,7 +7,6 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "dev:ui": "turbo run dev --filter=@saasflare/ui-app",
-    "dev:demo": "turbo run dev --filter=@saasflare/demo-app",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",

@@ -10,7 +10,7 @@
  * Supports intent system and optional hover animation with reduced-motion.
  *
  * @example
- * import { Badge } from "@saasflare/core";
+ * import { Badge } from "@saasflare/ui";
  *
  * <Badge>Default</Badge>
  * <Badge intent="success" variant="soft">Active</Badge>

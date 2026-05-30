@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink } from '@saasflare/core';
+ * import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink } from '@saasflare/ui';
  * <NavigationMenu>
  *   <NavigationMenuList>
  *     <NavigationMenuItem>

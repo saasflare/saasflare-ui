@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { ItemGroup, Item, ItemContent, ItemTitle } from '@saasflare/core';
+ * import { ItemGroup, Item, ItemContent, ItemTitle } from '@saasflare/ui';
  * <ItemGroup>
  *   <Item>
  *     <ItemContent>

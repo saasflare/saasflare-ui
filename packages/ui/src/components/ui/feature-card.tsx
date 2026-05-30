@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Feature card with icon, title, and description.
  * @author Saasflare™

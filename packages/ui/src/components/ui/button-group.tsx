@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { ButtonGroup, ButtonGroupItem } from '@saasflare/core';
+ * import { ButtonGroup, ButtonGroupItem } from '@saasflare/ui';
  * <ButtonGroup orientation="horizontal">
  *   <ButtonGroupItem>Left</ButtonGroupItem>
  *   <ButtonGroupItem>Right</ButtonGroupItem>

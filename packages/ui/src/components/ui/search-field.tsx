@@ -11,7 +11,7 @@
  * and filter sections.
  *
  * @example
- * import { SearchField } from "@saasflare/core";
+ * import { SearchField } from "@saasflare/ui";
  *
  * <SearchField
  *   placeholder="Search projects..."

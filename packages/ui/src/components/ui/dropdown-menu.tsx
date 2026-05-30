@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@saasflare/core';
+ * import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@saasflare/ui';
  *
  * <DropdownMenu>
  *   <DropdownMenuTrigger>Open</DropdownMenuTrigger>

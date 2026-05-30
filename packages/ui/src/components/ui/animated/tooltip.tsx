@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { AnimatedTooltip } from '@saasflare/core';
+ * import { AnimatedTooltip } from '@saasflare/ui';
  * <AnimatedTooltip items={[{ id: 1, name: 'Alice', designation: 'Engineer', image: '/alice.jpg' }]} />
  */
 'use client';

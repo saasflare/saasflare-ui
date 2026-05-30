@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "settings-section",
+  "type": "registry:ui",
+  "title": "Settings Section",
+  "description": "Settings row layout — label and description on the left, control on the right. For preference screens.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/settings-section.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview Saasflare SettingsSection — label + description + control layout.\n * @module packages/core/components/ui/settings-section\n * @layer core\n *\n * A horizontal layout for settings rows: label/description on the left,\n * control (toggle, select, input) on the right. Stacks vertically on mobile.\n *\n * @example\n * import { SettingsSection } from \"@saasflare/ui\";\n *\n * <SettingsSection\n *   label=\"Email Notifications\"\n *   description=\"Receive email updates about your account activity.\"\n * >\n *   <Switch checked={enabled} onCheckedChange={setEnabled} />\n * </SettingsSection>\n */\n\nimport * as React from \"react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\n/** Props for the SettingsSection component */\ninterface SettingsSectionProps extends Omit<React.ComponentProps<\"div\">, keyof SaasflareComponentProps>, SaasflareComponentProps {\n  /** Setting label */\n  label: string\n  /** Optional description of the setting */\n  description?: string\n}\n\n/**\n * Settings row with label, description, and control slot.\n *\n * @component\n * @layer core\n *\n * @param {string} label - Setting label\n * @param {string} description - Description of what the setting controls\n *\n * @example\n * <SettingsSection\n *   label=\"Two-Factor Authentication\"\n *   description=\"Add an extra layer of security to your account.\"\n * >\n *   <Button variant=\"outline\" size=\"sm\">Enable</Button>\n * </SettingsSection>\n */\nfunction SettingsSection({\n  label,\n  description,\n  className,\n  children,\n  surface,\n  radius,\n  animated,\n  ...props\n}: SettingsSectionProps) {\n  const sf = useSaasflareProps({ surface, radius, animated })\n\n  return (\n    <div\n      {...props}\n      data-slot=\"settings-section\"\n      data-surface={sf.surface}\n      data-radius={sf.radius}\n      data-animated={String(sf.animated)}\n      className={cn(\n        \"flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6\",\n        className\n      )}\n    >\n      <div className=\"space-y-0.5\">\n        <div className=\"text-sm font-medium\">{label}</div>\n        {description && (\n          <div className=\"text-sm text-muted-foreground\">{description}</div>\n        )}\n      </div>\n      <div className=\"shrink-0\">{children}</div>\n    </div>\n  )\n}\n\nexport { SettingsSection, type SettingsSectionProps }\n",
+      "target": "components/ui/settings-section.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/settings-section.json"
+  }
+}

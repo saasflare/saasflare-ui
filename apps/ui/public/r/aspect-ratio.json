@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "aspect-ratio",
+  "type": "registry:ui",
+  "title": "Aspect Ratio",
+  "description": "Locks content to a fixed width:height ratio — responsive images, video embeds, and media cards.",
+  "dependencies": [
+    "@radix-ui/react-aspect-ratio"
+  ],
+  "files": [
+    {
+      "path": "components/ui/aspect-ratio.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview AspectRatio primitive — constrains content to a specified width-to-height ratio.\n * Built on Radix UI AspectRatio. Part of the Saasflare base component layer.\n * @module packages/core/components/ui/aspect-ratio\n * @layer core\n *\n * @component\n * @example\n * import { AspectRatio } from '@saasflare/ui';\n * <AspectRatio ratio={16 / 9}>\n *   <img src=\"/image.jpg\" alt=\"Landscape\" />\n * </AspectRatio>\n */\n\"use client\"\n\nimport * as AspectRatioPrimitive from \"@radix-ui/react-aspect-ratio\"\n\nfunction AspectRatio({\n  ...props\n}: React.ComponentProps<typeof AspectRatioPrimitive.Root>) {\n  return <AspectRatioPrimitive.Root data-slot=\"aspect-ratio\" {...props} />\n}\n\nexport { AspectRatio }\n",
+      "target": "components/ui/aspect-ratio.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/aspect-ratio.json"
+  }
+}

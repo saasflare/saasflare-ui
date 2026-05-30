@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Device frame mockups (Safari browser and iPhone).
  * @author Saasflare™

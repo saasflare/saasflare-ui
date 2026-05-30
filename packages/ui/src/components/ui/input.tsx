@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Input } from '@saasflare/core';
+ * import { Input } from '@saasflare/ui';
  *
  * <Input type="email" placeholder="you@example.com" />
  */

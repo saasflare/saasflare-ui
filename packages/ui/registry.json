@@ -3,341 +3,120 @@
     "name": "saasflare-ui",
     "homepage": "https://ui.saasflare.io",
     "items": [
-        {
-            "name": "feature-card",
-            "type": "registry:ui",
-            "title": "Feature Card",
-            "description": "Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/feature-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/feature-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "pricing-card",
-            "type": "registry:ui",
-            "title": "Pricing Card",
-            "description": "Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/pricing-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/pricing-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "testimonial-card",
-            "type": "registry:ui",
-            "title": "Testimonial Card",
-            "description": "Customer testimonial card with quote, author name, role, and optional avatar.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/testimonial-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/testimonial-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "team-card",
-            "type": "registry:ui",
-            "title": "Team Card",
-            "description": "Team member card with photo, name, role, bio, and social links.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/team-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/team-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "spotlight-card",
-            "type": "registry:ui",
-            "title": "Spotlight Card",
-            "description": "Card with a cursor-following spotlight gradient effect on hover.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/spotlight-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/spotlight-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "bento-grid",
-            "type": "registry:ui",
-            "title": "Bento Grid",
-            "description": "Bento-style grid layout for feature galleries with mixed sizes.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/bento-grid.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/bento-grid.tsx"
-                }
-            ]
-        },
-        {
-            "name": "stat-card",
-            "type": "registry:ui",
-            "title": "Stat Card",
-            "description": "KPI / metric card with icon, large value, label, and optional delta indicator.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/stat-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/stat-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "metric-card",
-            "type": "registry:ui",
-            "title": "Metric Card",
-            "description": "Dashboard metric card with sparkline support and trend indicator.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/metric-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/metric-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "section-card",
-            "type": "registry:ui",
-            "title": "Section Card",
-            "description": "Composable section/landing card with header, content, and footer slots.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/section-card.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/section-card.tsx"
-                }
-            ]
-        },
-        {
-            "name": "progress-circle",
-            "type": "registry:ui",
-            "title": "Progress Circle",
-            "description": "Circular progress indicator. Radial counterpart to Progress, common for KPI rings.",
-            "dependencies": ["@saasflare/ui", "motion"],
-            "files": [
-                {
-                    "path": "src/components/ui/progress-circle.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/progress-circle.tsx"
-                }
-            ]
-        },
-        {
-            "name": "bar-list",
-            "type": "registry:ui",
-            "title": "Bar List",
-            "description": "Horizontal 'top N' ranking list with proportional bar fills. Dashboard staple.",
-            "dependencies": ["@saasflare/ui", "motion"],
-            "files": [
-                {
-                    "path": "src/components/ui/bar-list.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/bar-list.tsx"
-                }
-            ]
-        },
-        {
-            "name": "spark-chart",
-            "type": "registry:ui",
-            "title": "Spark Chart",
-            "description": "Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/spark-chart.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/spark-chart.tsx"
-                }
-            ]
-        },
-        {
-            "name": "tracker",
-            "type": "registry:ui",
-            "title": "Tracker",
-            "description": "Uptime/status segment grid. Each block is one period (day/hour) colored by status.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/tracker.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/tracker.tsx"
-                }
-            ]
-        },
-        {
-            "name": "dropzone",
-            "type": "registry:ui",
-            "title": "Dropzone",
-            "description": "Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/dropzone.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/dropzone.tsx"
-                }
-            ]
-        },
-        {
-            "name": "date-range-picker",
-            "type": "registry:ui",
-            "title": "Date Range Picker",
-            "description": "Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/date-range-picker.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/date-range-picker.tsx"
-                }
-            ]
-        },
-        {
-            "name": "date-picker",
-            "type": "registry:ui",
-            "title": "Date Picker",
-            "description": "Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/date-picker.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/date-picker.tsx"
-                }
-            ]
-        },
-        {
-            "name": "callout",
-            "type": "registry:ui",
-            "title": "Callout",
-            "description": "Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/callout.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/callout.tsx"
-                }
-            ]
-        },
-        {
-            "name": "tag-input",
-            "type": "registry:ui",
-            "title": "Tag Input",
-            "description": "Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/tag-input.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/tag-input.tsx"
-                }
-            ]
-        },
-        {
-            "name": "number-input",
-            "type": "registry:ui",
-            "title": "Number Input",
-            "description": "Numeric input with ± stepper buttons, min/max clamping, configurable step + precision.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/number-input.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/number-input.tsx"
-                }
-            ]
-        },
-        {
-            "name": "rating",
-            "type": "registry:ui",
-            "title": "Rating",
-            "description": "Star rating input with half-star precision, keyboard arrows, and read-only display mode.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/rating.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/rating.tsx"
-                }
-            ]
-        },
-        {
-            "name": "category-bar",
-            "type": "registry:ui",
-            "title": "Category Bar",
-            "description": "Segmented progress bar with per-segment colors and optional labels. Useful for resource breakdowns.",
-            "dependencies": ["@saasflare/ui", "motion"],
-            "files": [
-                {
-                    "path": "src/components/ui/category-bar.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/category-bar.tsx"
-                }
-            ]
-        },
-        {
-            "name": "tree-view",
-            "type": "registry:ui",
-            "title": "Tree View",
-            "description": "Recursive expand/collapse tree with keyboard navigation, controlled/uncontrolled expansion + selection.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/tree-view.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/tree-view.tsx"
-                }
-            ]
-        },
-        {
-            "name": "code-block",
-            "type": "registry:ui",
-            "title": "Code Block",
-            "description": "Code-block chrome: filename header, language badge, copy button, optional line numbers. BYO highlighter.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/code-block.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/code-block.tsx"
-                }
-            ]
-        },
-        {
-            "name": "notification-center",
-            "type": "registry:ui",
-            "title": "Notification Center",
-            "description": "Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge.",
-            "dependencies": ["@saasflare/ui"],
-            "files": [
-                {
-                    "path": "src/components/ui/notification-center.tsx",
-                    "type": "registry:ui",
-                    "target": "components/ui/notification-center.tsx"
-                }
-            ]
-        }
+        { "name": "accordion", "title": "Accordion", "description": "Vertically stacked, collapsible sections for FAQs and disclosure lists. One or many panels open at a time." },
+        { "name": "alert", "title": "Alert", "description": "Inline status banner (info/success/warning/danger) with icon, title, and description for non-blocking messages." },
+        { "name": "alert-dialog", "title": "Alert Dialog", "description": "Modal confirmation for destructive or irreversible actions, with required acknowledge and cancel actions." },
+        { "name": "aspect-ratio", "title": "Aspect Ratio", "description": "Locks content to a fixed width:height ratio — responsive images, video embeds, and media cards." },
+        { "name": "audio-player", "title": "Audio Player", "description": "Self-contained audio player UI over the native HTML5 element — play/pause, scrubbing, and volume." },
+        { "name": "aurora-background", "title": "Aurora Background", "description": "Animated aurora backdrop — soft blurred color blobs drifting behind hero content." },
+        { "name": "avatar", "title": "Avatar", "description": "User or brand avatar with image, automatic initials fallback, and size variants." },
+        { "name": "badge", "title": "Badge", "description": "Compact label for statuses, counts, and tags, with semantic intent colors and subtle/solid styles." },
+        { "name": "bar-list", "title": "Bar List", "description": "Horizontal 'top N' ranking list with proportional bar fills. Dashboard staple." },
+        { "name": "bento-grid", "title": "Bento Grid", "description": "Bento-style grid layout for feature galleries with mixed sizes." },
+        { "name": "blur-fade", "title": "Blur Fade", "description": "Entrance animation combining blur, fade, and offset — for elegant on-mount and on-scroll reveals." },
+        { "name": "border-beam", "title": "Border Beam", "description": "A glowing gradient beam that travels around an element's border. Premium accent for cards and CTAs." },
+        { "name": "breadcrumb", "title": "Breadcrumb", "description": "Hierarchical navigation trail showing the user's location, with truncation and custom separators." },
+        { "name": "button", "title": "Button", "description": "The core action element. Three orthogonal axes — variant × intent × size — plus loading and icon slots." },
+        { "name": "button-group", "title": "Button Group", "description": "Visually connected strip of buttons with shared radii and separators. For segmented actions and toolbars." },
+        { "name": "calendar", "title": "Calendar", "description": "Month-grid date calendar (react-day-picker) supporting single, multiple, or range selection." },
+        { "name": "callout", "title": "Callout", "description": "Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog." },
+        { "name": "card", "title": "Card", "description": "The base surface primitive — header, content, and footer slots — that most composed cards build on." },
+        { "name": "carousel", "title": "Carousel", "description": "Touch/swipe carousel (Embla) with autoplay, looping, and custom controls for galleries and sliders." },
+        { "name": "category-bar", "title": "Category Bar", "description": "Segmented progress bar with per-segment colors and optional labels. Useful for resource breakdowns." },
+        { "name": "chart", "title": "Chart", "description": "Composable Recharts wrapper with themed tooltips, legends, and design-system color tokens." },
+        { "name": "checkbox", "title": "Checkbox", "description": "Accessible checkbox with indeterminate state, for forms and bulk-select rows." },
+        { "name": "code-block", "title": "Code Block", "description": "Code-block chrome: filename header, language badge, copy button, optional line numbers. BYO highlighter." },
+        { "name": "collapsible", "title": "Collapsible", "description": "Single show/hide region with animated open/close. The building block under accordions and disclosures." },
+        { "name": "combobox", "title": "Combobox", "description": "Searchable select — a Popover wrapping a cmdk palette. Autocomplete with full keyboard navigation." },
+        { "name": "command", "title": "Command", "description": "⌘K command palette with fuzzy search, groups, and keyboard navigation (cmdk)." },
+        { "name": "compare", "title": "Compare", "description": "Before/after image slider with a draggable divider, for comparisons and product demos." },
+        { "name": "confetti", "title": "Confetti", "description": "CSS-only confetti burst with randomized colors and trajectories — celebrate conversions and milestones." },
+        { "name": "context-menu", "title": "Context Menu", "description": "Right-click menu with items, submenus, checkboxes, and keyboard shortcuts." },
+        { "name": "countdown", "title": "Countdown", "description": "Presentational countdown display (days/hours/minutes/seconds) — pair with the useCountdown hook." },
+        { "name": "data-toolbar", "title": "Data Toolbar", "description": "Toolbar layout for tables and data grids — search, filters, and actions in a single bar." },
+        { "name": "date-picker", "title": "Date Picker", "description": "Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar." },
+        { "name": "date-range-picker", "title": "Date Range Picker", "description": "Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar." },
+        { "name": "device-mock", "title": "Device Mock", "description": "CSS-only phone, laptop, and browser frames for wrapping product screenshots and demos." },
+        { "name": "dialog", "title": "Dialog", "description": "Modal overlay for focused tasks and forms, with animated enter/exit and focus trapping." },
+        { "name": "dock", "title": "Dock", "description": "macOS-style dock bar where icons magnify on cursor proximity. Playful navigation accent." },
+        { "name": "drawer", "title": "Drawer", "description": "Mobile-first bottom drawer with drag-to-dismiss physics (Vaul). The touch-friendly Sheet." },
+        { "name": "dropdown-menu", "title": "Dropdown Menu", "description": "Click-triggered action menu with items, submenus, checkboxes, radio groups, and shortcuts." },
+        { "name": "dropzone", "title": "Dropzone", "description": "Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone)." },
+        { "name": "empty", "title": "Empty", "description": "Empty-state primitive — centered icon, title, description, and action slots for zero-data views." },
+        { "name": "empty-state", "title": "Empty State", "description": "Polished zero-data view — icon or illustration, title, description, and a call-to-action button." },
+        { "name": "feature-card", "title": "Feature Card", "description": "Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page." },
+        { "name": "field", "title": "Field", "description": "Form-field wrapper bundling label, control, description, and error message with correct a11y wiring." },
+        { "name": "flip-words", "title": "Flip Words", "description": "Cycles through a list of words with a vertical flip animation — for dynamic hero headlines." },
+        { "name": "form", "title": "Form", "description": "react-hook-form integration layer — field context, labels, descriptions, and validation messages." },
+        { "name": "gallery-lightbox", "title": "Gallery Lightbox", "description": "Click-to-expand image gallery with a fullscreen overlay, prev/next, and keyboard navigation." },
+        { "name": "glowing-effect", "title": "Glowing Effect", "description": "Mouse-tracking glow that follows the cursor around a container's edges. Interactive card highlight." },
+        { "name": "gradient-text", "title": "Gradient Text", "description": "Animated linear-gradient text fill via background-clip — for headlines and brand accents." },
+        { "name": "hero-video-dialog", "title": "Hero Video Dialog", "description": "Poster image with a play button that opens an embedded video in a modal. Landing-page hero staple." },
+        { "name": "hotspot", "title": "Hotspot", "description": "Pulsing marker dots at absolute positions with hover tooltips — annotate screenshots and demos." },
+        { "name": "hover-card", "title": "Hover Card", "description": "Rich preview popover that opens on hover — user cards, link previews, and definitions." },
+        { "name": "image-swap-hover", "title": "Image Swap Hover", "description": "Crossfades between a primary and alternate image on hover. Product and team-photo flourish." },
+        { "name": "input", "title": "Input", "description": "Single-line text field — the form workhorse — with intent states and full sizing support." },
+        { "name": "input-group", "title": "Input Group", "description": "Wraps an input with addons, icons, and prefix/suffix elements into a single bordered unit." },
+        { "name": "input-otp", "title": "Input OTP", "description": "One-time-code input with per-digit slots, paste handling, and auto-advance." },
+        { "name": "item", "title": "Item", "description": "Generic list/row primitive with leading media, title, description, and trailing action slots." },
+        { "name": "kbd", "title": "Kbd", "description": "Inline keyboard-key styling for documenting shortcuts (⌘K, Ctrl+C)." },
+        { "name": "label", "title": "Label", "description": "Accessible form label wired to its control, with required and disabled styling." },
+        { "name": "marquee", "title": "Marquee", "description": "Infinite-scrolling row of content (logos, testimonials) — pure CSS, no animation frames." },
+        { "name": "menubar", "title": "Menubar", "description": "Desktop-style horizontal menu bar (File / Edit / View) with dropdowns and keyboard navigation." },
+        { "name": "metric-card", "title": "Metric Card", "description": "Dashboard metric card with sparkline support and trend indicator." },
+        { "name": "mouse-gradient-blob", "title": "Mouse Gradient Blob", "description": "Large blurred gradient blob that trails the cursor with spring physics. Ambient hero background." },
+        { "name": "moving-border", "title": "Moving Border", "description": "Continuously rotating conic-gradient border around an element. Eye-catching CTA wrapper." },
+        { "name": "native-select", "title": "Native Select", "description": "Lightweight native select with a chevron overlay — zero-JS dropdown for simple option lists." },
+        { "name": "navigation-menu", "title": "Navigation Menu", "description": "Top-level site navigation with animated mega-menu dropdowns and active-link states." },
+        { "name": "notification-center", "title": "Notification Center", "description": "Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge." },
+        { "name": "number-input", "title": "Number Input", "description": "Numeric input with ± stepper buttons, min/max clamping, configurable step + precision." },
+        { "name": "page-header", "title": "Page Header", "description": "Page header block with breadcrumbs, title, description, and an action slot for primary buttons." },
+        { "name": "page-transition", "title": "Page Transition", "description": "Wraps route content with enter/exit animations for smooth client-side page transitions." },
+        { "name": "pagination", "title": "Pagination", "description": "Page navigation with previous/next, page numbers, and ellipsis truncation for long ranges." },
+        { "name": "parallax-section", "title": "Parallax Section", "description": "Scroll-driven parallax where children move at a different rate than the page, adding depth." },
+        { "name": "particles-background", "title": "Particles Background", "description": "Floating particle field that drifts with subtle parallax. Ambient backdrop for heroes and sections." },
+        { "name": "popover", "title": "Popover", "description": "Floating panel anchored to a trigger — for pickers, menus, and contextual forms." },
+        { "name": "pricing-card", "title": "Pricing Card", "description": "Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill." },
+        { "name": "progress", "title": "Progress", "description": "Linear determinate progress bar for uploads, completion meters, and loading states." },
+        { "name": "progress-circle", "title": "Progress Circle", "description": "Circular progress indicator. Radial counterpart to Progress, common for KPI rings." },
+        { "name": "radio-group", "title": "Radio Group", "description": "Mutually exclusive option set with keyboard arrow navigation and accessible grouping." },
+        { "name": "rating", "title": "Rating", "description": "Star rating input with half-star precision, keyboard arrows, and read-only display mode." },
+        { "name": "resizable", "title": "Resizable", "description": "Draggable split panes with persistent sizes for dashboards and editor layouts." },
+        { "name": "retro-grid", "title": "Retro Grid", "description": "CSS-only perspective grid receding to the horizon — a synthwave landing-page backdrop." },
+        { "name": "reveal-on-scroll", "title": "Reveal On Scroll", "description": "Animates elements into view as they enter the viewport (Intersection Observer + Motion)." },
+        { "name": "scroll-area", "title": "Scroll Area", "description": "Cross-browser custom scrollbars for overflow regions, keeping native scroll performance." },
+        { "name": "search-field", "title": "Search Field", "description": "Search input with built-in search icon, clear button, and optional loading spinner." },
+        { "name": "section-card", "title": "Section Card", "description": "Composable section/landing card with header, content, and footer slots." },
+        { "name": "select", "title": "Select", "description": "Dropdown select with option groups and a styled trigger. Radix-backed and fully accessible." },
+        { "name": "separator", "title": "Separator", "description": "Thin horizontal or vertical divider for grouping content and menu sections." },
+        { "name": "settings-section", "title": "Settings Section", "description": "Settings row layout — label and description on the left, control on the right. For preference screens." },
+        { "name": "sheet", "title": "Sheet", "description": "Edge-anchored slide-in panel (top/right/bottom/left) for filters, details, and side forms." },
+        { "name": "shimmer-button", "title": "Shimmer Button", "description": "CTA button with a looping diagonal light sweep. Draws the eye to your primary action." },
+        { "name": "skeleton", "title": "Skeleton", "description": "Animated placeholder block for loading states — mirror your content's shape to avoid layout shift." },
+        { "name": "slider", "title": "Slider", "description": "Draggable value selector with single or range thumbs, steps, and keyboard control." },
+        { "name": "social-button", "title": "Social Button", "description": "Branded sign-in buttons for 16+ OAuth providers (Google, GitHub, Apple…) with correct logos and colors." },
+        { "name": "sonner", "title": "Toaster", "description": "Toast notifications — themed, stacked, and promise-aware (Sonner) with Phosphor icons and dark-mode support." },
+        { "name": "spark-chart", "title": "Spark Chart", "description": "Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards." },
+        { "name": "spinner", "title": "Spinner", "description": "Indeterminate loading spinner (Phosphor CircleNotch) for buttons and async regions." },
+        { "name": "spotlight-card", "title": "Spotlight Card", "description": "Card with a cursor-following spotlight gradient effect on hover." },
+        { "name": "stat-card", "title": "Stat Card", "description": "KPI / metric card with icon, large value, label, and optional delta indicator." },
+        { "name": "steps", "title": "Steps", "description": "Horizontal or vertical step indicator showing progress through a multi-stage flow or wizard." },
+        { "name": "sticky-scroll-reveal", "title": "Sticky Scroll Reveal", "description": "Split layout where the left column pins while the right scrolls through synced content steps." },
+        { "name": "switch", "title": "Switch", "description": "On/off toggle for boolean settings, with size variants and accessible labeling." },
+        { "name": "table", "title": "Table", "description": "Composable data table with header, body, row, cell, and caption sub-components." },
+        { "name": "tabs", "title": "Tabs", "description": "Switch between panels of related content with keyboard navigation and an animated active indicator." },
+        { "name": "tag-input", "title": "Tag Input", "description": "Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled." },
+        { "name": "team-card", "title": "Team Card", "description": "Team member card with photo, name, role, bio, and social links." },
+        { "name": "testimonial-card", "title": "Testimonial Card", "description": "Customer testimonial card with quote, author name, role, and optional avatar." },
+        { "name": "text-generate-effect", "title": "Text Generate Effect", "description": "Reveals text word-by-word for a typing/AI-generation feel. For hero copy and intros." },
+        { "name": "textarea", "title": "Textarea", "description": "Multi-line text field with intent states and auto-sizing support for comments and messages." },
+        { "name": "timeline", "title": "Timeline", "description": "Vertical scroll-driven timeline whose beam fills as the reader progresses. For changelogs and stories." },
+        { "name": "toggle", "title": "Toggle", "description": "Two-state pressable button for toolbars (bold/italic), with outline and size variants." },
+        { "name": "toggle-group", "title": "Toggle Group", "description": "Set of toggles for single- or multi-select segmented controls (alignment, view modes)." },
+        { "name": "tooltip", "title": "Tooltip", "description": "Hover/focus hint label anchored to any element, with configurable delay and side positioning." },
+        { "name": "tracing-beam", "title": "Tracing Beam", "description": "Animated vertical line that traces the reader's scroll progress alongside long-form content." },
+        { "name": "tracker", "title": "Tracker", "description": "Uptime/status segment grid. Each block is one period (day/hour) colored by status." },
+        { "name": "tree-view", "title": "Tree View", "description": "Recursive expand/collapse tree with keyboard navigation, controlled/uncontrolled expansion + selection." },
+        { "name": "typewriter-text", "title": "Typewriter Text", "description": "Types out text character-by-character with a blinking cursor. Classic hero headline effect." }
     ]
 }

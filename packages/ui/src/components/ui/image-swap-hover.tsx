@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Image that swaps to an alternate source on hover.
  * @author Saasflare™

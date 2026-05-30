@@ -11,7 +11,7 @@
  * and any grouped content that needs a labeled container.
  *
  * @example
- * import { SectionCard } from "@saasflare/core";
+ * import { SectionCard } from "@saasflare/ui";
  *
  * <SectionCard title="General" description="Basic project settings">
  *   <Input label="Project name" />

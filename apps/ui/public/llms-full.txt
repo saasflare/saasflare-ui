@@ -4,26 +4,135 @@ Generated from `packages/ui/registry.json`. Each section quotes the component's 
 
 ---
 
-## Feature Card
+## Accordion
 
-**Description:** Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.
+**Description:** Vertically stacked, collapsible sections for FAQs and disclosure lists. One or many panels open at a time.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/feature-card.json
+npx shadcn add https://ui.saasflare.io/r/accordion.json
+```
+
+**Example:**
+
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@saasflare/ui";
+<Accordion type="single" collapsible>
+  <AccordionItem value="faq-1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>Yes, it follows WAI-ARIA patterns.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+---
+
+## Alert
+
+**Description:** Inline status banner (info/success/warning/danger) with icon, title, and description for non-blocking messages.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/alert.json
 ```
 
 **Props:**
 
 ```ts
-export interface FeatureCardProps extends SaasflareComponentProps {
-  /** Icon element displayed at the top. */
-  icon?: ReactNode
-  /** Feature title. */
-  title: string
-  /** Feature description text. */
-  description: string
+interface AlertProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Semantic color intent */
+  intent?: Intent | "neutral"
+  /**
+   * Legacy variant prop for backward compatibility.
+   * @deprecated Use `intent` instead. "destructive" maps to intent="danger".
+   */
+  variant?: "default" | "destructive"
+}
+```
+
+**Example:**
+
+```tsx
+import { Alert, AlertTitle, AlertDescription } from "@saasflare/ui";
+import { InfoIcon } from "./phosphor";
+
+<Alert intent="info">
+  <InfoIcon />
+  <AlertTitle>Heads up!</AlertTitle>
+  <AlertDescription>This is an informational alert.</AlertDescription>
+</Alert>
+```
+
+---
+
+## Alert Dialog
+
+**Description:** Modal confirmation for destructive or irreversible actions, with required acknowledge and cancel actions.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/alert-dialog.json
+```
+
+**Example:**
+
+```tsx
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogAction, AlertDialogCancel } from "@saasflare/ui";
+
+<AlertDialog>
+  <AlertDialogTrigger asChild><Button variant="outline" intent="danger">Delete</Button></AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle></AlertDialogHeader>
+    <AlertDialogCancel>Cancel</AlertDialogCancel>
+    <AlertDialogAction>Confirm</AlertDialogAction>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+---
+
+## Aspect Ratio
+
+**Description:** Locks content to a fixed width:height ratio — responsive images, video embeds, and media cards.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/aspect-ratio.json
+```
+
+**Example:**
+
+```tsx
+import { AspectRatio } from '@saasflare/ui';
+<AspectRatio ratio={16 / 9}>
+  <img src="/image.jpg" alt="Landscape" />
+</AspectRatio>
+```
+
+---
+
+## Audio Player
+
+**Description:** Self-contained audio player UI over the native HTML5 element — play/pause, scrubbing, and volume.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/audio-player.json
+```
+
+**Props:**
+
+```ts
+export interface AudioPlayerProps extends SaasflareComponentProps {
+  /** Audio source URL. */
+  src: string
+  /** Track title. */
+  title?: string
   /** Additional class names. */
   className?: string
 }
@@ -32,379 +141,118 @@ export interface FeatureCardProps extends SaasflareComponentProps {
 **Example:**
 
 ```tsx
-import { FeatureCard } from '@saasflare/ui';
-<FeatureCard
-  icon={<ZapIcon />}
-  title="Lightning Fast"
-  description="Deploy in under 30 seconds with zero configuration."
-/>
+import { AudioPlayer } from '@saasflare/ui';
+<AudioPlayer src="/podcast-episode.mp3" title="Episode 12" />
 ```
 
 ---
 
-## Pricing Card
+## Aurora Background
 
-**Description:** Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.
+**Description:** Animated aurora backdrop — soft blurred color blobs drifting behind hero content.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/pricing-card.json
+npx shadcn add https://ui.saasflare.io/r/aurora-background.json
 ```
 
 **Props:**
 
 ```ts
-interface PricingCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
-  /** Plan name (e.g. "Starter", "Pro", "Enterprise") */
-  name: string
-  /** Formatted price (e.g. "$29", "Free", "$99") */
-  price: string
-  /** Billing period (e.g. "month", "year") */
-  period?: string
-  /** Short plan description */
-  description?: string
-  /** List of included features */
-  features: string[]
-  /** CTA button element */
-  cta?: React.ReactNode
-  /** Highlight as recommended plan */
-  featured?: boolean
+export interface AuroraBackgroundProps
+    extends Omit<ComponentProps<"div">, keyof SaasflareComponentProps | "color">,
+        SaasflareComponentProps {
+    /**
+     * Three ambient blob colors in order: top-left, right, bottom-left.
+     * Default: curated peach + blue + violet showcase palette.
+     */
+    colors?: readonly [string, string, string]
+    /** Overall blob opacity (0–1). Default: `0.55`. Auto-halved in dark mode via `dark:` modifier. */
+    intensity?: number
 }
 ```
 
 **Example:**
 
 ```tsx
-import { PricingCard } from "@saasflare/core";
+import { AuroraBackground } from "@saasflare/ui"
 
-<PricingCard
-  name="Pro"
-  price="$29"
-  period="month"
-  description="For growing teams"
-  features={["Unlimited projects", "Priority support", "Analytics"]}
-  cta={<Button>Get Started</Button>}
-  featured
-/>
+<AuroraBackground className="min-h-[500px] rounded-2xl p-12">
+  <SectionCard title="Production">…</SectionCard>
+</AuroraBackground>
 ```
 
 ---
 
-## Testimonial Card
+## Avatar
 
-**Description:** Customer testimonial card with quote, author name, role, and optional avatar.
+**Description:** User or brand avatar with image, automatic initials fallback, and size variants.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/testimonial-card.json
+npx shadcn add https://ui.saasflare.io/r/avatar.json
 ```
 
 **Props:**
 
 ```ts
-export interface TestimonialCardProps extends SaasflareComponentProps {
-  /** The testimonial quote text. */
-  quote: string
-  /** Name of the person. */
-  name: string
-  /** Role/title of the person. */
-  role?: string
-  /** Avatar image URL. */
-  avatar?: string
-  /** Star rating (1–5). Omit to hide stars. */
-  rating?: 1 | 2 | 3 | 4 | 5
-  /** Additional class names. */
-  className?: string
+interface AvatarProps
+  extends Omit<React.ComponentProps<typeof AvatarPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  size?: "default" | "sm" | "lg"
 }
 ```
 
 **Example:**
 
 ```tsx
-import { TestimonialCard } from '@saasflare/ui';
-<TestimonialCard
-  quote="Amazing product!"
-  name="Jane Doe"
-  role="CEO at Acme"
-  avatar="/jane.jpg"
-  rating={5}
-/>
+import { Avatar, AvatarImage, AvatarFallback } from "@saasflare/ui";
+
+<Avatar size="lg">
+  <AvatarImage src="/user.jpg" alt="User" />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
 ```
 
 ---
 
-## Team Card
+## Badge
 
-**Description:** Team member card with photo, name, role, bio, and social links.
+**Description:** Compact label for statuses, counts, and tags, with semantic intent colors and subtle/solid styles.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/team-card.json
+npx shadcn add https://ui.saasflare.io/r/badge.json
 ```
 
 **Props:**
 
 ```ts
-export interface TeamCardProps extends SaasflareComponentProps {
-  /** Person's name. */
-  name: string
-  /** Role or job title. */
-  role: string
-  /** Photo URL. */
-  photo?: string
-  /** Short bio text. */
-  bio?: string
-  /** Social media links. */
-  socials?: SocialLink[]
-  /** Additional class names. */
-  className?: string
+interface BadgeProps
+  extends Omit<
+      React.ComponentProps<"span">,
+      "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd" | keyof SaasflareComponentProps
+    >,
+    VariantProps<typeof badgeVariants>,
+    SaasflareComponentProps {
+  /** Render as child element (Radix Slot pattern) */
+  asChild?: boolean
+  /** Semantic color intent */
+  intent?: Intent
 }
 ```
 
 **Example:**
 
 ```tsx
-import { TeamCard } from '@saasflare/ui';
-<TeamCard
-  name="Jane Doe"
-  role="CEO & Co-Founder"
-  photo="/team/jane.jpg"
-  socials={[
-    { label: "Twitter", url: "https://twitter.com/jane", icon: <TwitterIcon /> },
-    { label: "LinkedIn", url: "https://linkedin.com/in/jane", icon: <LinkedInIcon /> },
-  ]}
-/>
-```
+import { Badge } from "@saasflare/ui";
 
----
-
-## Spotlight Card
-
-**Description:** Card with a cursor-following spotlight gradient effect on hover.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/spotlight-card.json
-```
-
-**Props:**
-
-```ts
-export interface SpotlightCardProps extends SaasflareComponentProps {
-  /** Card content. */
-  children: ReactNode
-  /** Spotlight gradient color. Default: `"hsl(var(--primary))"` */
-  spotlightColor?: string
-  /** Spotlight diameter in pixels. Default: `250` */
-  spotlightSize?: number
-  /** Spotlight opacity (0–1). Default: `0.08` */
-  spotlightOpacity?: number
-  /** Additional class names. */
-  className?: string
-}
-```
-
-**Example:**
-
-```tsx
-import { SpotlightCard } from '@saasflare/ui';
-<SpotlightCard>
-  <h3>Feature Title</h3>
-  <p>Feature description text</p>
-</SpotlightCard>
-```
-
----
-
-## Bento Grid
-
-**Description:** Bento-style grid layout for feature galleries with mixed sizes.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/bento-grid.json
-```
-
-**Props:**
-
-```ts
-export interface BentoGridProps {
-  /** Grid items. */
-  children: ReactNode
-  /** Number of columns at md+ breakpoint. Default: `3` */
-  columns?: 2 | 3 | 4
-  /** Gap between items in Tailwind spacing units (4 = 1rem). Default: `4` */
-  gap?: number
-  /** Additional class names. */
-  className?: string
-}
-```
-
-**Example:**
-
-```tsx
-import { BentoGrid, BentoGridItem } from '@saasflare/ui';
-<BentoGrid>
-  <BentoGridItem colSpan={2}>Wide card</BentoGridItem>
-  <BentoGridItem rowSpan={2}>Tall card</BentoGridItem>
-  <BentoGridItem>Standard card</BentoGridItem>
-</BentoGrid>
-```
-
----
-
-## Stat Card
-
-**Description:** KPI / metric card with icon, large value, label, and optional delta indicator.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/stat-card.json
-```
-
-**Props:**
-
-```ts
-export interface StatCardProps extends SaasflareComponentProps {
-  /** The stat value (e.g. "10K+", "99.9%", "$2.4M"). */
-  value: string
-  /** Label describing the stat. */
-  label: string
-  /** Optional icon displayed above the value. */
-  icon?: ReactNode
-  /** Additional class names. */
-  className?: string
-}
-```
-
-**Example:**
-
-```tsx
-import { StatCard } from '@saasflare/ui';
-<StatCard value="10K+" label="Active Users" />
-```
-
----
-
-## Metric Card
-
-**Description:** Dashboard metric card with sparkline support and trend indicator.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/metric-card.json
-```
-
-**Props:**
-
-```ts
-interface MetricCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
-  /** Metric label (e.g. "Revenue", "Active Users") */
-  label: string
-  /** Formatted metric value (e.g. "$12,345", "1,234") */
-  value: string
-  /** Optional trend indicator */
-  trend?: MetricTrend
-  /** Optional icon element */
-  icon?: React.ReactNode
-}
-```
-
-**Example:**
-
-```tsx
-import { MetricCard } from "@saasflare/core";
-import { UsersIcon } from "./phosphor";
-
-<MetricCard
-  label="Active Users"
-  value="1,234"
-  trend={{ value: 12.5, direction: "up" }}
-  icon={<UsersIcon />}
-/>
-```
-
----
-
-## Section Card
-
-**Description:** Composable section/landing card with header, content, and footer slots.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/section-card.json
-```
-
-**Props:**
-
-```ts
-interface SectionCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
-  /** Section title */
-  title: string
-  /** Optional description below the title */
-  description?: string
-  /** Optional footer content (save button, etc.) */
-  footer?: React.ReactNode
-  /** Optional action in the header (edit button, etc.) */
-  headerAction?: React.ReactNode
-}
-```
-
-**Example:**
-
-```tsx
-import { SectionCard } from "@saasflare/core";
-
-<SectionCard title="General" description="Basic project settings">
-  <Input label="Project name" />
-</SectionCard>
-```
-
----
-
-## Progress Circle
-
-**Description:** Circular progress indicator. Radial counterpart to Progress, common for KPI rings.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/progress-circle.json
-```
-
-**Props:**
-
-```ts
-export interface ProgressCircleProps extends SaasflareComponentProps {
-    /** Current value in the range `[0, max]`. */
-    value: number
-    /** Maximum value. Default: `100`. */
-    max?: number
-    /** Size preset. Default: `"md"`. */
-    size?: ProgressCircleSize
-    /** Ring stroke width in pixels. Default: derived from `size`. */
-    strokeWidth?: number
-    /** Center content (e.g. the numeric label). */
-    children?: ReactNode
-    /** Additional class names on the outer wrapper. */
-    className?: string
-    /** Accessible label. Default: `"<value>%"`. */
-    "aria-label"?: string
-}
-```
-
-**Example:**
-
-```tsx
-<ProgressCircle value={72} />
+<Badge>Default</Badge>
+<Badge intent="success" variant="soft">Active</Badge>
+<Badge intent="danger" variant="outline" size="sm">Error</Badge>
 ```
 
 ---
@@ -451,35 +299,409 @@ export interface BarListProps extends SaasflareComponentProps {
 
 ---
 
-## Spark Chart
+## Bento Grid
 
-**Description:** Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.
+**Description:** Bento-style grid layout for feature galleries with mixed sizes.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/spark-chart.json
+npx shadcn add https://ui.saasflare.io/r/bento-grid.json
 ```
 
 **Props:**
 
 ```ts
-export interface SparkChartProps extends SaasflareComponentProps {
-    /** Series of numeric points (length ≥ 2). */
-    data: number[]
-    /** Visual treatment. Default: `"area"`. */
-    variant?: SparkChartVariant
-    /** Stroke / fill color (any CSS color). Default: `var(--primary)`. */
-    color?: string
-    /** SVG width in pixels. Default: `64`. */
-    width?: number
-    /** SVG height in pixels. Default: `24`. */
-    height?: number
-    /** Line stroke width in pixels. Default: `1.5`. */
-    strokeWidth?: number
+export interface BentoGridProps {
+  /** Grid items. */
+  children: ReactNode
+  /** Number of columns at md+ breakpoint. Default: `3` */
+  columns?: 2 | 3 | 4
+  /** Gap between items in Tailwind spacing units (4 = 1rem). Default: `4` */
+  gap?: number
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { BentoGrid, BentoGridItem } from '@saasflare/ui';
+<BentoGrid>
+  <BentoGridItem colSpan={2}>Wide card</BentoGridItem>
+  <BentoGridItem rowSpan={2}>Tall card</BentoGridItem>
+  <BentoGridItem>Standard card</BentoGridItem>
+</BentoGrid>
+```
+
+---
+
+## Blur Fade
+
+**Description:** Entrance animation combining blur, fade, and offset — for elegant on-mount and on-scroll reveals.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/blur-fade.json
+```
+
+**Props:**
+
+```ts
+export interface BlurFadeProps {
+  /** Content to animate. */
+  children: ReactNode
+  /** Animation delay in seconds (use for staggering). Default: `0` */
+  delay?: number
+  /** Initial blur amount in pixels. Default: `8` */
+  blur?: number
+  /** Vertical offset in pixels. Default: `12` */
+  yOffset?: number
+  /** Animation duration in seconds. Default: `0.5` */
+  duration?: number
+  /** Whether animation triggers only once. Default: `true` */
+  once?: boolean
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { BlurFade } from '@saasflare/ui';
+<BlurFade>
+  <Card>Fades in with blur</Card>
+</BlurFade>
+```
+
+---
+
+## Border Beam
+
+**Description:** A glowing gradient beam that travels around an element's border. Premium accent for cards and CTAs.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/border-beam.json
+```
+
+**Props:**
+
+```ts
+export interface BorderBeamProps {
+  /** Beam color. Default: `"hsl(var(--primary))"` */
+  color?: string
+  /** Tail fade color. Default: `"transparent"` */
+  colorFrom?: string
+  /** Animation cycle duration in seconds. Default: `6` */
+  duration?: number
+  /** Beam length in pixels. Default: `150` */
+  size?: number
+  /** Border radius to follow (CSS value). Default: `"inherit"` */
+  borderRadius?: string
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { BorderBeam } from '@saasflare/ui';
+<div className="relative rounded-xl border p-6">
+  <BorderBeam />
+  <h3>Premium Feature</h3>
+</div>
+```
+
+---
+
+## Breadcrumb
+
+**Description:** Hierarchical navigation trail showing the user's location, with truncation and custom separators.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/breadcrumb.json
+```
+
+**Props:**
+
+```ts
+interface BreadcrumbProps extends Omit<React.ComponentProps<"nav">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Breadcrumb({ surface, radius, animated, iconWeight, ...props }: BreadcrumbProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+
+  return (
+    <nav
+      {...props}
+      aria-label="breadcrumb"
+      data-slot="breadcrumb"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+    />
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage } from '@saasflare/ui';
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbItem><BreadcrumbPage>Current</BreadcrumbPage></BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>
+```
+
+---
+
+## Button
+
+**Description:** The core action element. Three orthogonal axes — variant × intent × size — plus loading and icon slots.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/button.json
+```
+
+**Props:**
+
+```ts
+interface ButtonProps
+  extends Omit<React.ComponentProps<"button">, MotionConflicts>,
+    VariantProps<typeof buttonVariants>,
+    SaasflareComponentProps {
+  /** Render as child element (Radix Slot pattern) */
+  asChild?: boolean
+  /** Semantic color intent */
+  intent?: Intent
+  /** Stretch to full width of container */
+  fullWidth?: boolean
+}
+```
+
+**Example:**
+
+```tsx
+import { Button } from "@saasflare/ui";
+
+<Button>Default</Button>
+<Button variant="solid" intent="success">Save</Button>
+<Button variant="outline" intent="danger" size="sm">Delete</Button>
+<Button surface="glass">Inherits glass surface</Button>
+<Button animated={false}>No motion</Button>
+<Button variant="shadow">Elevated Shadow</Button>
+<Button variant="ghost" size="icon"><MagnifyingGlassIcon /></Button>
+```
+
+---
+
+## Button Group
+
+**Description:** Visually connected strip of buttons with shared radii and separators. For segmented actions and toolbars.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/button-group.json
+```
+
+**Example:**
+
+```tsx
+import { ButtonGroup, ButtonGroupItem } from '@saasflare/ui';
+<ButtonGroup orientation="horizontal">
+  <ButtonGroupItem>Left</ButtonGroupItem>
+  <ButtonGroupItem>Right</ButtonGroupItem>
+</ButtonGroup>
+```
+
+---
+
+## Calendar
+
+**Description:** Month-grid date calendar (react-day-picker) supporting single, multiple, or range selection.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/calendar.json
+```
+
+**Example:**
+
+```tsx
+import { Calendar } from '@saasflare/ui';
+const [date, setDate] = React.useState<Date | undefined>(new Date());
+<Calendar mode="single" selected={date} onSelect={setDate} />
+```
+
+---
+
+## Callout
+
+**Description:** Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/callout.json
+```
+
+**Props:**
+
+```ts
+export interface CalloutProps extends SaasflareComponentProps {
+    /** Color intent. Default: `"info"`. */
+    intent?: CalloutIntent
+    /** Bold title rendered above the body. */
+    title?: ReactNode
+    /** Leading icon (rendered in the same color as the intent stripe). */
+    icon?: ReactNode
+    /** Body content. */
+    children?: ReactNode
     /** Additional class names. */
     className?: string
-    /** Accessible label. */
+}
+```
+
+**Example:**
+
+```tsx
+<Callout intent="warning" title="Heads up">
+  This action is irreversible. Make sure you've exported your data first.
+</Callout>
+```
+
+---
+
+## Card
+
+**Description:** The base surface primitive — header, content, and footer slots — that most composed cards build on.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/card.json
+```
+
+**Props:**
+
+```ts
+interface CardProps
+  extends Omit<React.ComponentProps<"div">, MotionConflicts | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * Card container with subtle hover-lift animation.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Card className="max-w-sm">
+ *   <CardHeader><CardTitle>Plan</CardTitle></CardHeader>
+ *   <CardContent>Content here</CardContent>
+ * </Card>
+ */
+function Card({ className, surface, radius, animated, ...props }: CardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, springGentle)
+
+  return (
+    <m.div
+      {...props}
+      data-slot="card"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      whileHover={motion.disabled ? undefined : { y: -2, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
+      transition={motion.transition}
+      className={cn(
+        "flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm transition-[border-color] duration-300 hover:border-primary/20",
+        className
+      )}
+    />
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { Card, CardHeader, CardTitle, CardContent } from "@saasflare/ui";
+<Card>
+  <CardHeader>
+    <CardTitle>Settings</CardTitle>
+  </CardHeader>
+  <CardContent>...</CardContent>
+</Card>
+```
+
+---
+
+## Carousel
+
+**Description:** Touch/swipe carousel (Embla) with autoplay, looping, and custom controls for galleries and sliders.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/carousel.json
+```
+
+**Example:**
+
+```tsx
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@saasflare/ui/carousel';
+<Carousel>
+  <CarouselContent>
+    <CarouselItem>Slide 1</CarouselItem>
+    <CarouselItem>Slide 2</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+```
+
+---
+
+## Category Bar
+
+**Description:** Segmented progress bar with per-segment colors and optional labels. Useful for resource breakdowns.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/category-bar.json
+```
+
+**Props:**
+
+```ts
+export interface CategoryBarProps extends SaasflareComponentProps {
+    /** Segments to render, left-to-right. */
+    segments: CategoryBarSegment[]
+    /** Bar height in pixels. Default: `8`. */
+    height?: number
+    /** Render labels + percentages under each segment. */
+    showLabels?: boolean
+    /** Formats the percentage text. Default: `"NN%"`. */
+    valueFormatter?: (percent: number) => string
+    /** Additional class names. */
+    className?: string
+    /** Accessible label for the bar group. */
     "aria-label"?: string
 }
 ```
@@ -487,78 +709,110 @@ export interface SparkChartProps extends SaasflareComponentProps {
 **Example:**
 
 ```tsx
-<SparkChart data={[3, 5, 4, 8, 6, 9, 11]} variant="area" />
-```
-
----
-
-## Tracker
-
-**Description:** Uptime/status segment grid. Each block is one period (day/hour) colored by status.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/tracker.json
-```
-
-**Props:**
-
-```ts
-export interface TrackerProps extends SaasflareComponentProps {
-    /** Blocks to render, left-to-right. */
-    data: TrackerBlock[]
-    /** Height of each block in px. Default: `32`. */
-    blockHeight?: number
-    /** Gap between blocks in px. Default: `2`. */
-    gap?: number
-    /** Additional class names. */
-    className?: string
-}
-```
-
-**Example:**
-
-```tsx
-<Tracker
-  data={[
-    { color: "emerald", tooltip: "Apr 1 — Operational" },
-    { color: "emerald", tooltip: "Apr 2 — Operational" },
-    { color: "amber",   tooltip: "Apr 3 — Degraded performance" },
-    { color: "red",     tooltip: "Apr 4 — Major outage" },
+<CategoryBar
+  segments={[
+    { value: 30, color: "oklch(0.65 0.18 230)", label: "Images" },
+    { value: 20, color: "oklch(0.72 0.17 50)",  label: "Docs"   },
+    { value: 50, color: "oklch(0.70 0 0)",      label: "Other"  },
   ]}
+  showLabels
 />
 ```
 
 ---
 
-## Dropzone
+## Chart
 
-**Description:** Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).
+**Description:** Composable Recharts wrapper with themed tooltips, legends, and design-system color tokens.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/dropzone.json
+npx shadcn add https://ui.saasflare.io/r/chart.json
+```
+
+**Example:**
+
+```tsx
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@saasflare/ui/chart';
+const config = { revenue: { label: "Revenue", color: "#2563eb" } };
+<ChartContainer config={config}>
+  <BarChart data={data}>
+    <Bar dataKey="revenue" />
+    <ChartTooltip content={<ChartTooltipContent />} />
+  </BarChart>
+</ChartContainer>
+```
+
+---
+
+## Checkbox
+
+**Description:** Accessible checkbox with indeterminate state, for forms and bulk-select rows.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/checkbox.json
 ```
 
 **Props:**
 
 ```ts
-export interface DropzoneProps extends SaasflareComponentProps {
-    /** Called with `(accepted, rejected)` when the user drops or picks files. */
-    onDrop?: (accepted: File[], rejected: DropzoneRejection[]) => void
-    /** MIME types or extensions to accept (matches `<input accept>`). */
-    accept?: string
-    /** Maximum file size in bytes. */
-    maxSize?: number
-    /** Allow multiple file selection. Default: `true`. */
-    multiple?: boolean
-    /** Disable the dropzone. */
-    disabled?: boolean
-    /** Render-prop body. Receives `isDragActive`. Falls back to the default UI. */
-    children?: ReactNode | ((state: { isDragActive: boolean }) => ReactNode)
-    /** Additional class names. */
+interface CheckboxProps
+  extends Omit<React.ComponentProps<typeof CheckboxPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function Checkbox({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { Checkbox } from "@saasflare/ui";
+
+<Checkbox id="terms" />
+<label htmlFor="terms">Accept terms and conditions</label>
+```
+
+---
+
+## Code Block
+
+**Description:** Code-block chrome: filename header, language badge, copy button, optional line numbers. BYO highlighter.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/code-block.json
+```
+
+**Props:**
+
+```ts
+export interface CodeBlockProps extends SaasflareComponentProps {
+    /** Plain source code (rendered as monospace, no highlighting). */
+    code?: string
+    /** Pre-highlighted HTML — e.g. output from Shiki's `codeToHtml`. */
+    highlighted?: string
+    /** Language label shown in the header (purely cosmetic). */
+    language?: string
+    /** Filename shown left of the language badge. */
+    filename?: string
+    /** Show 1-based line numbers in the gutter. */
+    showLineNumbers?: boolean
+    /** Hide the top bar (copy button still floats inside the block). */
+    hideHeader?: boolean
+    /** Hide the copy-to-clipboard button. */
+    hideCopyButton?: boolean
+    /** Additional class names on the outer wrapper. */
     className?: string
 }
 ```
@@ -566,11 +820,365 @@ export interface DropzoneProps extends SaasflareComponentProps {
 **Example:**
 
 ```tsx
-<Dropzone
-  accept="image/*"
-  maxSize={5 * 1024 * 1024}
-  onDrop={(accepted, rejected) => upload(accepted)}
+// Plain (no highlighting)
+<CodeBlock code={`function hi() { return "hello" }`} language="ts" filename="hi.ts" />
+```
+
+---
+
+## Collapsible
+
+**Description:** Single show/hide region with animated open/close. The building block under accordions and disclosures.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/collapsible.json
+```
+
+**Example:**
+
+```tsx
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@saasflare/ui';
+<Collapsible>
+  <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+  <CollapsibleContent>Hidden content revealed on toggle.</CollapsibleContent>
+</Collapsible>
+```
+
+---
+
+## Combobox
+
+**Description:** Searchable select — a Popover wrapping a cmdk palette. Autocomplete with full keyboard navigation.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/combobox.json
+```
+
+**Example:**
+
+```tsx
+import {
+  Combobox, ComboboxTrigger, ComboboxContent,
+  ComboboxInput, ComboboxList, ComboboxItem,
+} from "@saasflare/ui"
+
+<Combobox>
+  <ComboboxTrigger asChild>
+    <Button variant="outline">{label ?? "Select…"}</Button>
+  </ComboboxTrigger>
+  <ComboboxContent>
+    <ComboboxInput placeholder="Search…" />
+    <ComboboxList>
+      <ComboboxItem value="react">React</ComboboxItem>
+      <ComboboxItem value="vue">Vue</ComboboxItem>
+    </ComboboxList>
+  </ComboboxContent>
+</Combobox>
+```
+
+---
+
+## Command
+
+**Description:** ⌘K command palette with fuzzy search, groups, and keyboard navigation (cmdk).
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/command.json
+```
+
+**Props:**
+
+```ts
+interface CommandProps
+  extends Omit<React.ComponentProps<typeof CommandPrimitive>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function Command({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { Command, CommandInput, CommandList, CommandItem, CommandGroup } from '@saasflare/ui';
+<Command>
+  <CommandInput placeholder="Search..." />
+  <CommandList>
+    <CommandGroup heading="Actions">
+      <CommandItem>New File</CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>
+```
+
+---
+
+## Compare
+
+**Description:** Before/after image slider with a draggable divider, for comparisons and product demos.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/compare.json
+```
+
+**Props:**
+
+```ts
+export interface CompareProps {
+  /** Content shown on the left (before) side. */
+  before: ReactNode
+  /** Content shown on the right (after) side. */
+  after: ReactNode
+  /** Label for the before side. */
+  beforeLabel?: string
+  /** Label for the after side. */
+  afterLabel?: string
+  /** Initial divider position as percentage (0–100). Default: `50` */
+  initialPosition?: number
+  /** CSS aspect-ratio for the container. Default: `"16/9"` */
+  aspectRatio?: string
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Compare } from '@saasflare/ui';
+<Compare
+  before={<img src="/before.png" alt="Before" />}
+  after={<img src="/after.png" alt="After" />}
 />
+```
+
+---
+
+## Confetti
+
+**Description:** CSS-only confetti burst with randomized colors and trajectories — celebrate conversions and milestones.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/confetti.json
+```
+
+**Props:**
+
+```ts
+export interface ConfettiProps {
+  /** Whether the confetti burst is active. */
+  active: boolean
+  /** Number of confetti particles. Default: `40` */
+  count?: number
+  /** Array of CSS colors for particles. */
+  colors?: string[]
+  /** Duration in milliseconds before auto-cleanup. Default: `3000` */
+  duration?: number
+  /** Callback when animation completes. */
+  onComplete?: () => void
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Confetti } from '@saasflare/ui';
+const [show, setShow] = useState(false);
+<button onClick={() => setShow(true)}>Celebrate!</button>
+<Confetti active={show} onComplete={() => setShow(false)} />
+```
+
+---
+
+## Context Menu
+
+**Description:** Right-click menu with items, submenus, checkboxes, and keyboard shortcuts.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/context-menu.json
+```
+
+**Example:**
+
+```tsx
+import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from '@saasflare/ui';
+<ContextMenu>
+  <ContextMenuTrigger>Right-click here</ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Copy</ContextMenuItem>
+    <ContextMenuItem>Paste</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>
+```
+
+---
+
+## Countdown
+
+**Description:** Presentational countdown display (days/hours/minutes/seconds) — pair with the useCountdown hook.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/countdown.json
+```
+
+**Props:**
+
+```ts
+export interface CountdownProps {
+  /** Number of days remaining. */
+  days: number
+  /** Number of hours remaining (0–23). */
+  hours: number
+  /** Number of minutes remaining (0–59). */
+  minutes: number
+  /** Number of seconds remaining (0–59). */
+  seconds: number
+  /** Show the labels below each box. Default: `true` */
+  showLabels?: boolean
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Countdown } from '@saasflare/ui';
+import { useCountdown } from '@saasflare/ui';
+const { days, hours, minutes, seconds } = useCountdown(targetDate);
+<Countdown days={days} hours={hours} minutes={minutes} seconds={seconds} />
+```
+
+---
+
+## Data Toolbar
+
+**Description:** Toolbar layout for tables and data grids — search, filters, and actions in a single bar.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/data-toolbar.json
+```
+
+**Props:**
+
+```ts
+interface DataToolbarProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+/**
+ * Toolbar container for data views.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <DataToolbar>
+ *   <DataToolbarSearch placeholder="Search..." />
+ *   <DataToolbarActions>
+ *     <Button size="sm">Add New</Button>
+ *   </DataToolbarActions>
+ * </DataToolbar>
+ */
+function DataToolbar({ className, surface, radius, animated, ...props }: DataToolbarProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
+  return (
+    <div
+      {...props}
+      data-slot="data-toolbar"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn(
+        "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+        className
+      )}
+    />
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { DataToolbar, DataToolbarSearch, DataToolbarActions, DataToolbarFilters } from "@saasflare/ui";
+
+<DataToolbar>
+  <DataToolbarSearch placeholder="Search users..." />
+  <DataToolbarFilters>
+    <Select>...</Select>
+  </DataToolbarFilters>
+  <DataToolbarActions>
+    <Button size="sm">Export</Button>
+  </DataToolbarActions>
+</DataToolbar>
+```
+
+---
+
+## Date Picker
+
+**Description:** Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/date-picker.json
+```
+
+**Props:**
+
+```ts
+export interface DatePickerProps extends SaasflareComponentProps {
+    /** Controlled value. */
+    value?: Date
+    /** Uncontrolled default value. */
+    defaultValue?: Date
+    /** Called when the user picks a date. */
+    onChange?: (date: Date | undefined) => void
+    /** Placeholder shown when no date is set. */
+    placeholder?: string
+    /** Earliest pickable date. */
+    minDate?: Date
+    /** Latest pickable date. */
+    maxDate?: Date
+    /** Disable the trigger. */
+    disabled?: boolean
+    /** Format function for the trigger label. Default: locale-aware. */
+    formatDate?: (date: Date) => string
+    /** Additional class names on the trigger. */
+    className?: string
+}
+```
+
+**Example:**
+
+```tsx
+const [date, setDate] = useState<Date | undefined>();
+<DatePicker value={date} onChange={setDate} />
 ```
 
 ---
@@ -621,72 +1229,166 @@ const [range, setRange] = useState<DateRange | undefined>();
 
 ---
 
-## Date Picker
+## Device Mock
 
-**Description:** Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.
+**Description:** CSS-only phone, laptop, and browser frames for wrapping product screenshots and demos.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/date-picker.json
+npx shadcn add https://ui.saasflare.io/r/device-mock.json
+```
+
+**Example:**
+
+```tsx
+import { SafariMock, IPhoneMock } from '@saasflare/ui';
+<SafariMock url="https://app.example.com">
+  <img src="/screenshot.png" alt="App screenshot" />
+</SafariMock>
+```
+
+---
+
+## Dialog
+
+**Description:** Modal overlay for focused tasks and forms, with animated enter/exit and focus trapping.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/dialog.json
+```
+
+**Example:**
+
+```tsx
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@saasflare/ui";
+<Dialog>
+  <DialogTrigger asChild><Button>Open</Button></DialogTrigger>
+  <DialogContent>
+    <DialogHeader><DialogTitle>Edit Profile</DialogTitle></DialogHeader>
+  </DialogContent>
+</Dialog>
+```
+
+---
+
+## Dock
+
+**Description:** macOS-style dock bar where icons magnify on cursor proximity. Playful navigation accent.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/dock.json
 ```
 
 **Props:**
 
 ```ts
-export interface DatePickerProps extends SaasflareComponentProps {
-    /** Controlled value. */
-    value?: Date
-    /** Uncontrolled default value. */
-    defaultValue?: Date
-    /** Called when the user picks a date. */
-    onChange?: (date: Date | undefined) => void
-    /** Placeholder shown when no date is set. */
-    placeholder?: string
-    /** Earliest pickable date. */
-    minDate?: Date
-    /** Latest pickable date. */
-    maxDate?: Date
-    /** Disable the trigger. */
-    disabled?: boolean
-    /** Format function for the trigger label. Default: locale-aware. */
-    formatDate?: (date: Date) => string
-    /** Additional class names on the trigger. */
-    className?: string
+export interface DockProps extends SaasflareComponentProps {
+  /** Dock items. */
+  children: ReactNode
+  /** Maximum scale factor for magnified items. Default: `1.5` */
+  magnification?: number
+  /** Mouse proximity distance in pixels that triggers magnification. Default: `100` */
+  distance?: number
+  /** Additional class names. */
+  className?: string
 }
 ```
 
 **Example:**
 
 ```tsx
-const [date, setDate] = useState<Date | undefined>();
-<DatePicker value={date} onChange={setDate} />
+import { Dock, DockItem } from '@saasflare/ui';
+<Dock>
+  <DockItem label="Home"><HomeIcon className="size-6" /></DockItem>
+  <DockItem label="Search"><SearchIcon className="size-6" /></DockItem>
+  <DockItem label="Settings"><SettingsIcon className="size-6" /></DockItem>
+</Dock>
 ```
 
 ---
 
-## Callout
+## Drawer
 
-**Description:** Emphasized inline message box (info/warning/success/danger). Lives between Alert and Dialog.
+**Description:** Mobile-first bottom drawer with drag-to-dismiss physics (Vaul). The touch-friendly Sheet.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/callout.json
+npx shadcn add https://ui.saasflare.io/r/drawer.json
+```
+
+**Example:**
+
+```tsx
+import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from "@saasflare/ui";
+
+<Drawer>
+  <DrawerTrigger asChild><Button>Open Drawer</Button></DrawerTrigger>
+  <DrawerContent>
+    <DrawerHeader><DrawerTitle>Settings</DrawerTitle></DrawerHeader>
+  </DrawerContent>
+</Drawer>
+```
+
+---
+
+## Dropdown Menu
+
+**Description:** Click-triggered action menu with items, submenus, checkboxes, radio groups, and shortcuts.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/dropdown-menu.json
+```
+
+**Example:**
+
+```tsx
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@saasflare/ui';
+
+<DropdownMenu>
+  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Profile</DropdownMenuItem>
+    <DropdownMenuItem>Settings</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+---
+
+## Dropzone
+
+**Description:** Drag-and-drop file upload area with click-to-open fallback. Self-contained (no react-dropzone).
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/dropzone.json
 ```
 
 **Props:**
 
 ```ts
-export interface CalloutProps extends SaasflareComponentProps {
-    /** Color intent. Default: `"info"`. */
-    intent?: CalloutIntent
-    /** Bold title rendered above the body. */
-    title?: ReactNode
-    /** Leading icon (rendered in the same color as the intent stripe). */
-    icon?: ReactNode
-    /** Body content. */
-    children?: ReactNode
+export interface DropzoneProps extends SaasflareComponentProps {
+    /** Called with `(accepted, rejected)` when the user drops or picks files. */
+    onDrop?: (accepted: File[], rejected: DropzoneRejection[]) => void
+    /** MIME types or extensions to accept (matches `<input accept>`). */
+    accept?: string
+    /** Maximum file size in bytes. */
+    maxSize?: number
+    /** Allow multiple file selection. Default: `true`. */
+    multiple?: boolean
+    /** Disable the dropzone. */
+    disabled?: boolean
+    /** Render-prop body. Receives `isDragActive`. Falls back to the default UI. */
+    children?: ReactNode | ((state: { isDragActive: boolean }) => ReactNode)
     /** Additional class names. */
     className?: string
 }
@@ -695,57 +1397,1010 @@ export interface CalloutProps extends SaasflareComponentProps {
 **Example:**
 
 ```tsx
-<Callout intent="warning" title="Heads up">
-  This action is irreversible. Make sure you've exported your data first.
-</Callout>
+<Dropzone
+  accept="image/*"
+  maxSize={5 * 1024 * 1024}
+  onDrop={(accepted, rejected) => upload(accepted)}
+/>
 ```
 
 ---
 
-## Tag Input
+## Empty
 
-**Description:** Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.
+**Description:** Empty-state primitive — centered icon, title, description, and action slots for zero-data views.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/tag-input.json
+npx shadcn add https://ui.saasflare.io/r/empty.json
 ```
 
 **Props:**
 
 ```ts
-export interface TagInputProps extends SaasflareComponentProps {
-    /** Controlled list of tags. */
-    value?: string[]
-    /** Uncontrolled initial tags. */
-    defaultValue?: string[]
-    /** Called whenever the tag list changes. */
-    onChange?: (tags: string[]) => void
-    /** Placeholder shown in the input. */
-    placeholder?: string
-    /** Maximum number of tags accepted. */
-    maxTags?: number
-    /** Characters that commit the current input as a tag. Default: `[",", "Enter"]`. */
-    separators?: string[]
-    /** Reject duplicate tags. Default: `true`. */
-    unique?: boolean
-    /** Disable the input. */
-    disabled?: boolean
-    /** Custom renderer for each pill. Falls back to the default pill UI. */
-    renderTag?: (tag: string, onRemove: () => void) => ReactNode
-    /** Additional class names on the outer wrapper. */
-    className?: string
-    /** Accessible label. */
-    "aria-label"?: string
+interface EmptyProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Empty({ className, surface, radius, animated, ...props }: EmptyProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
+  return (
+    <div
+      {...props}
+      data-slot="empty"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn(
+        "flex min-w-0 flex-1 flex-col items-center justify-center gap-6 rounded-lg border-dashed p-6 text-center text-balance md:p-12",
+        className
+      )}
+    />
+  )
 }
 ```
 
 **Example:**
 
 ```tsx
-const [tags, setTags] = useState<string[]>([]);
-<TagInput value={tags} onChange={setTags} placeholder="Add a tag…" />
+import { Empty, EmptyHeader, EmptyTitle, EmptyAction } from '@saasflare/ui';
+<Empty>
+  <EmptyHeader>
+    <EmptyTitle>No items found</EmptyTitle>
+  </EmptyHeader>
+  <EmptyAction>Create one</EmptyAction>
+</Empty>
+```
+
+---
+
+## Empty State
+
+**Description:** Polished zero-data view — icon or illustration, title, description, and a call-to-action button.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/empty-state.json
+```
+
+**Props:**
+
+```ts
+interface EmptyStateProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Icon or illustration element */
+  icon?: React.ReactNode
+  /** Title text */
+  title: string
+  /** Description text */
+  description?: string
+  /** Action element (button, link, etc.) */
+  action?: React.ReactNode
+}
+```
+
+**Example:**
+
+```tsx
+import { EmptyState } from "@saasflare/ui";
+import { InboxIcon } from "./phosphor";
+
+<EmptyState
+  icon={<InboxIcon />}
+  title="No messages"
+  description="You haven't received any messages yet."
+  action={<Button>Compose</Button>}
+/>
+```
+
+---
+
+## Feature Card
+
+**Description:** Feature card with icon, title, and description. The most reused card pattern on any SaaS landing page.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/feature-card.json
+```
+
+**Props:**
+
+```ts
+export interface FeatureCardProps extends SaasflareComponentProps {
+  /** Icon element displayed at the top. */
+  icon?: ReactNode
+  /** Feature title. */
+  title: string
+  /** Feature description text. */
+  description: string
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { FeatureCard } from '@saasflare/ui';
+<FeatureCard
+  icon={<ZapIcon />}
+  title="Lightning Fast"
+  description="Deploy in under 30 seconds with zero configuration."
+/>
+```
+
+---
+
+## Field
+
+**Description:** Form-field wrapper bundling label, control, description, and error message with correct a11y wiring.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/field.json
+```
+
+**Example:**
+
+```tsx
+import { Field, FieldLabel, FieldControl, FieldError } from '@saasflare/ui';
+<Field>
+  <FieldLabel>Email</FieldLabel>
+  <FieldControl><input type="email" /></FieldControl>
+  <FieldError>Required</FieldError>
+</Field>
+```
+
+---
+
+## Flip Words
+
+**Description:** Cycles through a list of words with a vertical flip animation — for dynamic hero headlines.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/flip-words.json
+```
+
+**Props:**
+
+```ts
+export interface FlipWordsProps {
+  /** Array of words to cycle through. */
+  words: string[]
+  /** Cycle interval in milliseconds. Default: `2500` */
+  interval?: number
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { FlipWords } from '@saasflare/ui';
+<h1>
+  Build <FlipWords words={["websites", "apps", "products"]} /> faster
+</h1>
+```
+
+---
+
+## Form
+
+**Description:** react-hook-form integration layer — field context, labels, descriptions, and validation messages.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/form.json
+```
+
+**Example:**
+
+```tsx
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@saasflare/ui';
+<Form {...form}>
+  <FormField control={form.control} name="email" render={({ field }) => (
+    <FormItem>
+      <FormLabel>Email</FormLabel>
+      <FormControl><input {...field} /></FormControl>
+      <FormMessage />
+    </FormItem>
+  )} />
+</Form>
+```
+
+---
+
+## Gallery Lightbox
+
+**Description:** Click-to-expand image gallery with a fullscreen overlay, prev/next, and keyboard navigation.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/gallery-lightbox.json
+```
+
+**Props:**
+
+```ts
+export interface GalleryLightboxProps {
+  /** Array of image URLs. */
+  images: string[]
+  /** Whether the lightbox is open. */
+  open: boolean
+  /** Current image index. */
+  index: number
+  /** Called when the lightbox should close. */
+  onClose: () => void
+  /** Called when the index changes. */
+  onIndexChange: (index: number) => void
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { GalleryLightbox } from '@saasflare/ui';
+const [open, setOpen] = useState(false);
+const [index, setIndex] = useState(0);
+<GalleryLightbox
+  images={["/img1.jpg", "/img2.jpg", "/img3.jpg"]}
+  open={open}
+  index={index}
+  onClose={() => setOpen(false)}
+  onIndexChange={setIndex}
+/>
+```
+
+---
+
+## Glowing Effect
+
+**Description:** Mouse-tracking glow that follows the cursor around a container's edges. Interactive card highlight.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/glowing-effect.json
+```
+
+**Props:**
+
+```ts
+export interface GlowingEffectProps {
+  /** Glow color. Default: `"hsl(var(--primary))"` */
+  color?: string
+  /** Glow spread diameter in pixels. Default: `150` */
+  spread?: number
+  /** Blur radius in pixels. Default: `20` */
+  blur?: number
+  /** Glow opacity (0–1). Default: `0.4` */
+  opacity?: number
+  /** Border radius to match parent (CSS value). Default: `"inherit"` */
+  borderRadius?: string
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { GlowingEffect } from '@saasflare/ui';
+<div className="relative overflow-hidden rounded-xl border p-6">
+  <GlowingEffect />
+  <h3>Feature Card</h3>
+</div>
+```
+
+---
+
+## Gradient Text
+
+**Description:** Animated linear-gradient text fill via background-clip — for headlines and brand accents.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/gradient-text.json
+```
+
+**Props:**
+
+```ts
+export interface GradientTextProps {
+  /** Text content to apply the gradient to. */
+  children: ReactNode
+  /** Gradient color stops. Default: primary → chart-1 → chart-2 tokens */
+  colors?: string[]
+  /** Whether to animate the gradient position. Default: `true` */
+  animate?: boolean
+  /** Animation cycle duration in seconds. Default: `6` */
+  speed?: number
+  /** Gradient direction in degrees. Default: `90` */
+  angle?: number
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { GradientText } from '@saasflare/ui';
+<h1>
+  Build with <GradientText>Saasflare</GradientText>
+</h1>
+```
+
+---
+
+## Hero Video Dialog
+
+**Description:** Poster image with a play button that opens an embedded video in a modal. Landing-page hero staple.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/hero-video-dialog.json
+```
+
+**Props:**
+
+```ts
+export interface HeroVideoDialogProps {
+  /** Video embed URL (YouTube/Vimeo embed or direct video URL). */
+  videoSrc: string
+  /** Poster thumbnail image URL. */
+  thumbnailSrc: string
+  /** Alt text for the thumbnail image. */
+  thumbnailAlt: string
+  /** CSS aspect-ratio for the thumbnail. Default: `"16/9"` */
+  aspectRatio?: string
+  /** Additional class names for the container. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { HeroVideoDialog } from '@saasflare/ui';
+<HeroVideoDialog
+  videoSrc="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  thumbnailSrc="/product-demo-poster.jpg"
+  thumbnailAlt="Product demo video"
+/>
+```
+
+---
+
+## Hotspot
+
+**Description:** Pulsing marker dots at absolute positions with hover tooltips — annotate screenshots and demos.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/hotspot.json
+```
+
+**Props:**
+
+```ts
+export interface HotspotProps {
+  /** Background content (image, illustration, etc.) plus HotspotMarker children. */
+  children: ReactNode
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Hotspot, HotspotMarker } from '@saasflare/ui';
+<Hotspot>
+  <img src="/product.png" alt="Product" />
+  <HotspotMarker x={30} y={45} label="Dashboard" />
+  <HotspotMarker x={70} y={60} label="Analytics" />
+</Hotspot>
+```
+
+---
+
+## Hover Card
+
+**Description:** Rich preview popover that opens on hover — user cards, link previews, and definitions.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/hover-card.json
+```
+
+**Example:**
+
+```tsx
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@saasflare/ui';
+
+<HoverCard>
+  <HoverCardTrigger>Hover me</HoverCardTrigger>
+  <HoverCardContent>
+    <p>Preview content appears here.</p>
+  </HoverCardContent>
+</HoverCard>
+```
+
+---
+
+## Image Swap Hover
+
+**Description:** Crossfades between a primary and alternate image on hover. Product and team-photo flourish.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/image-swap-hover.json
+```
+
+**Props:**
+
+```ts
+export interface ImageSwapHoverProps {
+  /** Default image source. */
+  src: string
+  /** Image source to show on hover. */
+  hoverSrc: string
+  /** Alt text for both images. */
+  alt: string
+  /** CSS aspect-ratio. Default: `"1/1"` */
+  aspectRatio?: string
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { ImageSwapHover } from '@saasflare/ui';
+<ImageSwapHover
+  src="/product-front.jpg"
+  hoverSrc="/product-back.jpg"
+  alt="Product view"
+/>
+```
+
+---
+
+## Input
+
+**Description:** Single-line text field — the form workhorse — with intent states and full sizing support.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/input.json
+```
+
+**Props:**
+
+```ts
+interface InputProps extends Omit<InputBaseProps, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Input({ className, type, surface, radius, animated, ...props }: InputProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
+
+  return (
+    <m.input
+      {...props}
+      type={type}
+      data-slot="input"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}
+      transition={motion.transition}
+      className={cn(
+        "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,border-color] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
+        "focus-visible:border-ring",
+        "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+        className
+      )}
+    />
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { Input } from '@saasflare/ui';
+
+<Input type="email" placeholder="you@example.com" />
+```
+
+---
+
+## Input Group
+
+**Description:** Wraps an input with addons, icons, and prefix/suffix elements into a single bordered unit.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/input-group.json
+```
+
+**Example:**
+
+```tsx
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@saasflare/ui';
+<InputGroup>
+  <InputGroupAddon>$</InputGroupAddon>
+  <InputGroupInput placeholder="Amount" />
+</InputGroup>
+```
+
+---
+
+## Input OTP
+
+**Description:** One-time-code input with per-digit slots, paste handling, and auto-advance.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/input-otp.json
+```
+
+**Example:**
+
+```tsx
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '@saasflare/ui';
+<InputOTP maxLength={6}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+    <InputOTPSlot index={2} />
+  </InputOTPGroup>
+  <InputOTPSeparator />
+  <InputOTPGroup>
+    <InputOTPSlot index={3} />
+    <InputOTPSlot index={4} />
+    <InputOTPSlot index={5} />
+  </InputOTPGroup>
+</InputOTP>
+```
+
+---
+
+## Item
+
+**Description:** Generic list/row primitive with leading media, title, description, and trailing action slots.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/item.json
+```
+
+**Example:**
+
+```tsx
+import { ItemGroup, Item, ItemContent, ItemTitle } from '@saasflare/ui';
+<ItemGroup>
+  <Item>
+    <ItemContent>
+      <ItemTitle>Settings</ItemTitle>
+    </ItemContent>
+  </Item>
+</ItemGroup>
+```
+
+---
+
+## Kbd
+
+**Description:** Inline keyboard-key styling for documenting shortcuts (⌘K, Ctrl+C).
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/kbd.json
+```
+
+**Props:**
+
+```ts
+interface KbdProps extends Omit<React.ComponentProps<"kbd">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Kbd({ className, surface, radius, animated, ...props }: KbdProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
+  return (
+    <kbd
+      {...props}
+      data-slot="kbd"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn(
+        "pointer-events-none inline-flex h-5 w-fit min-w-5 items-center justify-center gap-1 rounded-sm bg-muted px-1 font-sans text-xs font-medium text-muted-foreground select-none",
+        "[&_svg:not([class*='size-'])]:size-3",
+        "[[data-slot=tooltip-content]_&]:bg-background/20 [[data-slot=tooltip-content]_&]:text-background dark:[[data-slot=tooltip-content]_&]:bg-background/10",
+        className
+      )}
+    />
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { Kbd, KbdGroup } from '@saasflare/ui';
+<KbdGroup><Kbd>Ctrl</Kbd><Kbd>S</Kbd></KbdGroup>
+```
+
+---
+
+## Label
+
+**Description:** Accessible form label wired to its control, with required and disabled styling.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/label.json
+```
+
+**Example:**
+
+```tsx
+import { Label } from '@saasflare/ui';
+<Label htmlFor="email">Email address</Label>
+```
+
+---
+
+## Marquee
+
+**Description:** Infinite-scrolling row of content (logos, testimonials) — pure CSS, no animation frames.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/marquee.json
+```
+
+**Props:**
+
+```ts
+export interface MarqueeProps {
+  /** Items to scroll infinitely. */
+  children: ReactNode
+  /** Reverse scroll direction. Default: `false` */
+  reverse?: boolean
+  /** Scroll duration in seconds for one full cycle. Default: `40` */
+  speed?: number
+  /** Pause scrolling on hover. Default: `true` */
+  pauseOnHover?: boolean
+  /** Gap between items in pixels. Default: `48` */
+  gap?: number
+  /** Number of times to duplicate the content strip. Default: `2` */
+  repeat?: number
+  /** Enable vertical scrolling instead of horizontal. Default: `false` */
+  vertical?: boolean
+  /** Additional class names for the container. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Marquee } from '@saasflare/ui';
+<Marquee>
+  <img src="/logo1.svg" alt="Logo 1" />
+  <img src="/logo2.svg" alt="Logo 2" />
+  <img src="/logo3.svg" alt="Logo 3" />
+</Marquee>
+```
+
+---
+
+## Menubar
+
+**Description:** Desktop-style horizontal menu bar (File / Edit / View) with dropdowns and keyboard navigation.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/menubar.json
+```
+
+**Props:**
+
+```ts
+interface MenubarProps
+  extends Omit<React.ComponentProps<typeof MenubarPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function Menubar({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from '@saasflare/ui';
+<Menubar>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>New</MenubarItem>
+      <MenubarItem>Open</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+```
+
+---
+
+## Metric Card
+
+**Description:** Dashboard metric card with sparkline support and trend indicator.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/metric-card.json
+```
+
+**Props:**
+
+```ts
+interface MetricCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Metric label (e.g. "Revenue", "Active Users") */
+  label: string
+  /** Formatted metric value (e.g. "$12,345", "1,234") */
+  value: string
+  /** Optional trend indicator */
+  trend?: MetricTrend
+  /** Optional icon element */
+  icon?: React.ReactNode
+}
+```
+
+**Example:**
+
+```tsx
+import { MetricCard } from "@saasflare/ui";
+import { UsersIcon } from "./phosphor";
+
+<MetricCard
+  label="Active Users"
+  value="1,234"
+  trend={{ value: 12.5, direction: "up" }}
+  icon={<UsersIcon />}
+/>
+```
+
+---
+
+## Mouse Gradient Blob
+
+**Description:** Large blurred gradient blob that trails the cursor with spring physics. Ambient hero background.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/mouse-gradient-blob.json
+```
+
+**Props:**
+
+```ts
+export interface MouseGradientBlobProps {
+  /** Diameter of the blob in pixels. Default: `500` */
+  size?: number
+  /** Gradient color stops. Default: primary + chart-2 tokens */
+  colors?: [string, string]
+  /** Opacity of the blob (0–1). Default: `0.15` */
+  opacity?: number
+  /** Blur radius in pixels. Default: `80` */
+  blur?: number
+  /** Additional class names for the container */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { MouseGradientBlob } from '@saasflare/ui';
+<div className="relative overflow-hidden">
+  <MouseGradientBlob />
+  <h1>Your content here</h1>
+</div>
+```
+
+---
+
+## Moving Border
+
+**Description:** Continuously rotating conic-gradient border around an element. Eye-catching CTA wrapper.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/moving-border.json
+```
+
+**Props:**
+
+```ts
+export interface MovingBorderProps {
+  /** Content inside the border. */
+  children: ReactNode
+  /** Gradient colors for the rotating border. */
+  colors?: string[]
+  /** Rotation cycle duration in seconds. Default: `6` */
+  duration?: number
+  /** Border width in pixels. Default: `1.5` */
+  borderWidth?: number
+  /** Border radius (CSS value). Default: `"0.75rem"` */
+  borderRadius?: string
+  /** Additional class names for the outer wrapper. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { MovingBorder } from '@saasflare/ui';
+<MovingBorder>
+  <button className="px-6 py-3 font-semibold">Get Started</button>
+</MovingBorder>
+```
+
+---
+
+## Native Select
+
+**Description:** Lightweight native select with a chevron overlay — zero-JS dropdown for simple option lists.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/native-select.json
+```
+
+**Props:**
+
+```ts
+interface NativeSelectProps
+  extends Omit<React.ComponentProps<"select">, "size" | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  size?: "sm" | "default"
+}
+```
+
+**Example:**
+
+```tsx
+import { NativeSelect, NativeSelectOption } from '@saasflare/ui';
+<NativeSelect>
+  <NativeSelectOption value="a">Option A</NativeSelectOption>
+  <NativeSelectOption value="b">Option B</NativeSelectOption>
+</NativeSelect>
+```
+
+---
+
+## Navigation Menu
+
+**Description:** Top-level site navigation with animated mega-menu dropdowns and active-link states.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/navigation-menu.json
+```
+
+**Props:**
+
+```ts
+interface NavigationMenuProps
+  extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  viewport?: boolean
+}
+```
+
+**Example:**
+
+```tsx
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink } from '@saasflare/ui';
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <NavigationMenuLink href="/docs">Documentation</NavigationMenuLink>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+---
+
+## Notification Center
+
+**Description:** Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/notification-center.json
+```
+
+**Props:**
+
+```ts
+export interface NotificationCenterProps extends SaasflareComponentProps {
+    /** Notifications to display. */
+    items: NotificationItem[]
+    /** Header title in the popover. Default: `"Notifications"`. */
+    title?: string
+    /** Called when the user clicks a row (also passes the item). */
+    onItemClick?: (item: NotificationItem) => void
+    /** Called when "Mark as read" is tapped on a row. */
+    onMarkRead?: (id: string) => void
+    /** Called when "Mark all as read" is tapped. Hide the action by omitting this. */
+    onMarkAllRead?: () => void
+    /** Custom empty-state content. */
+    emptyState?: ReactNode
+    /** Maximum items rendered (older ones truncated). */
+    limit?: number
+    /** Additional class names on the trigger button. */
+    triggerClassName?: string
+    /** Additional class names on the popover content. */
+    contentClassName?: string
+}
+```
+
+**Example:**
+
+```tsx
+<NotificationCenter
+  items={[
+    { id: "1", title: "New comment", description: "Lina replied to your post", timestamp: "5m ago", read: false },
+    { id: "2", title: "Build passed", timestamp: "1h ago", read: true },
+  ]}
+  onMarkRead={(id) => api.read(id)}
+  onMarkAllRead={() => api.readAll()}
+/>
 ```
 
 ---
@@ -804,6 +2459,386 @@ const [n, setN] = useState(1);
 
 ---
 
+## Page Header
+
+**Description:** Page header block with breadcrumbs, title, description, and an action slot for primary buttons.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/page-header.json
+```
+
+**Props:**
+
+```ts
+interface PageHeaderProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Page title */
+  title: string
+  /** Optional description below the title */
+  description?: string
+  /** Optional breadcrumb element rendered above the title */
+  breadcrumbs?: React.ReactNode
+  /** Action slot (buttons, etc.) aligned to the right */
+  actions?: React.ReactNode
+}
+```
+
+**Example:**
+
+```tsx
+import { PageHeader } from "@saasflare/ui";
+
+<PageHeader
+  title="Team Settings"
+  description="Manage your team members and their permissions."
+  actions={<Button>Invite Member</Button>}
+/>
+```
+
+---
+
+## Page Transition
+
+**Description:** Wraps route content with enter/exit animations for smooth client-side page transitions.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/page-transition.json
+```
+
+**Props:**
+
+```ts
+export interface PageTransitionProps {
+  /** Child content to animate. */
+  children: ReactNode
+  /** Animation preset. Default: `"fade"` */
+  variant?: keyof typeof VARIANTS
+  /** Transition duration in seconds. Default: `0.3` */
+  duration?: number
+  /** Unique key for AnimatePresence (use pathname). Default: none */
+  transitionKey?: string
+  /** Additional class names for the motion wrapper. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { PageTransition } from '@saasflare/ui';
+// In your layout.tsx
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <PageTransition>{children}</PageTransition>;
+}
+```
+
+---
+
+## Pagination
+
+**Description:** Page navigation with previous/next, page numbers, and ellipsis truncation for long ranges.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/pagination.json
+```
+
+**Example:**
+
+```tsx
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from '@saasflare/ui';
+<Pagination>
+  <PaginationContent>
+    <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+    <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
+    <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
+    <PaginationItem><PaginationNext href="#" /></PaginationItem>
+  </PaginationContent>
+</Pagination>
+```
+
+---
+
+## Parallax Section
+
+**Description:** Scroll-driven parallax where children move at a different rate than the page, adding depth.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/parallax-section.json
+```
+
+**Props:**
+
+```ts
+export interface ParallaxSectionProps {
+  /** Content to apply parallax to. */
+  children: ReactNode
+  /** Parallax speed factor. 0 = fixed, 0.5 = half speed, 1 = no parallax. Default: `0.5` */
+  speed?: number
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { ParallaxSection } from '@saasflare/ui';
+<ParallaxSection speed={0.5}>
+  <img src="/background.jpg" alt="Background" className="w-full" />
+</ParallaxSection>
+```
+
+---
+
+## Particles Background
+
+**Description:** Floating particle field that drifts with subtle parallax. Ambient backdrop for heroes and sections.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/particles-background.json
+```
+
+**Props:**
+
+```ts
+export interface ParticlesBackgroundProps {
+  /** Number of particles. Default: `20` */
+  count?: number
+  /** CSS color of particles. Default: `"hsl(var(--primary))"` */
+  color?: string
+  /** Maximum particle diameter in pixels. Default: `4` */
+  maxSize?: number
+  /** Minimum particle diameter in pixels. Default: `1` */
+  minSize?: number
+  /** Maximum particle opacity (0–1). Default: `0.3` */
+  maxOpacity?: number
+  /** Animation speed multiplier. Default: `1` */
+  speed?: number
+  /** Additional class names for the container. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { ParticlesBackground } from '@saasflare/ui';
+<div className="relative min-h-screen">
+  <ParticlesBackground />
+  <div className="relative z-10">Your content</div>
+</div>
+```
+
+---
+
+## Popover
+
+**Description:** Floating panel anchored to a trigger — for pickers, menus, and contextual forms.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/popover.json
+```
+
+**Example:**
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent } from '@saasflare/ui';
+
+<Popover>
+  <PopoverTrigger>Open</PopoverTrigger>
+  <PopoverContent>
+    <p>Popover content here.</p>
+  </PopoverContent>
+</Popover>
+```
+
+---
+
+## Pricing Card
+
+**Description:** Pricing plan card with title, price, feature list, CTA, and an optional 'Popular' pill.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/pricing-card.json
+```
+
+**Props:**
+
+```ts
+interface PricingCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Plan name (e.g. "Starter", "Pro", "Enterprise") */
+  name: string
+  /** Formatted price (e.g. "$29", "Free", "$99") */
+  price: string
+  /** Billing period (e.g. "month", "year") */
+  period?: string
+  /** Short plan description */
+  description?: string
+  /** List of included features */
+  features: string[]
+  /** CTA button element */
+  cta?: React.ReactNode
+  /** Highlight as recommended plan */
+  featured?: boolean
+}
+```
+
+**Example:**
+
+```tsx
+import { PricingCard } from "@saasflare/ui";
+
+<PricingCard
+  name="Pro"
+  price="$29"
+  period="month"
+  description="For growing teams"
+  features={["Unlimited projects", "Priority support", "Analytics"]}
+  cta={<Button>Get Started</Button>}
+  featured
+/>
+```
+
+---
+
+## Progress
+
+**Description:** Linear determinate progress bar for uploads, completion meters, and loading states.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/progress.json
+```
+
+**Props:**
+
+```ts
+interface ProgressProps
+  extends Omit<React.ComponentProps<typeof ProgressPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * Progress bar with smooth spring animation.
+ *
+ * @component
+ * @layer core
+ *
+ * @param {number} value - Progress value (0-100)
+ *
+ * @example
+ * <Progress value={42} className="w-full" />
+ */
+function Progress({
+  className,
+  value,
+  surface,
+  radius,
+  animated,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { Progress } from "@saasflare/ui";
+<Progress value={65} />
+```
+
+---
+
+## Progress Circle
+
+**Description:** Circular progress indicator. Radial counterpart to Progress, common for KPI rings.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/progress-circle.json
+```
+
+**Props:**
+
+```ts
+export interface ProgressCircleProps extends SaasflareComponentProps {
+    /** Current value in the range `[0, max]`. */
+    value: number
+    /** Maximum value. Default: `100`. */
+    max?: number
+    /** Size preset. Default: `"md"`. */
+    size?: ProgressCircleSize
+    /** Ring stroke width in pixels. Default: derived from `size`. */
+    strokeWidth?: number
+    /** Center content (e.g. the numeric label). */
+    children?: ReactNode
+    /** Additional class names on the outer wrapper. */
+    className?: string
+    /** Accessible label. Default: `"<value>%"`. */
+    "aria-label"?: string
+}
+```
+
+**Example:**
+
+```tsx
+<ProgressCircle value={72} />
+```
+
+---
+
+## Radio Group
+
+**Description:** Mutually exclusive option set with keyboard arrow navigation and accessible grouping.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/radio-group.json
+```
+
+**Props:**
+
+```ts
+interface RadioGroupProps
+  extends Omit<React.ComponentProps<typeof RadioGroupPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function RadioGroup({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { RadioGroup, RadioGroupItem } from '@saasflare/ui';
+<RadioGroup defaultValue="option-1">
+  <RadioGroupItem value="option-1" />
+  <RadioGroupItem value="option-2" />
+</RadioGroup>
+```
+
+---
+
 ## Rating
 
 **Description:** Star rating input with half-star precision, keyboard arrows, and read-only display mode.
@@ -834,7 +2869,7 @@ export interface RatingProps extends SaasflareComponentProps {
     disabled?: boolean
     /** Star size. Default: `"md"`. */
     size?: RatingSize
-    /** Star color (any CSS color). Default: amber-ish. */
+    /** Star color (any CSS color). Default: `var(--warning)` — brand-independent gold. */
     color?: string
     /** Additional class names. */
     className?: string
@@ -852,31 +2887,522 @@ const [score, setScore] = useState(0);
 
 ---
 
-## Category Bar
+## Resizable
 
-**Description:** Segmented progress bar with per-segment colors and optional labels. Useful for resource breakdowns.
+**Description:** Draggable split panes with persistent sizes for dashboards and editor layouts.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/category-bar.json
+npx shadcn add https://ui.saasflare.io/r/resizable.json
+```
+
+**Example:**
+
+```tsx
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@saasflare/ui';
+<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel>Left</ResizablePanel>
+  <ResizableHandle withHandle />
+  <ResizablePanel>Right</ResizablePanel>
+</ResizablePanelGroup>
+```
+
+---
+
+## Retro Grid
+
+**Description:** CSS-only perspective grid receding to the horizon — a synthwave landing-page backdrop.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/retro-grid.json
 ```
 
 **Props:**
 
 ```ts
-export interface CategoryBarProps extends SaasflareComponentProps {
-    /** Segments to render, left-to-right. */
-    segments: CategoryBarSegment[]
-    /** Bar height in pixels. Default: `8`. */
+export interface RetroGridProps {
+  /** Grid line color. Default: `"hsl(var(--border))"` */
+  gridColor?: string
+  /** Grid cell size in pixels. Default: `60` */
+  gridSize?: number
+  /** Perspective tilt angle in degrees. Default: `65` */
+  angle?: number
+  /** Grid line opacity (0–1). Default: `0.4` */
+  opacity?: number
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { RetroGrid } from '@saasflare/ui';
+<div className="relative min-h-[500px]">
+  <RetroGrid />
+  <div className="relative z-10">Hero content</div>
+</div>
+```
+
+---
+
+## Reveal On Scroll
+
+**Description:** Animates elements into view as they enter the viewport (Intersection Observer + Motion).
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/reveal-on-scroll.json
+```
+
+**Props:**
+
+```ts
+export interface RevealOnScrollProps {
+  /** Content to reveal. */
+  children: ReactNode
+  /** Direction the element slides in from. Default: `"up"` */
+  direction?: RevealDirection
+  /** Animation delay in seconds. Default: `0` */
+  delay?: number
+  /** Intersection Observer root margin. Default: `"-80px"` */
+  rootMargin?: string
+  /** Whether the animation triggers only once. Default: `true` */
+  once?: boolean
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { RevealOnScroll } from '@saasflare/ui';
+<RevealOnScroll>
+  <Card>Appears when scrolled into view</Card>
+</RevealOnScroll>
+```
+
+---
+
+## Scroll Area
+
+**Description:** Cross-browser custom scrollbars for overflow regions, keeping native scroll performance.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/scroll-area.json
+```
+
+**Props:**
+
+```ts
+interface ScrollAreaProps
+  extends Omit<React.ComponentProps<typeof ScrollAreaPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function ScrollArea({
+  className,
+  children,
+  surface,
+  radius,
+  animated,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { ScrollArea } from '@saasflare/ui';
+<ScrollArea className="h-72">
+  <div>Scrollable content here</div>
+</ScrollArea>
+```
+
+---
+
+## Search Field
+
+**Description:** Search input with built-in search icon, clear button, and optional loading spinner.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/search-field.json
+```
+
+**Props:**
+
+```ts
+interface SearchFieldProps extends Omit<React.ComponentProps<"input">, "type" | keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Show loading spinner instead of search icon */
+  loading?: boolean
+  /** Callback when clear button is clicked */
+  onClear?: () => void
+}
+```
+
+**Example:**
+
+```tsx
+import { SearchField } from "@saasflare/ui";
+
+<SearchField
+  placeholder="Search projects..."
+  value={query}
+  onChange={(e) => setQuery(e.target.value)}
+  onClear={() => setQuery("")}
+/>
+```
+
+---
+
+## Section Card
+
+**Description:** Composable section/landing card with header, content, and footer slots.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/section-card.json
+```
+
+**Props:**
+
+```ts
+interface SectionCardProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Section title */
+  title: string
+  /** Optional description below the title */
+  description?: string
+  /** Optional footer content (save button, etc.) */
+  footer?: React.ReactNode
+  /** Optional action in the header (edit button, etc.) */
+  headerAction?: React.ReactNode
+}
+```
+
+**Example:**
+
+```tsx
+import { SectionCard } from "@saasflare/ui";
+
+<SectionCard title="General" description="Basic project settings">
+  <Input label="Project name" />
+</SectionCard>
+```
+
+---
+
+## Select
+
+**Description:** Dropdown select with option groups and a styled trigger. Radix-backed and fully accessible.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/select.json
+```
+
+**Example:**
+
+```tsx
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@saasflare/ui';
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Pick an option" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="one">Option One</SelectItem>
+    <SelectItem value="two">Option Two</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+---
+
+## Separator
+
+**Description:** Thin horizontal or vertical divider for grouping content and menu sections.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/separator.json
+```
+
+**Example:**
+
+```tsx
+import { Separator } from '@saasflare/ui';
+<Separator orientation="horizontal" />
+```
+
+---
+
+## Settings Section
+
+**Description:** Settings row layout — label and description on the left, control on the right. For preference screens.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/settings-section.json
+```
+
+**Props:**
+
+```ts
+interface SettingsSectionProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /** Setting label */
+  label: string
+  /** Optional description of the setting */
+  description?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { SettingsSection } from "@saasflare/ui";
+
+<SettingsSection
+  label="Email Notifications"
+  description="Receive email updates about your account activity."
+>
+  <Switch checked={enabled} onCheckedChange={setEnabled} />
+</SettingsSection>
+```
+
+---
+
+## Sheet
+
+**Description:** Edge-anchored slide-in panel (top/right/bottom/left) for filters, details, and side forms.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/sheet.json
+```
+
+**Example:**
+
+```tsx
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@saasflare/ui';
+<Sheet>
+  <SheetTrigger>Open</SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Sheet Title</SheetTitle>
+      <SheetDescription>Sheet description text.</SheetDescription>
+    </SheetHeader>
+  </SheetContent>
+</Sheet>
+```
+
+---
+
+## Shimmer Button
+
+**Description:** CTA button with a looping diagonal light sweep. Draws the eye to your primary action.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/shimmer-button.json
+```
+
+**Props:**
+
+```ts
+export interface ShimmerButtonProps extends ComponentProps<"button"> {
+  /** Button content. */
+  children: ReactNode
+  /** Color of the shimmer highlight. Default: `"rgba(255,255,255,0.2)"` */
+  shimmerColor?: string
+  /** Shimmer cycle duration in seconds. Default: `2.5` */
+  speed?: number
+  /** Background color. Default: `"hsl(var(--primary))"` */
+  background?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { ShimmerButton } from '@saasflare/ui';
+<ShimmerButton>Get Started Free</ShimmerButton>
+```
+
+---
+
+## Skeleton
+
+**Description:** Animated placeholder block for loading states — mirror your content's shape to avoid layout shift.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/skeleton.json
+```
+
+**Props:**
+
+```ts
+interface SkeletonProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
+  /**
+   * Component shape to imitate. When set, radius follows the design-system
+   * scale (and at `data-radius="pill"`, all variants collapse to fully rounded
+   * automatically — see theme.css).
+   *
+   * - `avatar` → fully rounded
+   * - `text`   → `--radius-sm`
+   * - `card`   → `--radius-lg`
+   *
+   * Omit for legacy behavior (`rounded-md` Tailwind class).
+   */
+  as?: SkeletonAs
+}
+```
+
+**Example:**
+
+```tsx
+import { Skeleton } from "@saasflare/ui";
+<Skeleton as="text" className="h-4 w-48" />
+<Skeleton as="avatar" className="h-12 w-12" />
+<Skeleton as="card" className="h-40 w-full" />
+```
+
+---
+
+## Slider
+
+**Description:** Draggable value selector with single or range thumbs, steps, and keyboard control.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/slider.json
+```
+
+**Props:**
+
+```ts
+interface SliderProps
+  extends Omit<React.ComponentProps<typeof SliderPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function Slider({
+  className,
+  defaultValue,
+  value,
+  min = 0,
+  max = 100,
+  surface,
+  radius,
+  animated,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { Slider } from '@saasflare/ui';
+<Slider defaultValue={[50]} max={100} step={1} />
+```
+
+---
+
+## Social Button
+
+**Description:** Branded sign-in buttons for 16+ OAuth providers (Google, GitHub, Apple…) with correct logos and colors.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/social-button.json
+```
+
+**Props:**
+
+```ts
+export interface SocialButtonProps extends Omit<ComponentProps<"button">, "children"> {
+  /** Social provider to render. */
+  provider: SocialProvider
+  /** Override the default label text. */
+  label?: string
+  /** Show only the icon (no text). Default: `false` */
+  iconOnly?: boolean
+}
+```
+
+**Example:**
+
+```tsx
+import { SocialButton } from '@saasflare/ui';
+<SocialButton provider="google" onClick={() => signInWithGoogle()} />
+<SocialButton provider="github" onClick={() => signInWithGitHub()} />
+```
+
+---
+
+## Toaster
+
+**Description:** Toast notifications — themed, stacked, and promise-aware (Sonner) with Phosphor icons and dark-mode support.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/sonner.json
+```
+
+**Example:**
+
+```tsx
+import { Toaster } from '@saasflare/ui';
+<Toaster position="top-right" />
+```
+
+---
+
+## Spark Chart
+
+**Description:** Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/spark-chart.json
+```
+
+**Props:**
+
+```ts
+export interface SparkChartProps extends SaasflareComponentProps {
+    /** Series of numeric points (length ≥ 2). */
+    data: number[]
+    /** Visual treatment. Default: `"area"`. */
+    variant?: SparkChartVariant
+    /** Stroke / fill color (any CSS color). Default: `var(--primary)`. */
+    color?: string
+    /** SVG width in pixels. Default: `64`. */
+    width?: number
+    /** SVG height in pixels. Default: `24`. */
     height?: number
-    /** Render labels + percentages under each segment. */
-    showLabels?: boolean
-    /** Formats the percentage text. Default: `"NN%"`. */
-    valueFormatter?: (percent: number) => string
+    /** Line stroke width in pixels. Default: `1.5`. */
+    strokeWidth?: number
     /** Additional class names. */
     className?: string
-    /** Accessible label for the bar group. */
+    /** Accessible label. */
     "aria-label"?: string
 }
 ```
@@ -884,13 +3410,753 @@ export interface CategoryBarProps extends SaasflareComponentProps {
 **Example:**
 
 ```tsx
-<CategoryBar
-  segments={[
-    { value: 30, color: "oklch(0.65 0.18 230)", label: "Images" },
-    { value: 20, color: "oklch(0.72 0.17 50)",  label: "Docs"   },
-    { value: 50, color: "oklch(0.70 0 0)",      label: "Other"  },
+<SparkChart data={[3, 5, 4, 8, 6, 9, 11]} variant="area" />
+```
+
+---
+
+## Spinner
+
+**Description:** Indeterminate loading spinner (Phosphor CircleNotch) for buttons and async regions.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/spinner.json
+```
+
+**Props:**
+
+```ts
+interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Spinner({ className, surface, radius, animated, ...props }: SpinnerProps) {
+  const sf = useSaasflareProps({ animated })
+
+  return (
+    <CircleNotchIcon
+      {...props}
+      role="status"
+      aria-label="Loading"
+      data-slot="spinner"
+      data-animated={String(sf.animated)}
+      className={cn("size-4 animate-spin", className)}
+    />
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { Spinner } from '@saasflare/ui';
+<Spinner className="size-6" />
+```
+
+---
+
+## Spotlight Card
+
+**Description:** Card with a cursor-following spotlight gradient effect on hover.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/spotlight-card.json
+```
+
+**Props:**
+
+```ts
+export interface SpotlightCardProps extends SaasflareComponentProps {
+  /** Card content. */
+  children: ReactNode
+  /** Spotlight gradient color. Default: `"hsl(var(--primary))"` */
+  spotlightColor?: string
+  /** Spotlight diameter in pixels. Default: `250` */
+  spotlightSize?: number
+  /** Spotlight opacity (0–1). Default: `0.08` */
+  spotlightOpacity?: number
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { SpotlightCard } from '@saasflare/ui';
+<SpotlightCard>
+  <h3>Feature Title</h3>
+  <p>Feature description text</p>
+</SpotlightCard>
+```
+
+---
+
+## Stat Card
+
+**Description:** KPI / metric card with icon, large value, label, and optional delta indicator.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/stat-card.json
+```
+
+**Props:**
+
+```ts
+export interface StatCardProps extends SaasflareComponentProps {
+  /** The stat value (e.g. "10K+", "99.9%", "$2.4M"). */
+  value: string
+  /** Label describing the stat. */
+  label: string
+  /** Optional icon displayed above the value. */
+  icon?: ReactNode
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { StatCard } from '@saasflare/ui';
+<StatCard value="10K+" label="Active Users" />
+```
+
+---
+
+## Steps
+
+**Description:** Horizontal or vertical step indicator showing progress through a multi-stage flow or wizard.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/steps.json
+```
+
+**Props:**
+
+```ts
+export interface StepsProps {
+  /** Step children. */
+  children: ReactNode
+  /** Index of the current active step (0-based). Default: `0` */
+  current?: number
+  /** Layout direction. Default: `"horizontal"` */
+  direction?: "horizontal" | "vertical"
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Steps, Step } from '@saasflare/ui';
+<Steps current={1}>
+  <Step title="Sign Up" />
+  <Step title="Configure" />
+  <Step title="Deploy" />
+</Steps>
+```
+
+---
+
+## Sticky Scroll Reveal
+
+**Description:** Split layout where the left column pins while the right scrolls through synced content steps.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/sticky-scroll-reveal.json
+```
+
+**Props:**
+
+```ts
+export interface StickyScrollRevealProps {
+  /** Array of scroll items. */
+  items: StickyScrollItem[]
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { StickyScrollReveal } from '@saasflare/ui';
+<StickyScrollReveal
+  items={[
+    { title: "Step 1", description: "Connect your data", content: <img src="/step1.png" /> },
+    { title: "Step 2", description: "Configure your pipeline", content: <img src="/step2.png" /> },
   ]}
-  showLabels
+/>
+```
+
+---
+
+## Switch
+
+**Description:** On/off toggle for boolean settings, with size variants and accessible labeling.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/switch.json
+```
+
+**Props:**
+
+```ts
+interface SwitchProps
+  extends Omit<React.ComponentProps<typeof SwitchPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  size?: "sm" | "default"
+}
+```
+
+**Example:**
+
+```tsx
+import { Switch } from '@saasflare/ui';
+<Switch checked={enabled} onCheckedChange={setEnabled} />
+<Switch size="sm" />
+```
+
+---
+
+## Table
+
+**Description:** Composable data table with header, body, row, cell, and caption sub-components.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/table.json
+```
+
+**Props:**
+
+```ts
+interface TableProps extends Omit<React.ComponentProps<"table">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+function Table({ className, surface, radius, animated, ...props }: TableProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
+  return (
+    <div
+      data-slot="table-container"
+      className="relative w-full overflow-x-auto"
+    >
+      <table
+        {...props}
+        data-slot="table"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
+        className={cn("w-full caption-bottom text-sm", className)}
+      />
+    </div>
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@saasflare/ui';
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Acme Corp</TableCell>
+      <TableCell>Active</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+---
+
+## Tabs
+
+**Description:** Switch between panels of related content with keyboard navigation and an animated active indicator.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/tabs.json
+```
+
+**Props:**
+
+```ts
+interface TabsProps
+  extends Omit<React.ComponentProps<typeof TabsPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function Tabs({
+  className,
+  orientation = "horizontal",
+  surface,
+  radius,
+  animated,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@saasflare/ui";
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">...</TabsContent>
+  <TabsContent value="settings">...</TabsContent>
+</Tabs>
+```
+
+---
+
+## Tag Input
+
+**Description:** Input that converts entries into removable pill tags on Enter / comma. Controlled or uncontrolled.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/tag-input.json
+```
+
+**Props:**
+
+```ts
+export interface TagInputProps extends SaasflareComponentProps {
+    /** Controlled list of tags. */
+    value?: string[]
+    /** Uncontrolled initial tags. */
+    defaultValue?: string[]
+    /** Called whenever the tag list changes. */
+    onChange?: (tags: string[]) => void
+    /** Placeholder shown in the input. */
+    placeholder?: string
+    /** Maximum number of tags accepted. */
+    maxTags?: number
+    /** Characters that commit the current input as a tag. Default: `[",", "Enter"]`. */
+    separators?: string[]
+    /** Reject duplicate tags. Default: `true`. */
+    unique?: boolean
+    /** Disable the input. */
+    disabled?: boolean
+    /** Custom renderer for each pill. Falls back to the default pill UI. */
+    renderTag?: (tag: string, onRemove: () => void) => ReactNode
+    /** Additional class names on the outer wrapper. */
+    className?: string
+    /** Accessible label. */
+    "aria-label"?: string
+}
+```
+
+**Example:**
+
+```tsx
+const [tags, setTags] = useState<string[]>([]);
+<TagInput value={tags} onChange={setTags} placeholder="Add a tag…" />
+```
+
+---
+
+## Team Card
+
+**Description:** Team member card with photo, name, role, bio, and social links.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/team-card.json
+```
+
+**Props:**
+
+```ts
+export interface TeamCardProps extends SaasflareComponentProps {
+  /** Person's name. */
+  name: string
+  /** Role or job title. */
+  role: string
+  /** Photo URL. */
+  photo?: string
+  /** Short bio text. */
+  bio?: string
+  /** Social media links. */
+  socials?: SocialLink[]
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { TeamCard } from '@saasflare/ui';
+<TeamCard
+  name="Jane Doe"
+  role="CEO & Co-Founder"
+  photo="/team/jane.jpg"
+  socials={[
+    { label: "Twitter", url: "https://twitter.com/jane", icon: <TwitterIcon /> },
+    { label: "LinkedIn", url: "https://linkedin.com/in/jane", icon: <LinkedInIcon /> },
+  ]}
+/>
+```
+
+---
+
+## Testimonial Card
+
+**Description:** Customer testimonial card with quote, author name, role, and optional avatar.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/testimonial-card.json
+```
+
+**Props:**
+
+```ts
+export interface TestimonialCardProps extends SaasflareComponentProps {
+  /** The testimonial quote text. */
+  quote: string
+  /** Name of the person. */
+  name: string
+  /** Role/title of the person. */
+  role?: string
+  /** Avatar image URL. */
+  avatar?: string
+  /** Star rating (1–5). Omit to hide stars. */
+  rating?: 1 | 2 | 3 | 4 | 5
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { TestimonialCard } from '@saasflare/ui';
+<TestimonialCard
+  quote="Amazing product!"
+  name="Jane Doe"
+  role="CEO at Acme"
+  avatar="/jane.jpg"
+  rating={5}
+/>
+```
+
+---
+
+## Text Generate Effect
+
+**Description:** Reveals text word-by-word for a typing/AI-generation feel. For hero copy and intros.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/text-generate-effect.json
+```
+
+**Props:**
+
+```ts
+export interface TextGenerateEffectProps {
+  /** Text string to animate word by word. */
+  text: string
+  /** Delay between each word in seconds. Default: `0.05` */
+  stagger?: number
+  /** Duration per word fade-in in seconds. Default: `0.4` */
+  duration?: number
+  /** Whether animation triggers only once. Default: `true` */
+  once?: boolean
+  /** HTML element to render. Default: `"p"` */
+  as?: "p" | "h1" | "h2" | "h3" | "h4" | "span"
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { TextGenerateEffect } from '@saasflare/ui';
+<TextGenerateEffect text="Build your SaaS in record time" />
+```
+
+---
+
+## Textarea
+
+**Description:** Multi-line text field with intent states and auto-sizing support for comments and messages.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/textarea.json
+```
+
+**Props:**
+
+```ts
+interface TextareaProps
+  extends Omit<TextareaBaseProps, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function Textarea({ className, surface, radius, animated, ...props }: TextareaProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
+
+  return (
+    <m.textarea
+      {...props}
+      data-slot="textarea"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      whileFocus={motion.disabled ? undefined : { boxShadow: "0 0 0 3px hsl(var(--ring) / 0.3)" }}
+      transition={motion.transition}
+      className={cn(
+        "w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs transition-[color,border-color] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
+        "field-sizing-content min-h-16",
+        "focus-visible:border-ring",
+        "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+        className
+      )}
+    />
+  )
+}
+```
+
+**Example:**
+
+```tsx
+import { Textarea } from '@saasflare/ui';
+<Textarea placeholder="Write your message..." />
+```
+
+---
+
+## Timeline
+
+**Description:** Vertical scroll-driven timeline whose beam fills as the reader progresses. For changelogs and stories.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/timeline.json
+```
+
+**Props:**
+
+```ts
+export interface TimelineProps {
+  /** TimelineItem children. */
+  children: ReactNode
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Timeline, TimelineItem } from '@saasflare/ui';
+<Timeline>
+  <TimelineItem title="v2.0 Released" date="March 2026">
+    Major redesign with new dashboard.
+  </TimelineItem>
+  <TimelineItem title="v1.5 Released" date="January 2026">
+    Added billing module.
+  </TimelineItem>
+</Timeline>
+```
+
+---
+
+## Toggle
+
+**Description:** Two-state pressable button for toolbars (bold/italic), with outline and size variants.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/toggle.json
+```
+
+**Props:**
+
+```ts
+interface ToggleProps
+  extends Omit<React.ComponentProps<typeof TogglePrimitive.Root>, keyof SaasflareComponentProps>,
+    VariantProps<typeof toggleVariants>,
+    SaasflareComponentProps {}
+
+function Toggle({
+  className,
+  variant,
+  size,
+  surface,
+  radius,
+  animated,
+  ...props
+}
+```
+
+**Example:**
+
+```tsx
+import { Toggle } from '@saasflare/ui';
+<Toggle variant="outline" aria-label="Toggle bold">
+  <BoldIcon className="size-4" />
+</Toggle>
+```
+
+---
+
+## Toggle Group
+
+**Description:** Set of toggles for single- or multi-select segmented controls (alignment, view modes).
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/toggle-group.json
+```
+
+**Example:**
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from '@saasflare/ui';
+<ToggleGroup type="single" defaultValue="center">
+  <ToggleGroupItem value="left">Left</ToggleGroupItem>
+  <ToggleGroupItem value="center">Center</ToggleGroupItem>
+  <ToggleGroupItem value="right">Right</ToggleGroupItem>
+</ToggleGroup>
+```
+
+---
+
+## Tooltip
+
+**Description:** Hover/focus hint label anchored to any element, with configurable delay and side positioning.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/tooltip.json
+```
+
+**Example:**
+
+```tsx
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@saasflare/ui';
+<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger>Hover me</TooltipTrigger>
+    <TooltipContent>Helpful hint</TooltipContent>
+  </Tooltip>
+</TooltipProvider>
+```
+
+---
+
+## Tracing Beam
+
+**Description:** Animated vertical line that traces the reader's scroll progress alongside long-form content.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/tracing-beam.json
+```
+
+**Props:**
+
+```ts
+export interface TracingBeamProps {
+  /** Content alongside the beam. */
+  children: ReactNode
+  /** Beam color. Default: `"hsl(var(--primary))"` */
+  color?: string
+  /** Track (background line) color. Default: `"hsl(var(--border))"` */
+  trackColor?: string
+  /** Additional class names. */
+  className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { TracingBeam } from '@saasflare/ui';
+<TracingBeam>
+  <article>
+    <h1>Getting Started</h1>
+    <p>Long form content here...</p>
+  </article>
+</TracingBeam>
+```
+
+---
+
+## Tracker
+
+**Description:** Uptime/status segment grid. Each block is one period (day/hour) colored by status.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/tracker.json
+```
+
+**Props:**
+
+```ts
+export interface TrackerProps extends SaasflareComponentProps {
+    /** Blocks to render, left-to-right. */
+    data: TrackerBlock[]
+    /** Height of each block in px. Default: `32`. */
+    blockHeight?: number
+    /** Gap between blocks in px. Default: `2`. */
+    gap?: number
+    /** Additional class names. */
+    className?: string
+}
+```
+
+**Example:**
+
+```tsx
+<Tracker
+  data={[
+    { color: "emerald", tooltip: "Apr 1 — Operational" },
+    { color: "emerald", tooltip: "Apr 2 — Operational" },
+    { color: "amber",   tooltip: "Apr 3 — Degraded performance" },
+    { color: "red",     tooltip: "Apr 4 — Major outage" },
+  ]}
 />
 ```
 
@@ -947,94 +4213,37 @@ export interface TreeViewProps extends SaasflareComponentProps {
 
 ---
 
-## Code Block
+## Typewriter Text
 
-**Description:** Code-block chrome: filename header, language badge, copy button, optional line numbers. BYO highlighter.
+**Description:** Types out text character-by-character with a blinking cursor. Classic hero headline effect.
 
 **Install:**
 
 ```bash
-npx shadcn add https://ui.saasflare.io/r/code-block.json
+npx shadcn add https://ui.saasflare.io/r/typewriter-text.json
 ```
 
 **Props:**
 
 ```ts
-export interface CodeBlockProps extends SaasflareComponentProps {
-    /** Plain source code (rendered as monospace, no highlighting). */
-    code?: string
-    /** Pre-highlighted HTML — e.g. output from Shiki's `codeToHtml`. */
-    highlighted?: string
-    /** Language label shown in the header (purely cosmetic). */
-    language?: string
-    /** Filename shown left of the language badge. */
-    filename?: string
-    /** Show 1-based line numbers in the gutter. */
-    showLineNumbers?: boolean
-    /** Hide the top bar (copy button still floats inside the block). */
-    hideHeader?: boolean
-    /** Hide the copy-to-clipboard button. */
-    hideCopyButton?: boolean
-    /** Additional class names on the outer wrapper. */
-    className?: string
+interface TypewriterTextProps extends SaasflareComponentProps {
+  text: string;
+  /** Delay between each word in ms (default: 40) */
+  wordDelay?: number;
+  /** Skip animation and show full text immediately */
+  skipAnimation?: boolean;
+  /** Callback when animation completes */
+  onComplete?: () => void;
+  /** Additional class names */
+  className?: string;
 }
 ```
 
 **Example:**
 
 ```tsx
-// Plain (no highlighting)
-<CodeBlock code={`function hi() { return "hello" }`} language="ts" filename="hi.ts" />
-```
-
----
-
-## Notification Center
-
-**Description:** Bell-icon trigger + dropdown inbox with per-item read/dismiss controls. Composes Button + Popover + Badge.
-
-**Install:**
-
-```bash
-npx shadcn add https://ui.saasflare.io/r/notification-center.json
-```
-
-**Props:**
-
-```ts
-export interface NotificationCenterProps extends SaasflareComponentProps {
-    /** Notifications to display. */
-    items: NotificationItem[]
-    /** Header title in the popover. Default: `"Notifications"`. */
-    title?: string
-    /** Called when the user clicks a row (also passes the item). */
-    onItemClick?: (item: NotificationItem) => void
-    /** Called when "Mark as read" is tapped on a row. */
-    onMarkRead?: (id: string) => void
-    /** Called when "Mark all as read" is tapped. Hide the action by omitting this. */
-    onMarkAllRead?: () => void
-    /** Custom empty-state content. */
-    emptyState?: ReactNode
-    /** Maximum items rendered (older ones truncated). */
-    limit?: number
-    /** Additional class names on the trigger button. */
-    triggerClassName?: string
-    /** Additional class names on the popover content. */
-    contentClassName?: string
-}
-```
-
-**Example:**
-
-```tsx
-<NotificationCenter
-  items={[
-    { id: "1", title: "New comment", description: "Lina replied to your post", timestamp: "5m ago", read: false },
-    { id: "2", title: "Build passed", timestamp: "1h ago", read: true },
-  ]}
-  onMarkRead={(id) => api.read(id)}
-  onMarkAllRead={() => api.readAll()}
-/>
+import { TypewriterText } from '@saasflare/ui';
+<TypewriterText text="Hello, welcome to Saasflare." wordDelay={60} />
 ```
 
 ---

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "data-toolbar",
+  "type": "registry:ui",
+  "title": "Data Toolbar",
+  "description": "Toolbar layout for tables and data grids — search, filters, and actions in a single bar.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/data-toolbar.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview Saasflare DataToolbar — toolbar for data views with search, filters, and actions.\n * @module packages/core/components/ui/data-toolbar\n * @layer core\n *\n * A flexible toolbar layout for tables, lists, and data grids.\n * Provides slots for search, filters, view toggles, and bulk actions.\n *\n * @example\n * import { DataToolbar, DataToolbarSearch, DataToolbarActions, DataToolbarFilters } from \"@saasflare/ui\";\n *\n * <DataToolbar>\n *   <DataToolbarSearch placeholder=\"Search users...\" />\n *   <DataToolbarFilters>\n *     <Select>...</Select>\n *   </DataToolbarFilters>\n *   <DataToolbarActions>\n *     <Button size=\"sm\">Export</Button>\n *   </DataToolbarActions>\n * </DataToolbar>\n */\n\nimport * as React from \"react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\ninterface DataToolbarProps extends Omit<React.ComponentProps<\"div\">, keyof SaasflareComponentProps>, SaasflareComponentProps {}\n\n/**\n * Toolbar container for data views.\n *\n * @component\n * @layer core\n *\n * @example\n * <DataToolbar>\n *   <DataToolbarSearch placeholder=\"Search...\" />\n *   <DataToolbarActions>\n *     <Button size=\"sm\">Add New</Button>\n *   </DataToolbarActions>\n * </DataToolbar>\n */\nfunction DataToolbar({ className, surface, radius, animated, ...props }: DataToolbarProps) {\n  const sf = useSaasflareProps({ surface, radius, animated })\n\n  return (\n    <div\n      {...props}\n      data-slot=\"data-toolbar\"\n      data-surface={sf.surface}\n      data-radius={sf.radius}\n      data-animated={String(sf.animated)}\n      className={cn(\n        \"flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between\",\n        className\n      )}\n    />\n  )\n}\n\n/**\n * Search slot within the data toolbar.\n *\n * @component\n * @layer core\n */\nfunction DataToolbarSearch({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"data-toolbar-search\"\n      className={cn(\"w-full sm:max-w-sm\", className)}\n      {...props}\n    />\n  )\n}\n\n/**\n * Filters slot within the data toolbar.\n *\n * @component\n * @layer core\n */\nfunction DataToolbarFilters({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"data-toolbar-filters\"\n      className={cn(\"flex items-center gap-2\", className)}\n      {...props}\n    />\n  )\n}\n\n/**\n * Actions slot within the data toolbar (right-aligned).\n *\n * @component\n * @layer core\n */\nfunction DataToolbarActions({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"data-toolbar-actions\"\n      className={cn(\"flex items-center gap-2 sm:ml-auto\", className)}\n      {...props}\n    />\n  )\n}\n\nexport {\n  DataToolbar,\n  DataToolbarSearch,\n  DataToolbarFilters,\n  DataToolbarActions,\n  type DataToolbarProps,\n}\n",
+      "target": "components/ui/data-toolbar.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/data-toolbar.json"
+  }
+}

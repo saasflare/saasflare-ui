@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Slider } from '@saasflare/core';
+ * import { Slider } from '@saasflare/ui';
  * <Slider defaultValue={[50]} max={100} step={1} />
  */
 "use client"

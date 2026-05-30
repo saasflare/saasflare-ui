@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { DirectionProvider, useDirection } from '@saasflare/core';
+ * import { DirectionProvider, useDirection } from '@saasflare/ui';
  * <DirectionProvider dir="rtl">{children}</DirectionProvider>
  */
 "use client"

@@ -7,7 +7,7 @@
  *
  * @component
  * @example
- * import { Logo } from '@saasflare/core';
+ * import { Logo } from '@saasflare/ui';
  * <Logo size="md" href="/" />
  */
 'use client';

@@ -14,7 +14,7 @@
  *
  * @component
  * @example
- * import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from "@saasflare/core";
+ * import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from "@saasflare/ui";
  *
  * <Drawer>
  *   <DrawerTrigger asChild><Button>Open Drawer</Button></DrawerTrigger>

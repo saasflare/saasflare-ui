@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Textarea } from '@saasflare/core';
+ * import { Textarea } from '@saasflare/ui';
  * <Textarea placeholder="Write your message..." />
  */
 

@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@saasflare/core';
+ * import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@saasflare/ui';
  * <TooltipProvider>
  *   <Tooltip>
  *     <TooltipTrigger>Hover me</TooltipTrigger>

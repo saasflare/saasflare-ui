@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "border-beam",
+  "type": "registry:ui",
+  "title": "Border Beam",
+  "description": "A glowing gradient beam that travels around an element's border. Premium accent for cards and CTAs.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/border-beam.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\n/**\n * @fileoverview Animated glowing border beam that orbits a container.\n * @author Saasflare™\n * A rotating gradient beam that travels along the border of its parent,\n * creating a premium glowing effect. Pure CSS animation.\n * @module packages/ui/components/ui/border-beam\n * @package ui\n *\n * @component\n * @example\n * import { BorderBeam } from '@saasflare/ui';\n * <div className=\"relative rounded-xl border p-6\">\n *   <BorderBeam />\n *   <h3>Premium Feature</h3>\n * </div>\n *\n * @example\n * // Custom color and speed\n * <div className=\"relative overflow-hidden rounded-xl border p-6\">\n *   <BorderBeam color=\"hsl(var(--chart-1))\" duration={8} size={200} />\n *   <p>Content here</p>\n * </div>\n */\n\nimport { cn } from \"@saasflare/ui\"\nimport { useReducedMotion } from \"@saasflare/ui\"\n\n/** Props for the BorderBeam component. */\nexport interface BorderBeamProps {\n  /** Beam color. Default: `\"hsl(var(--primary))\"` */\n  color?: string\n  /** Tail fade color. Default: `\"transparent\"` */\n  colorFrom?: string\n  /** Animation cycle duration in seconds. Default: `6` */\n  duration?: number\n  /** Beam length in pixels. Default: `150` */\n  size?: number\n  /** Border radius to follow (CSS value). Default: `\"inherit\"` */\n  borderRadius?: string\n  /** Additional class names. */\n  className?: string\n}\n\n/**\n * Glowing beam that orbits the border of its parent container.\n *\n * - Place inside a `position: relative; overflow: hidden` parent\n * - CSS-only animation (no JS animation loop)\n * - Renders nothing when reduced motion is preferred\n *\n * @component\n * @package ui\n */\nexport function BorderBeam({\n  color = \"hsl(var(--primary))\",\n  colorFrom = \"transparent\",\n  duration = 6,\n  size = 150,\n  borderRadius = \"inherit\",\n  className,\n}: BorderBeamProps) {\n  const reduced = useReducedMotion()\n\n  if (reduced) return null\n\n  return (\n    <>\n      <style>{`\n        @keyframes sf-border-beam {\n          0% { offset-distance: 0%; }\n          100% { offset-distance: 100%; }\n        }\n      `}</style>\n      <div\n        className={cn(\"pointer-events-none absolute inset-0\", className)}\n        style={{ borderRadius }}\n        aria-hidden=\"true\"\n        data-slot=\"border-beam\"\n      >\n        <div\n          style={{\n            position: \"absolute\",\n            inset: 0,\n            borderRadius,\n            /* The beam travels along the rect path */\n            offsetPath: `rect(0 auto auto 0 round ${borderRadius})`,\n            animation: `sf-border-beam ${duration}s linear infinite`,\n            background: `linear-gradient(to left, ${color}, ${colorFrom})`,\n            width: size,\n            height: size,\n            opacity: 0.7,\n            filter: \"blur(4px)\",\n          }}\n        />\n      </div>\n    </>\n  )\n}\n",
+      "target": "components/ui/border-beam.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/border-beam.json"
+  }
+}

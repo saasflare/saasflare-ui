@@ -10,7 +10,7 @@
  * Width animation respects reduced-motion preference.
  *
  * @example
- * import { Progress } from "@saasflare/core";
+ * import { Progress } from "@saasflare/ui";
  * <Progress value={65} />
  */
 

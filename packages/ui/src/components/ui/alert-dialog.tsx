@@ -13,7 +13,7 @@
  *
  * @component
  * @example
- * import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogAction, AlertDialogCancel } from "@saasflare/core";
+ * import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogAction, AlertDialogCancel } from "@saasflare/ui";
  *
  * <AlertDialog>
  *   <AlertDialogTrigger asChild><Button variant="outline" intent="danger">Delete</Button></AlertDialogTrigger>

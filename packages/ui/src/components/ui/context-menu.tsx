@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from '@saasflare/core';
+ * import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from '@saasflare/ui';
  * <ContextMenu>
  *   <ContextMenuTrigger>Right-click here</ContextMenuTrigger>
  *   <ContextMenuContent>

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "parallax-section",
+  "type": "registry:ui",
+  "title": "Parallax Section",
+  "description": "Scroll-driven parallax where children move at a different rate than the page, adding depth.",
+  "dependencies": [
+    "@saasflare/ui",
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "components/ui/parallax-section.tsx",
+      "type": "registry:ui",
+      "content": "\"use client\"\n\n/**\n * @fileoverview Section wrapper that applies scroll-based parallax to children.\n * @author Saasflare™\n * Children move at a different rate than the page scroll, creating depth.\n * @module packages/ui/components/ui/parallax-section\n * @package ui\n *\n * @component\n * @example\n * import { ParallaxSection } from '@saasflare/ui';\n * <ParallaxSection speed={0.5}>\n *   <img src=\"/background.jpg\" alt=\"Background\" className=\"w-full\" />\n * </ParallaxSection>\n */\n\nimport { useRef, type ReactNode } from \"react\"\nimport { m, useScroll, useTransform } from \"motion/react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useReducedMotion } from \"@saasflare/ui\"\n\n/** Props for the ParallaxSection component. */\nexport interface ParallaxSectionProps {\n  /** Content to apply parallax to. */\n  children: ReactNode\n  /** Parallax speed factor. 0 = fixed, 0.5 = half speed, 1 = no parallax. Default: `0.5` */\n  speed?: number\n  /** Additional class names. */\n  className?: string\n}\n\n/**\n * Section wrapper that applies scroll-based parallax to its children.\n *\n * - Children translate vertically based on scroll position and speed factor\n * - Falls back to static rendering when reduced motion is preferred\n * - Overflow hidden to prevent content leaking during parallax\n *\n * @component\n * @package ui\n */\nexport function ParallaxSection({\n  children,\n  speed = 0.5,\n  className,\n}: ParallaxSectionProps) {\n  const reduced = useReducedMotion()\n  const ref = useRef<HTMLDivElement>(null)\n\n  const { scrollYProgress } = useScroll({\n    target: ref,\n    offset: [\"start end\", \"end start\"],\n  })\n\n  const offset = (1 - speed) * 100\n  const y = useTransform(scrollYProgress, [0, 1], [`-${offset}px`, `${offset}px`])\n\n  if (reduced) {\n    return <div className={className}>{children}</div>\n  }\n\n  return (\n    <div ref={ref} className={cn(\"relative overflow-hidden\", className)} data-slot=\"parallax-section\">\n      <m.div style={{ y }}>\n        {children}\n      </m.div>\n    </div>\n  )\n}\n",
+      "target": "components/ui/parallax-section.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/parallax-section.json"
+  }
+}

@@ -10,7 +10,7 @@
  *
  * @component
  * @example
- * import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage } from '@saasflare/core';
+ * import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage } from '@saasflare/ui';
  * <Breadcrumb>
  *   <BreadcrumbList>
  *     <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>

@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '@saasflare/core';
+ * import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '@saasflare/ui';
  * <InputOTP maxLength={6}>
  *   <InputOTPGroup>
  *     <InputOTPSlot index={0} />

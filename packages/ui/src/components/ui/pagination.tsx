@@ -7,7 +7,7 @@
  *
  * @component
  * @example
- * import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from '@saasflare/core';
+ * import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from '@saasflare/ui';
  * <Pagination>
  *   <PaginationContent>
  *     <PaginationItem><PaginationPrevious href="#" /></PaginationItem>

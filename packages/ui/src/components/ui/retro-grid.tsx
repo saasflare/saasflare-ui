@@ -1,4 +1,3 @@
-// @draft
 /**
  * @fileoverview Perspective grid background with retro/cyberpunk aesthetic.
  * @author Saasflare™

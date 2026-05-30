@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { AspectRatio } from '@saasflare/core';
+ * import { AspectRatio } from '@saasflare/ui';
  * <AspectRatio ratio={16 / 9}>
  *   <img src="/image.jpg" alt="Landscape" />
  * </AspectRatio>

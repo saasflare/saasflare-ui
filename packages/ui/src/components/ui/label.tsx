@@ -9,7 +9,7 @@
  *
  * @component
  * @example
- * import { Label } from '@saasflare/core';
+ * import { Label } from '@saasflare/ui';
  * <Label htmlFor="email">Email address</Label>
  */
 "use client"

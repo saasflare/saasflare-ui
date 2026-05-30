@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "type": "registry:ui",
+  "title": "Spinner",
+  "description": "Indeterminate loading spinner (Phosphor CircleNotch) for buttons and async regions.",
+  "dependencies": [
+    "@saasflare/ui"
+  ],
+  "files": [
+    {
+      "path": "components/ui/spinner.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n/**\n * @fileoverview Spinner primitive — animated loading indicator built on the\n * Phosphor CircleNotch icon. Applies a continuous spin animation with accessible\n * status role.\n * Part of the Saasflare base component layer.\n * @module packages/core/components/ui/spinner\n * @layer core\n *\n * @component\n * @example\n * import { Spinner } from '@saasflare/ui';\n * <Spinner className=\"size-6\" />\n */\n\"use client\"\n\nimport { CircleNotchIcon } from \"@saasflare/ui\"\n\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\ninterface SpinnerProps extends Omit<React.ComponentProps<\"svg\">, keyof SaasflareComponentProps>, SaasflareComponentProps {}\n\nfunction Spinner({ className, surface, radius, animated, ...props }: SpinnerProps) {\n  const sf = useSaasflareProps({ animated })\n\n  return (\n    <CircleNotchIcon\n      {...props}\n      role=\"status\"\n      aria-label=\"Loading\"\n      data-slot=\"spinner\"\n      data-animated={String(sf.animated)}\n      className={cn(\"size-4 animate-spin\", className)}\n    />\n  )\n}\n\nexport { Spinner, type SpinnerProps }\n",
+      "target": "components/ui/spinner.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/spinner.json"
+  }
+}

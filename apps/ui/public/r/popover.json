@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "Floating panel anchored to a trigger — for pickers, menus, and contextual forms.",
+  "dependencies": [
+    "@radix-ui/react-popover",
+    "@saasflare/ui",
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "components/ui/popover.tsx",
+      "type": "registry:ui",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview Popover — premium animated popover with Framer Motion spring entrance for tooltips, menus, and floating content panels.\n * @module packages/core/components/ui/popover\n * @layer core\n *\n * @component\n * @example\n * import { Popover, PopoverTrigger, PopoverContent } from '@saasflare/ui';\n *\n * <Popover>\n *   <PopoverTrigger>Open</PopoverTrigger>\n *   <PopoverContent>\n *     <p>Popover content here.</p>\n *   </PopoverContent>\n * </Popover>\n */\n\"use client\"\n\nimport * as React from \"react\"\nimport { m } from \"motion/react\"\nimport * as PopoverPrimitive from \"@radix-ui/react-popover\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\nimport { useSaasflareMotion, springBouncy } from \"@saasflare/ui\"\n\nfunction Popover({\n  ...props\n}: React.ComponentProps<typeof PopoverPrimitive.Root>) {\n  return <PopoverPrimitive.Root data-slot=\"popover\" {...props} />\n}\n\nfunction PopoverTrigger({\n  ...props\n}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {\n  return <PopoverPrimitive.Trigger data-slot=\"popover-trigger\" {...props} />\n}\n\nfunction PopoverAnchor({\n  ...props\n}: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {\n  return <PopoverPrimitive.Anchor data-slot=\"popover-anchor\" {...props} />\n}\n\ninterface PopoverContentProps\n  extends Omit<React.ComponentProps<typeof PopoverPrimitive.Content>, keyof SaasflareComponentProps>,\n    SaasflareComponentProps {}\n\nfunction PopoverContent({\n  className,\n  align = \"center\",\n  sideOffset = 4,\n  surface,\n  radius,\n  animated,\n  ...props\n}: PopoverContentProps) {\n  const sf = useSaasflareProps({ surface, radius, animated })\n  const motion = useSaasflareMotion(sf.animated, springBouncy)\n\n  return (\n    <PopoverPrimitive.Portal>\n      <PopoverPrimitive.Content\n        {...props}\n        data-slot=\"popover-content\"\n        align={align}\n        sideOffset={sideOffset}\n        asChild\n      >\n        <m.div\n          data-surface={sf.surface}\n          data-radius={sf.radius}\n          data-animated={String(sf.animated)}\n          initial={motion.disabled ? false : { opacity: 0, scale: 0.95, y: -4 }}\n          animate={{ opacity: 1, scale: 1, y: 0 }}\n          exit={motion.disabled ? undefined : { opacity: 0, scale: 0.95, y: -4 }}\n          transition={motion.transition}\n          className={cn(\n            \"z-50 w-72 origin-[var(--radix-popover-content-transform-origin)] rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden\",\n            className\n          )}\n        />\n      </PopoverPrimitive.Content>\n    </PopoverPrimitive.Portal>\n  )\n}\n\nexport { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, type PopoverContentProps }\n",
+      "target": "components/ui/popover.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/popover.json"
+  }
+}

@@ -8,7 +8,7 @@
  *
  * @component
  * @example
- * import { Popover, PopoverTrigger, PopoverContent } from '@saasflare/core';
+ * import { Popover, PopoverTrigger, PopoverContent } from '@saasflare/ui';
  *
  * <Popover>
  *   <PopoverTrigger>Open</PopoverTrigger>

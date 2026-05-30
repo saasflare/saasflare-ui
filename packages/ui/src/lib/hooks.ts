@@ -81,7 +81,7 @@ export function useControllableState<T>({
  *   // always has fresh closure over props/state
  * });
  */
-export function useCallbackRef<T extends (...args: any[]) => any>(
+export function useCallbackRef<T extends (...args: never[]) => unknown>(
     callback: T | undefined,
 ): T {
     const callbackRef = useRef(callback);
@@ -92,7 +92,7 @@ export function useCallbackRef<T extends (...args: any[]) => any>(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return useCallback(
-        ((...args: any[]) => callbackRef.current?.(...args)) as T,
+        ((...args: Parameters<T>) => callbackRef.current?.(...args)) as T,
         [],
     );
 }

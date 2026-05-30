@@ -10,7 +10,7 @@
  * Supports a "featured" variant for highlighting the recommended plan.
  *
  * @example
- * import { PricingCard } from "@saasflare/core";
+ * import { PricingCard } from "@saasflare/ui";
  *
  * <PricingCard
  *   name="Pro"

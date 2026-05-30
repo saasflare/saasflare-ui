@@ -5,10 +5,12 @@
 The **public UI repo** for Saasflare. Free tier of the product.
 
 ```
-ui.saasflare.io        (apps/ui)         Component catalog + UI docs
-demo.saasflare.io      (apps/demo)       Live SaaS-style showcase
+ui.saasflare.io        (apps/ui)         Component catalog + UI docs (@saasflare/ui-app)
 @saasflare/ui          (packages/ui)     Published to public npm
 ```
+
+The full-app showcase (`demo.saasflare.io`) was moved into `saasflare-saas/`; this
+repo is focused on the public package + the catalog.
 
 The internal workbench is `saasflare/`. The paid product is `saasflare-saas/`.
 
@@ -33,8 +35,7 @@ external buyer    consumes @saasflare/ui      (free tier)
 ```
 saasflare-ui/
 ├── apps/
-│   ├── ui/                  ui.saasflare.io — component catalog
-│   └── demo/                demo.saasflare.io — full-app showcase
+│   └── ui/                  ui.saasflare.io — component catalog (@saasflare/ui-app)
 ├── packages/
 │   └── ui/                  @saasflare/ui (published)
 │       ├── src/
@@ -101,32 +102,22 @@ adopt the new accent on next HMR. If one doesn't, the consumer's setup is broken
 
 ## Apps
 
-### `apps/ui/` — ui.saasflare.io
+### `apps/ui/` — ui.saasflare.io (`@saasflare/ui-app`)
 
 Component catalog and UI docs. Lead-magnet for the free tier; converts visitors
-to discover the paid SaaS starter.
+to discover the paid SaaS starter. The only app in this repo.
 
-### `apps/demo/` — demo.saasflare.io
-
-"Live SaaS as marketing proof". Full marketing + auth + dashboard flows showing
-how `@saasflare/ui` composes into a real app.
-
-**Known issue:** `apps/demo` was historically wired to `@saasflare/mvp` and
-`@saasflare/saas` (workspace deps). Those packages now live in `saasflare-saas/lib/`.
-The demo's `package.json` still declares them as `workspace:*`, which won't resolve
-in this monorepo. Three options:
-
-1. Wait for `@saasflare/mvp` / `@saasflare/saas` to publish, then point demo at
-   the published versions.
-2. Strip auth/dashboard/landing imports so demo showcases `@saasflare/ui` only.
-3. Move `apps/demo` into `saasflare-saas/` and keep this repo focused on the
-   public package + catalog.
+> **Note:** the former `apps/demo` (`demo.saasflare.io`, "live SaaS as marketing
+> proof") was moved into `saasflare-saas/` because it depended on `@saasflare/mvp`
+> and `@saasflare/saas`, which live there. This repo now stays focused on the
+> public package + the catalog.
 
 ---
 
 ## Publishing
 
-`@saasflare/ui` ships to **public npm**. `apps/ui` and `apps/demo` are not published.
+`@saasflare/ui` ships to **public npm**. `apps/ui` (`@saasflare/ui-app`) is not
+published.
 
 ```bash
 cd packages/ui
@@ -168,8 +159,7 @@ major bumps.
 
 ```bash
 pnpm dev          # turbo: run all dev servers
-pnpm dev:ui       # only ui.saasflare.io
-pnpm dev:demo     # only demo.saasflare.io
+pnpm dev:ui       # only ui.saasflare.io (@saasflare/ui-app)
 pnpm build        # turbo: build all
 pnpm typecheck
 pnpm lint
