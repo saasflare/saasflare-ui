@@ -1,0 +1,134 @@
+---
+title: Installation
+description: "Peer dependencies, the styles entry, fonts, subpath bundles, and installing components via the shadcn registry."
+---
+
+## Requirements
+
+- **React 19** and **react-dom 19**
+- **Tailwind CSS v4**
+- A bundler that understands CSS `@import` and the `exports` field (Next.js, Vite, etc.)
+
+## Install the package
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npm install @saasflare/ui
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @saasflare/ui
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @saasflare/ui
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bun add @saasflare/ui
+```
+
+</Tab>
+
+</Tabs>
+
+## Peer dependencies
+
+These install alongside `@saasflare/ui` and power the core experience:
+
+```bash
+npm install motion next-themes tailwindcss
+```
+
+<Callout type="info">
+`motion` (formerly Framer Motion) drives the animated-by-default components via
+`motion/react`. `next-themes` backs light/dark switching. Tailwind v4 consumes
+the design tokens through the styles entry.
+</Callout>
+
+### Optional peers (feature-specific)
+
+Only needed if you use the matching components — your package manager will warn,
+not error, when they're absent:
+
+| Peer | Powers |
+| --- | --- |
+| `recharts` | `Chart`, `SparkChart` |
+| `embla-carousel-react` | `Carousel` |
+| `react-hook-form` + `@hookform/resolvers` + `zod` | `Form` |
+| `react-day-picker` + `date-fns` | `Calendar`, `DatePicker` |
+| `input-otp` | `InputOTP` |
+| `vaul` | `Drawer` |
+| `react-resizable-panels` | `Resizable` |
+
+## Styles, provider, and fonts
+
+```css title="globals.css"
+@import "@saasflare/ui/styles";
+```
+
+```tsx title="app/layout.tsx"
+import { SaasflareShell } from "@saasflare/ui"
+import { fontVariables } from "@saasflare/ui/fonts/default"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return <SaasflareShell className={fontVariables}>{children}</SaasflareShell>
+}
+```
+
+Font presets ship as subpaths — apply `fontVariables` to `<html>`:
+`./fonts/default`, `./fonts/editorial`, `./fonts/geometric`, `./fonts/rounded`,
+`./fonts/distinctive`, `./fonts/neutral`.
+
+## Subpath bundles
+
+Most components import straight from the main barrel:
+
+```tsx
+import { Button, Dialog, Card } from "@saasflare/ui"
+```
+
+A handful of peer-heavy components also expose a dedicated subpath, so apps that
+don't use them never pull the peer into their graph:
+
+```tsx
+import { Chart } from "@saasflare/ui/chart"
+import { Carousel } from "@saasflare/ui/carousel"
+import { Calendar } from "@saasflare/ui/calendar"
+import { Command } from "@saasflare/ui/command"
+import { Drawer } from "@saasflare/ui/drawer"
+import { InputOTP } from "@saasflare/ui/input-otp"
+import { Resizable } from "@saasflare/ui/resizable"
+```
+
+## Install via the shadcn registry
+
+Every component is also installable as source through the shadcn CLI — handy when
+you want to vendor and tweak a component instead of importing it:
+
+```bash
+npx shadcn@latest add "https://ui.saasflare.io/r/button.json"
+```
+
+Swap `button` for any component name. The registry index lives at
+[`/registry.json`](/registry.json).
+
+## Next steps
+
+- [Theming](/docs/theming) — palettes and the customization axes
+- [AI: MCP server & llms.txt](/docs/ai)

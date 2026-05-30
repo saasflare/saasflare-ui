@@ -1,0 +1,113 @@
+---
+title: Getting Started
+description: "Install @saasflare/ui, wire up the provider, and render your first themed component in under a minute."
+---
+
+**@saasflare/ui** is the AI-native React design system behind Saasflare — 117
+production-ready components, themeable across 24 palettes, animated by default,
+and built to be understood by humans and models alike (MCP server, `llms.txt`,
+and copy-for-LLM on every page).
+
+It targets React 19 and Tailwind CSS v4. A few peers (`motion`, `next-themes`,
+`next`) install alongside it; feature-specific peers (charts, carousel, forms)
+are optional — see [Installation](/docs/installation).
+
+## Install
+
+<Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+
+<Tab value="npm">
+
+```bash
+npm install @saasflare/ui
+```
+
+</Tab>
+
+<Tab value="pnpm">
+
+```bash
+pnpm add @saasflare/ui
+```
+
+</Tab>
+
+<Tab value="yarn">
+
+```bash
+yarn add @saasflare/ui
+```
+
+</Tab>
+
+<Tab value="bun">
+
+```bash
+bun add @saasflare/ui
+```
+
+</Tab>
+
+</Tabs>
+
+## Import the styles
+
+A single import pulls the complete bundle — design tokens, palettes, surfaces,
+and motion. Add it once at the root of your app (e.g. `app/globals.css` or your
+top-level entry):
+
+```css
+@import "@saasflare/ui/styles";
+```
+
+<Callout type="info">
+There is no Tailwind config to extend and no environment variables to set. The
+theme lives entirely in the package — see [Theming](/docs/theming).
+</Callout>
+
+## Wrap your app in the provider
+
+`SaasflareShell` owns the theme class, smooth-scroll, and animation context. It's
+required — the animated components rely on its `LazyMotion` context.
+
+```tsx title="app/layout.tsx"
+import { SaasflareShell } from "@saasflare/ui"
+import { fontVariables } from "@saasflare/ui/fonts/default"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <SaasflareShell className={fontVariables}>
+      {children}
+    </SaasflareShell>
+  )
+}
+```
+
+## Render your first component
+
+```tsx title="app/page.tsx"
+import { Button, Card, GradientText } from "@saasflare/ui"
+
+export default function Page() {
+  return (
+    <Card className="p-6">
+      <h1 className="text-2xl font-bold">
+        Build with <GradientText>Saasflare</GradientText>
+      </h1>
+      <Button intent="primary" className="mt-4">
+        Ship it
+      </Button>
+    </Card>
+  )
+}
+```
+
+That's it — the button picks up the active palette, surface, and radius
+automatically.
+
+## Next steps
+
+- [Installation details](/docs/installation) — peer deps, subpaths, and the shadcn registry
+- [Theming](/docs/theming) — 24 palettes and the 7 customization axes
+- [AI: MCP server & llms.txt](/docs/ai) — wire your editor into the design system
+- [Browse all 117 components](/catalog)

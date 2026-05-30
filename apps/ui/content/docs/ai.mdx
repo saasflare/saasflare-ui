@@ -1,0 +1,73 @@
+---
+title: AI & MCP
+description: "Wire your editor into the design system — an MCP server, llms.txt, and a machine-readable registry mean generated UI is correct, typed, and on-brand from the first prompt."
+---
+
+Most component libraries make your AI guess. `@saasflare/ui` hands it the source
+of truth, three ways: a live **MCP server**, a static **`llms.txt`** catalog, and
+a **machine-readable registry**.
+
+## MCP server
+
+A Model Context Protocol server is served at **`/api/mcp`** (stateless,
+streamable HTTP). Point any MCP client at it and your assistant can query the
+catalog directly while it writes code.
+
+### Connect Claude / Cursor
+
+```json title="mcp.json"
+{
+  "mcpServers": {
+    "saasflare-ui": {
+      "url": "https://ui.saasflare.io/api/mcp"
+    }
+  }
+}
+```
+
+<Callout type="info">
+For local development against your own instance, swap the URL for
+`http://localhost:3001/api/mcp`.
+</Callout>
+
+### Tools it exposes
+
+| Tool | What it does |
+| --- | --- |
+| `list_components` | Enumerate all 117 components with titles + descriptions |
+| `get_component` | Full props, variants, and usage examples for one component |
+| `search_components` | Fuzzy search across the catalog |
+| `recommend_for_use_case` | Suggest components for a described UI need |
+| `get_install_command` | The exact `shadcn add` command for a component |
+| `list_palettes` / `get_palette` | The 24 palettes and their tokens |
+| `list_hooks` | The exported hooks (`useDisclosure`, `useMeasure`, …) |
+
+## llms.txt
+
+A complete, machine-readable catalog lives at two static endpoints — drop the
+whole design system into any model's context in one fetch:
+
+- [`/llms.txt`](/llms.txt) — concise index of every component
+- [`/llms-full.txt`](/llms-full.txt) — full props, examples, and usage prose
+
+## Machine-readable registry
+
+Every component is published as a shadcn-compatible registry item, so an agent
+can both *read* the spec and *install* the source:
+
+```bash
+npx shadcn@latest add "https://ui.saasflare.io/r/button.json"
+```
+
+The index is at [`/registry.json`](/registry.json); each item at `/r/{name}.json`.
+
+## IntelliSense-grade types
+
+Every export ships strict TypeScript with JSDoc, including runnable `@example`
+blocks. That means correct completions and hover docs in your editor — and a
+copilot that imports from `@saasflare/ui` with the right props the first time.
+
+## Next steps
+
+- [Theming](/docs/theming) — the palette tokens the `get_palette` tool returns
+- [Browse all 117 components](/catalog)
