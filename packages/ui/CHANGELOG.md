@@ -1,5 +1,15 @@
 # @saasflare/ui
 
+## 3.3.0
+
+### Minor Changes
+
+- 72dd599: Export 36 catalog-expansion components from the main barrel so they are importable from `@saasflare/ui` (previously they shipped only via the shadcn registry and were not part of the package's public API): `AudioPlayer`, `BentoGrid`/`BentoGridItem`, `BlurFade`, `BorderBeam`, `Compare`, `Confetti`, `Countdown` (+ `useCountdown`), `SafariMock`/`IPhoneMock`, `Dock`/`DockItem`, `FeatureCard`, `FlipWords`, `GalleryLightbox`, `GlowingEffect`, `GradientText`, `HeroVideoDialog`, `Hotspot`/`HotspotMarker`, `ImageSwapHover`, `Marquee`, `MouseGradientBlob`, `MovingBorder`, `PageTransition`, `ParallaxSection`, `ParticlesBackground`, `RetroGrid`, `RevealOnScroll`, `ShimmerButton`, `SocialButton`, `SpotlightCard`, `StatCard`, `Steps`/`Step`, `StickyScrollReveal`, `TeamCard`, `TestimonialCard`, `TextGenerateEffect`, `Timeline`/`TimelineItem`, `TracingBeam`.
+
+### Patch Changes
+
+- 72dd599: Fix JSDoc `@example` imports across ~70 components. Examples referenced a non-existent `@saasflare/core` package (a 404 on npm); they now correctly import from `@saasflare/ui`. This corrects the import path surfaced in editor IntelliSense, the docs site, and the MCP server.
+
 ## 3.2.0
 
 ### Minor Changes
