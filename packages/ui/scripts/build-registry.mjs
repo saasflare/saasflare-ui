@@ -21,6 +21,11 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync
 import { dirname, join, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
+// Public exports that live outside src/components/ui/*.tsx and are missed by
+// the auto-discovery scan below. This is a BUILD-time import only — it crosses
+// the package boundary into apps/ui/scripts but never runs in a consumer.
+import { ORPHANS } from "../../../apps/ui/scripts/orphans.mjs"
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const PKG_ROOT = resolve(__dirname, "..")
 const APP_PUBLIC = resolve(PKG_ROOT, "../../apps/ui/public")
@@ -149,9 +154,12 @@ function classify(spec, surface) {
 
     const base = spec.split("/").pop()
 
-    // Internal helpers — all live under the published package entry.
+    // Internal helpers + the `../ui` component barrel — all live under the
+    // published package entry. (Orphans in composed/ and brand/ import the ui
+    // barrel as `../ui`; scanned components never have a sibling named `ui`.)
     if (
         INTERNAL_RE.test(spec) ||
+        base === "ui" ||
         base === "motion-config" ||
         base === "icons" ||
         spec.includes("phosphor")
@@ -181,8 +189,8 @@ function applyRewrites(source, rewrites) {
     return out
 }
 
-function buildItem(name, surface, curated, warnings) {
-    const rawSrc = readFileSync(join(COMPONENTS_DIR, `${name}.tsx`), "utf-8")
+function buildItem(name, surface, curated, warnings, srcPathAbs) {
+    const rawSrc = readFileSync(srcPathAbs ?? join(COMPONENTS_DIR, `${name}.tsx`), "utf-8")
     // Dependencies come from real code only (JSDoc @example imports stripped),
     // but rewrites apply to every specifier — including those that appear only
     // inside @example blocks — so copied files never ship a misleading import.
@@ -246,6 +254,13 @@ function main() {
     const curatedByName = new Map(
         (registry.items ?? []).map((item) => [item.name, item]),
     )
+    // Orphans supply their own title + description (deps are still derived from
+    // real imports, exactly as for the scanned items).
+    for (const o of ORPHANS) {
+        if (!curatedByName.has(o.slug)) {
+            curatedByName.set(o.slug, { name: o.slug, title: o.title, description: o.description })
+        }
+    }
 
     const surface = loadExportSurface()
 
@@ -266,6 +281,57 @@ function main() {
         if (curated) curatedCount++
         const built = buildItem(name, surface, curated, warnings)
         writeJson(join(OUT_DIR, `${name}.json`), built)
+        items.push(built)
+    }
+
+    // Orphan exports that live outside the scanned dir. buildItem reads from an
+    // absolute path; the slug is still the registry name and the copied file's
+    // target stays flat (its imports are rewritten to @saasflare/ui).
+    for (const o of ORPHANS) {
+        const curated = curatedByName.get(o.slug)
+        if (curated) curatedCount++
+        const built = buildItem(o.slug, surface, curated, warnings, resolve(PKG_ROOT, o.srcPath))
+
+        // A barrel entry (sidebar/index.ts) only re-exports sibling modules that
+        // aren't themselves shipped as registry items. Inline those siblings into
+        // a single content blob and drop the phantom registryDependencies they
+        // would otherwise produce.
+        if (o.bundleFrom?.length) {
+            const dir = dirname(resolve(PKG_ROOT, o.srcPath))
+            const inlined = o.bundleFrom
+                .map((base) => buildItem(base, surface, undefined, warnings, join(dir, `${base}.tsx`)))
+            const bundled = new Set(o.bundleFrom)
+            // Once the siblings share one file, their cross-references (e.g.
+            // layout/menu importing `./context`) become same-file bindings, so
+            // drop the now-dangling intra-bundle import statements.
+            const intraBundleImport = new RegExp(
+                `^\\s*import[\\s\\S]*?from\\s*["']\\.\\/(?:${o.bundleFrom.join("|")})["'];?\\s*$`,
+                "gm",
+            )
+            const mergedContent = inlined
+                .map((it) => it.files[0].content.replace(intraBundleImport, "").trimEnd())
+                .join("\n")
+            built.files[0].content = mergedContent
+
+            // Aggregate deps + registryDeps from the bundled siblings, then drop
+            // any registryDependency that is satisfied by an inlined sibling.
+            const deps = new Set(built.dependencies ?? [])
+            const registryDeps = new Set(
+                (built.registryDependencies ?? []).filter((d) => !bundled.has(d)),
+            )
+            for (const it of inlined) {
+                for (const d of it.dependencies ?? []) deps.add(d)
+                for (const d of it.registryDependencies ?? []) {
+                    if (!bundled.has(d)) registryDeps.add(d)
+                }
+            }
+            if (deps.size) built.dependencies = [...deps].sort()
+            else delete built.dependencies
+            if (registryDeps.size) built.registryDependencies = [...registryDeps].sort()
+            else delete built.registryDependencies
+        }
+
+        writeJson(join(OUT_DIR, `${o.slug}.json`), built)
         items.push(built)
     }
 

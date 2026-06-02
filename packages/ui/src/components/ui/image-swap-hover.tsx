@@ -1,3 +1,5 @@
+"use client"
+
 /**
  * @fileoverview Image that swaps to an alternate source on hover.
  * @author Saasflare™
@@ -16,9 +18,12 @@
  */
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the ImageSwapHover component. */
-export interface ImageSwapHoverProps {
+export interface ImageSwapHoverProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Default image source. */
   src: string
   /** Image source to show on hover. */
@@ -43,12 +48,24 @@ export function ImageSwapHover({
   alt,
   aspectRatio = "1/1",
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  style,
+  ...props
 }: ImageSwapHoverProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+
   return (
     <div
       className={cn("group relative overflow-hidden rounded-xl", className)}
-      style={{ aspectRatio }}
+      style={{ aspectRatio, ...style }}
+      {...props}
       data-slot="image-swap-hover"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       <img
         src={src}

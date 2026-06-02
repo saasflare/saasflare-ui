@@ -27,6 +27,8 @@ import {
 } from "node:fs"
 import path from "node:path"
 
+import { ORPHANS } from "./orphans.mjs"
+
 const APP_ROOT = path.resolve(process.cwd())
 const REGISTRY_INDEX = path.join(APP_ROOT, "public/registry.json")
 const DEMOS_DIR = path.join(APP_ROOT, "components/demos")
@@ -35,18 +37,22 @@ const OUT_DIR = path.join(APP_ROOT, "content/docs/components")
 /** Sidebar grouping. Every registry component must appear exactly once; the
  *  script asserts this so a new component can't silently fall out of the nav. */
 const CATEGORIES = {
-    "Buttons & Actions": ["button", "button-group", "social-button", "shimmer-button", "moving-border"],
+    "Brand & Auth": ["social-auth-button", "theme-mode-toggle", "theme-mode-multi-toggle"],
+    "Buttons & Actions": [
+        "button", "button-group", "social-button", "shimmer-button", "moving-border",
+        "stateful-button", "scroll-to-top-button",
+    ],
     "Forms & Inputs": [
         "input", "textarea", "input-group", "native-select", "select", "checkbox", "radio-group",
         "switch", "slider", "label", "field", "form", "number-input", "tag-input", "rating",
-        "input-otp", "date-picker", "date-range-picker", "calendar", "combobox", "search-field",
-        "dropzone", "toggle", "toggle-group",
+        "input-otp", "date-picker", "date-range-picker", "calendar", "combobox", "multi-select",
+        "search-field", "dropzone", "toggle", "toggle-group",
     ],
     "Data Display": [
-        "table", "badge", "avatar", "card", "stat-card", "metric-card", "feature-card",
-        "pricing-card", "testimonial-card", "team-card", "section-card", "spotlight-card", "item",
-        "kbd", "code-block", "tree-view", "data-toolbar", "empty", "empty-state", "bento-grid",
-        "page-header", "settings-section",
+        "table", "data-table", "badge", "avatar", "user-avatar", "card", "stat-card", "metric-card",
+        "feature-card", "pricing-card", "testimonial-card", "team-card", "section-card",
+        "spotlight-card", "item", "kbd", "code-block", "tree-view", "data-toolbar", "empty",
+        "empty-state", "bento-grid", "page-header", "settings-section",
     ],
     "Data Visualization": [
         "chart", "bar-list", "category-bar", "tracker", "spark-chart", "progress",
@@ -54,11 +60,12 @@ const CATEGORIES = {
     ],
     Feedback: [
         "alert", "alert-dialog", "callout", "dialog", "drawer", "sheet", "sonner", "tooltip",
-        "hover-card", "popover", "notification-center", "skeleton", "spinner",
+        "animated-tooltip", "hover-card", "popover", "notification-center", "skeleton", "spinner",
+        "top-loading-bar",
     ],
     Navigation: [
-        "breadcrumb", "pagination", "tabs", "navigation-menu", "menubar", "dropdown-menu",
-        "context-menu", "command", "steps", "dock",
+        "breadcrumb", "pagination", "data-pagination", "tabs", "navigation-menu", "menubar",
+        "dropdown-menu", "context-menu", "command", "steps", "stepper", "dock", "sidebar",
     ],
     Layout: ["accordion", "collapsible", "separator", "scroll-area", "resizable", "aspect-ratio", "carousel"],
     Media: [
@@ -139,6 +146,17 @@ function main() {
         if (dupes.length) console.error("  duplicated:", dupes.join(", "))
         if (missing.length) console.error("  uncategorized components:", missing.join(", "))
         if (unknown.length) console.error("  categories reference unknown components:", unknown.join(", "))
+        process.exit(1)
+    }
+
+    // Each orphan must land in the CATEGORIES bucket its manifest declares, so
+    // the manifest stays the single source of truth for orphan placement.
+    const misplaced = ORPHANS.filter((o) => !(CATEGORIES[o.category] ?? []).includes(o.slug))
+    if (misplaced.length) {
+        console.error("✗ orphan category mismatch:")
+        for (const o of misplaced) {
+            console.error(`  ${o.slug}: manifest category "${o.category}" does not list it`)
+        }
         process.exit(1)
     }
 

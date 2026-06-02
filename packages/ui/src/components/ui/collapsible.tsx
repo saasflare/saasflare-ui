@@ -4,7 +4,7 @@
 /**
  * @fileoverview Collapsible primitive — expandable/collapsible content region with trigger control.
  * Built on Radix UI Collapsible. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/collapsible
+ * @module packages/ui/components/ui/collapsible
  * @layer core
  *
  * @component

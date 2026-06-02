@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Drawer — slide-in panel powered by Vaul with touch-gesture support.
- * @module packages/core/components/ui/drawer
+ * @module packages/ui/components/ui/drawer
  * @layer core
  *
  * Self-contained implementation built on the Vaul drawer primitive. Provides
@@ -29,30 +29,35 @@ import { Drawer as DrawerPrimitive } from "vaul"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/** Root drawer state container; orchestrates open state and gesture context. */
 function Drawer({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
   return <DrawerPrimitive.Root data-slot="drawer" {...props} />
 }
 
+/** Interactive element that toggles the drawer open. Use `asChild` to wrap a custom control. */
 function DrawerTrigger({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Trigger>) {
   return <DrawerPrimitive.Trigger data-slot="drawer-trigger" {...props} />
 }
 
+/** Portals drawer content (overlay + panel) outside the DOM hierarchy. */
 function DrawerPortal({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Portal>) {
   return <DrawerPrimitive.Portal data-slot="drawer-portal" {...props} />
 }
 
+/** Element that closes the drawer when activated. Use `asChild` to wrap a custom control. */
 function DrawerClose({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Close>) {
   return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />
 }
 
+/** Dimmed backdrop rendered behind the drawer panel. */
 function DrawerOverlay({
   className,
   ...props
@@ -69,10 +74,12 @@ function DrawerOverlay({
   )
 }
 
+/** Props for {@link DrawerContent}; adds the surface/radius/animated design-system axes. */
 interface DrawerContentProps
   extends Omit<React.ComponentProps<typeof DrawerPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/** Sliding panel surface that holds the drawer body; carries the surface/radius/animated axes. */
 function DrawerContent({
   className,
   children,
@@ -104,6 +111,7 @@ function DrawerContent({
   )
 }
 
+/** Vertical layout slot for the drawer's title and description. */
 function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -114,6 +122,7 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/** Bottom-pinned layout slot for drawer actions. */
 function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -124,6 +133,7 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/** Accessible heading for the drawer, announced to assistive technology. */
 function DrawerTitle({
   className,
   ...props
@@ -137,6 +147,7 @@ function DrawerTitle({
   )
 }
 
+/** Supporting descriptive text for the drawer, associated with the title for accessibility. */
 function DrawerDescription({
   className,
   ...props

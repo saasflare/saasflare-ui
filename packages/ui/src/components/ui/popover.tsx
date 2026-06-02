@@ -2,8 +2,8 @@
 "use client"
 
 /**
- * @fileoverview Popover — premium animated popover with Framer Motion spring entrance for tooltips, menus, and floating content panels.
- * @module packages/core/components/ui/popover
+ * @fileoverview Popover — premium animated popover with Motion spring entrance for tooltips, menus, and floating content panels.
+ * @module packages/ui/components/ui/popover
  * @layer core
  *
  * @component
@@ -87,4 +87,39 @@ function PopoverContent({
   )
 }
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, type PopoverContentProps }
+interface PopoverArrowProps
+  extends React.ComponentProps<typeof PopoverPrimitive.Arrow> {}
+
+/**
+ * Triangular arrow pointing from the popover toward its trigger.
+ *
+ * Renders inside `<PopoverContent>` (consumes Popper context), so it must be a
+ * child of the content panel — rendering it elsewhere positions incorrectly.
+ * Position/rotation are computed by Radix from the resolved `side`/`align`; no
+ * props are required by default. Fill follows the `bg-popover` token via
+ * `fill-popover` so it inherits palette + light/dark automatically. The 1px
+ * popover border is not auto-continued onto the arrow (Radix limitation, same
+ * as shadcn) and the arrow fill stays token-fixed under non-default
+ * `surface` overrides — pass a `className` to adjust either if needed.
+ *
+ * @component
+ * @layer core
+ * @example
+ * <PopoverContent>
+ *   <PopoverArrow />
+ *   <p>Popover content here.</p>
+ * </PopoverContent>
+ */
+function PopoverArrow({ className, ...props }: PopoverArrowProps) {
+  return (
+    <PopoverPrimitive.Arrow
+      data-slot="popover-arrow"
+      width={12}
+      height={6}
+      className={cn("fill-popover", className)}
+      {...props}
+    />
+  )
+}
+
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverArrow, type PopoverContentProps, type PopoverArrowProps }

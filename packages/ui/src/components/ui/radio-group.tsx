@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview RadioGroup — accessible radio button group with polished styling and focus states.
- * @module packages/core/components/ui/radio-group
+ * @module packages/ui/components/ui/radio-group
  * @layer core
  *
  * @component
@@ -14,7 +14,6 @@
  *   <RadioGroupItem value="option-2" />
  * </RadioGroup>
  */
-"use client"
 
 import * as React from "react"
 import { CircleIcon } from "./phosphor"
@@ -26,6 +25,17 @@ interface RadioGroupProps
   extends Omit<React.ComponentProps<typeof RadioGroupPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Accessible radio button group. Wrap one or more {@link RadioGroupItem}s and
+ * control the active value via `value`/`defaultValue`. Honors the `surface`,
+ * `radius`, and `animated` axes through {@link useSaasflareProps}.
+ *
+ * @example
+ * <RadioGroup defaultValue="weekly">
+ *   <RadioGroupItem value="weekly" />
+ *   <RadioGroupItem value="monthly" />
+ * </RadioGroup>
+ */
 function RadioGroup({
   className,
   surface,
@@ -48,6 +58,14 @@ function RadioGroup({
   )
 }
 
+/**
+ * A single selectable option within a {@link RadioGroup}. The checked
+ * indicator uses a Phosphor `CircleIcon` whose weight is driven by the
+ * provider's `iconWeight` axis via {@link useSaasflareProps}.
+ *
+ * @example
+ * <RadioGroupItem value="weekly" />
+ */
 function RadioGroupItem({
   className,
   ...props

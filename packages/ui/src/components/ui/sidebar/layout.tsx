@@ -17,7 +17,6 @@
  *   <SidebarFooter>User menu</SidebarFooter>
  * </Sidebar>
  */
-"use client"
 
 // ============================================================================
 // SIDEBAR LAYOUT COMPONENTS
@@ -49,6 +48,20 @@ export interface SidebarProps extends Omit<React.ComponentProps<"div">, keyof Sa
   collapsible?: "offcanvas" | "icon" | "none"
 }
 
+/**
+ * Root sidebar shell. Renders the collapsible navigation chrome and resolves the
+ * design-system axes (`surface`, `radius`, `animated`) onto its root element across
+ * the `collapsible="none"`, mobile (Sheet), and desktop branches.
+ *
+ * @example
+ * <Sidebar side="left" variant="floating" collapsible="icon" surface="elevated" radius="lg">
+ *   <SidebarHeader>Logo</SidebarHeader>
+ *   <SidebarContent>
+ *     <SidebarGroup>Navigation items</SidebarGroup>
+ *   </SidebarContent>
+ *   <SidebarFooter>User menu</SidebarFooter>
+ * </Sidebar>
+ */
 export function Sidebar({
   side = "left",
   variant = "sidebar",
@@ -88,6 +101,9 @@ export function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
+          surface={surface}
+          radius={radius}
+          animated={animated}
           className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
           style={
             {
@@ -161,6 +177,12 @@ export function Sidebar({
 // SIDEBAR SECTIONS
 // ============================================================================
 
+/**
+ * Interactive rail along the sidebar edge that toggles the collapsed/expanded state.
+ *
+ * @example
+ * <Sidebar collapsible="icon">…<SidebarRail /></Sidebar>
+ */
 export function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   const { toggleSidebar } = useSidebar()
 
@@ -186,10 +208,35 @@ export function SidebarRail({ className, ...props }: React.ComponentProps<"butto
   )
 }
 
-export function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
+export interface SidebarInsetProps
+  extends Omit<React.ComponentProps<"main">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * Main content area that sits beside the sidebar. For the `inset` variant it gains a
+ * rounded, elevated surface offset from the sidebar, so it carries the
+ * `surface`/`radius`/`animated` axes.
+ *
+ * @example
+ * <SidebarInset surface="elevated" radius="xl">
+ *   <PageContent />
+ * </SidebarInset>
+ */
+export function SidebarInset({
+  className,
+  surface,
+  radius,
+  animated,
+  ...props
+}: SidebarInsetProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <main
       data-slot="sidebar-inset"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "bg-background relative flex w-full flex-1 flex-col overflow-auto",
         "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
@@ -200,6 +247,12 @@ export function SidebarInset({ className, ...props }: React.ComponentProps<"main
   )
 }
 
+/**
+ * Search/filter input styled for placement inside the sidebar header.
+ *
+ * @example
+ * <SidebarHeader><SidebarInput placeholder="Search…" /></SidebarHeader>
+ */
 export function SidebarInput({
   className,
   ...props
@@ -214,6 +267,12 @@ export function SidebarInput({
   )
 }
 
+/**
+ * Top region of the sidebar, typically holding the brand/logo or a search input.
+ *
+ * @example
+ * <SidebarHeader>Logo</SidebarHeader>
+ */
 export function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -225,6 +284,12 @@ export function SidebarHeader({ className, ...props }: React.ComponentProps<"div
   )
 }
 
+/**
+ * Bottom region of the sidebar, typically holding the user menu or secondary actions.
+ *
+ * @example
+ * <SidebarFooter>User menu</SidebarFooter>
+ */
 export function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -236,20 +301,47 @@ export function SidebarFooter({ className, ...props }: React.ComponentProps<"div
   )
 }
 
+export interface SidebarSeparatorProps
+  extends Omit<React.ComponentProps<typeof Separator>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * Horizontal divider styled for use between sidebar sections. Carries the
+ * `surface`/`radius`/`animated` axes onto its rendered border element.
+ *
+ * @example
+ * <SidebarGroup>…</SidebarGroup>
+ * <SidebarSeparator />
+ * <SidebarGroup>…</SidebarGroup>
+ */
 export function SidebarSeparator({
   className,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof Separator>) {
+}: SidebarSeparatorProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <Separator
       data-slot="sidebar-separator"
       data-sidebar="separator"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("bg-sidebar-border mx-2 w-auto", className)}
       {...props}
     />
   )
 }
 
+/**
+ * Scrollable middle region of the sidebar that holds the navigation groups.
+ *
+ * @example
+ * <SidebarContent><SidebarGroup>…</SidebarGroup></SidebarContent>
+ */
 export function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -264,6 +356,15 @@ export function SidebarContent({ className, ...props }: React.ComponentProps<"di
   )
 }
 
+/**
+ * Logical grouping of sidebar items, optionally labelled and with a group action.
+ *
+ * @example
+ * <SidebarGroup>
+ *   <SidebarGroupLabel>Projects</SidebarGroupLabel>
+ *   <SidebarGroupContent>…</SidebarGroupContent>
+ * </SidebarGroup>
+ */
 export function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -275,6 +376,12 @@ export function SidebarGroup({ className, ...props }: React.ComponentProps<"div"
   )
 }
 
+/**
+ * Heading for a sidebar group. Pass `asChild` to render as a custom element.
+ *
+ * @example
+ * <SidebarGroupLabel>Projects</SidebarGroupLabel>
+ */
 export function SidebarGroupLabel({
   className,
   asChild = false,
@@ -296,6 +403,16 @@ export function SidebarGroupLabel({
   )
 }
 
+/**
+ * Action button anchored to the top-right of a sidebar group. Pass `asChild` to
+ * render as a custom element.
+ *
+ * @example
+ * <SidebarGroup>
+ *   <SidebarGroupLabel>Projects</SidebarGroupLabel>
+ *   <SidebarGroupAction title="Add project"><PlusIcon /></SidebarGroupAction>
+ * </SidebarGroup>
+ */
 export function SidebarGroupAction({
   className,
   asChild = false,
@@ -319,6 +436,12 @@ export function SidebarGroupAction({
   )
 }
 
+/**
+ * Container for the items inside a sidebar group (typically a `SidebarMenu`).
+ *
+ * @example
+ * <SidebarGroupContent><SidebarMenu>…</SidebarMenu></SidebarGroupContent>
+ */
 export function SidebarGroupContent({
   className,
   ...props

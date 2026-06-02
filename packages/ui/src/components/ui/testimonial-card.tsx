@@ -1,3 +1,5 @@
+"use client"
+
 /**
  * @fileoverview Testimonial card with avatar, quote, and optional star rating.
  * @author Saasflare™
@@ -16,11 +18,15 @@
  * />
  */
 
+import * as React from "react"
+
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the TestimonialCard component. */
-export interface TestimonialCardProps extends SaasflareComponentProps {
+export interface TestimonialCardProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** The testimonial quote text. */
   quote: string
   /** Name of the person. */
@@ -31,8 +37,6 @@ export interface TestimonialCardProps extends SaasflareComponentProps {
   avatar?: string
   /** Star rating (1–5). Omit to hide stars. */
   rating?: 1 | 2 | 3 | 4 | 5
-  /** Additional class names. */
-  className?: string
 }
 
 /**
@@ -51,6 +55,7 @@ export function TestimonialCard({
   surface,
   radius,
   animated,
+  ...props
 }: TestimonialCardProps) {
   const sf = useSaasflareProps({ surface, radius, animated })
   return (
@@ -58,12 +63,14 @@ export function TestimonialCard({
       data-slot="testimonial-card"
       data-surface={sf.surface}
       data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex flex-col rounded-xl border surface-card p-6",
         "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
         "motion-reduce:hover:transform-none",
         className,
       )}
+      {...props}
     >
       {rating && (
         <div className="mb-3 flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
@@ -90,6 +97,8 @@ export function TestimonialCard({
           <img
             src={avatar}
             alt={name}
+            width={40}
+            height={40}
             className="size-10 rounded-full object-cover"
           />
         )}

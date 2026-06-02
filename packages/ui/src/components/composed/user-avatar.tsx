@@ -10,8 +10,10 @@
  */
 'use client';
 
+import * as React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui';
 import { cn } from '../../lib';
+import { useSaasflareProps, type SaasflareComponentProps } from '../../providers';
 
 /**
  * Props for the UserAvatar component.
@@ -19,7 +21,7 @@ import { cn } from '../../lib';
  * @interface
  * @layer core
  */
-export interface UserAvatarProps {
+export interface UserAvatarProps extends SaasflareComponentProps {
     /** URL of the user's avatar image */
     src: string | null | undefined;
     /** User's display name (used as alt text) */
@@ -30,6 +32,8 @@ export interface UserAvatarProps {
     size?: 'sm' | 'md' | 'lg';
     /** Additional CSS class names */
     className?: string;
+    /** Optional click handler. When provided, the avatar shows a pointer cursor. */
+    onClick?: React.MouseEventHandler<HTMLSpanElement>;
 }
 
 const sizeClasses = {
@@ -50,9 +54,28 @@ const sizeClasses = {
  * @example
  * <UserAvatar src="/avatars/jane.jpg" name="Jane Doe" initials="JD" />
  */
-export function UserAvatar({ src, name, initials, size = 'md', className }: UserAvatarProps) {
+export function UserAvatar({
+    src,
+    name,
+    initials,
+    size = 'md',
+    className,
+    onClick,
+    surface,
+    radius,
+    animated,
+    iconWeight,
+}: UserAvatarProps) {
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight });
+
     return (
-        <Avatar className={cn(sizeClasses[size], 'cursor-pointer', className)}>
+        <Avatar
+            surface={sf.surface}
+            radius={sf.radius}
+            animated={sf.animated}
+            onClick={onClick}
+            className={cn(sizeClasses[size], onClick && 'cursor-pointer', className)}
+        >
             <AvatarImage src={src || undefined} alt={name || 'User'} />
             <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>

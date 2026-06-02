@@ -8,7 +8,7 @@
  *
  * The actual motion kill-switch is implemented in CSS (motion.css) via the
  * `[data-animated="false"]` attribute set by SaasflareProvider on <html>.
- * This context exists purely so JS code (Framer Motion, conditional
+ * This context exists purely so JS code (Motion, conditional
  * animations) can read the same flag without querying the DOM.
  */
 "use client"

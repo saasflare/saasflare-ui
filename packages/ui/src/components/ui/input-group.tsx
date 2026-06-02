@@ -5,7 +5,7 @@
  * @fileoverview InputGroup primitive — composes an input with inline addons, buttons,
  * and prefix/suffix elements into a single visual unit. Supports focus, error, and
  * disabled states with consistent border and ring styling. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/input-group
+ * @module packages/ui/components/ui/input-group
  * @layer core
  *
  * @component
@@ -16,20 +16,41 @@
  *   <InputGroupInput placeholder="Amount" />
  * </InputGroup>
  */
-"use client"
 
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Button } from "./button"
 import { Input } from "./input"
 import { Textarea } from "./textarea"
 
-function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
+/** Props for {@link InputGroup}. Extends the Saasflare theme contract (surface/radius/animated). */
+interface InputGroupProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * InputGroup — bordered container that visually unifies an input with inline
+ * addons, buttons, and prefix/suffix text. Owns the focus ring, error styling,
+ * and the theme axes (surface/radius/animated) for the whole group.
+ *
+ * @component
+ * @example
+ * <InputGroup>
+ *   <InputGroupAddon>$</InputGroupAddon>
+ *   <InputGroupInput placeholder="Amount" />
+ * </InputGroup>
+ */
+function InputGroup({ className, surface, radius, animated, ...props }: InputGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   return (
     <div
       data-slot="input-group"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       role="group"
       className={cn(
         "group/input-group relative flex w-full items-center rounded-md border border-input shadow-xs transition-[color,box-shadow] outline-none dark:bg-input/30",
@@ -75,9 +96,19 @@ const inputGroupAddonVariants = cva(
   }
 )
 
+/**
+ * InputGroupAddon — non-interactive slot for icons, text, buttons, or kbd hints
+ * placed inline or block-aligned around the control. Clicking the addon focuses
+ * the sibling input (unless the click lands on a nested button), while still
+ * running any consumer-supplied `onClick`.
+ *
+ * @component
+ * @example <InputGroupAddon align="inline-end"><SearchIcon /></InputGroupAddon>
+ */
 function InputGroupAddon({
   className,
   align = "inline-start",
+  onClick,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {
   return (
@@ -87,6 +118,7 @@ function InputGroupAddon({
       data-align={align}
       className={cn(inputGroupAddonVariants({ align }), className)}
       onClick={(e) => {
+        onClick?.(e)
         if ((e.target as HTMLElement).closest("button")) {
           return
         }
@@ -115,6 +147,15 @@ const inputGroupButtonVariants = cva(
   }
 )
 
+/**
+ * InputGroupButton — compact {@link Button} sized to sit flush inside an
+ * InputGroup. Defaults to a ghost variant and the `xs` group sizing. Inherits
+ * Button's theme axes; the group-local `size` vocabulary drives only the inline
+ * geometry via `inputGroupButtonVariants`.
+ *
+ * @component
+ * @example <InputGroupButton size="icon-xs"><XIcon /></InputGroupButton>
+ */
 function InputGroupButton({
   className,
   type = "button",
@@ -134,6 +175,13 @@ function InputGroupButton({
   )
 }
 
+/**
+ * InputGroupText — muted inline text/label slot (e.g. units, prefixes) rendered
+ * as a `<span>` inside an InputGroup.
+ *
+ * @component
+ * @example <InputGroupText>https://</InputGroupText>
+ */
 function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -146,6 +194,14 @@ function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
   )
 }
 
+/**
+ * InputGroupInput — thin wrapper over {@link Input} stripped of its own border,
+ * radius, and ring so it blends seamlessly into the surrounding InputGroup. The
+ * theme axes (surface/radius/animated) are inherited from {@link Input}.
+ *
+ * @component
+ * @example <InputGroupInput placeholder="Search" />
+ */
 function InputGroupInput({
   className,
   ...props
@@ -162,6 +218,14 @@ function InputGroupInput({
   )
 }
 
+/**
+ * InputGroupTextarea — thin wrapper over {@link Textarea} stripped of its own
+ * border, radius, ring, and resize handle so it blends into the InputGroup. The
+ * theme axes (surface/radius/animated) are inherited from {@link Textarea}.
+ *
+ * @component
+ * @example <InputGroupTextarea placeholder="Notes" />
+ */
 function InputGroupTextarea({
   className,
   ...props
@@ -180,6 +244,7 @@ function InputGroupTextarea({
 
 export {
   InputGroup,
+  type InputGroupProps,
   InputGroupAddon,
   InputGroupButton,
   InputGroupText,

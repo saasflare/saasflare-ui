@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Slider — range input with spring-animated thumb and track fill.
- * @module packages/core/components/ui/slider
+ * @module packages/ui/components/ui/slider
  * @layer core
  *
  * @component
@@ -11,7 +11,6 @@
  * import { Slider } from '@saasflare/ui';
  * <Slider defaultValue={[50]} max={100} step={1} />
  */
-"use client"
 
 import * as React from "react"
 import { m } from "motion/react"

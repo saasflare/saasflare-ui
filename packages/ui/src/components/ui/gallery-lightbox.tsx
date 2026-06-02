@@ -26,10 +26,11 @@ import { useEffect, useCallback } from "react"
 import { AnimatePresence, m } from "motion/react"
 import { XIcon, CaretLeftIcon, CaretRightIcon } from "./phosphor"
 import { cn } from "../../lib"
-import { useSaasflareProps } from "../../providers"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion } from "./motion-config"
 
 /** Props for the GalleryLightbox component. */
-export interface GalleryLightboxProps {
+export interface GalleryLightboxProps extends SaasflareComponentProps {
   /** Array of image URLs. */
   images: string[]
   /** Whether the lightbox is open. */
@@ -57,8 +58,13 @@ export function GalleryLightbox({
   onClose,
   onIndexChange,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: GalleryLightboxProps) {
-  const sf = useSaasflareProps()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, { duration: 0.2 })
   const prev = useCallback(() => {
     onIndexChange((index - 1 + images.length) % images.length)
   }, [index, images.length, onIndexChange])
@@ -90,9 +96,10 @@ export function GalleryLightbox({
     <AnimatePresence>
       {open && (
         <m.div
-          initial={{ opacity: 0 }}
+          initial={motion.disabled ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={motion.transition}
           className={cn(
             "fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm",
             className,
@@ -102,6 +109,9 @@ export function GalleryLightbox({
           aria-modal="true"
           aria-label="Image gallery"
           data-slot="gallery-lightbox"
+          data-surface={sf.surface}
+          data-radius={sf.radius}
+          data-animated={String(sf.animated)}
         >
           {/* Close */}
           <button
@@ -126,17 +136,19 @@ export function GalleryLightbox({
           )}
 
           {/* Image */}
-          <m.img
-            key={index}
-            src={images[index]}
-            alt={`Image ${index + 1} of ${images.length}`}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
+          {images[index] && (
+            <m.img
+              key={index}
+              src={images[index]}
+              alt={`Image ${index + 1} of ${images.length}`}
+              initial={motion.disabled ? false : { opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={motion.disabled ? { opacity: 0 } : { opacity: 0, scale: 0.95 }}
+              transition={motion.transition}
+              className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
 
           {/* Next */}
           {images.length > 1 && (

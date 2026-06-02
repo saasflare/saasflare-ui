@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Switch — animated toggle switch with spring physics and size variants.
- * @module packages/core/components/ui/switch
+ * @module packages/ui/components/ui/switch
  * @layer core
  *
  * @component
@@ -23,6 +23,7 @@ import { useSaasflareMotion, springBouncy } from "./motion-config"
 interface SwitchProps
   extends Omit<React.ComponentProps<typeof SwitchPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
+  /** Visual size of the toggle. `default` is the standard control; `sm` is a compact variant for dense rows. */
   size?: "sm" | "default"
 }
 
@@ -57,7 +58,7 @@ function Switch({
       >
         <m.span
           className="pointer-events-none block rounded-full bg-background ring-0 group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground"
-          layout={motion.disabled ? false : true}
+          layout={!motion.disabled}
           transition={motion.transition}
         />
       </SwitchPrimitive.Thumb>

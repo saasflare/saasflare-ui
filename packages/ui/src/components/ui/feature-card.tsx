@@ -1,3 +1,5 @@
+"use client"
+
 /**
  * @fileoverview Feature card with icon, title, and description.
  * @author Saasflare™
@@ -52,6 +54,7 @@ export function FeatureCard({
       data-slot="feature-card"
       data-surface={sf.surface}
       data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "rounded-xl border surface-card p-6",
         "transition-all duration-200 hover:-translate-y-px hover:shadow-md",

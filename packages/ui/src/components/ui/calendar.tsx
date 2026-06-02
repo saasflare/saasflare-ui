@@ -4,8 +4,7 @@
 /**
  * @fileoverview Calendar primitive — date picker grid with month navigation and day selection.
  * Built on react-day-picker. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/calendar
- * @layer core
+ * @module packages/ui/components/ui/calendar
  *
  * @requires react-day-picker — peer dependency.
  * @requires date-fns — peer dependency.
@@ -16,7 +15,6 @@
  * const [date, setDate] = React.useState<Date | undefined>(new Date());
  * <Calendar mode="single" selected={date} onSelect={setDate} />
  */
-"use client"
 
 import * as React from "react"
 import {
@@ -34,8 +32,11 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Button, buttonVariants } from "./button"
 
+const defaultClassNames = getDefaultClassNames()
+
 type CalendarProps = React.ComponentProps<typeof DayPicker> &
   SaasflareComponentProps & {
+    /** Visual variant applied to the previous/next month navigation buttons. Defaults to `"ghost"`. */
     buttonVariant?: React.ComponentProps<typeof Button>["variant"]
   }
 
@@ -54,7 +55,6 @@ function Calendar({
   ...props
 }: CalendarProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
-  const defaultClassNames = getDefaultClassNames()
 
   return (
     <DayPicker
@@ -225,8 +225,6 @@ function CalendarDayButton({
   modifiers,
   ...props
 }: React.ComponentProps<typeof DayButton>) {
-  const defaultClassNames = getDefaultClassNames()
-
   const ref = React.useRef<HTMLButtonElement>(null)
   React.useEffect(() => {
     if (modifiers.focused) ref.current?.focus()

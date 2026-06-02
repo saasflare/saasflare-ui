@@ -14,7 +14,6 @@
  *   {children}
  * </SidebarProvider>
  */
-"use client"
 
 // ============================================================================
 // SIDEBAR CONTEXT
@@ -23,9 +22,12 @@
 
 import * as React from "react"
 import { SidebarSimpleIcon } from "../phosphor"
-import { useIsMobile } from '../../../hooks/use-mobile';
+import { useIsMobile } from "../../../hooks/use-mobile"
 import { cn } from "../../../lib"
-import { useSaasflareProps } from "../../../providers"
+import {
+  useSaasflareProps,
+  type SaasflareComponentProps,
+} from "../../../providers"
 import { Button } from "../button"
 import {
   TooltipProvider,
@@ -160,7 +162,17 @@ export function SidebarProvider({
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [toggleSidebar]);
 
-    const state = open || openMobile ? 'expanded' : 'collapsed';
+    // Desktop state reflects `open` only; on mobile the sidebar is presented
+    // as an overlay sheet ('overlayed' when its mobile sheet is open). Keeping
+    // these branches separate avoids the desktop state flipping when the mobile
+    // sheet toggles.
+    const state: SidebarContextProps['state'] = isMobile
+        ? openMobile
+            ? 'overlayed'
+            : 'collapsed'
+        : open
+            ? 'expanded'
+            : 'collapsed';
 
     const contextValue = React.useMemo<SidebarContextProps>(
         () => ({
@@ -207,10 +219,14 @@ export function SidebarProvider({
 export function SidebarTrigger({
   className,
   onClick,
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof Button>) {
+}: React.ComponentProps<typeof Button> & SaasflareComponentProps) {
   const { toggleSidebar } = useSidebar()
-  const sf = useSaasflareProps()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <Button
@@ -218,6 +234,10 @@ export function SidebarTrigger({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
+      surface={sf.surface}
+      radius={sf.radius}
+      animated={sf.animated}
+      iconWeight={sf.iconWeight}
       className={cn("size-7", className)}
       onClick={(event) => {
         onClick?.(event)

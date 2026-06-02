@@ -19,10 +19,12 @@
  * />
  */
 
+import * as React from "react"
 import { useRef, type ReactNode } from "react"
-import { m, useScroll, useTransform } from "motion/react"
+import { m, useScroll, useTransform, type MotionValue } from "motion/react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion } from "./motion-config"
 
 /** A single item in the sticky scroll reveal. */
 export interface StickyScrollItem {
@@ -35,11 +37,11 @@ export interface StickyScrollItem {
 }
 
 /** Props for the StickyScrollReveal component. */
-export interface StickyScrollRevealProps {
+export interface StickyScrollRevealProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Array of scroll items. */
   items: StickyScrollItem[]
-  /** Additional class names. */
-  className?: string
 }
 
 /**
@@ -48,7 +50,8 @@ export interface StickyScrollRevealProps {
  * - Left column text stays fixed during scroll
  * - Right column content transitions between items
  * - Each item fades in based on scroll position
- * - Falls back to stacked layout when reduced motion is preferred
+ * - Falls back to stacked layout when reduced motion is preferred or
+ *   when `animated={false}` is set (per-instance or via the provider)
  *
  * @component
  * @package ui
@@ -56,13 +59,31 @@ export interface StickyScrollRevealProps {
 export function StickyScrollReveal({
   items,
   className,
+  surface,
+  radius,
+  animated,
+  ...props
 }: StickyScrollRevealProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  if (reduced) {
+  // Single shared scroll progress — avoids 2N independent scroll listeners.
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  })
+
+  if (motion.disabled) {
     return (
-      <div className={cn("space-y-16", className)} data-slot="sticky-scroll-reveal">
+      <div
+        {...props}
+        className={cn("space-y-16", className)}
+        data-slot="sticky-scroll-reveal"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
+      >
         {items.map((item, i) => (
           <div key={i} className="grid gap-8 md:grid-cols-2">
             <div>
@@ -70,7 +91,7 @@ export function StickyScrollReveal({
               <p className="mt-2 text-muted-foreground">{item.description}</p>
             </div>
             {item.content && (
-              <div className="rounded-xl border bg-muted/50 p-4">{item.content}</div>
+              <div className="rounded-xl border bg-card p-4">{item.content}</div>
             )}
           </div>
         ))}
@@ -80,9 +101,13 @@ export function StickyScrollReveal({
 
   return (
     <div
+      {...props}
       ref={containerRef}
       className={cn("relative", className)}
       data-slot="sticky-scroll-reveal"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       <div className="relative grid gap-8 md:grid-cols-2">
         {/* Left column — sticky text */}
@@ -94,7 +119,7 @@ export function StickyScrollReveal({
                 item={item}
                 index={i}
                 total={items.length}
-                containerRef={containerRef}
+                scrollYProgress={scrollYProgress}
               />
             ))}
           </div>
@@ -108,7 +133,7 @@ export function StickyScrollReveal({
                 content={item.content}
                 index={i}
                 total={items.length}
-                containerRef={containerRef}
+                scrollYProgress={scrollYProgress}
               />
             </div>
           ))}
@@ -123,18 +148,13 @@ function StickyItem({
   item,
   index,
   total,
-  containerRef,
+  scrollYProgress,
 }: {
   item: StickyScrollItem
   index: number
   total: number
-  containerRef: React.RefObject<HTMLDivElement | null>
+  scrollYProgress: MotionValue<number>
 }) {
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  })
-
   const sectionStart = index / total
   const sectionEnd = (index + 1) / total
   const opacity = useTransform(
@@ -156,18 +176,13 @@ function StickyContent({
   content,
   index,
   total,
-  containerRef,
+  scrollYProgress,
 }: {
   content?: ReactNode
   index: number
   total: number
-  containerRef: React.RefObject<HTMLDivElement | null>
+  scrollYProgress: MotionValue<number>
 }) {
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  })
-
   const sectionStart = index / total
   const sectionEnd = (index + 1) / total
   const opacity = useTransform(
@@ -181,7 +196,7 @@ function StickyContent({
   return (
     <m.div
       style={{ opacity }}
-      className="overflow-hidden rounded-xl border bg-muted/50 p-4"
+      className="overflow-hidden rounded-xl border bg-card p-4"
     >
       {content}
     </m.div>

@@ -5,7 +5,7 @@
  * @fileoverview TypewriterText primitive — word-by-word text reveal animation with
  * a blinking cursor effect. Supports configurable word delay, skip animation,
  * and completion callback. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/typewriter-text
+ * @module packages/ui/components/ui/typewriter-text
  * @layer core
  *
  * @component
@@ -13,7 +13,6 @@
  * import { TypewriterText } from '@saasflare/ui';
  * <TypewriterText text="Hello, welcome to Saasflare." wordDelay={60} />
  */
-'use client';
 
 // =============================================================================
 // TYPEWRITER TEXT

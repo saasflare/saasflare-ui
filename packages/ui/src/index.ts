@@ -2,7 +2,7 @@
 /**
  * @fileoverview Main barrel export for @saasflare/ui.
  * Re-exports all UI components, utilities, hooks, providers, and commons.
- * Components are standalone and customized, partly animated using Framer Motion.
+ * Components are standalone and customized, partly animated using Motion.
  * @module packages/ui/index
  * @package ui
  */
@@ -18,10 +18,25 @@ export { useMeasure, type Measurement, type UseMeasureReturn } from './hooks/use
 export { useLocalStorage, type UseLocalStorageOptions } from './hooks/use-local-storage';
 export {
     usePagination,
+    paginationSummary,
     type PaginationRangeItem,
     type UsePaginationOptions,
     type UsePaginationReturn,
+    type PaginationSummaryRange,
 } from './hooks/use-pagination';
+export {
+    useDataTable,
+    type UseDataTableOptions,
+    type UseDataTableReturn,
+    type DataTableSelectionMode,
+} from './hooks/use-data-table';
+export {
+    useStepper,
+    type StepValidationResult,
+    type StepperStepConfig,
+    type UseStepperOptions,
+    type UseStepperReturn,
+} from './hooks/use-stepper';
 export { useMergedRef, type PossibleRef } from './hooks/use-merged-ref';
 export {
     useInterval,

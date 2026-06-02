@@ -6,7 +6,7 @@
  * Built on Recharts. Provides a ChartConfig-driven theming system with
  * light/dark mode support, custom tooltips, and accessible legends.
  * Part of the Saasflare base component layer.
- * @module packages/core/components/ui/chart
+ * @module packages/ui/components/ui/chart
  * @layer core
  *
  * @requires recharts — peer dependency. Shipped via the `/chart` subpath:
@@ -15,7 +15,7 @@
  * @component
  * @example
  * import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@saasflare/ui/chart';
- * const config = { revenue: { label: "Revenue", color: "#2563eb" } };
+ * const config = { revenue: { label: "Revenue", color: "var(--chart-1)" } };
  * <ChartContainer config={config}>
  *   <BarChart data={data}>
  *     <Bar dataKey="revenue" />
@@ -23,7 +23,6 @@
  *   </BarChart>
  * </ChartContainer>
  */
-"use client"
 
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
@@ -104,6 +103,13 @@ function ChartContainer({
   )
 }
 
+/**
+ * ChartStyle — injects per-chart CSS custom properties (`--color-{key}`)
+ * derived from the {@link ChartConfig}, scoped by `[data-chart={id}]` and
+ * theme prefix so light/dark color overrides resolve correctly.
+ *
+ * @component
+ */
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme || config.color
@@ -149,7 +155,9 @@ interface ChartTooltipPayloadItem {
   payload?: Record<string, unknown>
 }
 
-interface ChartTooltipContentProps extends React.ComponentProps<"div"> {
+interface ChartTooltipContentProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   active?: boolean
   payload?: ChartTooltipPayloadItem[]
   label?: string | number
@@ -170,6 +178,13 @@ interface ChartTooltipContentProps extends React.ComponentProps<"div"> {
   labelKey?: string
 }
 
+/**
+ * ChartTooltipContent — themed tooltip body for Recharts charts. Renders the
+ * label, per-series indicator chips (or config-supplied icons), and formatted
+ * values driven by the surrounding {@link ChartConfig}.
+ *
+ * @component
+ */
 function ChartTooltipContent({
   active,
   payload,
@@ -184,8 +199,12 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
+  surface,
+  radius,
+  animated,
 }: ChartTooltipContentProps) {
   const { config } = useChart()
+  const sf = useSaasflareProps({ surface, radius, animated })
 
   const tooltipLabel = React.useMemo(() => {
     if (hideLabel || !payload?.length) {
@@ -231,6 +250,10 @@ function ChartTooltipContent({
 
   return (
     <div
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      data-slot="chart-tooltip-content"
       className={cn(
         "grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
         className
@@ -247,7 +270,7 @@ function ChartTooltipContent({
 
             return (
               <div
-                key={item.dataKey}
+                key={`${key}-${index}`}
                 className={cn(
                   "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
                   indicator === "dot" && "items-center"
@@ -293,7 +316,7 @@ function ChartTooltipContent({
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
-                      {item.value && (
+                      {item.value !== undefined && item.value !== null && (
                         <span className="font-mono font-medium text-foreground tabular-nums">
                           {item.value.toLocaleString()}
                         </span>
@@ -318,21 +341,34 @@ interface ChartLegendPayloadItem {
   dataKey?: string | number
 }
 
-interface ChartLegendContentProps extends React.ComponentProps<"div"> {
+interface ChartLegendContentProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   payload?: ChartLegendPayloadItem[]
   verticalAlign?: "top" | "bottom" | "middle"
   hideIcon?: boolean
   nameKey?: string
 }
 
+/**
+ * ChartLegendContent — themed legend body for Recharts charts. Renders each
+ * series with its config-supplied icon (or a color swatch) and label, driven
+ * by the surrounding {@link ChartConfig}.
+ *
+ * @component
+ */
 function ChartLegendContent({
   className,
   hideIcon = false,
   payload,
   verticalAlign = "bottom",
   nameKey,
+  surface,
+  radius,
+  animated,
 }: ChartLegendContentProps) {
   const { config } = useChart()
+  const sf = useSaasflareProps({ surface, radius, animated })
 
   if (!payload?.length) {
     return null
@@ -340,6 +376,10 @@ function ChartLegendContent({
 
   return (
     <div
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      data-slot="chart-legend-content"
       className={cn(
         "flex items-center justify-center gap-4",
         verticalAlign === "top" ? "pb-3" : "pt-3",
@@ -348,13 +388,13 @@ function ChartLegendContent({
     >
       {payload
         .filter((item) => item.type !== "none")
-        .map((item) => {
+        .map((item, index) => {
           const key = `${nameKey || item.dataKey || "value"}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
 
           return (
             <div
-              key={item.value}
+              key={`${key}-${index}`}
               className={cn(
                 "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
               )}

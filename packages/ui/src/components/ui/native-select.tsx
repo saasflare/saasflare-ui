@@ -3,7 +3,7 @@
  * @fileoverview NativeSelect primitive — styled wrapper around the native HTML select
  * element with chevron icon overlay. Supports default and small sizes with consistent
  * focus and error styling. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/native-select
+ * @module packages/ui/components/ui/native-select
  * @layer core
  *
  * @component
@@ -23,6 +23,7 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 interface NativeSelectProps
   extends Omit<React.ComponentProps<"select">, "size" | keyof SaasflareComponentProps>,
     SaasflareComponentProps {
+  /** Control height. `"sm"` renders a more compact trigger; `"default"` is the standard height. */
   size?: "sm" | "default"
 }
 
@@ -56,7 +57,8 @@ function NativeSelect({
           className
         )}
       />
-      <CaretDownIcon weight={sf.iconWeight}
+      <CaretDownIcon
+        weight={sf.iconWeight}
         className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-muted-foreground opacity-50 select-none"
         aria-hidden="true"
         data-slot="native-select-icon"
@@ -65,10 +67,26 @@ function NativeSelect({
   )
 }
 
+/**
+ * A single option within a {@link NativeSelect}. Thin wrapper around the native
+ * `<option>` element that adds a `data-slot` for styling hooks.
+ *
+ * @example
+ * <NativeSelectOption value="a">Option A</NativeSelectOption>
+ */
 function NativeSelectOption({ ...props }: React.ComponentProps<"option">) {
   return <option data-slot="native-select-option" {...props} />
 }
 
+/**
+ * Groups related {@link NativeSelectOption}s under a label within a
+ * {@link NativeSelect}. Thin wrapper around the native `<optgroup>` element.
+ *
+ * @example
+ * <NativeSelectOptGroup label="Group">
+ *   <NativeSelectOption value="a">Option A</NativeSelectOption>
+ * </NativeSelectOptGroup>
+ */
 function NativeSelectOptGroup({
   className,
   ...props

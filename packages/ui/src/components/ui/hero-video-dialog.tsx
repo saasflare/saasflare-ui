@@ -27,15 +27,20 @@
  * />
  */
 
-import { useState, useCallback, type KeyboardEvent } from "react"
+import * as React from "react"
+import { useState, useCallback, useEffect } from "react"
 import { AnimatePresence, m } from "motion/react"
 import { PlayIcon, XIcon } from "./phosphor"
 import { cn } from "../../lib"
-import { useSaasflareProps } from "../../providers"
-import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springBouncy } from "./motion-config"
+import { useFocusTrap } from "../../hooks/use-focus-trap"
+import { useScrollLock } from "../../hooks/use-scroll-lock"
 
 /** Props for the HeroVideoDialog component. */
-export interface HeroVideoDialogProps {
+export interface HeroVideoDialogProps
+  extends Omit<React.ComponentProps<"button">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Video embed URL (YouTube/Vimeo embed or direct video URL). */
   videoSrc: string
   /** Poster thumbnail image URL. */
@@ -44,8 +49,6 @@ export interface HeroVideoDialogProps {
   thumbnailAlt: string
   /** CSS aspect-ratio for the thumbnail. Default: `"16/9"` */
   aspectRatio?: string
-  /** Additional class names for the container. */
-  className?: string
 }
 
 /**
@@ -53,8 +56,8 @@ export interface HeroVideoDialogProps {
  *
  * - Shows a thumbnail with a centered play button
  * - Opens a modal dialog with the embedded video on click
- * - Animated with spring physics (scale + fade)
- * - Accessible: focus management, keyboard close, aria labels
+ * - Animated with spring physics (scale + fade), gated on the `animated` axis
+ * - Accessible: focus trap + restoration, body-scroll lock, keyboard close, aria labels
  *
  * @component
  * @package ui
@@ -65,24 +68,36 @@ export function HeroVideoDialog({
   thumbnailAlt,
   aspectRatio = "16/9",
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
 }: HeroVideoDialogProps) {
-  const reduced = useReducedMotion()
-  const sf = useSaasflareProps()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
   const [open, setOpen] = useState(false)
 
   const close = useCallback(() => setOpen(false), [])
 
-  const onKeyDown = useCallback(
-    (e: KeyboardEvent) => {
+  const overlayRef = useFocusTrap<HTMLDivElement>(open)
+  useScrollLock(open)
+
+  // Document-level Escape so close works regardless of which element holds focus.
+  useEffect(() => {
+    if (!open) return
+    const onKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === "Escape") close()
-    },
-    [close],
-  )
+    }
+    document.addEventListener("keydown", onKeyDown)
+    return () => document.removeEventListener("keydown", onKeyDown)
+  }, [open, close])
 
   return (
     <>
       {/* Thumbnail with play button */}
       <button
+        {...props}
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
@@ -92,6 +107,9 @@ export function HeroVideoDialog({
         style={{ aspectRatio }}
         aria-label={`Play video: ${thumbnailAlt}`}
         data-slot="hero-video-dialog"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
       >
         <img
           src={thumbnailSrc}
@@ -110,12 +128,13 @@ export function HeroVideoDialog({
       <AnimatePresence>
         {open && (
           <m.div
-            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+            ref={overlayRef}
+            initial={motion.disabled ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={motion.transition}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
             onClick={close}
-            onKeyDown={onKeyDown}
             role="dialog"
             aria-modal="true"
             aria-label="Video player"
@@ -133,10 +152,10 @@ export function HeroVideoDialog({
 
             {/* Video container */}
             <m.div
-              initial={reduced ? false : { scale: 0.9, opacity: 0 }}
+              initial={motion.disabled ? false : { scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={reduced ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
-              transition={reduced ? noMotion : springBouncy}
+              exit={motion.disabled ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
+              transition={motion.transition}
               className="w-full max-w-5xl px-4"
               onClick={(e) => e.stopPropagation()}
             >

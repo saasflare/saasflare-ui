@@ -16,6 +16,8 @@ import { withCompilerOptions } from "react-docgen-typescript"
 import { readdirSync, writeFileSync, existsSync, mkdirSync } from "node:fs"
 import path from "node:path"
 
+import { ORPHANS } from "./orphans.mjs"
+
 const APP_ROOT = path.resolve(process.cwd())
 const PKG_ROOT = path.resolve(APP_ROOT, "../../packages/ui")
 const COMPONENTS_DIR = path.join(PKG_ROOT, "src/components/ui")
@@ -72,30 +74,44 @@ function main() {
         .filter((n) => !BLOCKLIST.has(n))
         .sort()
 
+    // Each target maps a registry slug to the real source file(s) to parse.
+    // Scanned components are one file each; orphans resolve their srcPath from
+    // packages/ui, and a barrel orphan (sidebar) overrides docgen to the real
+    // .tsx files via `propsFrom` (react-docgen parses re-export barrels poorly).
+    const targets = files.map((name) => ({ name, sources: [path.join(COMPONENTS_DIR, `${name}.tsx`)] }))
+    for (const o of ORPHANS) {
+        const sources = (o.propsFrom ?? [o.srcPath]).map((rel) => path.resolve(PKG_ROOT, rel))
+        targets.push({ name: o.slug, sources })
+    }
+
     const out = {}
     let totalComponents = 0
     let totalProps = 0
     const warnings = []
 
-    for (const name of files) {
-        const file = path.join(COMPONENTS_DIR, `${name}.tsx`)
-        let parsed
-        try {
-            parsed = parser.parse(file)
-        } catch (err) {
-            warnings.push(`${name}: parse failed — ${err.message}`)
-            continue
+    for (const { name, sources } of targets) {
+        const components = []
+        for (const file of sources) {
+            let parsed
+            try {
+                parsed = parser.parse(file)
+            } catch (err) {
+                warnings.push(`${name}: parse failed — ${err.message}`)
+                continue
+            }
+            components.push(
+                ...parsed
+                    // Drop the interface-as-component artifacts (0 props) and the
+                    // *Props type echoes react-docgen sometimes surfaces.
+                    .filter((c) => Object.keys(c.props || {}).length > 0)
+                    .map((c) => ({
+                        name: c.displayName,
+                        description: (c.description || "").split("\n")[0].trim(),
+                        props: serializeProps(c.props),
+                    }))
+                    .filter((c) => c.props.length > 0),
+            )
         }
-        const components = parsed
-            // Drop the interface-as-component artifacts (0 props) and the
-            // *Props type echoes react-docgen sometimes surfaces.
-            .filter((c) => Object.keys(c.props || {}).length > 0)
-            .map((c) => ({
-                name: c.displayName,
-                description: (c.description || "").split("\n")[0].trim(),
-                props: serializeProps(c.props),
-            }))
-            .filter((c) => c.props.length > 0)
 
         if (components.length === 0) continue
         out[name] = components

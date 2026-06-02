@@ -17,6 +17,7 @@
 
 import { type ComponentProps } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Supported social login providers. */
 export type SocialProvider = "google" | "apple" | "github" | "microsoft" | "twitter"
@@ -56,7 +57,9 @@ const PROVIDERS: Record<SocialProvider, { label: string; bg: string; fg: string;
 }
 
 /** Props for the SocialButton component. */
-export interface SocialButtonProps extends Omit<ComponentProps<"button">, "children"> {
+export interface SocialButtonProps
+  extends Omit<ComponentProps<"button">, "children" | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Social provider to render. */
   provider: SocialProvider
   /** Override the default label text. */
@@ -76,8 +79,13 @@ export function SocialButton({
   label: labelOverride,
   iconOnly = false,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
 }: SocialButtonProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const config = PROVIDERS[provider]
   const displayLabel = labelOverride ?? `Continue with ${config.label}`
 
@@ -93,6 +101,9 @@ export function SocialButton({
       )}
       aria-label={displayLabel}
       data-slot="social-button"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       {...props}
     >
       <svg className="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

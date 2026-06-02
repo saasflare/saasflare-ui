@@ -2,8 +2,8 @@
 "use client"
 
 /**
- * @fileoverview HoverCard — premium animated hover-triggered popover card with Framer Motion spring entrance for previewing content on hover.
- * @module packages/core/components/ui/hover-card
+ * @fileoverview HoverCard — premium animated hover-triggered popover card with Motion spring entrance for previewing content on hover.
+ * @module packages/ui/components/ui/hover-card
  * @layer core
  *
  * @component
@@ -81,4 +81,38 @@ function HoverCardContent({
   )
 }
 
-export { HoverCard, HoverCardTrigger, HoverCardContent, type HoverCardContentProps }
+interface HoverCardArrowProps
+  extends React.ComponentProps<typeof HoverCardPrimitive.Arrow> {}
+
+/**
+ * Arrow connecting the hover card to its trigger.
+ *
+ * Renders inside `<HoverCardContent>` (consumes Popper context), so it must be a
+ * child of the content panel. Position/rotation are computed by Radix from the
+ * resolved `side`/`align`; no props are required by default. Fill follows the
+ * `bg-popover` token via `fill-popover` so it inherits palette + light/dark
+ * automatically. The 1px card border is not auto-continued onto the arrow (Radix
+ * limitation) and the arrow fill stays token-fixed under non-default `surface`
+ * overrides — pass a `className` to adjust either if needed.
+ *
+ * @component
+ * @layer core
+ * @example
+ * <HoverCardContent>
+ *   <HoverCardArrow />
+ *   <p>Preview content appears here.</p>
+ * </HoverCardContent>
+ */
+function HoverCardArrow({ className, ...props }: HoverCardArrowProps) {
+  return (
+    <HoverCardPrimitive.Arrow
+      data-slot="hover-card-arrow"
+      width={12}
+      height={6}
+      className={cn("fill-popover", className)}
+      {...props}
+    />
+  )
+}
+
+export { HoverCard, HoverCardTrigger, HoverCardContent, HoverCardArrow, type HoverCardContentProps, type HoverCardArrowProps }

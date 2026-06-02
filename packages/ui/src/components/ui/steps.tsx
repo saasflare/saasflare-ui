@@ -18,11 +18,13 @@
  * </Steps>
  */
 
-import { Children, type ReactNode, type ReactElement } from "react"
+import { Children, isValidElement, type ReactNode, type ReactElement } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { CheckIcon } from "./phosphor"
 
 /** Props for the Steps container. */
-export interface StepsProps {
+export interface StepsProps extends SaasflareComponentProps {
   /** Step children. */
   children: ReactNode
   /** Index of the current active step (0-based). Default: `0` */
@@ -41,6 +43,12 @@ export interface StepProps {
   description?: string
   /** Optional icon to replace the step number. */
   icon?: ReactNode
+  /**
+   * Marks the step as skippable. Purely cosmetic here — renders a small
+   * "Optional" sub-label beneath the title. Consumed by `Stepper` to infer its
+   * `optional` step indices. Default: `false`
+   */
+  optional?: boolean
   /** Additional class names. */
   className?: string
 }
@@ -56,8 +64,15 @@ export function Steps({
   current = 0,
   direction = "horizontal",
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: StepsProps) {
-  const items = Children.toArray(children) as ReactElement<StepProps>[]
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const items = Children.toArray(children).filter(
+    (c): c is ReactElement<StepProps> => isValidElement(c) && c.type === Step,
+  )
 
   return (
     <div
@@ -67,6 +82,9 @@ export function Steps({
         className,
       )}
       data-slot="steps"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       role="list"
     >
       {items.map((child, i) => {
@@ -99,11 +117,9 @@ export function Steps({
                 )}
               >
                 {status === "completed" ? (
-                  <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
+                  <CheckIcon className="size-4" weight={sf.iconWeight} aria-hidden="true" />
                 ) : (
-                  (child.props as StepProps).icon ?? i + 1
+                  child.props.icon ?? i + 1
                 )}
               </div>
 
@@ -128,11 +144,16 @@ export function Steps({
                 "text-sm font-medium",
                 status === "pending" && "text-muted-foreground",
               )}>
-                {(child.props as StepProps).title}
+                {child.props.title}
               </p>
-              {(child.props as StepProps).description && (
+              {child.props.description && (
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  {(child.props as StepProps).description}
+                  {child.props.description}
+                </p>
+              )}
+              {child.props.optional && (
+                <p className="mt-0.5 text-xs text-muted-foreground/70 italic">
+                  Optional
                 </p>
               )}
             </div>

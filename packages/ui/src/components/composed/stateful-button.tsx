@@ -28,15 +28,18 @@
 
 import * as React from "react"
 import { Button, type ButtonProps } from "../ui/button"
-import { CircleNotchIcon } from "../ui/phosphor"
 
 /**
  * Props for {@link StatefulButton}. Extends {@link ButtonProps} with two
  * orthogonal stateful concerns. `asChild` is intentionally excluded — a
  * Slot-rendered button cannot own its own DOM children, so the spinner /
- * loading-text swap would be ambiguous.
+ * loading-text swap would be ambiguous. `isLoading` / `spinnerPlacement` are
+ * also excluded: `loading` is StatefulButton's single async-text flag and it
+ * delegates to the base Button's presentational `isLoading` internally, so
+ * exposing both would create two competing loading switches.
  */
-interface StatefulButtonProps extends Omit<ButtonProps, "asChild"> {
+interface StatefulButtonProps
+    extends Omit<ButtonProps, "asChild" | "isLoading" | "spinnerPlacement"> {
     /** Pending state: forces disabled, shows spinner, swaps label when `loadingText` is set. */
     loading?: boolean
     /** Optional label to show in place of children while `loading` is true. */
@@ -46,8 +49,10 @@ interface StatefulButtonProps extends Omit<ButtonProps, "asChild"> {
 /**
  * Button with built-in loading state.
  *
- * `loading` is the single source of truth for pending UI:
- *   - sets `disabled` (forwarded to native button)
+ * `loading` is the single source of truth for pending UI. It delegates to the
+ * base {@link Button}'s presentational `isLoading` flag (DRY — the spinner,
+ * disabled, `aria-busy`, and motion-gate logic live in one place):
+ *   - sets `disabled` (Button OR-s `disabled || isLoading` internally)
  *   - sets `aria-busy="true"` for assistive tech
  *   - prepends an animated spinner before the label
  *   - replaces `children` with `loadingText` if provided (otherwise label stays)
@@ -57,9 +62,9 @@ interface StatefulButtonProps extends Omit<ButtonProps, "asChild"> {
  *
  * @param {boolean} loading - Pending state.
  * @param {React.ReactNode} loadingText - Optional override label while loading.
- * @param disabled
- * @param children
- * @param rest
+ * @param disabled - Native disabled flag; OR-ed with `loading`.
+ * @param children - Default label, shown unless replaced by `loadingText` while loading.
+ * @param rest - Remaining {@link ButtonProps} (variant, intent, surface, radius, animated, iconWeight, …) forwarded to the underlying Button.
  */
 function StatefulButton({
     loading = false,
@@ -73,10 +78,9 @@ function StatefulButton({
     return (
         <Button
             {...rest}
-            disabled={disabled || loading}
-            aria-busy={loading || undefined}
+            isLoading={loading}
+            disabled={disabled}
         >
-            {loading && <CircleNotchIcon className="animate-spin" aria-hidden="true" />}
             {label}
         </Button>
     )

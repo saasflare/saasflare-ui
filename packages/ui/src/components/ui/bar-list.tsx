@@ -49,7 +49,7 @@ export interface BarListItem {
 export interface BarListProps extends SaasflareComponentProps {
     /** Rows to render. */
     data: BarListItem[]
-    /** Formats the numeric value on the right edge. Default: `String(n)`. */
+    /** Formats the numeric value on the right edge. Default: `(n) => n.toLocaleString()`. */
     valueFormatter?: (value: number) => string
     /** Sort rows by value descending. Default: `true`. */
     sortDescending?: boolean

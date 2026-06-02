@@ -24,7 +24,7 @@
  * <Rating value={4.3} readOnly allowHalf size="sm" />
  */
 
-import { useCallback, useState, type MouseEvent } from "react"
+import { useCallback, useId, useState, type MouseEvent } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
@@ -70,7 +70,8 @@ function StarPath({
     onClick?: (e: MouseEvent<SVGSVGElement>) => void
     onMouseMove?: (e: MouseEvent<SVGSVGElement>) => void
 }) {
-    const id = `star-clip-${Math.random().toString(36).slice(2, 8)}`
+    const reactId = useId()
+    const id = `star-clip-${reactId.replace(/:/g, "")}`
     return (
         <svg
             viewBox="0 0 24 24"
@@ -156,6 +157,7 @@ export function Rating({
             data-readonly={String(readOnly)}
             data-disabled={String(disabled)}
             data-surface={sf.surface}
+            data-radius={sf.radius}
             data-animated={String(sf.animated)}
             role={interactive ? "slider" : "img"}
             aria-label={ariaLabel ?? `Rating: ${current} of ${count}`}

@@ -2,8 +2,8 @@
 "use client"
 
 /**
- * @fileoverview Input — premium text input with Framer Motion animated focus ring and spring transition for polished form interactions.
- * @module packages/core/components/ui/input
+ * @fileoverview Input — premium text input with Motion animated focus ring and spring transition for polished form interactions.
+ * @module packages/ui/components/ui/input
  * @layer core
  *
  * @component

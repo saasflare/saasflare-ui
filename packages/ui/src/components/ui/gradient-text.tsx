@@ -18,8 +18,7 @@
  * @example
  * // Custom gradient and animation
  * <GradientText
- *   colors={["#ff6b6b", "#ffd93d", "#6bcb77"]}
- *   animate
+ *   colors={["var(--chart-1)", "var(--chart-3)", "var(--chart-5)"]}
  *   speed={4}
  * >
  *   Premium Feature
@@ -28,15 +27,22 @@
 
 import { type ReactNode } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the GradientText component. */
-export interface GradientTextProps {
+export interface GradientTextProps
+  extends Omit<React.ComponentProps<"span">, keyof SaasflareComponentProps | "color">,
+    SaasflareComponentProps {
   /** Text content to apply the gradient to. */
   children: ReactNode
   /** Gradient color stops. Default: `--primary` → `--chart-1` → `--chart-2` design tokens (OKLCH). */
   colors?: string[]
-  /** Whether to animate the gradient position. Default: `true` */
+  /**
+   * Per-instance toggle for the gradient-position animation. Default: `true`.
+   * Layered on top of the design-system `animated` axis — the gradient only
+   * shifts when both this and the resolved `animated` flag are enabled.
+   */
   animate?: boolean
   /** Animation cycle duration in seconds. Default: `6` */
   speed?: number
@@ -50,8 +56,8 @@ export interface GradientTextProps {
  * Text with a vibrant gradient fill, optionally animated.
  *
  * - Uses `background-clip: text` for the gradient effect
- * - Animates via CSS `@keyframes` (no JS frames)
- * - Falls back to primary color when reduced motion is preferred
+ * - Animates via CSS `@keyframes` (no JS frames); honors the `animated` axis
+ * - Falls back to a static gradient when reduced motion is preferred
  * - Renders as an inline `<span>` to nest inside any heading or paragraph
  *
  * @component
@@ -68,9 +74,16 @@ export function GradientText({
   speed = 6,
   angle = 90,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  style,
+  ...props
 }: GradientTextProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
-  const shouldAnimate = animate && !reduced
+  const shouldAnimate = animate && sf.animated && !reduced
 
   const gradient = `linear-gradient(${angle}deg, ${colors.join(", ")}, ${colors[0]})`
 
@@ -86,6 +99,7 @@ export function GradientText({
         `}</style>
       )}
       <span
+        {...props}
         className={cn(
           "bg-clip-text text-transparent",
           className,
@@ -96,8 +110,12 @@ export function GradientText({
           ...(shouldAnimate && {
             animation: `sf-gradient-shift ${speed}s ease infinite`,
           }),
+          ...style,
         }}
         data-slot="gradient-text"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
       >
         {children}
       </span>

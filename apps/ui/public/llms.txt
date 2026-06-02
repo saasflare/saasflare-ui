@@ -43,6 +43,8 @@ Two installation paths: install the npm package once for the runtime (`pnpm add 
 - [Confetti](https://ui.saasflare.io/r/confetti.json): CSS-only confetti burst with randomized colors and trajectories — celebrate conversions and milestones.
 - [Context Menu](https://ui.saasflare.io/r/context-menu.json): Right-click menu with items, submenus, checkboxes, and keyboard shortcuts.
 - [Countdown](https://ui.saasflare.io/r/countdown.json): Presentational countdown display (days/hours/minutes/seconds) — pair with the useCountdown hook.
+- [Data Pagination](https://ui.saasflare.io/r/data-pagination.json): Total-driven pagination control — prev/next, numbered pages with ellipsis, an optional page-size selector and an 'X–Y of N' summary. One component wires a whole table footer.
+- [Data Table](https://ui.saasflare.io/r/data-table.json): Dependency-free data grid built on the Table primitives — typed columns, client-side sort, row selection, and pagination out of the box, with a server-side/TanStack escape hatch.
 - [Data Toolbar](https://ui.saasflare.io/r/data-toolbar.json): Toolbar layout for tables and data grids — search, filters, and actions in a single bar.
 - [Date Picker](https://ui.saasflare.io/r/date-picker.json): Controlled/uncontrolled single-date input — Button + Popover + single-mode Calendar.
 - [Date Range Picker](https://ui.saasflare.io/r/date-range-picker.json): Controlled/uncontrolled date-range input — Button + Popover + range-mode Calendar.
@@ -74,6 +76,7 @@ Two installation paths: install the npm package once for the runtime (`pnpm add 
 - [Marquee](https://ui.saasflare.io/r/marquee.json): Infinite-scrolling row of content (logos, testimonials) — pure CSS, no animation frames.
 - [Menubar](https://ui.saasflare.io/r/menubar.json): Desktop-style horizontal menu bar (File / Edit / View) with dropdowns and keyboard navigation.
 - [Metric Card](https://ui.saasflare.io/r/metric-card.json): Dashboard metric card with sparkline support and trend indicator.
+- [Multi Select](https://ui.saasflare.io/r/multi-select.json): Searchable multi-select with chips, select-all, a max limit, and async option loading — built on Popover + cmdk, with a plain string[] value.
 - [Mouse Gradient Blob](https://ui.saasflare.io/r/mouse-gradient-blob.json): Large blurred gradient blob that trails the cursor with spring physics. Ambient hero background.
 - [Moving Border](https://ui.saasflare.io/r/moving-border.json): Continuously rotating conic-gradient border around an element. Eye-catching CTA wrapper.
 - [Native Select](https://ui.saasflare.io/r/native-select.json): Lightweight native select with a chevron overlay — zero-JS dropdown for simple option lists.
@@ -104,13 +107,14 @@ Two installation paths: install the npm package once for the runtime (`pnpm add 
 - [Shimmer Button](https://ui.saasflare.io/r/shimmer-button.json): CTA button with a looping diagonal light sweep. Draws the eye to your primary action.
 - [Skeleton](https://ui.saasflare.io/r/skeleton.json): Animated placeholder block for loading states — mirror your content's shape to avoid layout shift.
 - [Slider](https://ui.saasflare.io/r/slider.json): Draggable value selector with single or range thumbs, steps, and keyboard control.
-- [Social Button](https://ui.saasflare.io/r/social-button.json): Branded sign-in buttons for 16+ OAuth providers (Google, GitHub, Apple…) with correct logos and colors.
+- [Social Button](https://ui.saasflare.io/r/social-button.json): Compact branded sign-in button for five core providers (Google, Apple, GitHub, Microsoft, Twitter) with official logos and brand colors. For the full 16-provider OAuth set, see Social Auth Button.
 - [Toaster](https://ui.saasflare.io/r/sonner.json): Toast notifications — themed, stacked, and promise-aware (Sonner) with Phosphor icons and dark-mode support.
 - [Spark Chart](https://ui.saasflare.io/r/spark-chart.json): Inline mini line/area/bar chart. Pure SVG, no recharts. Tucks inside metric cards.
 - [Spinner](https://ui.saasflare.io/r/spinner.json): Indeterminate loading spinner (Phosphor CircleNotch) for buttons and async regions.
 - [Spotlight Card](https://ui.saasflare.io/r/spotlight-card.json): Card with a cursor-following spotlight gradient effect on hover.
 - [Stat Card](https://ui.saasflare.io/r/stat-card.json): KPI / metric card with icon, large value, label, and optional delta indicator.
 - [Steps](https://ui.saasflare.io/r/steps.json): Horizontal or vertical step indicator showing progress through a multi-stage flow or wizard.
+- [Stepper](https://ui.saasflare.io/r/stepper.json): Controlled multi-step wizard — a useStepper hook plus Stepper / StepperNav / StepperPanel with linear or non-linear flow, optional steps, and async validation gating.
 - [Sticky Scroll Reveal](https://ui.saasflare.io/r/sticky-scroll-reveal.json): Split layout where the left column pins while the right scrolls through synced content steps.
 - [Switch](https://ui.saasflare.io/r/switch.json): On/off toggle for boolean settings, with size variants and accessible labeling.
 - [Table](https://ui.saasflare.io/r/table.json): Composable data table with header, body, row, cell, and caption sub-components.

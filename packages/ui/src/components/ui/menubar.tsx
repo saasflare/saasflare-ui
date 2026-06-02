@@ -4,7 +4,7 @@
 /**
  * @fileoverview Menubar primitive — horizontal menu bar with dropdown menus, checkbox items, and keyboard navigation.
  * Built on Radix UI Menubar. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/menubar
+ * @module packages/ui/components/ui/menubar
  * @layer core
  *
  * @component
@@ -20,7 +20,6 @@
  *   </MenubarMenu>
  * </Menubar>
  */
-"use client"
 
 import * as React from "react"
 import { CheckIcon, CaretRightIcon, CircleIcon } from "./phosphor"
@@ -33,6 +32,10 @@ interface MenubarProps
   extends Omit<React.ComponentProps<typeof MenubarPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Root horizontal menu bar. Owns the Saasflare surface/radius/animated context for
+ * its menus and emits the corresponding data attributes.
+ */
 function Menubar({
   className,
   surface,
@@ -58,24 +61,28 @@ function Menubar({
   )
 }
 
+/** A single menu within the menubar, pairing a trigger with its content. */
 function MenubarMenu({
   ...props
 }: React.ComponentProps<typeof MenubarPrimitive.Menu>) {
   return <MenubarPrimitive.Menu data-slot="menubar-menu" {...props} />
 }
 
+/** Groups related menu items together for semantic structure. */
 function MenubarGroup({
   ...props
 }: React.ComponentProps<typeof MenubarPrimitive.Group>) {
   return <MenubarPrimitive.Group data-slot="menubar-group" {...props} />
 }
 
+/** Portals menu content into the document body, outside the DOM flow. */
 function MenubarPortal({
   ...props
 }: React.ComponentProps<typeof MenubarPrimitive.Portal>) {
   return <MenubarPrimitive.Portal data-slot="menubar-portal" {...props} />
 }
 
+/** Groups radio items so only one can be checked at a time. */
 function MenubarRadioGroup({
   ...props
 }: React.ComponentProps<typeof MenubarPrimitive.RadioGroup>) {
@@ -84,6 +91,7 @@ function MenubarRadioGroup({
   )
 }
 
+/** Clickable label that opens its associated menu. */
 function MenubarTrigger({
   className,
   ...props
@@ -104,6 +112,10 @@ interface MenubarContentProps
   extends Omit<React.ComponentProps<typeof MenubarPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Floating panel that holds a menu's items. Inherits surface/radius/animated and
+ * emits the matching data attributes for CSS-driven motion.
+ */
 function MenubarContent({
   className,
   align = "start",
@@ -129,7 +141,7 @@ function MenubarContent({
         alignOffset={alignOffset}
         sideOffset={sideOffset}
         className={cn(
-          "z-50 min-w-[12rem] origin-(--radix-menubar-content-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+          "z-50 min-w-[12rem] origin-(--radix-menubar-content-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           className
         )}
       />
@@ -137,6 +149,7 @@ function MenubarContent({
   )
 }
 
+/** Selectable menu item. Supports an inset variant and a destructive variant. */
 function MenubarItem({
   className,
   inset,
@@ -160,13 +173,16 @@ function MenubarItem({
   )
 }
 
+/** Menu item with a checkmark indicator reflecting its checked state. */
 function MenubarCheckboxItem({
   className,
   children,
   checked,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>) {
-  const sf = useSaasflareProps()
+}: Omit<React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>, keyof SaasflareComponentProps> &
+  Pick<SaasflareComponentProps, "iconWeight">) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <MenubarPrimitive.CheckboxItem
       data-slot="menubar-checkbox-item"
@@ -187,12 +203,15 @@ function MenubarCheckboxItem({
   )
 }
 
+/** Menu item with a dot indicator for single-selection radio groups. */
 function MenubarRadioItem({
   className,
   children,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof MenubarPrimitive.RadioItem>) {
-  const sf = useSaasflareProps()
+}: Omit<React.ComponentProps<typeof MenubarPrimitive.RadioItem>, keyof SaasflareComponentProps> &
+  Pick<SaasflareComponentProps, "iconWeight">) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <MenubarPrimitive.RadioItem
       data-slot="menubar-radio-item"
@@ -212,6 +231,7 @@ function MenubarRadioItem({
   )
 }
 
+/** Non-interactive heading used to caption a group of menu items. */
 function MenubarLabel({
   className,
   inset,
@@ -232,6 +252,7 @@ function MenubarLabel({
   )
 }
 
+/** Thin horizontal divider between groups of menu items. */
 function MenubarSeparator({
   className,
   ...props
@@ -245,6 +266,7 @@ function MenubarSeparator({
   )
 }
 
+/** Right-aligned hint showing the keyboard shortcut for a menu item. */
 function MenubarShortcut({
   className,
   ...props
@@ -261,21 +283,24 @@ function MenubarShortcut({
   )
 }
 
+/** Wrapper for a nested submenu, pairing a sub-trigger with sub-content. */
 function MenubarSub({
   ...props
 }: React.ComponentProps<typeof MenubarPrimitive.Sub>) {
   return <MenubarPrimitive.Sub data-slot="menubar-sub" {...props} />
 }
 
+/** Menu item that opens a nested submenu, with a trailing caret indicator. */
 function MenubarSubTrigger({
   className,
   inset,
   children,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof MenubarPrimitive.SubTrigger> & {
+}: Omit<React.ComponentProps<typeof MenubarPrimitive.SubTrigger>, keyof SaasflareComponentProps> & {
   inset?: boolean
-}) {
-  const sf = useSaasflareProps()
+} & Pick<SaasflareComponentProps, "iconWeight">) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <MenubarPrimitive.SubTrigger
       data-slot="menubar-sub-trigger"
@@ -292,6 +317,7 @@ function MenubarSubTrigger({
   )
 }
 
+/** Floating panel for a nested submenu's items. */
 function MenubarSubContent({
   className,
   ...props

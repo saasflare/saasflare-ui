@@ -5,12 +5,13 @@
  * @fileoverview Item primitive — versatile list item component with icon, label,
  * description, and action slots. Supports multiple variants (default, link, button)
  * and grouped layouts with separators. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/item
+ * @module packages/ui/components/ui/item
  * @layer core
  *
  * @component
  * @example
  * import { ItemGroup, Item, ItemContent, ItemTitle } from '@saasflare/ui';
+ *
  * <ItemGroup>
  *   <Item>
  *     <ItemContent>
@@ -24,8 +25,22 @@ import { cva, type VariantProps } from "class-variance-authority"
 import * as Slot from "@radix-ui/react-slot"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Separator } from "./separator"
 
+/**
+ * Vertical container that groups related {@link Item} rows into a list.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemGroup>
+ *   <Item>…</Item>
+ *   <ItemSeparator />
+ *   <Item>…</Item>
+ * </ItemGroup>
+ */
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -37,6 +52,15 @@ function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Horizontal divider between {@link Item} rows inside an {@link ItemGroup}.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemSeparator />
+ */
 function ItemSeparator({
   className,
   ...props
@@ -72,20 +96,55 @@ const itemVariants = cva(
   }
 )
 
+/** Props for the Saasflare {@link Item} component. */
+interface ItemProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    VariantProps<typeof itemVariants>,
+    SaasflareComponentProps {
+  /** Render as child element (Radix Slot pattern). */
+  asChild?: boolean
+}
+
+/**
+ * Versatile list row with optional media, content, and action slots.
+ *
+ * A surfaced, rounded primitive: `surface` and `radius` resolve from the
+ * provider via {@link useSaasflareProps} and are emitted as
+ * `data-surface`/`data-radius` on the root for CSS theming.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Item variant="outline">
+ *   <ItemMedia variant="icon"><GearIcon /></ItemMedia>
+ *   <ItemContent>
+ *     <ItemTitle>Settings</ItemTitle>
+ *     <ItemDescription>Manage your account.</ItemDescription>
+ *   </ItemContent>
+ * </Item>
+ */
 function Item({
   className,
   variant = "default",
   size = "default",
   asChild = false,
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
-}: React.ComponentProps<"div"> &
-  VariantProps<typeof itemVariants> & { asChild?: boolean }) {
+}: ItemProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const Comp = asChild ? Slot.Root : "div"
   return (
     <Comp
       data-slot="item"
       data-variant={variant}
       data-size={size}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(itemVariants({ variant, size, className }))}
       {...props}
     />
@@ -109,6 +168,15 @@ const itemMediaVariants = cva(
   }
 )
 
+/**
+ * Leading media slot for an {@link Item} — icon, image, or bare children.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemMedia variant="icon"><GearIcon /></ItemMedia>
+ */
 function ItemMedia({
   className,
   variant = "default",
@@ -124,6 +192,17 @@ function ItemMedia({
   )
 }
 
+/**
+ * Primary content column of an {@link Item} — holds title and description.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemContent>
+ *   <ItemTitle>Settings</ItemTitle>
+ * </ItemContent>
+ */
 function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -137,6 +216,15 @@ function ItemContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Title line within {@link ItemContent}.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemTitle>Settings</ItemTitle>
+ */
 function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -150,6 +238,15 @@ function ItemTitle({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Secondary description text within {@link ItemContent}.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemDescription>Manage your account.</ItemDescription>
+ */
 function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
@@ -164,6 +261,15 @@ function ItemDescription({ className, ...props }: React.ComponentProps<"p">) {
   )
 }
 
+/**
+ * Trailing actions slot of an {@link Item} — buttons, menus, or controls.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemActions><Button size="sm">Edit</Button></ItemActions>
+ */
 function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -174,6 +280,15 @@ function ItemActions({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Full-width header row spanning the top of an {@link Item}.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemHeader><ItemTitle>Plan</ItemTitle><Badge>Pro</Badge></ItemHeader>
+ */
 function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -187,6 +302,15 @@ function ItemHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Full-width footer row spanning the bottom of an {@link Item}.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ItemFooter><ItemDescription>Renews monthly.</ItemDescription></ItemFooter>
+ */
 function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -211,4 +335,5 @@ export {
   ItemDescription,
   ItemHeader,
   ItemFooter,
+  type ItemProps,
 }

@@ -214,6 +214,20 @@
       "url": "https://ui.saasflare.io/r/countdown.json"
     },
     {
+      "name": "data-pagination",
+      "type": "registry:ui",
+      "title": "Data Pagination",
+      "description": "Total-driven pagination control — prev/next, numbered pages with ellipsis, an optional page-size selector and an 'X–Y of N' summary. One component wires a whole table footer.",
+      "url": "https://ui.saasflare.io/r/data-pagination.json"
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Dependency-free data grid built on the Table primitives — typed columns, client-side sort, row selection, and pagination out of the box, with a server-side/TanStack escape hatch.",
+      "url": "https://ui.saasflare.io/r/data-table.json"
+    },
+    {
       "name": "data-toolbar",
       "type": "registry:ui",
       "title": "Data Toolbar",
@@ -445,6 +459,13 @@
       "url": "https://ui.saasflare.io/r/moving-border.json"
     },
     {
+      "name": "multi-select",
+      "type": "registry:ui",
+      "title": "Multi Select",
+      "description": "Searchable multi-select with chips, select-all, a max limit, and async option loading — built on Popover + cmdk, with a plain string[] value.",
+      "url": "https://ui.saasflare.io/r/multi-select.json"
+    },
+    {
       "name": "native-select",
       "type": "registry:ui",
       "title": "Native Select",
@@ -644,7 +665,7 @@
       "name": "social-button",
       "type": "registry:ui",
       "title": "Social Button",
-      "description": "Branded sign-in buttons for 16+ OAuth providers (Google, GitHub, Apple…) with correct logos and colors.",
+      "description": "Compact branded sign-in button for five core providers (Google, Apple, GitHub, Microsoft, Twitter) with official logos and brand colors. For the full 16-provider OAuth set, see Social Auth Button.",
       "url": "https://ui.saasflare.io/r/social-button.json"
     },
     {
@@ -681,6 +702,13 @@
       "title": "Stat Card",
       "description": "KPI / metric card with icon, large value, label, and optional delta indicator.",
       "url": "https://ui.saasflare.io/r/stat-card.json"
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "Controlled multi-step wizard — a useStepper hook plus Stepper / StepperNav / StepperPanel with linear or non-linear flow, optional steps, and async validation gating.",
+      "url": "https://ui.saasflare.io/r/stepper.json"
     },
     {
       "name": "steps",
@@ -807,6 +835,69 @@
       "title": "Typewriter Text",
       "description": "Types out text character-by-character with a blinking cursor. Classic hero headline effect.",
       "url": "https://ui.saasflare.io/r/typewriter-text.json"
+    },
+    {
+      "name": "social-auth-button",
+      "type": "registry:ui",
+      "title": "Social Auth Button",
+      "description": "Provider-branded OAuth sign-in button for all 16 supported identity providers, with official brand logos, an opt-in colorful weight, and built-in loading state (wraps StatefulButton). Includes 16 pre-bound shortcuts (GoogleAuthButton, GitHubAuthButton, …).",
+      "url": "https://ui.saasflare.io/r/social-auth-button.json"
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Collapsible application sidebar system — provider, rail, header/footer, groups, and a full menu (button, action, badge, sub-menu, skeleton) with cookie-persisted open state and a ⌘B keyboard shortcut.",
+      "url": "https://ui.saasflare.io/r/sidebar.json"
+    },
+    {
+      "name": "stateful-button",
+      "type": "registry:ui",
+      "title": "Stateful Button",
+      "description": "Button with a built-in async loading state — disables, sets aria-busy, prepends a spinner, and optionally swaps its label for loadingText.",
+      "url": "https://ui.saasflare.io/r/stateful-button.json"
+    },
+    {
+      "name": "user-avatar",
+      "type": "registry:ui",
+      "title": "User Avatar",
+      "description": "Avatar with image, automatic initials fallback, three size variants, and an optional click handler. The opinionated wrapper most apps reach for.",
+      "url": "https://ui.saasflare.io/r/user-avatar.json"
+    },
+    {
+      "name": "theme-mode-toggle",
+      "type": "registry:ui",
+      "title": "Theme Mode Toggle",
+      "description": "Two-state light/dark toggle button (Sun/Moon) backed by next-themes, with an SSR seed prop to eliminate the first-paint flash.",
+      "url": "https://ui.saasflare.io/r/theme-mode-toggle.json"
+    },
+    {
+      "name": "theme-mode-multi-toggle",
+      "type": "registry:ui",
+      "title": "Theme Mode Multi Toggle",
+      "description": "Three-segment light / dark / system segmented control (Sun / Moon / Monitor) built on ToggleGroup, with icon, icon-inherit, and button appearances.",
+      "url": "https://ui.saasflare.io/r/theme-mode-multi-toggle.json"
+    },
+    {
+      "name": "top-loading-bar",
+      "type": "registry:ui",
+      "title": "Top Loading Bar",
+      "description": "Slim top-of-page progress bar for Next.js App Router route transitions — self-trickling when animated, a flat aria-live bar when reduced-motion.",
+      "url": "https://ui.saasflare.io/r/top-loading-bar.json"
+    },
+    {
+      "name": "scroll-to-top-button",
+      "type": "registry:ui",
+      "title": "Scroll To Top Button",
+      "description": "Floating button that appears past a scroll offset and smoothly returns to the top — supports window or a custom scroll container, flat or glass surface.",
+      "url": "https://ui.saasflare.io/r/scroll-to-top-button.json"
+    },
+    {
+      "name": "animated-tooltip",
+      "type": "registry:ui",
+      "title": "Animated Tooltip",
+      "description": "Row of circular avatars that reveal a spring-tilted, mouse-tracking tooltip on hover — for team rows and contributor stacks.",
+      "url": "https://ui.saasflare.io/r/animated-tooltip.json"
     }
   ]
 }

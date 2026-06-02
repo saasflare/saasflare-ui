@@ -26,10 +26,11 @@
 import { useMemo, useRef } from "react"
 import { m, useInView } from "motion/react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springGentle } from "./motion-config"
 
 /** Props for the TextGenerateEffect component. */
-export interface TextGenerateEffectProps {
+export interface TextGenerateEffectProps extends SaasflareComponentProps {
   /** Text string to animate word by word. */
   text: string
   /** Delay between each word in seconds. Default: `0.05` */
@@ -49,7 +50,8 @@ export interface TextGenerateEffectProps {
  *
  * - Each word fades from transparent to opaque sequentially
  * - Triggers when the element scrolls into view
- * - Renders full text immediately when reduced motion is preferred
+ * - Renders full text immediately when motion is disabled (`animated={false}`,
+ *   provider opt-out, or `prefers-reduced-motion`)
  * - Preserves natural text wrapping and spacing
  *
  * @component
@@ -62,22 +64,40 @@ export function TextGenerateEffect({
   once = true,
   as: Tag = "p",
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: TextGenerateEffectProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, springGentle)
   const ref = useRef<HTMLElement>(null)
   const isInView = useInView(ref, { once, margin: "-50px" })
 
   const words = useMemo(() => text.split(/\s+/), [text])
 
-  if (reduced) {
-    return <Tag className={className}>{text}</Tag>
+  if (motion.disabled) {
+    return (
+      <Tag
+        className={className}
+        data-slot="text-generate-effect"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
+      >
+        {text}
+      </Tag>
+    )
   }
 
   return (
     <Tag
-      ref={ref as React.RefObject<HTMLParagraphElement>}
+      ref={ref as React.RefObject<HTMLParagraphElement & HTMLHeadingElement & HTMLSpanElement>}
       className={cn("inline", className)}
       data-slot="text-generate-effect"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       {words.map((word, i) => (
         <m.span

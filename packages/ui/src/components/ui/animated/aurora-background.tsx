@@ -18,22 +18,23 @@
  * </div>
  *
  * @example
- * // Custom colors
+ * // Custom colors (prefer design tokens over raw literals)
  * <AuroraBackground
- *   colors={["#4f46e5", "#7c3aed", "#06b6d4"]}
+ *   colors={["var(--primary)", "var(--chart-3)", "var(--chart-4)"]}
  *   opacity={0.25}
  * />
  */
 
 import { type ReactNode } from "react"
 import { cn } from "../../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../../providers"
 import { useReducedMotion } from "../motion-config"
 
 /** Props for the AuroraBackground component. */
-export interface AuroraBackgroundProps {
+export interface AuroraBackgroundProps extends SaasflareComponentProps {
   /** Optional child content (rendered above the aurora). */
   children?: ReactNode
-  /** Aurora gradient colors (3 recommended). */
+  /** Aurora gradient colors (3 recommended). Prefer design tokens (e.g. `var(--primary)`). */
   colors?: string[]
   /** Overall opacity (0–1). Default: `0.15` */
   opacity?: number
@@ -60,11 +61,20 @@ export function AuroraBackground({
   opacity = 0.15,
   speed = 1,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: AuroraBackgroundProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
+  // Drift runs only when both the design-system `animated` axis and the user's
+  // motion preference allow it. `animated={false}` stops the drift independent
+  // of OS reduced-motion.
+  const drift = sf.animated && !reduced
 
   const blobs = [
-    { color: colors[0] ?? colors[0], x: "25%", y: "25%", size: "50%", delay: 0 },
+    { color: colors[0], x: "25%", y: "25%", size: "50%", delay: 0 },
     { color: colors[1] ?? colors[0], x: "60%", y: "40%", size: "45%", delay: 2 },
     { color: colors[2] ?? colors[0], x: "40%", y: "60%", size: "55%", delay: 4 },
   ]
@@ -76,8 +86,11 @@ export function AuroraBackground({
       className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
       aria-hidden="true"
       data-slot="aurora-background"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
-      {!reduced && (
+      {drift && (
         <style>{`
           @keyframes sf-aurora-drift-1 {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -110,11 +123,11 @@ export function AuroraBackground({
             background: `radial-gradient(circle, ${blob.color}, transparent 70%)`,
             opacity,
             filter: "blur(60px)",
-            ...(reduced
-              ? {}
-              : {
+            ...(drift
+              ? {
                   animation: `sf-aurora-drift-${i + 1} ${baseDuration + i * 2}s ease-in-out ${blob.delay}s infinite`,
-                }),
+                }
+              : {}),
           }}
         />
       ))}

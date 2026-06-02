@@ -24,12 +24,16 @@
  * </Marquee>
  */
 
+import * as React from "react"
 import { type ReactNode } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the Marquee component. */
-export interface MarqueeProps {
+export interface MarqueeProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps | "children">,
+    SaasflareComponentProps {
   /** Items to scroll infinitely. */
   children: ReactNode
   /** Reverse scroll direction. Default: `false` */
@@ -51,7 +55,7 @@ export interface MarqueeProps {
 /**
  * Infinite-scrolling content ticker.
  *
- * - Pure CSS animation (no JS frames, no Framer Motion overhead)
+ * - Pure CSS animation (no JS frames, no Motion overhead)
  * - Duplicates children to create a seamless loop
  * - Pauses on hover for readability (configurable)
  * - Falls back to static flex row when reduced motion is preferred
@@ -68,12 +72,26 @@ export function Marquee({
   repeat = 2,
   vertical = false,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
 }: MarqueeProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
+  // Scope keyframe names to this instance so multiple mounted Marquees never
+  // collide on global @keyframes identifiers (also stable across SSR/CSR).
+  const rawId = React.useId()
+  const uid = rawId.replace(/[^a-zA-Z0-9_-]/g, "")
 
-  if (reduced) {
+  // Honor BOTH the provider-level `animated` axis and the user's reduced-motion
+  // preference. A consumer who set animated=false must get a static fallback,
+  // not a moving marquee.
+  if (reduced || !sf.animated) {
     return (
       <div
+        {...props}
         className={cn(
           "flex items-center overflow-hidden",
           vertical ? "flex-col" : "flex-row",
@@ -81,30 +99,39 @@ export function Marquee({
         )}
         style={{ gap }}
         data-slot="marquee"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
       >
         {children}
       </div>
     )
   }
 
-  const animationName = vertical ? "marquee-vertical" : "marquee-horizontal"
+  const animationName = vertical
+    ? `marquee-vertical-${uid}`
+    : `marquee-horizontal-${uid}`
   const direction = reverse ? "reverse" : "normal"
 
   return (
     <div
+      {...props}
       className={cn(
         "group relative flex overflow-hidden",
         vertical ? "flex-col" : "flex-row",
         className,
       )}
       data-slot="marquee"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       <style>{`
-        @keyframes marquee-horizontal {
+        @keyframes marquee-horizontal-${uid} {
           from { transform: translateX(0); }
           to { transform: translateX(-100%); }
         }
-        @keyframes marquee-vertical {
+        @keyframes marquee-vertical-${uid} {
           from { transform: translateY(0); }
           to { transform: translateY(-100%); }
         }

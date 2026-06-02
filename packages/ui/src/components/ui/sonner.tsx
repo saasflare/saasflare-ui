@@ -5,7 +5,7 @@
  * @fileoverview Toaster primitive — themed toast notification container.
  * Built on the Sonner toast library with Phosphor icons and next-themes integration.
  * Part of the Saasflare base component layer.
- * @module packages/core/components/ui/sonner
+ * @module packages/ui/components/ui/sonner
  * @layer core
  *
  * @requires sonner — peer dependency.
@@ -15,8 +15,8 @@
  * import { Toaster } from '@saasflare/ui';
  * <Toaster position="top-right" />
  */
-"use client"
 
+import type { CSSProperties } from "react"
 import {
   CheckCircleIcon,
   InfoIcon,
@@ -55,7 +55,7 @@ const Toaster = ({ surface, radius, animated, iconWeight, ...props }: SaasflareT
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
           "--border-radius": "var(--radius)",
-        } as React.CSSProperties
+        } as CSSProperties
       }
       {...props}
     />

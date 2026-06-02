@@ -1,8 +1,10 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Pagination primitive — page navigation controls with previous/next links and ellipsis.
  * Pure HTML nav with Tailwind styling, using Button variants for link appearance. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/pagination
+ * @module packages/ui/components/ui/pagination
  * @layer core
  *
  * @component
@@ -25,21 +27,46 @@ import {
 } from "./phosphor"
 
 import { cn } from "../../lib"
-import { useSaasflareProps } from "../../providers"
+import {
+  useSaasflareProps,
+  type SaasflareComponentProps,
+} from "../../providers"
 import { buttonVariants } from "./button"
 
-function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
+interface PaginationProps
+  extends Omit<React.ComponentProps<"nav">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * Pagination root — semantic `<nav>` landmark wrapping the page controls.
+ *
+ * Carries the theme axes (`surface`/`radius`/`animated`) so descendant links
+ * can inherit the active design-system context.
+ */
+function Pagination({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}: PaginationProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <nav
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("mx-auto flex w-full justify-center", className)}
       {...props}
     />
   )
 }
 
+/** Horizontal `<ul>` list that holds the {@link PaginationItem} entries. */
 function PaginationContent({
   className,
   ...props
@@ -53,26 +80,44 @@ function PaginationContent({
   )
 }
 
+/** Single `<li>` slot wrapping a {@link PaginationLink} or control. */
 function PaginationItem({ ...props }: React.ComponentProps<"li">) {
   return <li data-slot="pagination-item" {...props} />
 }
 
-type PaginationLinkProps = {
+interface PaginationLinkProps
+  extends Omit<React.ComponentProps<"a">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  /** Marks the link as the current page (renders the `outline` button variant + `aria-current`). */
   isActive?: boolean
+  /** Button-variant size token controlling the link's footprint. Defaults to the icon-only `"icon"`. */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "icon" | "icon-xs" | "icon-sm" | "icon-lg"
-} & React.ComponentProps<"a">
+}
 
+/**
+ * Anchor styled as a button via {@link buttonVariants}. Active state switches
+ * to the `outline` variant; inactive uses `ghost`. Carries the theme axes so
+ * its radius/surface follow the design-system context like {@link Button}.
+ */
 function PaginationLink({
   className,
   isActive,
   size = "icon",
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
 }: PaginationLinkProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <a
       aria-current={isActive ? "page" : undefined}
       data-slot="pagination-link"
       data-active={isActive}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         buttonVariants({
           variant: isActive ? "outline" : "ghost",
@@ -85,6 +130,7 @@ function PaginationLink({
   )
 }
 
+/** "Previous page" control — a labelled {@link PaginationLink} with a left caret. */
 function PaginationPrevious({
   className,
   ...props
@@ -103,6 +149,7 @@ function PaginationPrevious({
   )
 }
 
+/** "Next page" control — a labelled {@link PaginationLink} with a right caret. */
 function PaginationNext({
   className,
   ...props
@@ -121,6 +168,7 @@ function PaginationNext({
   )
 }
 
+/** Non-interactive ellipsis indicating a gap (skipped pages) in the sequence. */
 function PaginationEllipsis({
   className,
   ...props

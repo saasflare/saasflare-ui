@@ -4,7 +4,8 @@
  * @fileoverview Button with a sweeping shimmer/shine effect.
  * @author Saasflare™
  * A CTA button with a diagonal light sweep animation that loops infinitely.
- * Builds on top of the Saasflare Button variant system.
+ * Self-contained implementation that participates in the Saasflare theming
+ * contract (surface / radius / animated).
  * @module packages/ui/components/ui/shimmer-button
  * @package ui
  *
@@ -15,20 +16,24 @@
  *
  * @example
  * // Custom shimmer color and speed
- * <ShimmerButton shimmerColor="rgba(255,255,255,0.3)" speed={3}>
+ * <ShimmerButton shimmerColor="var(--primary-foreground)" speed={3}>
  *   Launch Your SaaS
  * </ShimmerButton>
  */
 
-import { type ReactNode, type ComponentProps } from "react"
+import * as React from "react"
+import { type ReactNode } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the ShimmerButton component. */
-export interface ShimmerButtonProps extends ComponentProps<"button"> {
+export interface ShimmerButtonProps
+  extends Omit<React.ComponentProps<"button">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Button content. */
   children: ReactNode
-  /** Color of the shimmer highlight. Default: `"rgba(255,255,255,0.2)"` */
+  /** Color of the shimmer highlight. Default: `"var(--primary-foreground)"` */
   shimmerColor?: string
   /** Shimmer cycle duration in seconds. Default: `2.5` */
   speed?: number
@@ -41,7 +46,8 @@ export interface ShimmerButtonProps extends ComponentProps<"button"> {
  *
  * - Diagonal light sweep loops infinitely
  * - CSS-only animation (no JS frames)
- * - Falls back to a static button when reduced motion is preferred
+ * - Falls back to a static button when reduced motion is preferred or
+ *   when `animated` is disabled via prop/provider
  * - Inherits standard button props (onClick, disabled, etc.)
  *
  * @component
@@ -49,17 +55,22 @@ export interface ShimmerButtonProps extends ComponentProps<"button"> {
  */
 export function ShimmerButton({
   children,
-  shimmerColor = "rgba(255,255,255,0.2)",
+  shimmerColor = "var(--primary-foreground)",
   speed = 2.5,
   background = "var(--primary)",
   className,
+  surface,
+  radius,
+  animated,
   ...props
 }: ShimmerButtonProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   const reduced = useReducedMotion()
+  const showShimmer = sf.animated && !reduced
 
   return (
     <>
-      {!reduced && (
+      {showShimmer && (
         <style>{`
           @keyframes sf-shimmer-slide {
             from { transform: translateX(-100%) rotate(-15deg); }
@@ -74,10 +85,13 @@ export function ShimmerButton({
         )}
         style={{ background }}
         data-slot="shimmer-button"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         {...props}
       >
         {/* Shimmer overlay */}
-        {!reduced && (
+        {showShimmer && (
           <div
             className="pointer-events-none absolute inset-0"
             style={{

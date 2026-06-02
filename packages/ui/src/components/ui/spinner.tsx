@@ -4,7 +4,7 @@
  * Phosphor CircleNotch icon. Applies a continuous spin animation with accessible
  * status role.
  * Part of the Saasflare base component layer.
- * @module packages/core/components/ui/spinner
+ * @module packages/ui/components/ui/spinner
  * @layer core
  *
  * @component
@@ -14,6 +14,8 @@
  */
 "use client"
 
+import * as React from "react"
+
 import { CircleNotchIcon } from "./phosphor"
 
 import { cn } from "../../lib"
@@ -22,7 +24,7 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
 function Spinner({ className, surface, radius, animated, ...props }: SpinnerProps) {
-  const sf = useSaasflareProps({ animated })
+  const sf = useSaasflareProps({ surface, radius, animated })
 
   return (
     <CircleNotchIcon
@@ -30,8 +32,10 @@ function Spinner({ className, surface, radius, animated, ...props }: SpinnerProp
       role="status"
       aria-label="Loading"
       data-slot="spinner"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      className={cn("size-4 animate-spin", className)}
+      className={cn("size-4", sf.animated && "animate-spin", className)}
     />
   )
 }

@@ -182,54 +182,101 @@ function SocialAuthButton({
 
 type ProviderShortcutProps = Omit<SocialAuthButtonProps, "provider">
 
+/** Pre-bound {@link SocialAuthButton} for the `google` provider. */
 const GoogleAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="google" {...props} />
 )
+GoogleAuthButton.displayName = "GoogleAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `github` provider. */
 const GitHubAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="github" {...props} />
 )
+GitHubAuthButton.displayName = "GitHubAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `apple` provider. */
 const AppleAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="apple" {...props} />
 )
+AppleAuthButton.displayName = "AppleAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `microsoft` provider. */
 const MicrosoftAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="microsoft" {...props} />
 )
+MicrosoftAuthButton.displayName = "MicrosoftAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `x` provider. */
 const XAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="x" {...props} />
 )
+XAuthButton.displayName = "XAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `discord` provider. */
 const DiscordAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="discord" {...props} />
 )
+DiscordAuthButton.displayName = "DiscordAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `facebook` provider. */
 const FacebookAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="facebook" {...props} />
 )
+FacebookAuthButton.displayName = "FacebookAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `linkedin` provider. */
 const LinkedInAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="linkedin" {...props} />
 )
+LinkedInAuthButton.displayName = "LinkedInAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `medium` provider. */
 const MediumAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="medium" {...props} />
 )
+MediumAuthButton.displayName = "MediumAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `slack` provider. */
 const SlackAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="slack" {...props} />
 )
+SlackAuthButton.displayName = "SlackAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `reddit` provider. */
 const RedditAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="reddit" {...props} />
 )
+RedditAuthButton.displayName = "RedditAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `paypal` provider. */
 const PayPalAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="paypal" {...props} />
 )
+PayPalAuthButton.displayName = "PayPalAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `stripe` provider. */
 const StripeAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="stripe" {...props} />
 )
+StripeAuthButton.displayName = "StripeAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `gitlab` provider. */
 const GitLabAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="gitlab" {...props} />
 )
+GitLabAuthButton.displayName = "GitLabAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `dribbble` provider. */
 const DribbbleAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="dribbble" {...props} />
 )
+DribbbleAuthButton.displayName = "DribbbleAuthButton"
+
+/** Pre-bound {@link SocialAuthButton} for the `tiktok` provider. */
 const TikTokAuthButton = (props: ProviderShortcutProps) => (
     <SocialAuthButton provider="tiktok" {...props} />
 )
+TikTokAuthButton.displayName = "TikTokAuthButton"
 
 export {
     SocialAuthButton,

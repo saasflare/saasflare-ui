@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare MetricCard — dashboard KPI display.
- * @module packages/core/components/ui/metric-card
+ * @module packages/ui/components/ui/metric-card
  * @layer core
  *
  * Displays a single metric with label, value, trend indicator, and optional icon.

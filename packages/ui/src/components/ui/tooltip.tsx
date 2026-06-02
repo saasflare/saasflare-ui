@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Tooltip — animated contextual hint with spring entrance, arrow support, and configurable delay.
- * @module packages/core/components/ui/tooltip
+ * @module packages/ui/components/ui/tooltip
  * @layer core
  *
  * @component
@@ -83,7 +83,7 @@ function TooltipContent({
           exit={motion.disabled ? undefined : { opacity: 0, scale: 0.92 }}
           transition={motion.transition}
           className={cn(
-            "z-50 w-fit overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md",
+            "z-50 w-fit rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md",
             className
           )}
         >
@@ -94,4 +94,37 @@ function TooltipContent({
   )
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, type TooltipContentProps }
+interface TooltipArrowProps
+  extends React.ComponentProps<typeof TooltipPrimitive.Arrow> {}
+
+/**
+ * Arrow connecting the tooltip to its trigger.
+ *
+ * Renders as a child of `<TooltipContent>` (consumes Popper context) and rides
+ * the existing spring entrance because it lives inside the animated panel — no
+ * extra motion wiring is needed, and reduced-motion / `animated=false` gating is
+ * inherited from the content. Fill follows the `bg-primary` token via
+ * `fill-primary` to match the tooltip body, so it stays palette- and
+ * theme-reactive. Override the fill with `className` under custom surfaces.
+ *
+ * @component
+ * @layer core
+ * @example
+ * <TooltipContent>
+ *   Copy link
+ *   <TooltipArrow />
+ * </TooltipContent>
+ */
+function TooltipArrow({ className, ...props }: TooltipArrowProps) {
+  return (
+    <TooltipPrimitive.Arrow
+      data-slot="tooltip-arrow"
+      width={11}
+      height={5}
+      className={cn("fill-primary", className)}
+      {...props}
+    />
+  )
+}
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, TooltipArrow, type TooltipContentProps, type TooltipArrowProps }

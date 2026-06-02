@@ -28,7 +28,6 @@
  * import { TopLoadingBar } from '@saasflare/ui';
  * <TopLoadingBar startDelayMs={100} finishDelayMs={300} />
  */
-'use client';
 
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
@@ -81,6 +80,8 @@ function TopLoadingBarAnimated({
     const trickleRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     useEffect(() => {
+        let fade: ReturnType<typeof setTimeout> | null = null;
+
         const start = setTimeout(() => {
             setVisible(true);
             setProgress(0.08);
@@ -102,16 +103,18 @@ function TopLoadingBarAnimated({
             }
             setProgress(1);
             // Fade out after the snap animation has had a frame to render.
-            const fade = setTimeout(() => {
+            // `fade` is hoisted to effect scope so the outer cleanup can clear
+            // it if the component unmounts during the snap-to-fade window.
+            fade = setTimeout(() => {
                 setVisible(false);
                 setProgress(0);
             }, 200);
-            return () => clearTimeout(fade);
         }, finishDelayMs);
 
         return () => {
             clearTimeout(start);
             clearTimeout(finish);
+            if (fade) clearTimeout(fade);
             if (trickleRef.current) {
                 clearInterval(trickleRef.current);
                 trickleRef.current = null;

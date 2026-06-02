@@ -21,7 +21,6 @@
  */
 
 import * as React from "react"
-import { useState } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Button } from "./button"
@@ -118,7 +117,7 @@ export function DateRangePicker({
     const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
     const isControlled = value !== undefined
-    const [internal, setInternal] = useState<DateRange | undefined>(defaultValue)
+    const [internal, setInternal] = React.useState<DateRange | undefined>(defaultValue)
     const range = isControlled ? value : internal
 
     const handleSelect = (next: DateRange | undefined) => {
@@ -161,6 +160,7 @@ export function DateRangePicker({
                     onSelect={handleSelect}
                     numberOfMonths={numberOfMonths}
                     defaultMonth={range?.from ?? new Date()}
+                    iconWeight={sf.iconWeight}
                     disabled={
                         minDate || maxDate
                             ? (date: Date) =>

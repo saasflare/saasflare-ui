@@ -1,9 +1,11 @@
 // @toreview
+"use client"
+
 /**
  * @fileoverview Kbd primitive — renders keyboard shortcut keys with platform-aware
  * styling. Supports individual keys and grouped key combinations. Part of the
  * Saasflare base component layer.
- * @module packages/core/components/ui/kbd
+ * @module packages/ui/components/ui/kbd
  * @layer core
  *
  * @component
@@ -36,12 +38,21 @@ function Kbd({ className, surface, radius, animated, ...props }: KbdProps) {
   )
 }
 
-function KbdGroup({ className, ...props }: React.ComponentProps<"div">) {
+interface KbdGroupProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function KbdGroup({ className, surface, radius, animated, ...props }: KbdGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
-    <kbd
-      data-slot="kbd-group"
-      className={cn("inline-flex items-center gap-1", className)}
+    <div
       {...props}
+      data-slot="kbd-group"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      className={cn("inline-flex items-center gap-1", className)}
     />
   )
 }

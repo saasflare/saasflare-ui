@@ -3,7 +3,7 @@
  * @fileoverview Icons primitive — collection of inline SVG icon components for common
  * UI actions (logo, chat, settings, pages). Each icon accepts a className prop for
  * size and color customization. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/icons
+ * @module packages/ui/components/ui/icons
  * @layer core
  *
  * @component

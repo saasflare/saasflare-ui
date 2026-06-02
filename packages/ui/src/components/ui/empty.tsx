@@ -1,19 +1,22 @@
+"use client"
+
 // @toreview
 /**
  * @fileoverview Empty primitive — placeholder UI for empty states with icon, title,
  * description, and action slots. Renders a dashed-border container centered in its
  * parent. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/empty
+ * @module packages/ui/components/ui/empty
  * @layer core
  *
  * @component
  * @example
- * import { Empty, EmptyHeader, EmptyTitle, EmptyAction } from '@saasflare/ui';
+ * import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent } from '@saasflare/ui';
  * <Empty>
  *   <EmptyHeader>
  *     <EmptyTitle>No items found</EmptyTitle>
+ *     <EmptyDescription>Try adjusting your filters.</EmptyDescription>
  *   </EmptyHeader>
- *   <EmptyAction>Create one</EmptyAction>
+ *   <EmptyContent>Create one</EmptyContent>
  * </Empty>
  */
 import { cva, type VariantProps } from "class-variance-authority"
@@ -96,7 +99,7 @@ function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
 
 function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
-    <div
+    <p
       data-slot="empty-description"
       className={cn(
         "text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",

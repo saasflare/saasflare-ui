@@ -23,15 +23,26 @@
  *   colors={["var(--primary)", "var(--chart-2)"]}
  *   opacity={0.2}
  * />
+ *
+ * @example
+ * // Freeze the effect via the provider kill-switch or per-instance
+ * <MouseGradientBlob animated={false} />
  */
 
-import { useEffect, useCallback } from "react"
+import * as React from "react"
+import { useEffect, useCallback, useRef } from "react"
 import { m, useMotionValue, useSpring } from "motion/react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "../../hooks/use-reduced-motion"
+import {
+  useSaasflareProps,
+  type SaasflareComponentProps,
+} from "../../providers"
+import { springGentle, useSaasflareMotion } from "./motion-config"
 
 /** Props for the MouseGradientBlob component. */
-export interface MouseGradientBlobProps {
+export interface MouseGradientBlobProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Diameter of the blob in pixels. Default: `500` */
   size?: number
   /** Gradient color stops. Default: primary + chart-2 tokens */
@@ -49,7 +60,8 @@ export interface MouseGradientBlobProps {
  *
  * - Uses spring physics for smooth, organic motion
  * - Fades out when the mouse leaves the container
- * - Renders nothing when reduced motion is preferred
+ * - Renders nothing when motion is disabled (reduced-motion preference or
+ *   `animated={false}` from prop/provider)
  * - Uses `pointer-events: none` so it never blocks interaction
  *
  * @component
@@ -61,8 +73,16 @@ export function MouseGradientBlob({
   opacity = 0.15,
   blur = 80,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...rest
 }: MouseGradientBlobProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, springGentle)
+
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -81,20 +101,26 @@ export function MouseGradientBlob({
   )
 
   useEffect(() => {
-    const parent = document.querySelector("[data-blob-container]") as HTMLElement | null
-    if (!parent || reduced) return
+    const parent = containerRef.current
+    if (!parent || motion.disabled) return
 
     parent.addEventListener("mousemove", onMouseMove as EventListener, { passive: true })
     return () => parent.removeEventListener("mousemove", onMouseMove as EventListener)
-  }, [onMouseMove, reduced])
+  }, [onMouseMove, motion.disabled])
 
-  if (reduced) return null
+  if (motion.disabled) return null
 
   return (
     <div
+      ref={containerRef}
       data-blob-container
+      data-slot="mouse-gradient-blob"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
       aria-hidden="true"
+      {...rest}
     >
       <m.div
         style={{

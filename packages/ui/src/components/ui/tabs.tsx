@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare Tabs — tabbed navigation with animated indicator.
- * @module packages/core/components/ui/tabs
+ * @module packages/ui/components/ui/tabs
  * @layer core
  *
  * Self-contained implementation using Radix Tabs primitive directly.
@@ -87,15 +87,25 @@ interface IndicatorPos {
   height: number
 }
 
+interface TabsListProps
+  extends Omit<
+      React.ComponentProps<typeof TabsPrimitive.List>,
+      keyof SaasflareComponentProps
+    >,
+    SaasflareComponentProps,
+    VariantProps<typeof tabsListVariants> {}
+
 function TabsList({
   className,
   variant = "default",
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.List> &
-  VariantProps<typeof tabsListVariants>) {
+}: TabsListProps) {
   const listRef = React.useRef<HTMLDivElement>(null)
-  const sf = useSaasflareProps()
+  const sf = useSaasflareProps({ surface, radius, animated })
   const motion = useSaasflareMotion(sf.animated, spring)
   const [pos, setPos] = React.useState<IndicatorPos | null>(null)
 
@@ -153,6 +163,9 @@ function TabsList({
       ref={listRef}
       data-slot="tabs-list"
       data-variant={variant}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(tabsListVariants({ variant }), className)}
       {...props}
     >
@@ -185,14 +198,28 @@ function TabsList({
  * @component
  * @layer core
  */
+interface TabsTriggerProps
+  extends Omit<
+      React.ComponentProps<typeof TabsPrimitive.Trigger>,
+      keyof SaasflareComponentProps
+    >,
+    SaasflareComponentProps {}
+
 function TabsTrigger({
   className,
   children,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+}: TabsTriggerProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "relative z-10 inline-flex h-[calc(100%-1px)] flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-colors group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "data-[state=active]:text-foreground dark:data-[state=active]:text-foreground",
@@ -205,17 +232,41 @@ function TabsTrigger({
   )
 }
 
+interface TabsContentProps
+  extends Omit<
+      React.ComponentProps<typeof TabsPrimitive.Content>,
+      keyof SaasflareComponentProps
+    >,
+    SaasflareComponentProps {}
+
 function TabsContent({
   className,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+}: TabsContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("flex-1 outline-none", className)}
       {...props}
     />
   )
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants, type TabsProps }
+export {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  tabsListVariants,
+  type TabsProps,
+  type TabsListProps,
+  type TabsTriggerProps,
+  type TabsContentProps,
+}

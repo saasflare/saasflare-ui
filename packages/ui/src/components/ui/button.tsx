@@ -37,6 +37,10 @@ import {
   type SaasflareComponentProps,
 } from "../../providers"
 import { spring, useSaasflareMotion } from "./motion-config"
+import { CircleNotchIcon } from "./phosphor"
+
+// React-style dev warnings: the consumer's bundler replaces process.env.NODE_ENV.
+declare const process: { readonly env: { readonly NODE_ENV?: string } }
 
 /**
  * Motion-wrapped Slot.Root for the asChild + animated path. MUST be defined
@@ -48,6 +52,27 @@ const MotionSlot = m.create(Slot.Root)
 /* ── Intent type ── */
 const INTENTS = ["primary", "neutral", "success", "warning", "danger", "info"] as const
 type Intent = (typeof INTENTS)[number]
+
+/**
+ * Where the loading spinner renders relative to the label.
+ *
+ * @example
+ * <Button isLoading spinnerPlacement="end">Saving…</Button>
+ */
+type SpinnerPlacement = "start" | "end"
+
+/**
+ * Maps a dimensional `size` to its square icon-button counterpart, used when
+ * `isIconOnly` is set and the consumer has not already passed an `icon*` size.
+ * `xl` has no `icon-xl` token in the cva, so it clamps to `icon-lg`.
+ */
+const ICON_ONLY_SIZE_MAP = {
+  xs: "icon-xs",
+  sm: "icon-sm",
+  md: "icon",
+  lg: "icon-lg",
+  xl: "icon-lg",
+} as const
 
 /* ── Backward-compat variant mapping ── */
 const LEGACY_VARIANT_MAP: Record<string, { variant: string; intent?: Intent }> = {
@@ -105,7 +130,7 @@ const buttonVariants = cva(
   }
 )
 
-/** Framer-motion event overrides that conflict with React HTML events */
+/** Motion event overrides that conflict with React HTML events */
 type MotionConflicts = "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
 
 /**
@@ -118,12 +143,56 @@ interface ButtonProps
   extends Omit<React.ComponentProps<"button">, MotionConflicts>,
     VariantProps<typeof buttonVariants>,
     SaasflareComponentProps {
-  /** Render as child element (Radix Slot pattern) */
+  /**
+   * Render as child element (Radix Slot pattern). Mutually exclusive with the
+   * presentational slot props below — when `asChild` is set they are ignored
+   * (dev-only `console.warn`) since a Slot cannot own injected DOM children.
+   */
   asChild?: boolean
   /** Semantic color intent */
   intent?: Intent
   /** Stretch to full width of container */
   fullWidth?: boolean
+
+  // ── Presentational slots (additive) ──
+  /**
+   * Node rendered before the label (e.g. a leading icon). Ignored when `asChild`.
+   * Intended for non-interactive adornments; mark meaningful icons `aria-hidden`
+   * yourself if they are decorative.
+   */
+  startContent?: React.ReactNode
+  /**
+   * Node rendered after the label (e.g. a trailing icon). Ignored when `asChild`.
+   * Intended for non-interactive adornments.
+   */
+  endContent?: React.ReactNode
+  /**
+   * Presentational loading flag. Renders a hardcoded-regular `CircleNotch`
+   * spinner, forces `disabled`, sets `aria-busy="true"`, and disables motion.
+   * This is the DUMB flag you flip yourself; for promise/async orchestration
+   * reach for {@link StatefulButton}.
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
+   * Spinner side while `isLoading`. Replaces `startContent` (start) or
+   * `endContent` (end); the opposite slot still renders its content. No-op when
+   * `isLoading` is false.
+   *
+   * @default "start"
+   */
+  spinnerPlacement?: SpinnerPlacement
+  /**
+   * Convenience: square icon button. Maps the resolved `size` to its paired
+   * icon size token for the cva call only (`xs→icon-xs`, `sm→icon-sm`,
+   * `md→icon`, `lg→icon-lg`, `xl→icon-lg`). If an `icon*` size is already
+   * passed, that wins. Icon-only buttons require an accessible name — pass
+   * `aria-label` (dev-only warn otherwise). Ignored when `asChild`.
+   *
+   * @default false
+   */
+  isIconOnly?: boolean
 }
 
 /**
@@ -145,6 +214,8 @@ interface ButtonProps
  * @param {string} intent - Color intent: "primary" | "neutral" | "success" | "warning" | "danger" | "info"
  * @param {string} size - Button size: "xs" | "sm" | "md" | "lg" | "xl" | "icon" | "icon-xs" | "icon-sm" | "icon-lg"
  * @param {string} surface - Surface style override: "flat" | "glass" | "clay" (inherits from provider when omitted)
+ * @param {string} radius - Radius preset override: "sharp" | "soft" | "rounded" | "pill" (inherits from provider when omitted)
+ * @param {string} iconWeight - Phosphor icon weight override: "regular" | "bold" | "fill" | "duotone" (inherits from provider when omitted)
  * @param {boolean} animated - Gate motion effects (inherits from provider when omitted)
  * @param {boolean} fullWidth - Stretches to container width
  * @param {boolean} asChild - Render as child element (Slot pattern)
@@ -166,6 +237,21 @@ interface ButtonProps
  * <Button variant="ghost" size="icon"><SettingsIcon /></Button>
  *
  * @example
+ * // Leading + trailing icon slots
+ * <Button startContent={<ArrowLeftIcon />} endContent={<ArrowRightIcon />}>
+ *   Navigate
+ * </Button>
+ *
+ * @example
+ * // Presentational loading flag (dumb): you flip it yourself
+ * <Button isLoading>Saving…</Button>
+ * <Button isLoading spinnerPlacement="end" endContent={<ArrowRightIcon />}>Next</Button>
+ *
+ * @example
+ * // Square icon-only button — aria-label REQUIRED for an accessible name
+ * <Button isIconOnly aria-label="Search"><MagnifyingGlassIcon /></Button>
+ *
+ * @example
  * // Legacy API (deprecated but supported)
  * <Button variant="destructive">Delete</Button>
  */
@@ -176,6 +262,11 @@ function Button({
   intent: intentProp = "primary",
   asChild = false,
   fullWidth = false,
+  startContent,
+  endContent,
+  isLoading = false,
+  spinnerPlacement = "start",
+  isIconOnly = false,
   surface,
   iconWeight,
   radius,
@@ -185,7 +276,29 @@ function Button({
   ...props
 }: ButtonProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
-  const motion = useSaasflareMotion(sf.animated, spring, disabled ?? false)
+
+  /* ── Loading is purely presentational, but it gates disabled + motion ── */
+  const busy = isLoading === true
+  const effectiveDisabled = (disabled ?? false) || busy
+  const motion = useSaasflareMotion(sf.animated, spring, effectiveDisabled)
+
+  /* ── Dev-only guidance for asChild + presentational props and a11y ── */
+  if (process.env.NODE_ENV !== "production") {
+    if (asChild && (startContent || endContent || busy || isIconOnly)) {
+      console.warn(
+        "[Saasflare][Button] `startContent`, `endContent`, `isLoading`, and `isIconOnly` are ignored when `asChild` is set — a Slot cannot own injected DOM children. Compose these inside the child element instead.",
+      )
+    }
+    if (
+      isIconOnly &&
+      props["aria-label"] === undefined &&
+      props["aria-labelledby"] === undefined
+    ) {
+      console.warn(
+        "[Saasflare][Button] `isIconOnly` buttons need an accessible name. Pass `aria-label` (or `aria-labelledby`).",
+      )
+    }
+  }
 
   /* ── Surface → variant promotion (only when variant is not explicit) ── */
   const effectiveVariant: string =
@@ -204,6 +317,15 @@ function Button({
     }
   }
 
+  /* ── isIconOnly: remap a dimensional size to its icon counterpart for the
+   * cva call only. A consumer-supplied `icon*` size always wins; the `size`
+   * prop the consumer sees is never mutated. ── */
+  const isIconSize = typeof size === "string" && size.startsWith("icon")
+  const resolvedSize =
+    isIconOnly && !isIconSize
+      ? ICON_ONLY_SIZE_MAP[size as keyof typeof ICON_ONLY_SIZE_MAP] ?? size
+      : size
+
   const dataAttrs = {
     "data-slot": "button",
     "data-variant": resolvedVariant,
@@ -212,15 +334,22 @@ function Button({
     "data-surface": sf.surface,
     "data-radius": sf.radius,
     "data-animated": String(sf.animated),
+    "data-loading": String(busy),
+    "data-icon-only": String(isIconOnly),
   }
 
   const classes = cn(
-    buttonVariants({ variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"], size }),
+    buttonVariants({
+      variant: resolvedVariant as VariantProps<typeof buttonVariants>["variant"],
+      size: resolvedSize as VariantProps<typeof buttonVariants>["size"],
+    }),
     fullWidth && "w-full",
     className
   )
 
-  /* ── Slot rendering (Pattern A: animated asChild via m.create(Slot.Root)) ── */
+  /* ── Slot rendering (Pattern A: animated asChild via m.create(Slot.Root)).
+   * Presentational props are intentionally ignored here (dev-warned above);
+   * a Slot forwards to a single child and cannot own injected content. ── */
   if (asChild) {
     return (
       <MotionSlot
@@ -236,6 +365,26 @@ function Button({
     )
   }
 
+  /* ── Spinner: HARDCODED regular weight per the documented iconWeight
+   * Spinner/Button-loading visual-identity exemption — do NOT forward
+   * sf.iconWeight here. (consumer startContent/endContent icons keep normal
+   * iconWeight propagation via provider context.) ── */
+  const spinner = (
+    <CircleNotchIcon weight="regular" aria-hidden="true" className="animate-spin" />
+  )
+
+  /* ── Compose slot children. When busy, the spinner replaces the slot on the
+   * placement side; the opposite slot still renders its content. ── */
+  const leading = busy && spinnerPlacement !== "end" ? spinner : startContent
+  const trailing = busy && spinnerPlacement === "end" ? spinner : endContent
+  const body = (
+    <>
+      {leading}
+      {children}
+      {trailing}
+    </>
+  )
+
   return (
     <m.button
       {...dataAttrs}
@@ -243,12 +392,13 @@ function Button({
       whileTap={motion.disabled ? undefined : { scale: 0.97 }}
       transition={motion.transition}
       className={classes}
-      disabled={disabled}
+      aria-busy={busy || undefined}
+      disabled={effectiveDisabled}
       {...props}
     >
-      {children}
+      {body}
     </m.button>
   )
 }
 
-export { Button, buttonVariants, type ButtonProps, type Intent }
+export { Button, buttonVariants, type ButtonProps, type Intent, type SpinnerPlacement }

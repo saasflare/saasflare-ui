@@ -5,7 +5,7 @@
  * @fileoverview Form primitive — form field wrappers integrating React Hook Form with accessible labels,
  * descriptions, and error messages. Uses Radix UI Slot for composable form controls.
  * Part of the Saasflare base component layer.
- * @module packages/core/components/ui/form
+ * @module packages/ui/components/ui/form
  * @layer core
  *
  * @requires react-hook-form — peer dependency.
@@ -41,20 +41,19 @@ import {
 } from "react-hook-form"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Label } from "./label"
 
 const Form = FormProvider
 
-type FormFieldContextValue<
+interface FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = {
+> {
   name: TName
 }
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-)
+const FormFieldContext = React.createContext<FormFieldContextValue | null>(null)
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -72,13 +71,22 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
-  const { getFieldState } = useFormContext()
-  const formState = useFormState({ name: fieldContext.name })
-  const fieldState = getFieldState(fieldContext.name, formState)
 
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>")
   }
+  if (!itemContext) {
+    throw new Error("useFormField should be used within <FormItem>")
+  }
+
+  const formContext = useFormContext()
+  if (!formContext) {
+    throw new Error("useFormField should be used within <Form>")
+  }
+
+  const { getFieldState } = formContext
+  const formState = useFormState({ name: fieldContext.name })
+  const fieldState = getFieldState(fieldContext.name, formState)
 
   const { id } = itemContext
 
@@ -92,13 +100,11 @@ const useFormField = () => {
   }
 }
 
-type FormItemContextValue = {
+interface FormItemContextValue {
   id: string
 }
 
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
-)
+const FormItemContext = React.createContext<FormItemContextValue | null>(null)
 
 function FormItem({ className, ...props }: React.ComponentProps<"div">) {
   const id = React.useId()
@@ -114,16 +120,31 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+interface FormLabelProps
+  extends Omit<
+      React.ComponentProps<typeof LabelPrimitive.Root>,
+      keyof SaasflareComponentProps
+    >,
+    SaasflareComponentProps {}
+
 function FormLabel({
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+}: FormLabelProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const { error, formItemId } = useFormField()
 
   return (
     <Label
       data-slot="form-label"
       data-error={!!error}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("data-[error=true]:text-destructive", className)}
       htmlFor={formItemId}
       {...props}
@@ -149,20 +170,47 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot.Root>) {
   )
 }
 
-function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
+interface FormDescriptionProps
+  extends Omit<React.ComponentProps<"p">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function FormDescription({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}: FormDescriptionProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const { formDescriptionId } = useFormField()
 
   return (
     <p
       data-slot="form-description"
       id={formDescriptionId}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
   )
 }
 
-function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
+interface FormMessageProps
+  extends Omit<React.ComponentProps<"p">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function FormMessage({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}: FormMessageProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message ?? "") : props.children
 
@@ -174,6 +222,9 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="form-message"
       id={formMessageId}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("text-sm text-destructive", className)}
       {...props}
     >
@@ -191,4 +242,7 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  type FormLabelProps,
+  type FormDescriptionProps,
+  type FormMessageProps,
 }

@@ -1,12 +1,12 @@
 // @toreview
 /**
  * @fileoverview Barrel export for all premium UI components.
- * @module packages/core/components/ui/index
+ * @module packages/ui/components/ui/index
  * @layer core
  */
 // SF Premium UI Components
-// Saasflare-owned components with Framer Motion, intent system, and reduced-motion support.
-// Standalone customized components, partly animated using Framer Motion.
+// Saasflare-owned components with Motion, intent system, and reduced-motion support.
+// Standalone customized components, partly animated using Motion.
 
 // Animation config + reduced motion
 export {
@@ -24,8 +24,8 @@ export {
   type SaasflareMotion,
 } from "./motion-config"
 
-// Tier A: Framer Motion Enhanced (with intent system)
-export { Button, buttonVariants, type ButtonProps, type Intent } from "./button"
+// Tier A: Motion Enhanced (with intent system)
+export { Button, buttonVariants, type ButtonProps, type Intent, type SpinnerPlacement } from "./button"
 export {
   Card,
   CardHeader,
@@ -78,9 +78,9 @@ export {
   type ProgressCircleSize,
 } from "./progress-circle"
 export { Badge, badgeVariants, type BadgeProps } from "./badge"
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip"
-export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "./popover"
-export { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card"
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, TooltipArrow, type TooltipArrowProps } from "./tooltip"
+export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger, PopoverArrow, type PopoverArrowProps } from "./popover"
+export { HoverCard, HoverCardContent, HoverCardTrigger, HoverCardArrow, type HoverCardArrowProps } from "./hover-card"
 export {
   Select,
   SelectContent,
@@ -445,3 +445,35 @@ export { TestimonialCard, type TestimonialCardProps } from "./testimonial-card"
 export { TextGenerateEffect, type TextGenerateEffectProps } from "./text-generate-effect"
 export { Timeline, TimelineItem, type TimelineProps, type TimelineItemProps } from "./timeline"
 export { TracingBeam, type TracingBeamProps } from "./tracing-beam"
+
+/* ── Competitive feature components (2026-06-01) ── */
+export {
+  DataPagination,
+  type DataPaginationProps,
+  type DataPaginationLayout,
+  type DataPaginationLabels,
+} from "./data-pagination"
+export {
+  MultiSelect,
+  type MultiSelectProps,
+  type MultiSelectOption,
+} from "./multi-select"
+export {
+  DataTable,
+  type DataTableProps,
+  type DataTableColumn,
+  type DataTableSort,
+  type DataTableAlign,
+  type DataTableDensity,
+} from "./data-table"
+export {
+  Stepper,
+  StepperPanel,
+  StepperNav,
+  StepperContent,
+  type StepperProps,
+  type StepperItem,
+  type StepperPanelProps,
+  type StepperNavProps,
+  type StepperContentProps,
+} from "./stepper"

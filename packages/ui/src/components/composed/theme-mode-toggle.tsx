@@ -15,29 +15,26 @@
  *
  * @example
  * // With visible label text
- * <ThemeModeToggle showText text="Toggle theme" />
+ * <ThemeModeToggle showText textLight="Switch to dark" textDark="Switch to light" />
  */
-'use client';
 
 import * as React from 'react';
 import { useTheme } from 'next-themes';
 import { Button, MoonIcon, SunIcon } from '../ui';
 import { cn } from '../../lib';
 import { useSaasflareProps, type SaasflareComponentProps } from '../../providers';
-import { JSX } from 'react';
 
 /**
  * Theme mode toggle button with Sun/Moon icons.
  *
+ * Props are documented on {@link ThemeModeToggleProps}. Extends
+ * {@link SaasflareComponentProps}, so `surface`, `radius`, `animated`, and
+ * `iconWeight` are accepted and forwarded to the inner {@link Button}.
+ *
  * @component
  * @layer core
  *
- * @param {object} props - Component props
- * @param {boolean} [props.showText=false] - Whether to show the label text visibly
- * @param {string} [props.textLight] - Label shown while in light mode (prompting switch to dark)
- * @param {string} [props.textDark] - Label shown while in dark mode (prompting switch to light)
- * @param {string} [props.className] - Additional CSS class names
- * @returns {JSX.Element | null} The toggle button, or null before hydration
+ * @returns The toggle button, or `null` before hydration when no SSR seed is provided.
  */
 interface ThemeModeToggleProps extends SaasflareComponentProps {
     /** Whether to show the label text visibly. */
@@ -70,7 +67,7 @@ export function ThemeModeToggle({
     animated,
     iconWeight,
     initialResolvedTheme,
-}: ThemeModeToggleProps): JSX.Element | null {
+}: ThemeModeToggleProps): React.JSX.Element | null {
     const { setTheme, resolvedTheme } = useTheme();
     const sf = useSaasflareProps({ surface, radius, animated, iconWeight });
     const [mounted, setMounted] = React.useState(false);
@@ -101,6 +98,10 @@ export function ThemeModeToggle({
             variant="ghost"
             intent="neutral"
             size={showText ? 'sm' : 'icon'}
+            surface={sf.surface}
+            radius={sf.radius}
+            animated={sf.animated}
+            iconWeight={sf.iconWeight}
             className={cn('cursor-pointer', className)}
             onClick={toggleTheme}
             aria-label={label}

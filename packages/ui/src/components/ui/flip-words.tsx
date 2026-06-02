@@ -22,15 +22,26 @@
  *   interval={3000}
  *   className="text-primary"
  * />
+ *
+ * @example
+ * // Freeze the flip via the provider kill-switch or per-instance
+ * <FlipWords words={["websites", "apps"]} animated={false} />
  */
 
+import * as React from "react"
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { AnimatePresence, m } from "motion/react"
 import { cn } from "../../lib"
-import { springBouncy, noMotion, useReducedMotion } from "./motion-config"
+import {
+  useSaasflareProps,
+  type SaasflareComponentProps,
+} from "../../providers"
+import { springBouncy, useSaasflareMotion } from "./motion-config"
 
 /** Props for the FlipWords component. */
-export interface FlipWordsProps {
+export interface FlipWordsProps
+  extends Omit<React.ComponentProps<"span">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Array of words to cycle through. */
   words: string[]
   /** Cycle interval in milliseconds. Default: `2500` */
@@ -44,7 +55,8 @@ export interface FlipWordsProps {
  *
  * - Words flip upward with a spring transition
  * - Container width matches the longest word to prevent layout shifts
- * - Falls back to showing the first word statically when reduced motion is preferred
+ * - Falls back to showing the first word statically when motion is disabled
+ *   (reduced-motion preference or `animated={false}` from prop/provider)
  * - Renders inline, so it can be placed mid-sentence
  *
  * @component
@@ -54,8 +66,14 @@ export function FlipWords({
   words,
   interval = 2500,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...rest
 }: FlipWordsProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, springBouncy)
   const [index, setIndex] = useState(0)
 
   const next = useCallback(() => {
@@ -63,10 +81,10 @@ export function FlipWords({
   }, [words.length])
 
   useEffect(() => {
-    if (reduced || words.length <= 1) return
+    if (motion.disabled || words.length <= 1) return
     const timer = setInterval(next, interval)
     return () => clearInterval(timer)
-  }, [reduced, words.length, interval, next])
+  }, [motion.disabled, words.length, interval, next])
 
   // Invisible spacer with the longest word to prevent layout shifts
   const longestWord = useMemo(
@@ -74,25 +92,33 @@ export function FlipWords({
     [words],
   )
 
-  if (reduced) {
-    return <span className={className}>{words[0]}</span>
+  if (motion.disabled) {
+    return (
+      <span className={className} {...rest}>
+        {words[0]}
+      </span>
+    )
   }
 
   return (
     <span
       className={cn("relative inline-block text-left align-baseline", className)}
       data-slot="flip-words"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      {...rest}
     >
       {/* Invisible spacer for width */}
       <span className="invisible" aria-hidden="true">{longestWord}</span>
 
       <AnimatePresence mode="wait">
         <m.span
-          key={words[index]}
+          key={index}
           initial={{ y: "100%", opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: "-100%", opacity: 0 }}
-          transition={springBouncy}
+          transition={motion.transition}
           className="absolute inset-0"
           aria-live="polite"
         >

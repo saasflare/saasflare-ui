@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare SettingsSection — label + description + control layout.
- * @module packages/core/components/ui/settings-section
+ * @module packages/ui/components/ui/settings-section
  * @layer core
  *
  * A horizontal layout for settings rows: label/description on the left,

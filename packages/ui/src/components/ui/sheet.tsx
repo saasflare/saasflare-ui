@@ -4,7 +4,7 @@
 /**
  * @fileoverview Sheet primitive — slide-in panel overlay from any edge of the viewport.
  * Built on Radix UI Dialog. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/sheet
+ * @module packages/ui/components/ui/sheet
  * @layer core
  *
  * @component
@@ -20,7 +20,6 @@
  *   </SheetContent>
  * </Sheet>
  */
-"use client"
 
 import * as React from "react"
 import { XIcon } from "./phosphor"
@@ -89,7 +88,7 @@ function SheetContent({
 
   return (
     <SheetPortal>
-      <SheetOverlay />
+      <SheetOverlay data-animated={String(sf.animated)} />
       <SheetPrimitive.Content
         {...props}
         data-slot="sheet-content"

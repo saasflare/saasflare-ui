@@ -56,7 +56,7 @@ export interface AuroraBackgroundProps
      * Default: curated peach + blue + violet showcase palette.
      */
     colors?: readonly [string, string, string]
-    /** Overall blob opacity (0–1). Default: `0.55`. Auto-halved in dark mode via `dark:` modifier. */
+    /** Overall blob opacity (0–1). Applied inline to every blob. Default: `0.55`. */
     intensity?: number
 }
 

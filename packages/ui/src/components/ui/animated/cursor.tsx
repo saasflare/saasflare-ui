@@ -22,10 +22,11 @@
 
 import { useEffect, useState, useCallback } from "react"
 import { m, useMotionValue, useSpring } from "motion/react"
-import { useReducedMotion } from "../../../hooks/use-reduced-motion"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../../providers"
+import { useSaasflareMotion } from "../motion-config"
 
 /** Props for the AnimatedCursor component. */
-export interface AnimatedCursorProps {
+export interface AnimatedCursorProps extends SaasflareComponentProps {
   /** Diameter of the inner dot in pixels. Default: `6` */
   dotSize?: number
   /** Diameter of the outer ring in pixels. Default: `32` */
@@ -45,6 +46,9 @@ export interface AnimatedCursorProps {
  * - The ring follows with a softer spring for a trailing effect
  * - Scales up when hovering interactive elements (buttons, links, inputs)
  * - Hides on touch devices and when `prefers-reduced-motion` is set
+ * - Disabled entirely when `animated={false}` (prop or provider), since a
+ *   non-animated custom cursor would only hide the native pointer with nothing
+ *   replacing it
  *
  * @component
  * @package ui
@@ -55,14 +59,21 @@ export function AnimatedCursor({
   dotColor = "var(--primary)",
   ringColor = "var(--primary)",
   ringBorderWidth = 1.5,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: AnimatedCursorProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated)
   const [visible, setVisible] = useState(false)
   const [hovering, setHovering] = useState(false)
 
   const cursorX = useMotionValue(0)
   const cursorY = useMotionValue(0)
 
+  // Hooks stay at top level (stable order); springs are only read into the
+  // rendered style when motion is enabled — see `dotStyleX`/`ringStyleX` below.
   const dotX = useSpring(cursorX, { stiffness: 500, damping: 28 })
   const dotY = useSpring(cursorY, { stiffness: 500, damping: 28 })
   const ringX = useSpring(cursorX, { stiffness: 250, damping: 20 })
@@ -72,23 +83,30 @@ export function AnimatedCursor({
     (e: MouseEvent) => {
       cursorX.set(e.clientX)
       cursorY.set(e.clientY)
-      if (!visible) setVisible(true)
+      // React bails out when the value is unchanged, so setting unconditionally
+      // keeps this callback stable (no `visible` dependency).
+      setVisible(true)
     },
-    [cursorX, cursorY, visible],
+    [cursorX, cursorY],
   )
 
   useEffect(() => {
     // Hide on touch-only devices
     if (typeof window === "undefined" || window.matchMedia("(pointer: coarse)").matches) return
 
+    // Named handlers so add/remove share reference identity (otherwise the
+    // listeners are never removed and stack on every effect re-run).
+    const show = () => setVisible(true)
+    const hide = () => setVisible(false)
+
     window.addEventListener("mousemove", onMouseMove, { passive: true })
-    window.addEventListener("mouseleave", () => setVisible(false))
-    window.addEventListener("mouseenter", () => setVisible(true))
+    window.addEventListener("mouseleave", hide)
+    window.addEventListener("mouseenter", show)
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove)
-      window.removeEventListener("mouseleave", () => setVisible(false))
-      window.removeEventListener("mouseenter", () => setVisible(true))
+      window.removeEventListener("mouseleave", hide)
+      window.removeEventListener("mouseenter", show)
     }
   }, [onMouseMove])
 
@@ -113,7 +131,10 @@ export function AnimatedCursor({
     }
   }, [])
 
-  if (reduced) return null
+  // Honor the resolved `animated` axis (prop or provider) in addition to
+  // `prefers-reduced-motion`. A static custom cursor is pointless — it would
+  // only hide the native pointer — so render nothing when motion is disabled.
+  if (motion.disabled) return null
 
   const hoverScale = hovering ? 1.6 : 1
 
@@ -124,6 +145,10 @@ export function AnimatedCursor({
 
       {/* Inner dot */}
       <m.div
+        data-slot="animated-cursor-dot"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         aria-hidden="true"
         style={{
           x: dotX,
@@ -144,6 +169,10 @@ export function AnimatedCursor({
 
       {/* Outer ring */}
       <m.div
+        data-slot="animated-cursor-ring"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         aria-hidden="true"
         style={{
           x: ringX,
