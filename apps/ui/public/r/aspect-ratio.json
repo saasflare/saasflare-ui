@@ -5,13 +5,14 @@
   "title": "Aspect Ratio",
   "description": "Locks content to a fixed width:height ratio — responsive images, video embeds, and media cards.",
   "dependencies": [
-    "@radix-ui/react-aspect-ratio"
+    "@radix-ui/react-aspect-ratio",
+    "@saasflare/ui"
   ],
   "files": [
     {
       "path": "components/ui/aspect-ratio.tsx",
       "type": "registry:ui",
-      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview AspectRatio primitive — constrains content to a specified width-to-height ratio.\n * Built on Radix UI AspectRatio. Part of the Saasflare base component layer.\n * @module packages/core/components/ui/aspect-ratio\n * @layer core\n *\n * @component\n * @example\n * import { AspectRatio } from '@saasflare/ui';\n * <AspectRatio ratio={16 / 9}>\n *   <img src=\"/image.jpg\" alt=\"Landscape\" />\n * </AspectRatio>\n */\n\"use client\"\n\nimport * as AspectRatioPrimitive from \"@radix-ui/react-aspect-ratio\"\n\nfunction AspectRatio({\n  ...props\n}: React.ComponentProps<typeof AspectRatioPrimitive.Root>) {\n  return <AspectRatioPrimitive.Root data-slot=\"aspect-ratio\" {...props} />\n}\n\nexport { AspectRatio }\n",
+      "content": "// @toreview\n\"use client\"\n\n/**\n * @fileoverview AspectRatio primitive — constrains content to a specified width-to-height ratio.\n * Built on Radix UI AspectRatio. Part of the Saasflare base component layer.\n * @module packages/ui/components/ui/aspect-ratio\n * @layer core\n *\n * @component\n * @example\n * import { AspectRatio } from '@saasflare/ui';\n * <AspectRatio ratio={16 / 9}>\n *   <img src=\"/image.jpg\" alt=\"Landscape\" />\n * </AspectRatio>\n */\n\nimport * as React from \"react\"\nimport * as AspectRatioPrimitive from \"@radix-ui/react-aspect-ratio\"\n\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\n\n/**\n * Props for {@link AspectRatio}.\n *\n * Extends the Radix AspectRatio root props plus the Saasflare theme axes.\n * AspectRatio is a layout-only primitive (no surface/border/background/icons),\n * so the contract axes are accepted for API consistency and emitted as data\n * attributes, but do not alter the rendered box.\n */\ninterface AspectRatioProps\n  extends Omit<\n      React.ComponentProps<typeof AspectRatioPrimitive.Root>,\n      keyof SaasflareComponentProps\n    >,\n    SaasflareComponentProps {}\n\n/**\n * Constrains its children to a fixed width-to-height ratio.\n *\n * @example\n * <AspectRatio ratio={16 / 9}>\n *   <img src=\"/image.jpg\" alt=\"Landscape\" />\n * </AspectRatio>\n */\nfunction AspectRatio({\n  surface,\n  radius,\n  animated,\n  iconWeight,\n  ...props\n}: AspectRatioProps) {\n  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })\n\n  return (\n    <AspectRatioPrimitive.Root\n      data-slot=\"aspect-ratio\"\n      data-surface={sf.surface}\n      data-radius={sf.radius}\n      data-animated={String(sf.animated)}\n      {...props}\n    />\n  )\n}\n\nexport { AspectRatio }\n",
       "target": "components/ui/aspect-ratio.tsx"
     }
   ],

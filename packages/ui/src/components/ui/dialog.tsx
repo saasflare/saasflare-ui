@@ -3,11 +3,13 @@
 
 /**
  * @fileoverview Saasflare Dialog — modal overlay with spring entry animation.
- * @module packages/core/components/ui/dialog
+ * @module packages/ui/components/ui/dialog
  * @layer core
  *
  * Self-contained implementation using Radix Dialog primitive directly.
- * Entry animation respects reduced-motion preference.
+ * Entry animation (Motion spring) respects reduced-motion preference and the
+ * `animated` axis; exit is handled by Radix CSS state classes because Radix
+ * unmounts Content on close (no AnimatePresence wrapper keeps the node mounted).
  *
  * @example
  * import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@saasflare/ui";
@@ -27,30 +29,60 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Dialog root. Controls open/close state for the modal.
+ *
+ * @component
+ * @layer core
+ */
 function Dialog({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
 
+/**
+ * Element that toggles the dialog open. Use `asChild` to compose with a Button.
+ *
+ * @component
+ * @layer core
+ */
 function DialogTrigger({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
 }
 
+/**
+ * Portals dialog content into the document body, escaping overflow/stacking contexts.
+ *
+ * @component
+ * @layer core
+ */
 function DialogPortal({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Portal>) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 }
 
+/**
+ * Element that closes the dialog when activated. Use `asChild` to compose.
+ *
+ * @component
+ * @layer core
+ */
 function DialogClose({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Close>) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
 
+/**
+ * Backdrop scrim rendered behind the dialog content.
+ *
+ * @component
+ * @layer core
+ */
 function DialogOverlay({
   className,
   ...props
@@ -69,7 +101,16 @@ function DialogOverlay({
 
 interface DialogContentProps
   extends Omit<React.ComponentProps<typeof DialogPrimitive.Content>, keyof SaasflareComponentProps>,
-    SaasflareComponentProps {}
+    SaasflareComponentProps {
+  /**
+   * Render the built-in top-right close button (X).
+   * @default true — preserves current behavior; set `false` to supply your own
+   *                 DialogClose (e.g. command palettes, full-bleed media dialogs).
+   *                 Esc-to-close and overlay-click-to-close remain active, so the
+   *                 dialog stays escapable even when the button is hidden.
+   */
+  showCloseButton?: boolean
+}
 
 /**
  * Dialog content panel with spring entry animation.
@@ -80,6 +121,7 @@ interface DialogContentProps
 function DialogContent({
   className,
   children,
+  showCloseButton = true,
   surface,
   radius,
   animated,
@@ -103,24 +145,31 @@ function DialogContent({
           data-animated={String(sf.animated)}
           initial={motion.disabled ? { opacity: 1 } : { opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={motion.disabled ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 10 }}
           transition={motion.transition}
           className={cn(
-            "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border surface-card p-6 sm:max-w-lg",
+            "fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border surface-card p-6 sm:max-w-lg data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
             className
           )}
         >
           {children}
-          <DialogPrimitive.Close className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none cursor-pointer [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
-            <XIcon weight={sf.iconWeight} />
-            <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
+          {showCloseButton && (
+            <DialogPrimitive.Close className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none cursor-pointer [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4">
+              <XIcon weight={sf.iconWeight} />
+              <span className="sr-only">Close</span>
+            </DialogPrimitive.Close>
+          )}
         </m.div>
       </DialogPrimitive.Content>
     </DialogPortal>
   )
 }
 
+/**
+ * Header region for the dialog title and description.
+ *
+ * @component
+ * @layer core
+ */
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -131,6 +180,12 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Footer region for dialog actions (e.g. confirm/cancel buttons).
+ *
+ * @component
+ * @layer core
+ */
 function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -141,6 +196,12 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Accessible title for the dialog, announced to screen readers.
+ *
+ * @component
+ * @layer core
+ */
 function DialogTitle({
   className,
   ...props
@@ -154,6 +215,12 @@ function DialogTitle({
   )
 }
 
+/**
+ * Accessible supporting description for the dialog.
+ *
+ * @component
+ * @layer core
+ */
 function DialogDescription({
   className,
   ...props

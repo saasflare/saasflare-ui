@@ -19,13 +19,17 @@
  * </TracingBeam>
  */
 
+import * as React from "react"
 import { useRef, type ReactNode } from "react"
 import { m, useScroll, useTransform } from "motion/react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "./motion-config"
+import { useSaasflareMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the TracingBeam component. */
-export interface TracingBeamProps {
+export interface TracingBeamProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Content alongside the beam. */
   children: ReactNode
   /** Beam color. Default: `"var(--primary)"` */
@@ -42,7 +46,8 @@ export interface TracingBeamProps {
  * - Fills from top to bottom as the user scrolls
  * - Renders on the left side with content offset
  * - Includes a dot indicator at the current scroll position
- * - Falls back to a simple left border when reduced motion is preferred
+ * - Falls back to a simple left border when motion is disabled
+ *   (`animated={false}` or reduced-motion preference)
  *
  * @component
  * @package ui
@@ -52,8 +57,13 @@ export function TracingBeam({
   color = "var(--primary)",
   trackColor = "var(--border)",
   className,
+  surface,
+  radius,
+  animated,
+  ...props
 }: TracingBeamProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated })
+  const motion = useSaasflareMotion(sf.animated)
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -63,9 +73,16 @@ export function TracingBeam({
   const beamHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
   const dotY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
 
-  if (reduced) {
+  if (motion.disabled) {
     return (
-      <div className={cn("border-l-2 border-primary/30 pl-8", className)}>
+      <div
+        className={cn("border-l-2 border-primary/30 pl-8", className)}
+        data-slot="tracing-beam"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
+        {...props}
+      >
         {children}
       </div>
     )
@@ -76,6 +93,10 @@ export function TracingBeam({
       ref={containerRef}
       className={cn("relative pl-10", className)}
       data-slot="tracing-beam"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      {...props}
     >
       {/* Track */}
       <div

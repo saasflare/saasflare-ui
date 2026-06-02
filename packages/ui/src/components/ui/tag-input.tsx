@@ -21,12 +21,15 @@
 
 import {
     useCallback,
+    useEffect,
+    useRef,
     useState,
     type ChangeEvent,
     type KeyboardEvent,
     type ReactNode,
 } from "react"
 import { cn } from "../../lib"
+import { XIcon } from "./phosphor"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the TagInput component. */
@@ -75,13 +78,37 @@ export function TagInput({
     surface,
     radius,
     animated,
+    iconWeight,
     "aria-label": ariaLabel,
 }: TagInputProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const isControlled = value !== undefined
     const [internal, setInternal] = useState<string[]>(defaultValue ?? [])
     const tags = isControlled ? value : internal
     const [draft, setDraft] = useState("")
+
+    // Stable identity per pill, decoupled from string content + index, so
+    // duplicate tags (unique=false) survive removals without React reusing the
+    // wrong DOM node (which would drop focus / animation state).
+    const idCounter = useRef(0)
+    const [ids, setIds] = useState<number[]>(() =>
+        (isControlled ? (value ?? []) : (defaultValue ?? [])).map(() => idCounter.current++),
+    )
+
+    // Safety net for EXTERNAL/controlled value resyncs only. Internal add/remove
+    // keep ids index-aligned in lockstep (see commit/removeAt), so this effect is
+    // a no-op for them; it only reconciles when a parent swaps `value` wholesale.
+    useEffect(() => {
+        setIds((prev) => {
+            if (prev.length === tags.length) return prev
+            if (prev.length < tags.length) {
+                const grown = prev.slice()
+                while (grown.length < tags.length) grown.push(idCounter.current++)
+                return grown
+            }
+            return prev.slice(0, tags.length)
+        })
+    }, [tags.length])
 
     const commit = useCallback(
         (raw: string) => {
@@ -90,6 +117,7 @@ export function TagInput({
             if (unique && tags.includes(trimmed)) return
             if (typeof maxTags === "number" && tags.length >= maxTags) return
             const next = [...tags, trimmed]
+            setIds((prev) => [...prev, idCounter.current++])
             if (!isControlled) setInternal(next)
             onChange?.(next)
             setDraft("")
@@ -100,6 +128,7 @@ export function TagInput({
     const removeAt = useCallback(
         (index: number) => {
             const next = tags.filter((_, i) => i !== index)
+            setIds((prev) => prev.filter((_, i) => i !== index))
             if (!isControlled) setInternal(next)
             onChange?.(next)
         },
@@ -120,7 +149,7 @@ export function TagInput({
     }
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (separators.includes(e.key) || (e.key === "," && separators.includes(","))) {
+        if (separators.includes(e.key)) {
             e.preventDefault()
             commit(draft)
             return
@@ -136,6 +165,7 @@ export function TagInput({
             data-slot="tag-input"
             data-surface={sf.surface}
             data-radius={sf.radius}
+            data-animated={String(sf.animated)}
             data-disabled={String(disabled)}
             className={cn(
                 "flex min-h-9 w-full flex-wrap items-center gap-1.5 rounded-md border border-input bg-transparent px-2 py-1.5 text-sm shadow-xs",
@@ -146,10 +176,11 @@ export function TagInput({
         >
             {tags.map((tag, i) => {
                 const onRemove = () => removeAt(i)
-                if (renderTag) return <span key={`${tag}-${i}`}>{renderTag(tag, onRemove)}</span>
+                const key = ids[i] ?? `_${i}`
+                if (renderTag) return <span key={key}>{renderTag(tag, onRemove)}</span>
                 return (
                     <span
-                        key={`${tag}-${i}`}
+                        key={key}
                         data-slot="tag-input-tag"
                         className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-foreground"
                     >
@@ -162,18 +193,7 @@ export function TagInput({
                             aria-label={`Remove ${tag}`}
                             className="inline-flex size-3.5 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
                         >
-                            <svg
-                                viewBox="0 0 12 12"
-                                width="10"
-                                height="10"
-                                aria-hidden="true"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            >
-                                <path d="M3 3l6 6M9 3l-6 6" />
-                            </svg>
+                            <XIcon weight={sf.iconWeight} aria-hidden="true" className="size-2.5" />
                         </button>
                     </span>
                 )

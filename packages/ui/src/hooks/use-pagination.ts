@@ -146,3 +146,48 @@ export function usePagination(options: UsePaginationOptions): UsePaginationRetur
 
     return { activePage, range, setPage, next, previous, first, last };
 }
+
+/** The 1-indexed item range covered by a page, plus the grand total. */
+export interface PaginationSummaryRange {
+    /** 1-indexed index of the first item on the page (`0` when `total === 0`). */
+    from: number;
+    /** 1-indexed index of the last item on the page, never exceeding `total`. */
+    to: number;
+    /** Total number of items across all pages (echoed back for convenience). */
+    total: number;
+}
+
+/**
+ * Pure helper that computes the "X–Y of N" item range for a given page.
+ *
+ * Both {@link DataPagination} and downstream consumers can call this to render
+ * identical summary text. The math is the canonical
+ * `from = (page - 1) * pageSize + 1` / `to = min(page * pageSize, total)`,
+ * with `total === 0` collapsing to `{ from: 0, to: 0, total: 0 }`.
+ *
+ * Inputs are defensively normalised: `page`/`pageSize` are floored to at least
+ * `1`, and `total` is floored to at least `0`. The returned `to` is additionally
+ * clamped so it never exceeds `total`.
+ *
+ * @param page - The 1-indexed active page.
+ * @param pageSize - Items per page.
+ * @param total - Total number of items across all pages.
+ * @returns {PaginationSummaryRange} The `{ from, to, total }` item range.
+ *
+ * @example
+ * paginationSummary(1, 20, 248); // → { from: 1,   to: 20,  total: 248 }
+ * paginationSummary(13, 20, 248); // → { from: 241, to: 248, total: 248 }
+ * paginationSummary(1, 20, 0); // → { from: 0,   to: 0,   total: 0 }
+ */
+export function paginationSummary(page: number, pageSize: number, total: number): PaginationSummaryRange {
+    const safeTotal = Math.max(0, Math.floor(total));
+    const safePageSize = Math.max(1, Math.floor(pageSize));
+    const safePage = Math.max(1, Math.floor(page));
+
+    if (safeTotal === 0) return { from: 0, to: 0, total: 0 };
+
+    const from = (safePage - 1) * safePageSize + 1;
+    const to = Math.min(safePage * safePageSize, safeTotal);
+
+    return { from, to, total: safeTotal };
+}

@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare Badge — status indicator with intent support.
- * @module packages/core/components/ui/badge
+ * @module packages/ui/components/ui/badge
  * @layer core
  *
  * Fully owned Saasflare implementation. Does NOT import from ui/.
@@ -93,8 +93,11 @@ interface BadgeProps
  * <Badge intent="success" variant="soft">Active</Badge>
  *
  * @example
- * // Legacy API (deprecated but supported)
- * <Badge variant="destructive">Error</Badge>
+ * <Badge intent="danger" variant="outline" size="sm">Error</Badge>
+ *
+ * @remarks
+ * In `asChild` mode the badge renders via Radix Slot, which cannot receive
+ * motion props — the hover-scale animation is intentionally a no-op there.
  */
 function Badge({
   className,

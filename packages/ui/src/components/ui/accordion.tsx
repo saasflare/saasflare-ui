@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare Accordion — collapsible content sections.
- * @module packages/core/components/ui/accordion
+ * @module packages/ui/components/ui/accordion
  * @layer core
  *
  * Self-contained implementation using Radix Accordion primitive directly.
@@ -25,18 +25,56 @@ import { CaretDownIcon } from "./phosphor"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
-import { useSaasflareMotion, springBouncy } from "./motion-config"
+import { useSaasflareMotion } from "./motion-config"
 
+/**
+ * Props for {@link Accordion}.
+ *
+ * The Radix Root is a discriminated union (`type="single" | "multiple"`), so the
+ * design-system axes are intersected in rather than merged via `Omit`, which would
+ * collapse the union and break the `type`/`collapsible` discrimination.
+ */
+type AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root> & SaasflareComponentProps
+
+/**
+ * Accordion root — wraps a set of collapsible {@link AccordionItem} sections.
+ *
+ * Resolves the design-system axes (surface/radius/animated/iconWeight) and emits
+ * them as data attributes so the whole composed surface is consistently themable.
+ *
+ * @component
+ * @layer core
+ */
 function Accordion({
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root data-slot="accordion" {...props} />
+}: AccordionProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+
+  return (
+    <AccordionPrimitive.Root
+      {...props}
+      data-slot="accordion"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+    />
+  )
 }
 
 interface AccordionItemProps
   extends Omit<React.ComponentProps<typeof AccordionPrimitive.Item>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * A single collapsible section within an {@link Accordion}.
+ *
+ * @component
+ * @layer core
+ */
 function AccordionItem({
   className,
   surface,
@@ -60,7 +98,10 @@ function AccordionItem({
 }
 
 /**
- * Accordion trigger with animated chevron indicator.
+ * Accordion trigger with a chevron indicator that rotates on open.
+ *
+ * The chevron rotation is CSS-driven via the `[data-state=open]` selector and is
+ * zeroed for `[data-animated="false"]` by the design-system motion stylesheet.
  *
  * @component
  * @layer core
@@ -71,7 +112,6 @@ function AccordionTrigger({
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
   const sf = useSaasflareProps()
-  const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (
     <AccordionPrimitive.Header className="flex">
@@ -84,13 +124,9 @@ function AccordionTrigger({
         )}
       >
         {children}
-        <m.div
-          className="pointer-events-none shrink-0 translate-y-0.5 text-muted-foreground"
-          animate={{ rotate: 0 }}
-          transition={motion.transition}
-        >
-          <CaretDownIcon weight={sf.iconWeight} className="size-4" />
-        </m.div>
+        <span className="pointer-events-none shrink-0 translate-y-0.5 text-muted-foreground">
+          <CaretDownIcon weight={sf.iconWeight} className="size-4 transition-transform duration-200" />
+        </span>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
@@ -114,7 +150,12 @@ function AccordionContent({
     <AccordionPrimitive.Content
       {...props}
       data-slot="accordion-content"
-      className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      data-animated={String(sf.animated)}
+      className={cn(
+        "overflow-hidden text-sm",
+        !motion.disabled &&
+          "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      )}
     >
       <m.div
         initial={motion.disabled ? false : { opacity: 0 }}

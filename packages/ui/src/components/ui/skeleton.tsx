@@ -20,6 +20,7 @@
  * <Skeleton as="card" className="h-40 w-full" />
  */
 
+import * as React from "react"
 import type { CSSProperties } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -55,7 +56,7 @@ const RADIUS_BY_AS: Record<SkeletonAs, string> = {
  * @package ui
  */
 function Skeleton({ as, className, style, surface, radius, animated, ...props }: SkeletonProps) {
-  const sf = useSaasflareProps({ radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated })
 
   const radiusStyle: CSSProperties | undefined = as
     ? { borderRadius: RADIUS_BY_AS[as], ...style }
@@ -65,6 +66,7 @@ function Skeleton({ as, className, style, surface, radius, animated, ...props }:
     <div
       {...props}
       data-slot="skeleton"
+      data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
       className={cn(

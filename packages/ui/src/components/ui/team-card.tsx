@@ -1,3 +1,5 @@
+"use client"
+
 /**
  * @fileoverview Team member card with photo, name, role, and social links.
  * @author Saasflare™
@@ -18,7 +20,9 @@
  * />
  */
 
+import * as React from "react"
 import { type ReactNode } from "react"
+
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
@@ -33,7 +37,9 @@ export interface SocialLink {
 }
 
 /** Props for the TeamCard component. */
-export interface TeamCardProps extends SaasflareComponentProps {
+export interface TeamCardProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Person's name. */
   name: string
   /** Role or job title. */
@@ -44,8 +50,6 @@ export interface TeamCardProps extends SaasflareComponentProps {
   bio?: string
   /** Social media links. */
   socials?: SocialLink[]
-  /** Additional class names. */
-  className?: string
 }
 
 /**
@@ -64,6 +68,7 @@ export function TeamCard({
   surface,
   radius,
   animated,
+  ...props
 }: TeamCardProps) {
   const sf = useSaasflareProps({ surface, radius, animated })
   return (
@@ -71,12 +76,14 @@ export function TeamCard({
       data-slot="team-card"
       data-surface={sf.surface}
       data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex flex-col items-center rounded-xl border surface-card p-6 text-center",
         "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
         "motion-reduce:hover:transform-none",
         className,
       )}
+      {...props}
     >
       {photo && (
         <img

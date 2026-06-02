@@ -5,21 +5,23 @@
  * @fileoverview ButtonGroup primitive — groups multiple buttons or inputs into a
  * visually connected strip with shared border radii and separator support.
  * Supports horizontal and vertical orientations. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/button-group
+ * @module packages/ui/components/ui/button-group
  * @layer core
  *
  * @component
  * @example
- * import { ButtonGroup, ButtonGroupItem } from '@saasflare/ui';
+ * import { ButtonGroup, ButtonGroupText } from '@saasflare/ui';
  * <ButtonGroup orientation="horizontal">
- *   <ButtonGroupItem>Left</ButtonGroupItem>
- *   <ButtonGroupItem>Right</ButtonGroupItem>
+ *   <ButtonGroupText>Left</ButtonGroupText>
+ *   <ButtonGroupText>Right</ButtonGroupText>
  * </ButtonGroup>
  */
+import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import * as Slot from "@radix-ui/react-slot"
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Separator } from "./separator"
 
 const buttonGroupVariants = cva(
@@ -39,33 +41,81 @@ const buttonGroupVariants = cva(
   }
 )
 
+interface ButtonGroupProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    VariantProps<typeof buttonGroupVariants>,
+    SaasflareComponentProps {}
+
+/**
+ * Groups multiple buttons or inputs into a visually connected strip with shared
+ * border radii. The `radius` axis drives the corner rounding of the whole group;
+ * connected edges between children have their adjacent corners flattened.
+ *
+ * @example
+ * <ButtonGroup orientation="horizontal" radius="lg">
+ *   <Button>Left</Button>
+ *   <Button>Right</Button>
+ * </ButtonGroup>
+ */
 function ButtonGroup({
   className,
-  orientation,
+  orientation = "horizontal",
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof buttonGroupVariants>) {
+}: ButtonGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
       role="group"
       data-slot="button-group"
       data-orientation={orientation}
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(buttonGroupVariants({ orientation }), className)}
       {...props}
     />
   )
 }
 
+interface ButtonGroupTextProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  /** Render as the child element via Radix Slot instead of a `div`. */
+  asChild?: boolean
+}
+
+/**
+ * A bordered, muted-surface text/label cell for use inside a {@link ButtonGroup}
+ * (e.g. an inline prefix/suffix). Carries its own `surface` and `radius` axes so
+ * it visually matches the connected controls around it.
+ *
+ * @example
+ * <ButtonGroup>
+ *   <ButtonGroupText>https://</ButtonGroupText>
+ *   <Input placeholder="example.com" />
+ * </ButtonGroup>
+ */
 function ButtonGroupText({
   className,
   asChild = false,
+  surface,
+  radius,
+  animated,
   ...props
-}: React.ComponentProps<"div"> & {
-  asChild?: boolean
-}) {
+}: ButtonGroupTextProps) {
   const Comp = asChild ? Slot.Root : "div"
+  const sf = useSaasflareProps({ surface, radius, animated })
 
   return (
     <Comp
+      data-slot="button-group-text"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex items-center gap-2 rounded-md border bg-muted px-4 text-sm font-medium shadow-xs [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
         className
@@ -75,6 +125,18 @@ function ButtonGroupText({
   )
 }
 
+/**
+ * A divider between segments of a {@link ButtonGroup}. Defaults to a vertical
+ * orientation to suit the default horizontal group layout. Forwards all props to
+ * the underlying {@link Separator}.
+ *
+ * @example
+ * <ButtonGroup>
+ *   <Button>Cut</Button>
+ *   <ButtonGroupSeparator />
+ *   <Button>Copy</Button>
+ * </ButtonGroup>
+ */
 function ButtonGroupSeparator({
   className,
   orientation = "vertical",
@@ -95,7 +157,9 @@ function ButtonGroupSeparator({
 
 export {
   ButtonGroup,
+  type ButtonGroupProps,
   ButtonGroupSeparator,
   ButtonGroupText,
+  type ButtonGroupTextProps,
   buttonGroupVariants,
 }

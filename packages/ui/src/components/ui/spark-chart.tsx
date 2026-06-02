@@ -89,24 +89,26 @@ export function SparkChart({
 }: SparkChartProps) {
     const sf = useSaasflareProps({ surface, radius, animated })
 
-    if (data.length < 2) return null
+    const points = data.filter((v) => Number.isFinite(v))
+    if (points.length < 2) return null
 
     const stroke = color ?? "var(--primary)"
-    const linePath = buildPath(data, width, height, strokeWidth)
+    const linePath = buildPath(points, width, height, strokeWidth)
     const areaPath = `${linePath} L ${width - strokeWidth / 2} ${height - strokeWidth / 2} L ${strokeWidth / 2} ${height - strokeWidth / 2} Z`
 
-    const min = Math.min(...data)
-    const max = Math.max(...data)
+    const min = Math.min(...points)
+    const max = Math.max(...points)
     const span = max - min || 1
     const innerH = height - strokeWidth
     const offset = strokeWidth / 2
-    const barW = (width - strokeWidth * (data.length + 1)) / data.length
+    const barW = (width - strokeWidth * (points.length + 1)) / points.length
 
     return (
         <svg
             data-slot="spark-chart"
             data-variant={variant}
             data-surface={sf.surface}
+            data-radius={sf.radius}
             data-animated={String(sf.animated)}
             width={width}
             height={height}
@@ -116,7 +118,7 @@ export function SparkChart({
             className={cn("inline-block align-middle", className)}
         >
             {variant === "bar" ? (
-                data.map((v, i) => {
+                points.map((v, i) => {
                     const h = Math.max(((v - min) / span) * innerH, 1)
                     const x = offset + i * (barW + strokeWidth)
                     const y = offset + innerH - h

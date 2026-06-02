@@ -3,7 +3,7 @@
  * @fileoverview Table primitives — composable data table with header, body, footer,
  * row, cell, head, and caption sub-components. Pure Tailwind CSS implementation
  * with no external UI library dependency. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/table
+ * @module packages/ui/components/ui/table
  * @layer core
  *
  * @component

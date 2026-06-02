@@ -26,6 +26,7 @@ import {
 } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { CaretUpIcon, CaretDownIcon } from "./phosphor"
 
 /** Props for the NumberInput component. */
 export interface NumberInputProps extends SaasflareComponentProps {
@@ -95,12 +96,16 @@ export function NumberInput({
     surface,
     radius,
     animated,
+    iconWeight,
     "aria-label": ariaLabel,
 }: NumberInputProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const isControlled = value !== undefined
     const initial = defaultValue ?? (typeof min === "number" ? min : 0)
     const [internal, setInternal] = useState<number>(initial)
+    // Editing buffer: holds the raw field text while the user is mid-edit
+    // (e.g. "" or "-"). `null` means "show the committed value".
+    const [draft, setDraft] = useState<string | null>(null)
     const current = isControlled ? (value as number) : internal
     const decimals = precision ?? precisionFromStep(step)
 
@@ -117,21 +122,30 @@ export function NumberInput({
         const raw = e.target.value
         if (raw === "" || raw === "-") {
             // Allow transient empty / negative-only state; commit on blur.
-            if (!isControlled) setInternal(0)
+            // Keep the committed value untouched so it is not lost.
+            setDraft(raw)
             return
         }
         const parsed = Number(raw)
         if (Number.isNaN(parsed)) return
+        setDraft(null)
         commit(parsed)
     }
 
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+        setDraft(null)
         const parsed = Number(e.target.value)
         commit(Number.isNaN(parsed) ? initial : parsed)
     }
 
-    const inc = () => commit(current + step)
-    const dec = () => commit(current - step)
+    const inc = () => {
+        setDraft(null)
+        commit(current + step)
+    }
+    const dec = () => {
+        setDraft(null)
+        commit(current - step)
+    }
 
     const displayValue =
         decimals > 0 && Number.isFinite(current)
@@ -143,6 +157,7 @@ export function NumberInput({
             data-slot="number-input"
             data-surface={sf.surface}
             data-radius={sf.radius}
+            data-animated={String(sf.animated)}
             data-disabled={String(disabled)}
             className={cn(
                 "inline-flex h-9 w-full min-w-32 items-stretch rounded-md border border-input bg-transparent text-sm shadow-xs",
@@ -156,7 +171,13 @@ export function NumberInput({
                 type="number"
                 inputMode="decimal"
                 name={name}
-                value={Number.isFinite(current) ? displayValue : ""}
+                value={
+                    draft !== null
+                        ? draft
+                        : Number.isFinite(current)
+                          ? displayValue
+                          : ""
+                }
                 onChange={handleChange}
                 onBlur={handleBlur}
                 disabled={disabled}
@@ -183,9 +204,7 @@ export function NumberInput({
                         aria-label="Increment"
                         className="flex h-1/2 w-6 items-center justify-center text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        <svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M2 6.5l3-3 3 3" />
-                        </svg>
+                        <CaretUpIcon weight={sf.iconWeight} className="size-3" aria-hidden="true" />
                     </button>
                     <button
                         type="button"
@@ -196,9 +215,7 @@ export function NumberInput({
                         aria-label="Decrement"
                         className="flex h-1/2 w-6 items-center justify-center border-t border-input text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        <svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M2 3.5l3 3 3-3" />
-                        </svg>
+                        <CaretDownIcon weight={sf.iconWeight} className="size-3" aria-hidden="true" />
                     </button>
                 </div>
             )}

@@ -3,11 +3,11 @@
 
 /**
  * @fileoverview Hook to detect user's reduced-motion preference.
- * @module packages/core/hooks/use-reduced-motion
+ * @module packages/ui/hooks/use-reduced-motion
  * @layer core
  *
  * Returns `true` when the user has enabled "Reduce motion" in their OS settings.
- * Use this to disable Framer Motion scale/translate/spring animations while
+ * Use this to disable Motion scale/translate/spring animations while
  * keeping CSS-token-driven transitions (which already zero out via motion.css).
  *
  * @example

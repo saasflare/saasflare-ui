@@ -32,6 +32,7 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Badge } from "./badge"
 import { Button } from "./button"
+import { CheckIcon } from "./phosphor"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 
 /** A single notification item. */
@@ -140,8 +141,7 @@ export function NotificationCenter({
                         <span
                             data-slot="notification-center-badge"
                             aria-hidden="true"
-                            className="absolute right-1 top-1 inline-flex min-w-4 items-center justify-center rounded-full bg-[oklch(0.62_0.21_25)] px-1 text-[10px] font-semibold leading-none text-white"
-                            style={{ height: 16 }}
+                            className="absolute right-1 top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold leading-none text-destructive-foreground"
                         >
                             {unreadCount > 99 ? "99+" : unreadCount}
                         </span>
@@ -224,9 +224,9 @@ export function NotificationCenter({
                                                 onMarkRead(item.id)
                                             }}
                                             aria-label="Mark as read"
-                                            className="shrink-0 text-[10px] text-muted-foreground transition-colors hover:text-foreground"
+                                            className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
                                         >
-                                            ✓
+                                            <CheckIcon weight={sf.iconWeight} className="size-3" />
                                         </button>
                                     )}
                                 </>

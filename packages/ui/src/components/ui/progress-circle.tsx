@@ -93,6 +93,7 @@ export function ProgressCircle({
             data-slot="progress-circle"
             data-size={size}
             data-surface={sf.surface}
+            data-radius={sf.radius}
             data-animated={String(sf.animated)}
             role="progressbar"
             aria-valuenow={clamped}

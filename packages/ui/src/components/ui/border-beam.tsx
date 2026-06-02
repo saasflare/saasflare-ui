@@ -25,10 +25,11 @@
  */
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the BorderBeam component. */
-export interface BorderBeamProps {
+export interface BorderBeamProps extends SaasflareComponentProps {
   /** Beam color. Default: `"var(--primary)"` */
   color?: string
   /** Tail fade color. Default: `"transparent"` */
@@ -47,8 +48,9 @@ export interface BorderBeamProps {
  * Glowing beam that orbits the border of its parent container.
  *
  * - Place inside a `position: relative; overflow: hidden` parent
- * - CSS-only animation (no JS animation loop)
- * - Renders nothing when reduced motion is preferred
+ * - CSS-only animation (no JS animation loop), gated by the `animated` axis
+ * - Renders nothing when animation is disabled (provider `animated={false}`
+ *   or OS `prefers-reduced-motion`), since a static beam carries no meaning
  *
  * @component
  * @package ui
@@ -60,10 +62,19 @@ export function BorderBeam({
   size = 150,
   borderRadius = "inherit",
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: BorderBeamProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
 
-  if (reduced) return null
+  // A static border beam is meaningless decoration: skip rendering entirely
+  // when the design-system `animated` axis is off or the OS prefers reduced
+  // motion. motion.css would zero the keyframe via [data-animated="false"],
+  // but a frozen beam stuck mid-orbit looks broken — so we omit it outright.
+  if (reduced || !sf.animated) return null
 
   return (
     <>
@@ -78,6 +89,9 @@ export function BorderBeam({
         style={{ borderRadius }}
         aria-hidden="true"
         data-slot="border-beam"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
       >
         <div
           style={{

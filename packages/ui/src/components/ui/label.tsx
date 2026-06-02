@@ -4,7 +4,7 @@
 /**
  * @fileoverview Label primitive — accessible form label with disabled state awareness.
  * Built on Radix UI Label. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/label
+ * @module packages/ui/components/ui/label
  * @layer core
  *
  * @component
@@ -12,20 +12,33 @@
  * import { Label } from '@saasflare/ui';
  * <Label htmlFor="email">Email address</Label>
  */
-"use client"
 
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { cn } from "../../lib"
+
+interface LabelProps
+  extends Omit<React.ComponentProps<typeof LabelPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
 
 function Label({
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+}: LabelProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+
   return (
     <LabelPrimitive.Root
       data-slot="label"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
         className

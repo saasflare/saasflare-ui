@@ -26,12 +26,17 @@
 import { useRef, useState, type ReactNode } from "react"
 import { m } from "motion/react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "./motion-config"
+import { useSaasflareMotion, spring } from "./motion-config"
 import { useMousePosition } from "../../hooks/use-mouse-position"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/** Motion-reserved DOM handlers that collide with Motion's own props. */
+type MotionConflicts = "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
+
 /** Props for the SpotlightCard component. */
-export interface SpotlightCardProps extends SaasflareComponentProps {
+export interface SpotlightCardProps
+  extends Omit<React.ComponentProps<"div">, MotionConflicts | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Card content. */
   children: ReactNode
   /** Spotlight gradient color. Default: `"var(--primary)"` */
@@ -50,7 +55,7 @@ export interface SpotlightCardProps extends SaasflareComponentProps {
  * - Gradient overlay tracks the mouse within the card boundaries
  * - Fades out when the mouse leaves
  * - Uses CSS for the gradient (no canvas, no heavy re-renders)
- * - Falls back to a plain card when reduced motion is preferred
+ * - Falls back to a plain card when motion is disabled (`animated={false}` or reduced motion)
  *
  * @component
  * @package ui
@@ -64,21 +69,24 @@ export function SpotlightCard({
   surface,
   radius,
   animated,
+  ...props
 }: SpotlightCardProps) {
   const sf = useSaasflareProps({ surface, radius, animated })
-  const reduced = useReducedMotion()
+  const motion = useSaasflareMotion(sf.animated, spring)
   const cardRef = useRef<HTMLDivElement>(null)
-  const position = useMousePosition({ ref: cardRef, enabled: !reduced })
+  const position = useMousePosition({ ref: cardRef, enabled: !motion.disabled })
   const [isHovered, setIsHovered] = useState(false)
 
   return (
     <m.div
       ref={cardRef}
-      onMouseEnter={reduced ? undefined : () => setIsHovered(true)}
-      onMouseLeave={reduced ? undefined : () => setIsHovered(false)}
+      {...props}
+      onMouseEnter={motion.disabled ? undefined : () => setIsHovered(true)}
+      onMouseLeave={motion.disabled ? undefined : () => setIsHovered(false)}
       data-slot="spotlight-card"
       data-surface={sf.surface}
       data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "relative overflow-hidden rounded-xl border surface-card p-6 text-card-foreground",
         "transition-all duration-200 hover:-translate-y-px hover:shadow-md",
@@ -87,13 +95,12 @@ export function SpotlightCard({
       )}
     >
       {/* Spotlight gradient overlay */}
-      {!reduced && (
+      {!motion.disabled && (
         <div
           className="pointer-events-none absolute inset-0 transition-opacity duration-300"
           style={{
-            opacity: isHovered ? 1 : 0,
+            opacity: isHovered ? spotlightOpacity : 0,
             background: `radial-gradient(${spotlightSize}px circle at ${position.x}px ${position.y}px, ${spotlightColor} 0%, transparent 70%)`,
-            ...(spotlightOpacity < 1 && { opacity: isHovered ? spotlightOpacity : 0 }),
           }}
           aria-hidden="true"
         />

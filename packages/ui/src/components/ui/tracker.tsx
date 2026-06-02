@@ -25,36 +25,43 @@
  * />
  */
 
-import { type ReactNode } from "react"
+import * as React from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
-/** Named colors map to OKLCH tokens — keeps trackers in-theme without
- * forcing consumers to import CSS vars by name. Pass any CSS color via
- * `color` to override. */
+/** Named status colors map to semantic, theme-aware design tokens — keeps
+ * trackers in-theme (light/dark + active palette) without forcing consumers
+ * to import CSS vars by name. Pass any CSS color via `color` to override. */
 const NAMED_COLORS: Record<string, string> = {
-    emerald: "oklch(0.68 0.17 155)",
-    teal: "oklch(0.70 0.15 185)",
-    blue: "oklch(0.65 0.18 230)",
-    amber: "oklch(0.72 0.17 50)",
-    red: "oklch(0.62 0.21 25)",
-    rose: "oklch(0.65 0.20 10)",
-    gray: "oklch(0.70 0 0)",
-    neutral: "oklch(0.70 0 0)",
+    emerald: "var(--success)",
+    teal: "var(--success)",
+    blue: "var(--info)",
+    amber: "var(--warning)",
+    red: "var(--destructive)",
+    rose: "var(--destructive)",
+    gray: "var(--muted)",
+    neutral: "var(--muted)",
 }
 
 /** A single tracker block. */
 export interface TrackerBlock {
-    /** Named color key (emerald|teal|blue|amber|red|rose|gray) or any CSS color. */
+    /**
+     * Named status key — resolves to a semantic, theme-aware token:
+     * `emerald`/`teal` → success, `blue` → info, `amber` → warning,
+     * `red`/`rose` → destructive, `gray`/`neutral` → muted. Or pass any CSS
+     * color string to override with an explicit value.
+     */
     color?: string
     /** Tooltip text shown on hover. */
-    tooltip?: ReactNode
+    tooltip?: React.ReactNode
     /** Custom key (helps React when blocks rearrange). */
     key?: string | number
 }
 
 /** Props for the Tracker component. */
-export interface TrackerProps extends SaasflareComponentProps {
+export interface TrackerProps
+    extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+        SaasflareComponentProps {
     /** Blocks to render, left-to-right. */
     data: TrackerBlock[]
     /** Height of each block in px. Default: `32`. */
@@ -79,17 +86,20 @@ export function Tracker({
     surface,
     radius,
     animated,
+    style,
+    ...props
 }: TrackerProps) {
     const sf = useSaasflareProps({ surface, radius, animated })
 
     return (
         <div
+            {...props}
             data-slot="tracker"
             data-surface={sf.surface}
             data-radius={sf.radius}
             data-animated={String(sf.animated)}
-            className={cn("flex w-full items-stretch", className)}
-            style={{ gap, height: blockHeight }}
+            className={cn("group/tracker flex w-full items-stretch", className)}
+            style={{ gap, height: blockHeight, ...style }}
             role="group"
             aria-label="Status tracker"
         >
@@ -104,7 +114,12 @@ export function Tracker({
                         title={typeof block.tooltip === "string" ? block.tooltip : undefined}
                         className={cn(
                             "flex-1 rounded-sm transition-[transform,opacity]",
-                            "hover:scale-y-110 hover:opacity-90",
+                            // Hover motion only applies when the design-system
+                            // `animated` axis is on — gated on the root's
+                            // data-animated so animated={false} suppresses the
+                            // scale/opacity jump entirely (not just its easing).
+                            "group-data-[animated=true]/tracker:hover:scale-y-110",
+                            "group-data-[animated=true]/tracker:hover:opacity-90",
                             "motion-reduce:hover:transform-none",
                         )}
                         style={{ backgroundColor: color }}

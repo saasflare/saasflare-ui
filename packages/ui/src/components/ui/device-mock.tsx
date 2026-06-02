@@ -1,3 +1,5 @@
+"use client"
+
 /**
  * @fileoverview Device frame mockups (Safari browser and iPhone).
  * @author Saasflare™
@@ -19,13 +21,17 @@
  * </IPhoneMock>
  */
 
+import * as React from "react"
 import { type ReactNode } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /* ── Safari Browser Mock ── */
 
 /** Props for the SafariMock component. */
-export interface SafariMockProps {
+export interface SafariMockProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Content to display inside the browser frame. */
   children: ReactNode
   /** URL text shown in the address bar. Default: `"https://example.com"` */
@@ -48,11 +54,22 @@ export function SafariMock({
   children,
   url = "https://example.com",
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
 }: SafariMockProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+
   return (
     <div
+      {...props}
       className={cn("overflow-hidden rounded-xl border bg-background shadow-xl", className)}
       data-slot="safari-mock"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       {/* Title bar */}
       <div className="flex items-center gap-2 border-b bg-muted/50 px-4 py-3">
@@ -92,7 +109,9 @@ export function SafariMock({
 /* ── iPhone Mock ── */
 
 /** Props for the IPhoneMock component. */
-export interface IPhoneMockProps {
+export interface IPhoneMockProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Content to display inside the phone frame. */
   children: ReactNode
   /** Additional class names. */
@@ -112,14 +131,25 @@ export interface IPhoneMockProps {
 export function IPhoneMock({
   children,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
 }: IPhoneMockProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+
   return (
     <div
+      {...props}
       className={cn(
         "relative mx-auto w-[280px] rounded-[2.5rem] border-[6px] border-foreground/10 bg-background p-1.5 shadow-xl",
         className,
       )}
       data-slot="iphone-mock"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       {/* Notch / Dynamic Island */}
       <div className="absolute left-1/2 top-2 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-foreground/10" />

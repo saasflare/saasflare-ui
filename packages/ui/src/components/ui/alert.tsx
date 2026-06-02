@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare Alert — contextual feedback with intent support.
- * @module packages/core/components/ui/alert
+ * @module packages/ui/components/ui/alert
  * @layer core
  *
  * Fully owned Saasflare implementation. Does NOT import from ui/.
@@ -26,15 +26,22 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import type { Intent } from "./button"
 
-/** Intent-specific styles for the alert soft treatment */
-const INTENT_STYLES: Record<string, string> = {
-  neutral: "bg-card text-card-foreground border-border",
-  primary: "bg-[var(--intent)]/10 text-[var(--intent)] border-[var(--intent)]/20 *:data-[slot=alert-description]:text-[var(--intent)]/80",
-  info: "bg-[var(--intent)]/10 text-[var(--intent)] border-[var(--intent)]/20 *:data-[slot=alert-description]:text-[var(--intent)]/80",
-  success: "bg-[var(--intent)]/10 text-[var(--intent)] border-[var(--intent)]/20 *:data-[slot=alert-description]:text-[var(--intent)]/80",
-  warning: "bg-[var(--intent)]/10 text-[var(--intent)] border-[var(--intent)]/20 *:data-[slot=alert-description]:text-[var(--intent)]/80",
-  danger: "bg-[var(--intent)]/10 text-[var(--intent)] border-[var(--intent)]/20 *:data-[slot=alert-description]:text-[var(--intent)]/80",
-}
+/**
+ * Soft treatment for the neutral intent — uses card tokens, no `--intent`.
+ * (Neutral renders without a `data-intent` attribute, so `var(--intent)` is
+ * not in scope; card tokens give a stable, themed surface.)
+ */
+const NEUTRAL_STYLE =
+  "bg-card text-card-foreground border-border"
+
+/**
+ * Soft treatment for every colored intent. Identical for all of
+ * primary/info/success/warning/danger because the color is sourced entirely
+ * from `--intent`, which the `[data-intent]` selector in theme.css resolves
+ * per intent on this element.
+ */
+const COLORED_STYLE =
+  "bg-[var(--intent)]/10 text-[var(--intent)] border-[var(--intent)]/20 *:data-[slot=alert-description]:text-[var(--intent)]/80"
 
 /** Props for the Saasflare Alert component */
 interface AlertProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
@@ -82,12 +89,13 @@ function Alert({
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   /* ── Backward compat: map legacy variant to intent ── */
-  let resolvedIntent: string = intentProp ?? "neutral"
+  let resolvedIntent: Intent | "neutral" = intentProp ?? "neutral"
   if (!intentProp && variant === "destructive") {
     resolvedIntent = "danger"
   }
 
-  const intentStyle = INTENT_STYLES[resolvedIntent] ?? INTENT_STYLES.neutral
+  const intentStyle =
+    resolvedIntent === "neutral" ? NEUTRAL_STYLE : COLORED_STYLE
 
   return (
     <div

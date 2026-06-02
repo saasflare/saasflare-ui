@@ -6,7 +6,7 @@
  * Built on Embla Carousel. Supports horizontal and vertical orientation,
  * keyboard navigation, and plugin extensibility.
  * Part of the Saasflare base component layer.
- * @module packages/core/components/ui/carousel
+ * @module packages/ui/components/ui/carousel
  * @layer core
  *
  * @requires embla-carousel-react — peer dependency. Shipped via the `/carousel`
@@ -24,7 +24,6 @@
  *   <CarouselNext />
  * </Carousel>
  */
-"use client"
 
 import * as React from "react"
 import useEmblaCarousel, {
@@ -42,9 +41,13 @@ type CarouselOptions = UseCarouselParameters[0]
 type CarouselPlugin = UseCarouselParameters[1]
 
 type CarouselProps = SaasflareComponentProps & {
+  /** Embla Carousel options (loop, align, dragFree, etc.). */
   opts?: CarouselOptions
+  /** Embla Carousel plugins (autoplay, wheel gestures, etc.). */
   plugins?: CarouselPlugin
+  /** Scroll direction of the carousel. Drives Embla's axis. @default "horizontal" */
   orientation?: "horizontal" | "vertical"
+  /** Receives the Embla API instance once initialized, for imperative control. */
   setApi?: (api: CarouselApi) => void
 }
 
@@ -69,6 +72,20 @@ function useCarousel() {
   return context
 }
 
+/**
+ * Carousel root — provides the Embla context and the carousel region.
+ * Owns the design-system axes (`surface`, `radius`, `animated`, `iconWeight`)
+ * and emits the corresponding data attributes on its root element.
+ *
+ * @example
+ * <Carousel orientation="vertical" setApi={setApi} opts={{ loop: true }}>
+ *   <CarouselContent>
+ *     <CarouselItem>Slide 1</CarouselItem>
+ *   </CarouselContent>
+ *   <CarouselPrevious />
+ *   <CarouselNext />
+ * </Carousel>
+ */
 function Carousel({
   orientation = "horizontal",
   opts,
@@ -142,8 +159,7 @@ function Carousel({
         carouselRef,
         api: api,
         opts,
-        orientation:
-          orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
+        orientation,
         scrollPrev,
         scrollNext,
         canScrollPrev,
@@ -167,6 +183,10 @@ function Carousel({
   )
 }
 
+/**
+ * Carousel viewport + scroll track. Wraps {@link CarouselItem}s and binds the
+ * Embla ref. Lays items out along the active orientation.
+ */
 function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   const { carouselRef, orientation } = useCarousel()
 
@@ -188,6 +208,10 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * A single carousel slide. Renders as a full-basis flex child with
+ * orientation-aware spacing.
+ */
 function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
   const { orientation } = useCarousel()
 
@@ -206,6 +230,10 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Navigates to the previous slide. Disabled when there is no previous slide.
+ * Inherits the provider `iconWeight` for its arrow icon.
+ */
 function CarouselPrevious({
   className,
   variant = "outline",
@@ -237,6 +265,10 @@ function CarouselPrevious({
   )
 }
 
+/**
+ * Navigates to the next slide. Disabled when there is no next slide.
+ * Inherits the provider `iconWeight` for its arrow icon.
+ */
 function CarouselNext({
   className,
   variant = "outline",

@@ -22,10 +22,20 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useReducedMotion } from "./motion-config"
 
+/** Default particle palette — module-level so its identity is stable across renders. */
+const DEFAULT_CONFETTI_COLORS: string[] = [
+  "var(--primary)",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+]
+
 /** Props for the Confetti component. */
-export interface ConfettiProps {
+export interface ConfettiProps extends SaasflareComponentProps {
   /** Whether the confetti burst is active. */
   active: boolean
   /** Number of confetti particles. Default: `40` */
@@ -52,7 +62,7 @@ function seeded(seed: number): number {
  * - CSS-only particles with randomized trajectories
  * - Fires once when `active` becomes `true`
  * - Calls `onComplete` when the animation finishes
- * - Renders nothing when reduced motion is preferred
+ * - Renders nothing when the provider's `animated` axis is off or reduced motion is preferred
  *
  * @component
  * @package ui
@@ -60,29 +70,31 @@ function seeded(seed: number): number {
 export function Confetti({
   active,
   count = 40,
-  colors = [
-    "var(--primary)",
-    "var(--chart-1)",
-    "var(--chart-2)",
-    "var(--chart-3)",
-    "var(--chart-4)",
-  ],
+  colors = DEFAULT_CONFETTI_COLORS,
   duration = 3000,
   onComplete,
+  surface,
+  radius,
+  animated,
+  iconWeight,
   className,
 }: ConfettiProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
+  // Animation is gated on both the provider's `animated` axis and the user's
+  // reduced-motion preference; either one suppresses the burst entirely.
+  const enabled = sf.animated && !reduced
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (!active || reduced) return
+    if (!active || !enabled) return
     setVisible(true)
     const timer = setTimeout(() => {
       setVisible(false)
       onComplete?.()
     }, duration)
     return () => clearTimeout(timer)
-  }, [active, reduced, duration, onComplete])
+  }, [active, enabled, duration, onComplete])
 
   const particles = useMemo(
     () =>
@@ -103,13 +115,16 @@ export function Confetti({
     [count, colors],
   )
 
-  if (!visible || reduced) return null
+  if (!visible || !enabled) return null
 
   return (
     <div
       className={cn("pointer-events-none fixed inset-0 z-[9999] overflow-hidden", className)}
       aria-hidden="true"
       data-slot="confetti"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       <style>{`
         @keyframes sf-confetti-burst {

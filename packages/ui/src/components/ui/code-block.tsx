@@ -20,10 +20,13 @@
  * <CodeBlock code={`function hi() { return "hello" }`} language="ts" filename="hi.ts" />
  *
  * @example
- * // With pre-rendered HTML from Shiki on the server
+ * // With pre-rendered HTML from Shiki on the server.
+ * // NOTE: `highlighted` is injected via dangerouslySetInnerHTML — it MUST be
+ * // trusted, server-generated markup. Never pass untrusted HTML (XSS sink).
  * <CodeBlock highlighted={await codeToHtml(src, { lang: "ts", theme: "github-dark" })} />
  */
 
+import * as React from "react"
 import { useMemo } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -31,23 +34,31 @@ import { useClipboard } from "../../hooks/use-clipboard"
 import { CheckIcon } from "./phosphor"
 
 /** Props for the CodeBlock component. */
-export interface CodeBlockProps extends SaasflareComponentProps {
+export interface CodeBlockProps
+    extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+        SaasflareComponentProps {
     /** Plain source code (rendered as monospace, no highlighting). */
     code?: string
-    /** Pre-highlighted HTML — e.g. output from Shiki's `codeToHtml`. */
+    /**
+     * Pre-highlighted HTML — e.g. output from Shiki's `codeToHtml`. Injected
+     * verbatim via `dangerouslySetInnerHTML`, so it MUST be trusted,
+     * server-generated markup. Never pass untrusted/user-supplied HTML.
+     */
     highlighted?: string
     /** Language label shown in the header (purely cosmetic). */
     language?: string
     /** Filename shown left of the language badge. */
     filename?: string
-    /** Show 1-based line numbers in the gutter. */
+    /**
+     * Show 1-based line numbers in the gutter. Only applies to the plain
+     * `code` path; when `highlighted` HTML is supplied it owns its own
+     * rendering and this flag is ignored.
+     */
     showLineNumbers?: boolean
     /** Hide the top bar (copy button still floats inside the block). */
     hideHeader?: boolean
     /** Hide the copy-to-clipboard button. */
     hideCopyButton?: boolean
-    /** Additional class names on the outer wrapper. */
-    className?: string
 }
 
 function CopyIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -87,8 +98,10 @@ export function CodeBlock({
     surface,
     radius,
     animated,
+    iconWeight,
+    ...props
 }: CodeBlockProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const { copy, copied } = useClipboard()
 
     const plainText = code ?? ""
@@ -109,6 +122,7 @@ export function CodeBlock({
 
     return (
         <div
+            {...props}
             data-slot="code-block"
             data-surface={sf.surface}
             data-radius={sf.radius}
@@ -158,7 +172,7 @@ export function CodeBlock({
                             "[&_svg]:size-3.5",
                         )}
                     >
-                        {copied ? <CheckIcon /> : <CopyIcon />}
+                        {copied ? <CheckIcon weight={sf.iconWeight} /> : <CopyIcon />}
                     </button>
                 )}
 
@@ -179,7 +193,10 @@ export function CodeBlock({
                     >
                         <code>
                             {lines.map((line, i) => (
-                                <span key={i} className="grid grid-cols-[auto_1fr] gap-3">
+                                <span
+                                    key={`${i}:${line}`}
+                                    className="grid grid-cols-[auto_1fr] gap-3"
+                                >
                                     <span
                                         data-slot="code-block-line-number"
                                         aria-hidden="true"

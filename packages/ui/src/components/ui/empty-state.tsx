@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare EmptyState — placeholder for empty views.
- * @module packages/core/components/ui/empty-state
+ * @module packages/ui/components/ui/empty-state
  * @layer core
  *
  * Displays a centered icon/illustration, title, description, and optional
@@ -27,7 +27,12 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 
 /** Props for the EmptyState component */
 interface EmptyStateProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
-  /** Icon or illustration element */
+  /**
+   * Icon or illustration element. Rendered verbatim — because this is an
+   * arbitrary `ReactNode` rather than an internal Phosphor icon, the
+   * provider's `iconWeight` does not reach it. Set `weight` on the icon
+   * you pass (e.g. `<InboxIcon weight="duotone" />`) for weight control.
+   */
   icon?: React.ReactNode
   /** Title text */
   title: string
@@ -65,9 +70,10 @@ function EmptyState({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: EmptyStateProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

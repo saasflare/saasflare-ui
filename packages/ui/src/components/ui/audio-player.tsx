@@ -49,8 +49,9 @@ export function AudioPlayer({
   surface,
   radius,
   animated,
+  iconWeight,
 }: AudioPlayerProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
   const [current, setCurrent] = useState(0)
@@ -59,13 +60,15 @@ export function AudioPlayer({
   const toggle = useCallback(() => {
     const audio = audioRef.current
     if (!audio) return
-    if (playing) {
-      audio.pause()
+    if (audio.paused) {
+      // play() returns a Promise that rejects on interrupted/blocked playback;
+      // swallow it so we never leave an unhandled rejection. State is driven by
+      // the element's play/pause events below, not optimistically here.
+      audio.play().catch(() => {})
     } else {
-      audio.play()
+      audio.pause()
     }
-    setPlaying(!playing)
-  }, [playing])
+  }, [])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -73,15 +76,18 @@ export function AudioPlayer({
 
     const onTime = () => setCurrent(audio.currentTime)
     const onMeta = () => setDuration(audio.duration)
-    const onEnded = () => setPlaying(false)
+    const onPlay = () => setPlaying(true)
+    const onPause = () => setPlaying(false)
 
     audio.addEventListener("timeupdate", onTime)
     audio.addEventListener("loadedmetadata", onMeta)
-    audio.addEventListener("ended", onEnded)
+    audio.addEventListener("play", onPlay)
+    audio.addEventListener("pause", onPause)
     return () => {
       audio.removeEventListener("timeupdate", onTime)
       audio.removeEventListener("loadedmetadata", onMeta)
-      audio.removeEventListener("ended", onEnded)
+      audio.removeEventListener("play", onPlay)
+      audio.removeEventListener("pause", onPause)
     }
   }, [])
 
@@ -98,6 +104,7 @@ export function AudioPlayer({
       data-slot="audio-player"
       data-surface={sf.surface}
       data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex items-center gap-3 rounded-xl border surface-card px-4 py-3",
         "transition-all duration-200 hover:shadow-md",
@@ -134,7 +141,7 @@ export function AudioPlayer({
               type="range"
               min={0}
               max={duration || 0}
-              value={current}
+              value={Math.min(current, duration || 0)}
               onChange={seek}
               className="absolute inset-0 h-1 w-full cursor-pointer opacity-0"
               aria-label="Seek"

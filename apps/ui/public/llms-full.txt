@@ -104,6 +104,33 @@ import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
 npx shadcn add https://ui.saasflare.io/r/aspect-ratio.json
 ```
 
+**Props:**
+
+```ts
+interface AspectRatioProps
+  extends Omit<
+      React.ComponentProps<typeof AspectRatioPrimitive.Root>,
+      keyof SaasflareComponentProps
+    >,
+    SaasflareComponentProps {}
+
+/**
+ * Constrains its children to a fixed width-to-height ratio.
+ *
+ * @example
+ * <AspectRatio ratio={16 / 9}>
+ *   <img src="/image.jpg" alt="Landscape" />
+ * </AspectRatio>
+ */
+function AspectRatio({
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
+```
+
 **Example:**
 
 ```tsx
@@ -168,7 +195,7 @@ export interface AuroraBackgroundProps
      * Default: curated peach + blue + violet showcase palette.
      */
     colors?: readonly [string, string, string]
-    /** Overall blob opacity (0–1). Default: `0.55`. Auto-halved in dark mode via `dark:` modifier. */
+    /** Overall blob opacity (0–1). Applied inline to every blob. Default: `0.55`. */
     intensity?: number
 }
 ```
@@ -273,7 +300,7 @@ npx shadcn add https://ui.saasflare.io/r/bar-list.json
 export interface BarListProps extends SaasflareComponentProps {
     /** Rows to render. */
     data: BarListItem[]
-    /** Formats the numeric value on the right edge. Default: `String(n)`. */
+    /** Formats the numeric value on the right edge. Default: `(n) => n.toLocaleString()`. */
     valueFormatter?: (value: number) => string
     /** Sort rows by value descending. Default: `true`. */
     sortDescending?: boolean
@@ -312,7 +339,7 @@ npx shadcn add https://ui.saasflare.io/r/bento-grid.json
 **Props:**
 
 ```ts
-export interface BentoGridProps {
+export interface BentoGridProps extends SaasflareComponentProps {
   /** Grid items. */
   children: ReactNode
   /** Number of columns at md+ breakpoint. Default: `3` */
@@ -350,7 +377,9 @@ npx shadcn add https://ui.saasflare.io/r/blur-fade.json
 **Props:**
 
 ```ts
-export interface BlurFadeProps {
+export interface BlurFadeProps
+  extends Omit<React.ComponentProps<"div">, MotionConflicts | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Content to animate. */
   children: ReactNode
   /** Animation delay in seconds (use for staggering). Default: `0` */
@@ -392,7 +421,7 @@ npx shadcn add https://ui.saasflare.io/r/border-beam.json
 **Props:**
 
 ```ts
-export interface BorderBeamProps {
+export interface BorderBeamProps extends SaasflareComponentProps {
   /** Beam color. Default: `"var(--primary)"` */
   color?: string
   /** Tail fade color. Default: `"transparent"` */
@@ -435,6 +464,10 @@ npx shadcn add https://ui.saasflare.io/r/breadcrumb.json
 ```ts
 interface BreadcrumbProps extends Omit<React.ComponentProps<"nav">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Breadcrumb navigation root — labelled `<nav>` wrapping the trail. Resolves the
+ * Saasflare axes and emits `data-surface`/`data-radius`/`data-animated`.
+ */
 function Breadcrumb({ surface, radius, animated, iconWeight, ...props }: BreadcrumbProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -482,12 +515,56 @@ interface ButtonProps
   extends Omit<React.ComponentProps<"button">, MotionConflicts>,
     VariantProps<typeof buttonVariants>,
     SaasflareComponentProps {
-  /** Render as child element (Radix Slot pattern) */
+  /**
+   * Render as child element (Radix Slot pattern). Mutually exclusive with the
+   * presentational slot props below — when `asChild` is set they are ignored
+   * (dev-only `console.warn`) since a Slot cannot own injected DOM children.
+   */
   asChild?: boolean
   /** Semantic color intent */
   intent?: Intent
   /** Stretch to full width of container */
   fullWidth?: boolean
+
+  // ── Presentational slots (additive) ──
+  /**
+   * Node rendered before the label (e.g. a leading icon). Ignored when `asChild`.
+   * Intended for non-interactive adornments; mark meaningful icons `aria-hidden`
+   * yourself if they are decorative.
+   */
+  startContent?: React.ReactNode
+  /**
+   * Node rendered after the label (e.g. a trailing icon). Ignored when `asChild`.
+   * Intended for non-interactive adornments.
+   */
+  endContent?: React.ReactNode
+  /**
+   * Presentational loading flag. Renders a hardcoded-regular `CircleNotch`
+   * spinner, forces `disabled`, sets `aria-busy="true"`, and disables motion.
+   * This is the DUMB flag you flip yourself; for promise/async orchestration
+   * reach for {@link StatefulButton}.
+   *
+   * @default false
+   */
+  isLoading?: boolean
+  /**
+   * Spinner side while `isLoading`. Replaces `startContent` (start) or
+   * `endContent` (end); the opposite slot still renders its content. No-op when
+   * `isLoading` is false.
+   *
+   * @default "start"
+   */
+  spinnerPlacement?: SpinnerPlacement
+  /**
+   * Convenience: square icon button. Maps the resolved `size` to its paired
+   * icon size token for the cva call only (`xs→icon-xs`, `sm→icon-sm`,
+   * `md→icon`, `lg→icon-lg`, `xl→icon-lg`). If an `icon*` size is already
+   * passed, that wins. Icon-only buttons require an accessible name — pass
+   * `aria-label` (dev-only warn otherwise). Ignored when `asChild`.
+   *
+   * @default false
+   */
+  isIconOnly?: boolean
 }
 ```
 
@@ -517,13 +594,42 @@ import { Button } from "@saasflare/ui";
 npx shadcn add https://ui.saasflare.io/r/button-group.json
 ```
 
+**Props:**
+
+```ts
+interface ButtonGroupProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    VariantProps<typeof buttonGroupVariants>,
+    SaasflareComponentProps {}
+
+/**
+ * Groups multiple buttons or inputs into a visually connected strip with shared
+ * border radii. The `radius` axis drives the corner rounding of the whole group;
+ * connected edges between children have their adjacent corners flattened.
+ *
+ * @example
+ * <ButtonGroup orientation="horizontal" radius="lg">
+ *   <Button>Left</Button>
+ *   <Button>Right</Button>
+ * </ButtonGroup>
+ */
+function ButtonGroup({
+  className,
+  orientation = "horizontal",
+  surface,
+  radius,
+  animated,
+  ...props
+}
+```
+
 **Example:**
 
 ```tsx
-import { ButtonGroup, ButtonGroupItem } from '@saasflare/ui';
+import { ButtonGroup, ButtonGroupText } from '@saasflare/ui';
 <ButtonGroup orientation="horizontal">
-  <ButtonGroupItem>Left</ButtonGroupItem>
-  <ButtonGroupItem>Right</ButtonGroupItem>
+  <ButtonGroupText>Left</ButtonGroupText>
+  <ButtonGroupText>Right</ButtonGroupText>
 </ButtonGroup>
 ```
 
@@ -615,8 +721,8 @@ interface CardProps
  *   <CardContent>Content here</CardContent>
  * </Card>
  */
-function Card({ className, surface, radius, animated, ...props }: CardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Card({ className, surface, radius, animated, iconWeight, ...props }: CardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springGentle)
 
   return (
@@ -626,7 +732,11 @@ function Card({ className, surface, radius, animated, ...props }: CardProps) {
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      whileHover={motion.disabled ? undefined : { y: -2, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
+      whileHover={
+        motion.disabled
+          ? undefined
+          : { y: -2, boxShadow: "0 8px 30px color-mix(in oklab, var(--foreground) 8%, transparent)" }
+      }
       transition={motion.transition}
       className={cn(
         "flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm transition-[border-color] duration-300 hover:border-primary/20",
@@ -711,9 +821,9 @@ export interface CategoryBarProps extends SaasflareComponentProps {
 ```tsx
 <CategoryBar
   segments={[
-    { value: 30, color: "oklch(0.65 0.18 230)", label: "Images" },
-    { value: 20, color: "oklch(0.72 0.17 50)",  label: "Docs"   },
-    { value: 50, color: "oklch(0.70 0 0)",      label: "Other"  },
+    { value: 30, color: "var(--chart-1)", label: "Images" },
+    { value: 20, color: "var(--chart-2)", label: "Docs"   },
+    { value: 50, color: "var(--chart-3)", label: "Other"  },
   ]}
   showLabels
 />
@@ -735,7 +845,7 @@ npx shadcn add https://ui.saasflare.io/r/chart.json
 
 ```tsx
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@saasflare/ui/chart';
-const config = { revenue: { label: "Revenue", color: "#2563eb" } };
+const config = { revenue: { label: "Revenue", color: "var(--chart-1)" } };
 <ChartContainer config={config}>
   <BarChart data={data}>
     <Bar dataKey="revenue" />
@@ -797,23 +907,31 @@ npx shadcn add https://ui.saasflare.io/r/code-block.json
 **Props:**
 
 ```ts
-export interface CodeBlockProps extends SaasflareComponentProps {
+export interface CodeBlockProps
+    extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+        SaasflareComponentProps {
     /** Plain source code (rendered as monospace, no highlighting). */
     code?: string
-    /** Pre-highlighted HTML — e.g. output from Shiki's `codeToHtml`. */
+    /**
+     * Pre-highlighted HTML — e.g. output from Shiki's `codeToHtml`. Injected
+     * verbatim via `dangerouslySetInnerHTML`, so it MUST be trusted,
+     * server-generated markup. Never pass untrusted/user-supplied HTML.
+     */
     highlighted?: string
     /** Language label shown in the header (purely cosmetic). */
     language?: string
     /** Filename shown left of the language badge. */
     filename?: string
-    /** Show 1-based line numbers in the gutter. */
+    /**
+     * Show 1-based line numbers in the gutter. Only applies to the plain
+     * `code` path; when `highlighted` HTML is supplied it owns its own
+     * rendering and this flag is ignored.
+     */
     showLineNumbers?: boolean
     /** Hide the top bar (copy button still floats inside the block). */
     hideHeader?: boolean
     /** Hide the copy-to-clipboard button. */
     hideCopyButton?: boolean
-    /** Additional class names on the outer wrapper. */
-    className?: string
 }
 ```
 
@@ -938,7 +1056,9 @@ npx shadcn add https://ui.saasflare.io/r/compare.json
 **Props:**
 
 ```ts
-export interface CompareProps {
+export interface CompareProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Content shown on the left (before) side. */
   before: ReactNode
   /** Content shown on the right (after) side. */
@@ -981,7 +1101,7 @@ npx shadcn add https://ui.saasflare.io/r/confetti.json
 **Props:**
 
 ```ts
-export interface ConfettiProps {
+export interface ConfettiProps extends SaasflareComponentProps {
   /** Whether the confetti burst is active. */
   active: boolean
   /** Number of confetti particles. Default: `40` */
@@ -1046,7 +1166,9 @@ npx shadcn add https://ui.saasflare.io/r/countdown.json
 **Props:**
 
 ```ts
-export interface CountdownProps {
+export interface CountdownProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Number of days remaining. */
   days: number
   /** Number of hours remaining (0–23). */
@@ -1073,6 +1195,176 @@ const { days, hours, minutes, seconds } = useCountdown(targetDate);
 
 ---
 
+## Data Pagination
+
+**Description:** Total-driven pagination control — prev/next, numbered pages with ellipsis, an optional page-size selector and an 'X–Y of N' summary. One component wires a whole table footer.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/data-pagination.json
+```
+
+**Props:**
+
+```ts
+export interface DataPaginationProps
+  extends Omit<React.ComponentProps<"nav">, "onChange" | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  /** Total number of ITEMS across all pages. Used with `pageSize` to derive page count + the "X–Y of N" summary. Ignored if `pageCount` is set. */
+  total?: number
+  /** Precomputed total number of PAGES. Use when the backend returns a page count directly (no item total). Takes precedence over `total`/`pageSize`. */
+  pageCount?: number
+  /** Items per page. Required when using `total`; drives summary math + page-count derivation. Default: `10`. */
+  pageSize?: number
+  /** Controlled active page (1-indexed). When provided, the component is controlled and you MUST update it from `onPageChange`. */
+  page?: number
+  /** Initial page for uncontrolled mode. Default: `1`. Ignored when `page` is provided. */
+  defaultPage?: number
+  /** Fired with the next 1-indexed page when the user navigates. Always clamped to `[1, derivedPageCount]`. */
+  onPageChange?: (page: number) => void
+  /** Sibling pages shown each side of the active page (forwarded to {@link usePagination}). Default: `1`. */
+  siblings?: number
+  /** Boundary pages pinned at each end (forwarded to {@link usePagination}). Default: `1`. */
+  boundaries?: number
+  /** Show the prev/next caret controls. Default: `true`. */
+  showControls?: boolean
+  /** Show numbered page links + ellipsis. When `false`, renders only controls + summary (compact mode). Default: `true`. */
+  showNumbers?: boolean
+  /** Render the "X–Y of N" summary text. Auto-disabled (with a dev warning) when neither `total` nor an item count is known. Default: `false`. */
+  showSummary?: boolean
+  /** Render a page-size `<select>` built on {@link NativeSelect}. Requires `onPageSizeChange`. Default: `false`. */
+  showPageSize?: boolean
+  /** Selectable page sizes for the size selector. Default: `[10, 20, 50, 100]`. */
+  pageSizeOptions?: readonly number[]
+  /**
+   * Fired with the chosen page size. The component does NOT internally manage
+   * `pageSize` (controlled-only) — keeps a single source of truth with the
+   * consumer. Changing `pageSize` does NOT auto-correct the active page when it
+   * exceeds the new page count; reset the page yourself (e.g. `setPage(1)`).
+   */
+  onPageSizeChange?: (pageSize: number) => void
+  /** Visual placement of summary/size-selector vs the page numbers. Default: `"split"` (summary left, numbers center, size right). */
+  layout?: DataPaginationLayout
+  /** Button-variant size token for prev/next + number links (forwarded to PaginationLink). Default: `"md"` (icon-square numbers + `md` controls). */
+  size?: DataPaginationSize
+  /** Accessible label for the nav landmark. Default: `"pagination"`. */
+  "aria-label"?: string
+  /** i18n / label overrides. */
+  labels?: DataPaginationLabels
+}
+```
+
+**Example:**
+
+```tsx
+import { DataPagination } from '@saasflare/ui';
+<DataPagination total={248} pageSize={20} showSummary onPageChange={fetchPage} />
+```
+
+---
+
+## Data Table
+
+**Description:** Dependency-free data grid built on the Table primitives — typed columns, client-side sort, row selection, and pagination out of the box, with a server-side/TanStack escape hatch.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/data-table.json
+```
+
+**Props:**
+
+```ts
+interface DataTableProps<T>
+  extends Omit<React.ComponentProps<"table">, "children" | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  /** Row data. */
+  data: T[]
+  /** Typed column definitions. */
+  columns: DataTableColumn<T>[]
+  /** Stable row key. String key of `T` or a function. Falls back to row index (logs a dev warning, since index keys break selection across sort/paginate). */
+  getRowId?: keyof T | ((row: T, index: number) => string)
+
+  // ── Sorting (multi-column, asc → desc → none cycle) ───────────────────────
+  /** Uncontrolled initial sort. */
+  defaultSort?: DataTableSort[]
+  /** Controlled sort state. Presence switches sorting to controlled. */
+  sort?: DataTableSort[]
+  /** Fires on header activation with the next sort array. */
+  onSortChange?: (sort: DataTableSort[]) => void
+  /** Allow stacking multiple sort columns (shift-click adds a column). Default `false` (single-column). */
+  multiSort?: boolean
+  /** Skip internal sorting (server/TanStack drives order). Header still emits `onSortChange`. Default `false`. */
+  manualSort?: boolean
+
+  // ── Selection (header + per-row checkbox) ─────────────────────────────────
+  /** `"none"` (default) | `"single"` | `"multiple"`. Renders a leading checkbox column when not `"none"`. */
+  selectionMode?: DataTableSelectionMode
+  /** Uncontrolled initial selected row-id set. */
+  defaultSelectedKeys?: string[]
+  /** Controlled selected row-id set. */
+  selectedKeys?: string[]
+  /** Fires with the next selected row-id array. */
+  onSelectedKeysChange?: (keys: string[]) => void
+  /** Predicate to disable selection for specific rows (their checkbox is disabled + excluded from select-all). */
+  isRowSelectable?: (row: T) => boolean
+
+  // ── Pagination (reuses usePagination) ─────────────────────────────────────
+  /** Rows per page. Omit / `0` disables pagination (renders all rows, no footer). */
+  pageSize?: number
+  /** Uncontrolled initial page (1-indexed). Default `1`. */
+  defaultPage?: number
+  /** Controlled page (1-indexed). */
+  page?: number
+  /** Fires on page change. */
+  onPageChange?: (page: number) => void
+  /** Skip internal pagination/slicing (server drives the window). `data` is treated as the current page; pass `rowCount` for the footer. Default `false`. */
+  manualPagination?: boolean
+  /** Total row count when `manualPagination` — drives the page-count math in the footer. */
+  rowCount?: number
+
+  // ── States / chrome ───────────────────────────────────────────────────────
+  /** Loading flag — renders `loadingRows` skeleton rows; disables sort/select while true. */
+  loading?: boolean
+  /** Skeleton row count while `loading`. Default = `pageSize || 5`. */
+  loadingRows?: number
+  /** Rendered in a full-width body row when `data` is empty and not loading. Defaults to a built-in message. */
+  emptyState?: React.ReactNode
+  /** Pin the header on vertical scroll within a `maxHeight` container. Default `false`. */
+  stickyHeader?: boolean
+  /** Max body height (enables internal scroll; required for `stickyHeader` to be useful). e.g. `"24rem"`. */
+  maxHeight?: number | string
+  /** Density preset. Default `"comfortable"`. */
+  density?: DataTableDensity
+  /** Optional row click handler. Receives row + index. Adds `cursor-pointer` + keyboard activation when set. */
+  onRowClick?: (row: T, index: number) => void
+  /** Accessible caption (visually hidden by default) describing the table. */
+  caption?: React.ReactNode
+  /** Hide the built-in pagination footer even when paginated (consumer renders own Pagination). Default `false`. */
+  hidePagination?: boolean
+}
+```
+
+**Example:**
+
+```tsx
+import { DataTable } from "@saasflare/ui";
+<DataTable
+  data={users}
+  columns={[
+    { accessorKey: "name", header: "Name", sortable: true },
+    { accessorKey: "email", header: "Email" },
+  ]}
+  getRowId="id"
+  selectionMode="multiple"
+  pageSize={10}
+/>
+```
+
+---
+
 ## Data Toolbar
 
 **Description:** Toolbar layout for tables and data grids — search, filters, and actions in a single bar.
@@ -1087,6 +1379,12 @@ npx shadcn add https://ui.saasflare.io/r/data-toolbar.json
 
 ```ts
 interface DataToolbarProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+interface DataToolbarSearchProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+interface DataToolbarFiltersProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+interface DataToolbarActionsProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
 /**
  * Toolbar container for data views.
@@ -1443,12 +1741,13 @@ function Empty({ className, surface, radius, animated, ...props }: EmptyProps) {
 **Example:**
 
 ```tsx
-import { Empty, EmptyHeader, EmptyTitle, EmptyAction } from '@saasflare/ui';
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent } from '@saasflare/ui';
 <Empty>
   <EmptyHeader>
     <EmptyTitle>No items found</EmptyTitle>
+    <EmptyDescription>Try adjusting your filters.</EmptyDescription>
   </EmptyHeader>
-  <EmptyAction>Create one</EmptyAction>
+  <EmptyContent>Create one</EmptyContent>
 </Empty>
 ```
 
@@ -1468,7 +1767,12 @@ npx shadcn add https://ui.saasflare.io/r/empty-state.json
 
 ```ts
 interface EmptyStateProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
-  /** Icon or illustration element */
+  /**
+   * Icon or illustration element. Rendered verbatim — because this is an
+   * arbitrary `ReactNode` rather than an internal Phosphor icon, the
+   * provider's `iconWeight` does not reach it. Set `weight` on the icon
+   * you pass (e.g. `<InboxIcon weight="duotone" />`) for weight control.
+   */
   icon?: React.ReactNode
   /** Title text */
   title: string
@@ -1543,13 +1847,45 @@ import { FeatureCard } from '@saasflare/ui';
 npx shadcn add https://ui.saasflare.io/r/field.json
 ```
 
+**Props:**
+
+```ts
+interface FieldProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    VariantProps<typeof fieldVariants>,
+    SaasflareComponentProps {}
+
+/**
+ * Structured form field root — lays out a label, control, description and error
+ * with consistent spacing. Honors the Saasflare theme axes (surface, radius,
+ * animated) so nested selectable fields adopt the active design tokens.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Field orientation="horizontal">
+ *   <FieldLabel>Notifications</FieldLabel>
+ *   <FieldDescription>Receive product updates</FieldDescription>
+ * </Field>
+ */
+function Field({
+  className,
+  orientation = "vertical",
+  surface,
+  radius,
+  animated,
+  ...props
+}
+```
+
 **Example:**
 
 ```tsx
-import { Field, FieldLabel, FieldControl, FieldError } from '@saasflare/ui';
+import { Field, FieldLabel, FieldError } from '@saasflare/ui';
 <Field>
   <FieldLabel>Email</FieldLabel>
-  <FieldControl><input type="email" /></FieldControl>
+  <input type="email" />
   <FieldError>Required</FieldError>
 </Field>
 ```
@@ -1569,7 +1905,9 @@ npx shadcn add https://ui.saasflare.io/r/flip-words.json
 **Props:**
 
 ```ts
-export interface FlipWordsProps {
+export interface FlipWordsProps
+  extends Omit<React.ComponentProps<"span">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Array of words to cycle through. */
   words: string[]
   /** Cycle interval in milliseconds. Default: `2500` */
@@ -1630,7 +1968,7 @@ npx shadcn add https://ui.saasflare.io/r/gallery-lightbox.json
 **Props:**
 
 ```ts
-export interface GalleryLightboxProps {
+export interface GalleryLightboxProps extends SaasflareComponentProps {
   /** Array of image URLs. */
   images: string[]
   /** Whether the lightbox is open. */
@@ -1676,7 +2014,9 @@ npx shadcn add https://ui.saasflare.io/r/glowing-effect.json
 **Props:**
 
 ```ts
-export interface GlowingEffectProps {
+export interface GlowingEffectProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Glow color. Default: `"var(--primary)"` */
   color?: string
   /** Glow spread diameter in pixels. Default: `150` */
@@ -1687,8 +2027,6 @@ export interface GlowingEffectProps {
   opacity?: number
   /** Border radius to match parent (CSS value). Default: `"inherit"` */
   borderRadius?: string
-  /** Additional class names. */
-  className?: string
 }
 ```
 
@@ -1717,12 +2055,18 @@ npx shadcn add https://ui.saasflare.io/r/gradient-text.json
 **Props:**
 
 ```ts
-export interface GradientTextProps {
+export interface GradientTextProps
+  extends Omit<React.ComponentProps<"span">, keyof SaasflareComponentProps | "color">,
+    SaasflareComponentProps {
   /** Text content to apply the gradient to. */
   children: ReactNode
   /** Gradient color stops. Default: `--primary` → `--chart-1` → `--chart-2` design tokens (OKLCH). */
   colors?: string[]
-  /** Whether to animate the gradient position. Default: `true` */
+  /**
+   * Per-instance toggle for the gradient-position animation. Default: `true`.
+   * Layered on top of the design-system `animated` axis — the gradient only
+   * shifts when both this and the resolved `animated` flag are enabled.
+   */
   animate?: boolean
   /** Animation cycle duration in seconds. Default: `6` */
   speed?: number
@@ -1757,7 +2101,9 @@ npx shadcn add https://ui.saasflare.io/r/hero-video-dialog.json
 **Props:**
 
 ```ts
-export interface HeroVideoDialogProps {
+export interface HeroVideoDialogProps
+  extends Omit<React.ComponentProps<"button">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Video embed URL (YouTube/Vimeo embed or direct video URL). */
   videoSrc: string
   /** Poster thumbnail image URL. */
@@ -1766,8 +2112,6 @@ export interface HeroVideoDialogProps {
   thumbnailAlt: string
   /** CSS aspect-ratio for the thumbnail. Default: `"16/9"` */
   aspectRatio?: string
-  /** Additional class names for the container. */
-  className?: string
 }
 ```
 
@@ -1797,7 +2141,9 @@ npx shadcn add https://ui.saasflare.io/r/hotspot.json
 **Props:**
 
 ```ts
-export interface HotspotProps {
+export interface HotspotProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Background content (image, illustration, etc.) plus HotspotMarker children. */
   children: ReactNode
   /** Additional class names. */
@@ -1856,7 +2202,9 @@ npx shadcn add https://ui.saasflare.io/r/image-swap-hover.json
 **Props:**
 
 ```ts
-export interface ImageSwapHoverProps {
+export interface ImageSwapHoverProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Default image source. */
   src: string
   /** Image source to show on hover. */
@@ -1943,6 +2291,58 @@ import { Input } from '@saasflare/ui';
 npx shadcn add https://ui.saasflare.io/r/input-group.json
 ```
 
+**Props:**
+
+```ts
+interface InputGroupProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * InputGroup — bordered container that visually unifies an input with inline
+ * addons, buttons, and prefix/suffix text. Owns the focus ring, error styling,
+ * and the theme axes (surface/radius/animated) for the whole group.
+ *
+ * @component
+ * @example
+ * <InputGroup>
+ *   <InputGroupAddon>$</InputGroupAddon>
+ *   <InputGroupInput placeholder="Amount" />
+ * </InputGroup>
+ */
+function InputGroup({ className, surface, radius, animated, ...props }: InputGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+  return (
+    <div
+      data-slot="input-group"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      role="group"
+      className={cn(
+        "group/input-group relative flex w-full items-center rounded-md border border-input shadow-xs transition-[color,box-shadow] outline-none dark:bg-input/30",
+        "h-9 min-w-0 has-[>textarea]:h-auto",
+
+        // Variants based on alignment.
+        "has-[>[data-align=inline-start]]:[&>input]:pl-2",
+        "has-[>[data-align=inline-end]]:[&>input]:pr-2",
+        "has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>[data-align=block-start]]:[&>input]:pb-3",
+        "has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-end]]:[&>input]:pt-3",
+
+        // Focus state.
+        "has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-[3px] has-[[data-slot=input-group-control]:focus-visible]:ring-ring/50",
+
+        // Error state.
+        "has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-destructive/20 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40",
+
+        className
+      )}
+      {...props}
+    />
+  )
+}
+```
+
 **Example:**
 
 ```tsx
@@ -1996,10 +2396,23 @@ import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from '@saasf
 npx shadcn add https://ui.saasflare.io/r/item.json
 ```
 
+**Props:**
+
+```ts
+interface ItemProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    VariantProps<typeof itemVariants>,
+    SaasflareComponentProps {
+  /** Render as child element (Radix Slot pattern). */
+  asChild?: boolean
+}
+```
+
 **Example:**
 
 ```tsx
 import { ItemGroup, Item, ItemContent, ItemTitle } from '@saasflare/ui';
+
 <ItemGroup>
   <Item>
     <ItemContent>
@@ -2066,6 +2479,23 @@ import { Kbd, KbdGroup } from '@saasflare/ui';
 npx shadcn add https://ui.saasflare.io/r/label.json
 ```
 
+**Props:**
+
+```ts
+interface LabelProps
+  extends Omit<React.ComponentProps<typeof LabelPrimitive.Root>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+function Label({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
+```
+
 **Example:**
 
 ```tsx
@@ -2088,7 +2518,9 @@ npx shadcn add https://ui.saasflare.io/r/marquee.json
 **Props:**
 
 ```ts
-export interface MarqueeProps {
+export interface MarqueeProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps | "children">,
+    SaasflareComponentProps {
   /** Items to scroll infinitely. */
   children: ReactNode
   /** Reverse scroll direction. Default: `false` */
@@ -2138,6 +2570,10 @@ interface MenubarProps
   extends Omit<React.ComponentProps<typeof MenubarPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Root horizontal menu bar. Owns the Saasflare surface/radius/animated context for
+ * its menus and emits the corresponding data attributes.
+ */
 function Menubar({
   className,
   surface,
@@ -2206,6 +2642,82 @@ import { UsersIcon } from "./phosphor";
 
 ---
 
+## Multi Select
+
+**Description:** Searchable multi-select with chips, select-all, a max limit, and async option loading — built on Popover + cmdk, with a plain string[] value.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/multi-select.json
+```
+
+**Props:**
+
+```ts
+export interface MultiSelectProps
+  extends Omit<React.ComponentProps<"div">, MultiSelectDomConflicts | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
+  /** Options to choose from. Update this array (+ `loading`) for async loading. */
+  options: MultiSelectOption[]
+  /** Controlled selected values (array of `option.value`). */
+  value?: string[]
+  /** Uncontrolled initial selection. @default [] */
+  defaultValue?: string[]
+  /** Fires on every selection change with the next value array. */
+  onValueChange?: (value: string[]) => void
+  /** Trigger placeholder when nothing is selected. @default "Select…" */
+  placeholder?: string
+  /** Search input placeholder. @default "Search…" */
+  searchPlaceholder?: string
+  /** Node shown when the query matches no option. @default "No results." */
+  emptyMessage?: React.ReactNode
+  /** Max number of selectable values. Over-limit options become non-interactive (data-disabled) and a "Max N selected" hint shows. */
+  max?: number
+  /** Show a clear-all (×) affordance on the trigger when selection is non-empty. @default true */
+  clearable?: boolean
+  /** Show a "Select all / Clear" header row (operates on the CURRENTLY FILTERED, non-disabled options). @default false */
+  selectAll?: boolean
+  /** Label for the select-all row. @default "Select all" */
+  selectAllLabel?: string
+  /** Keep the popover open after a selection (true) or close on each pick (false). @default true for multi */
+  closeOnSelect?: boolean
+  /** Max chip ROWS shown collapsed on the trigger before overflowing to "+N more" (HeroUI isMultiline analog). @default 1 */
+  maxRows?: number
+  /** Async: render a spinner row + aria-busy; pair with `onSearchChange` for server filtering. @default false */
+  loading?: boolean
+  /** Controlled search query (optional). */
+  searchValue?: string
+  /** Fires on query change. PRESENCE of this prop flips cmdk to `shouldFilter={false}` (server-side filtering); omit it for built-in client fuzzy search. */
+  onSearchChange?: (query: string) => void
+  /** Disable the whole control. */
+  disabled?: boolean
+  /** Forwarded to the cmdk list for ARIA. */
+  "aria-label"?: string
+  /** className on the trigger button (root data-axes div wraps it). */
+  className?: string
+  /** className on the popover content. */
+  contentClassName?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { MultiSelect, type MultiSelectOption } from "@saasflare/ui"
+
+const options: MultiSelectOption[] = [
+  { value: "react", label: "React" },
+  { value: "vue", label: "Vue" },
+  { value: "svelte", label: "Svelte" },
+]
+
+const [value, setValue] = React.useState<string[]>([])
+<MultiSelect options={options} value={value} onValueChange={setValue} />
+```
+
+---
+
 ## Mouse Gradient Blob
 
 **Description:** Large blurred gradient blob that trails the cursor with spring physics. Ambient hero background.
@@ -2219,7 +2731,9 @@ npx shadcn add https://ui.saasflare.io/r/mouse-gradient-blob.json
 **Props:**
 
 ```ts
-export interface MouseGradientBlobProps {
+export interface MouseGradientBlobProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Diameter of the blob in pixels. Default: `500` */
   size?: number
   /** Gradient color stops. Default: primary + chart-2 tokens */
@@ -2258,7 +2772,9 @@ npx shadcn add https://ui.saasflare.io/r/moving-border.json
 **Props:**
 
 ```ts
-export interface MovingBorderProps {
+export interface MovingBorderProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Content inside the border. */
   children: ReactNode
   /** Gradient colors for the rotating border. */
@@ -2301,6 +2817,7 @@ npx shadcn add https://ui.saasflare.io/r/native-select.json
 interface NativeSelectProps
   extends Omit<React.ComponentProps<"select">, "size" | keyof SaasflareComponentProps>,
     SaasflareComponentProps {
+  /** Control height. `"sm"` renders a more compact trigger; `"default"` is the standard height. */
   size?: "sm" | "default"
 }
 ```
@@ -2511,17 +3028,23 @@ npx shadcn add https://ui.saasflare.io/r/page-transition.json
 **Props:**
 
 ```ts
-export interface PageTransitionProps {
+export interface PageTransitionProps
+  extends Omit<
+      React.ComponentProps<"div">,
+      MotionConflicts | "children" | keyof SaasflareComponentProps
+    >,
+    SaasflareComponentProps {
   /** Child content to animate. */
   children: ReactNode
   /** Animation preset. Default: `"fade"` */
   variant?: keyof typeof VARIANTS
   /** Transition duration in seconds. Default: `0.3` */
   duration?: number
-  /** Unique key for AnimatePresence (use pathname). Default: none */
+  /**
+   * Unique key for AnimatePresence to trigger re-animation on route changes.
+   * Default: the current pathname (Next.js App Router).
+   */
   transitionKey?: string
-  /** Additional class names for the motion wrapper. */
-  className?: string
 }
 ```
 
@@ -2529,7 +3052,7 @@ export interface PageTransitionProps {
 
 ```tsx
 import { PageTransition } from '@saasflare/ui';
-// In your layout.tsx
+// In your layout.tsx — the current pathname is used as the animation key.
 export default function Layout({ children }: { children: React.ReactNode }) {
   return <PageTransition>{children}</PageTransition>;
 }
@@ -2545,6 +3068,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 ```bash
 npx shadcn add https://ui.saasflare.io/r/pagination.json
+```
+
+**Props:**
+
+```ts
+interface PaginationProps
+  extends Omit<React.ComponentProps<"nav">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * Pagination root — semantic `<nav>` landmark wrapping the page controls.
+ *
+ * Carries the theme axes (`surface`/`radius`/`animated`) so descendant links
+ * can inherit the active design-system context.
+ */
+function Pagination({
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
 ```
 
 **Example:**
@@ -2576,7 +3122,7 @@ npx shadcn add https://ui.saasflare.io/r/parallax-section.json
 **Props:**
 
 ```ts
-export interface ParallaxSectionProps {
+export interface ParallaxSectionProps extends SaasflareComponentProps {
   /** Content to apply parallax to. */
   children: ReactNode
   /** Parallax speed factor. 0 = fixed, 0.5 = half speed, 1 = no parallax. Default: `0.5` */
@@ -2610,7 +3156,7 @@ npx shadcn add https://ui.saasflare.io/r/particles-background.json
 **Props:**
 
 ```ts
-export interface ParticlesBackgroundProps {
+export interface ParticlesBackgroundProps extends SaasflareComponentProps {
   /** Number of particles. Default: `20` */
   count?: number
   /** CSS color of particles. Default: `"var(--primary)"` */
@@ -2817,6 +3363,17 @@ interface RadioGroupProps
   extends Omit<React.ComponentProps<typeof RadioGroupPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Accessible radio button group. Wrap one or more {@link RadioGroupItem}s and
+ * control the active value via `value`/`defaultValue`. Honors the `surface`,
+ * `radius`, and `animated` axes through {@link useSaasflareProps}.
+ *
+ * @example
+ * <RadioGroup defaultValue="weekly">
+ *   <RadioGroupItem value="weekly" />
+ *   <RadioGroupItem value="monthly" />
+ * </RadioGroup>
+ */
 function RadioGroup({
   className,
   surface,
@@ -2923,7 +3480,9 @@ npx shadcn add https://ui.saasflare.io/r/retro-grid.json
 **Props:**
 
 ```ts
-export interface RetroGridProps {
+export interface RetroGridProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Grid line color. Default: `"var(--border)"` */
   gridColor?: string
   /** Grid cell size in pixels. Default: `60` */
@@ -2932,8 +3491,6 @@ export interface RetroGridProps {
   angle?: number
   /** Grid line opacity (0–1). Default: `0.4` */
   opacity?: number
-  /** Additional class names. */
-  className?: string
 }
 ```
 
@@ -2962,9 +3519,9 @@ npx shadcn add https://ui.saasflare.io/r/reveal-on-scroll.json
 **Props:**
 
 ```ts
-export interface RevealOnScrollProps {
-  /** Content to reveal. */
-  children: ReactNode
+export interface RevealOnScrollProps
+  extends Omit<React.ComponentProps<"div">, MotionConflicts | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Direction the element slides in from. Default: `"up"` */
   direction?: RevealDirection
   /** Animation delay in seconds. Default: `0` */
@@ -2973,8 +3530,6 @@ export interface RevealOnScrollProps {
   rootMargin?: string
   /** Whether the animation triggers only once. Default: `true` */
   once?: boolean
-  /** Additional class names. */
-  className?: string
 }
 ```
 
@@ -3137,6 +3692,39 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 npx shadcn add https://ui.saasflare.io/r/separator.json
 ```
 
+**Props:**
+
+```ts
+interface SeparatorProps
+  extends Omit<
+      React.ComponentProps<typeof SeparatorPrimitive.Root>,
+      keyof SaasflareComponentProps
+    >,
+    SaasflareComponentProps {}
+
+/**
+ * Separator — visual divider line for separating content horizontally or vertically.
+ * Built on Radix UI Separator.
+ *
+ * @example
+ * ```tsx
+ * import { Separator } from '@saasflare/ui';
+ *
+ * <Separator orientation="horizontal" />
+ * ```
+ */
+function Separator({
+  className,
+  orientation = "horizontal",
+  decorative = true,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
+}
+```
+
 **Example:**
 
 ```tsx
@@ -3222,10 +3810,12 @@ npx shadcn add https://ui.saasflare.io/r/shimmer-button.json
 **Props:**
 
 ```ts
-export interface ShimmerButtonProps extends ComponentProps<"button"> {
+export interface ShimmerButtonProps
+  extends Omit<React.ComponentProps<"button">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Button content. */
   children: ReactNode
-  /** Color of the shimmer highlight. Default: `"rgba(255,255,255,0.2)"` */
+  /** Color of the shimmer highlight. Default: `"var(--primary-foreground)"` */
   shimmerColor?: string
   /** Shimmer cycle duration in seconds. Default: `2.5` */
   speed?: number
@@ -3324,7 +3914,7 @@ import { Slider } from '@saasflare/ui';
 
 ## Social Button
 
-**Description:** Branded sign-in buttons for 16+ OAuth providers (Google, GitHub, Apple…) with correct logos and colors.
+**Description:** Compact branded sign-in button for five core providers (Google, Apple, GitHub, Microsoft, Twitter) with official logos and brand colors. For the full 16-provider OAuth set, see Social Auth Button.
 
 **Install:**
 
@@ -3335,7 +3925,9 @@ npx shadcn add https://ui.saasflare.io/r/social-button.json
 **Props:**
 
 ```ts
-export interface SocialButtonProps extends Omit<ComponentProps<"button">, "children"> {
+export interface SocialButtonProps
+  extends Omit<ComponentProps<"button">, "children" | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Social provider to render. */
   provider: SocialProvider
   /** Override the default label text. */
@@ -3431,7 +4023,7 @@ npx shadcn add https://ui.saasflare.io/r/spinner.json
 interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
 function Spinner({ className, surface, radius, animated, ...props }: SpinnerProps) {
-  const sf = useSaasflareProps({ animated })
+  const sf = useSaasflareProps({ surface, radius, animated })
 
   return (
     <CircleNotchIcon
@@ -3439,8 +4031,10 @@ function Spinner({ className, surface, radius, animated, ...props }: SpinnerProp
       role="status"
       aria-label="Loading"
       data-slot="spinner"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      className={cn("size-4 animate-spin", className)}
+      className={cn("size-4", sf.animated && "animate-spin", className)}
     />
   )
 }
@@ -3468,7 +4062,9 @@ npx shadcn add https://ui.saasflare.io/r/spotlight-card.json
 **Props:**
 
 ```ts
-export interface SpotlightCardProps extends SaasflareComponentProps {
+export interface SpotlightCardProps
+  extends Omit<React.ComponentProps<"div">, MotionConflicts | keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Card content. */
   children: ReactNode
   /** Spotlight gradient color. Default: `"var(--primary)"` */
@@ -3541,7 +4137,7 @@ npx shadcn add https://ui.saasflare.io/r/steps.json
 **Props:**
 
 ```ts
-export interface StepsProps {
+export interface StepsProps extends SaasflareComponentProps {
   /** Step children. */
   children: ReactNode
   /** Index of the current active step (0-based). Default: `0` */
@@ -3566,6 +4162,63 @@ import { Steps, Step } from '@saasflare/ui';
 
 ---
 
+## Stepper
+
+**Description:** Controlled multi-step wizard — a useStepper hook plus Stepper / StepperNav / StepperPanel with linear or non-linear flow, optional steps, and async validation gating.
+
+**Install:**
+
+```bash
+npx shadcn add https://ui.saasflare.io/r/stepper.json
+```
+
+**Props:**
+
+```ts
+export interface StepperProps extends SaasflareComponentProps {
+    /** Step metadata for the indicator. Length defines the step count. */
+    items: ReadonlyArray<StepperItem>
+    /** Indicator layout (forwarded to `Steps`). Default: `"horizontal"` */
+    direction?: "horizontal" | "vertical"
+    /** Linear mode forwarded to the internal hook. Default: `true` */
+    linear?: boolean
+    /** Bring-your-own hook instance (controlled). When omitted, Stepper owns one. */
+    stepper?: UseStepperReturn
+    /** Initial step when Stepper owns the hook (uncontrolled). Default: `0` */
+    defaultStep?: number
+    /** Global validation gate (uncontrolled mode only). */
+    validate?: (
+        step: number,
+    ) => boolean | string | void | Promise<boolean | string | void>
+    /** Fired on finish (uncontrolled mode only). */
+    onComplete?: () => void
+    /** `"unmount"` = only active panel in DOM; `"keepMounted"` = all panels mounted, inactive hidden. Default: `"unmount"` */
+    mountMode?: "unmount" | "keepMounted"
+    /** Hide the built-in `<StepperNav>`. Default: `false` */
+    hideNav?: boolean
+    /** Panel children — one `<StepperPanel>` per step, in order. */
+    children: ReactNode
+    /** Class for the root. */
+    className?: string
+}
+```
+
+**Example:**
+
+```tsx
+import { Stepper, StepperPanel } from "@saasflare/ui";
+
+<Stepper
+  items={[{ title: "Account" }, { title: "Profile" }, { title: "Done" }]}
+>
+  <StepperPanel value={0}>Account fields…</StepperPanel>
+  <StepperPanel value={1}>Profile fields…</StepperPanel>
+  <StepperPanel value={2}>All set!</StepperPanel>
+</Stepper>
+```
+
+---
+
 ## Sticky Scroll Reveal
 
 **Description:** Split layout where the left column pins while the right scrolls through synced content steps.
@@ -3579,11 +4232,11 @@ npx shadcn add https://ui.saasflare.io/r/sticky-scroll-reveal.json
 **Props:**
 
 ```ts
-export interface StickyScrollRevealProps {
+export interface StickyScrollRevealProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Array of scroll items. */
   items: StickyScrollItem[]
-  /** Additional class names. */
-  className?: string
 }
 ```
 
@@ -3617,6 +4270,7 @@ npx shadcn add https://ui.saasflare.io/r/switch.json
 interface SwitchProps
   extends Omit<React.ComponentProps<typeof SwitchPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
+  /** Visual size of the toggle. `default` is the standard control; `sm` is a compact variant for dense rows. */
   size?: "sm" | "default"
 }
 ```
@@ -3793,7 +4447,9 @@ npx shadcn add https://ui.saasflare.io/r/team-card.json
 **Props:**
 
 ```ts
-export interface TeamCardProps extends SaasflareComponentProps {
+export interface TeamCardProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Person's name. */
   name: string
   /** Role or job title. */
@@ -3804,8 +4460,6 @@ export interface TeamCardProps extends SaasflareComponentProps {
   bio?: string
   /** Social media links. */
   socials?: SocialLink[]
-  /** Additional class names. */
-  className?: string
 }
 ```
 
@@ -3839,7 +4493,9 @@ npx shadcn add https://ui.saasflare.io/r/testimonial-card.json
 **Props:**
 
 ```ts
-export interface TestimonialCardProps extends SaasflareComponentProps {
+export interface TestimonialCardProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** The testimonial quote text. */
   quote: string
   /** Name of the person. */
@@ -3850,8 +4506,6 @@ export interface TestimonialCardProps extends SaasflareComponentProps {
   avatar?: string
   /** Star rating (1–5). Omit to hide stars. */
   rating?: 1 | 2 | 3 | 4 | 5
-  /** Additional class names. */
-  className?: string
 }
 ```
 
@@ -3883,7 +4537,7 @@ npx shadcn add https://ui.saasflare.io/r/text-generate-effect.json
 **Props:**
 
 ```ts
-export interface TextGenerateEffectProps {
+export interface TextGenerateEffectProps extends SaasflareComponentProps {
   /** Text string to animate word by word. */
   text: string
   /** Delay between each word in seconds. Default: `0.05` */
@@ -3972,7 +4626,7 @@ npx shadcn add https://ui.saasflare.io/r/timeline.json
 **Props:**
 
 ```ts
-export interface TimelineProps {
+export interface TimelineProps extends SaasflareComponentProps {
   /** TimelineItem children. */
   children: ReactNode
   /** Additional class names. */
@@ -4096,7 +4750,9 @@ npx shadcn add https://ui.saasflare.io/r/tracing-beam.json
 **Props:**
 
 ```ts
-export interface TracingBeamProps {
+export interface TracingBeamProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Content alongside the beam. */
   children: ReactNode
   /** Beam color. Default: `"var(--primary)"` */
@@ -4135,7 +4791,9 @@ npx shadcn add https://ui.saasflare.io/r/tracker.json
 **Props:**
 
 ```ts
-export interface TrackerProps extends SaasflareComponentProps {
+export interface TrackerProps
+    extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+        SaasflareComponentProps {
     /** Blocks to render, left-to-right. */
     data: TrackerBlock[]
     /** Height of each block in px. Default: `32`. */

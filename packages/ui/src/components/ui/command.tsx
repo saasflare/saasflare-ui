@@ -5,7 +5,7 @@
  * @fileoverview Command primitive — searchable command palette with keyboard navigation and grouping.
  * Built on cmdk. Includes a dialog variant for modal command menus.
  * Part of the Saasflare base component layer.
- * @module packages/core/components/ui/command
+ * @module packages/ui/components/ui/command
  * @layer core
  *
  * @component
@@ -20,7 +20,6 @@
  *   </CommandList>
  * </Command>
  */
-"use client"
 
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
@@ -70,22 +69,37 @@ function CommandDialog({
   description = "Search for a command to run...",
   children,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof Dialog> & {
-  title?: string
-  description?: string
-  className?: string
-}) {
+}: React.ComponentProps<typeof Dialog> &
+  SaasflareComponentProps & {
+    title?: string
+    description?: string
+    className?: string
+  }) {
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
       <DialogContent
+        surface={surface}
+        radius={radius}
+        animated={animated}
+        iconWeight={iconWeight}
         className={cn("overflow-hidden p-0", className)}
       >
-        <Command className="**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        <Command
+          surface={surface}
+          radius={radius}
+          animated={animated}
+          iconWeight={iconWeight}
+          className="**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
+        >
           {children}
         </Command>
       </DialogContent>
@@ -95,9 +109,14 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
-  const sf = useSaasflareProps()
+}: Omit<
+  React.ComponentProps<typeof CommandPrimitive.Input>,
+  keyof Pick<SaasflareComponentProps, "iconWeight">
+> &
+  Pick<SaasflareComponentProps, "iconWeight">) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <div
       data-slot="command-input-wrapper"

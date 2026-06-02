@@ -119,6 +119,7 @@ export function DatePicker({
                     surface={sf.surface}
                     radius={sf.radius}
                     animated={sf.animated}
+                    iconWeight={sf.iconWeight}
                     data-slot="date-picker-trigger"
                     className={cn(
                         "min-w-44 justify-start gap-2 font-normal",
@@ -139,6 +140,7 @@ export function DatePicker({
                     mode="single"
                     selected={date}
                     onSelect={handleSelect}
+                    iconWeight={sf.iconWeight}
                     defaultMonth={date ?? new Date()}
                     disabled={
                         minDate || maxDate

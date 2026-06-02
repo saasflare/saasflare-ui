@@ -20,12 +20,15 @@
  */
 
 import { useEffect, useRef, useState } from "react"
-import { m, useSpring, useInView, useMotionValue } from "motion/react"
+import { useSpring, useInView, useMotionValue } from "motion/react"
 import { cn } from "../../../lib"
-import { useReducedMotion } from "../motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../../providers"
+import { useSaasflareMotion } from "../motion-config"
 
 /** Props for the AnimatedCounter component. */
-export interface AnimatedCounterProps {
+export interface AnimatedCounterProps
+  extends Omit<React.ComponentProps<"span">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Target number to count up to. */
   value: number
   /** Number of decimal places. Default: `0` */
@@ -47,7 +50,7 @@ export interface AnimatedCounterProps {
  *
  * - Triggers once when the element enters the viewport
  * - Uses spring physics for a natural deceleration curve
- * - Shows the final value immediately when reduced motion is preferred
+ * - Shows the final value immediately when motion is disabled (reduced motion or `animated={false}`)
  * - Supports decimal precision, prefix/suffix, and locale formatting
  *
  * @component
@@ -61,37 +64,46 @@ export function AnimatedCounter({
   suffix = "",
   className,
   formatted = true,
+  animated,
+  ...props
 }: AnimatedCounterProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ animated })
+  const motion = useSaasflareMotion(sf.animated)
   const ref = useRef<HTMLSpanElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-50px" })
   const motionValue = useMotionValue(0)
   const springValue = useSpring(motionValue, {
-    stiffness: 100,
-    damping: 30,
-    duration: duration * 1000,
+    visualDuration: duration,
+    bounce: 0.1,
   })
   const [displayValue, setDisplayValue] = useState("0")
 
   useEffect(() => {
-    if (reduced) {
+    if (motion.disabled) {
       setDisplayValue(formatNumber(value, decimals, formatted))
       return
     }
     if (isInView) {
       motionValue.set(value)
     }
-  }, [isInView, value, motionValue, reduced, decimals, formatted])
+  }, [isInView, value, motionValue, motion.disabled, decimals, formatted])
 
   useEffect(() => {
+    if (motion.disabled) return
     const unsubscribe = springValue.on("change", (latest) => {
       setDisplayValue(formatNumber(latest, decimals, formatted))
     })
     return unsubscribe
-  }, [springValue, decimals, formatted])
+  }, [springValue, decimals, formatted, motion.disabled])
 
   return (
-    <span ref={ref} className={cn("tabular-nums", className)} data-slot="animated-counter">
+    <span
+      ref={ref}
+      className={cn("tabular-nums", className)}
+      data-slot="animated-counter"
+      data-animated={String(sf.animated)}
+      {...props}
+    >
       {prefix}
       {displayValue}
       {suffix}

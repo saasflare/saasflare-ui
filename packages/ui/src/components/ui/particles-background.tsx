@@ -23,10 +23,11 @@
 
 import { useMemo } from "react"
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useReducedMotion } from "./motion-config"
 
 /** Props for the ParticlesBackground component. */
-export interface ParticlesBackgroundProps {
+export interface ParticlesBackgroundProps extends SaasflareComponentProps {
   /** Number of particles. Default: `20` */
   count?: number
   /** CSS color of particles. Default: `"var(--primary)"` */
@@ -54,7 +55,7 @@ function seededRandom(seed: number): number {
  *
  * - CSS-only animation (no JS animation loop, GPU-composited)
  * - Deterministic positions (no layout shift between renders)
- * - Renders nothing when reduced motion is preferred
+ * - Renders nothing when reduced motion is preferred or `animated` is disabled
  * - Lightweight: no canvas, no WebGL
  *
  * @component
@@ -68,7 +69,12 @@ export function ParticlesBackground({
   maxOpacity = 0.3,
   speed = 1,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: ParticlesBackgroundProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
 
   const particles = useMemo(
@@ -94,13 +100,16 @@ export function ParticlesBackground({
     [count, minSize, maxSize, maxOpacity, speed],
   )
 
-  if (reduced) return null
+  if (reduced || !sf.animated) return null
 
   return (
     <div
       className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
       aria-hidden="true"
       data-slot="particles-background"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       <style>{`
         @keyframes sf-particle-drift {

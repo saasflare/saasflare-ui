@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare SearchField — input with search icon, clear, and loading.
- * @module packages/core/components/ui/search-field
+ * @module packages/ui/components/ui/search-field
  * @layer core
  *
  * A search-specific input with built-in search icon, clear button,

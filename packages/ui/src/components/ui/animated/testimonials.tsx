@@ -24,12 +24,12 @@
  * <AnimatedTestimonials testimonials={items} autoPlay={false} />
  */
 
-import { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { AnimatePresence, m } from "motion/react"
 import { CaretLeftIcon, CaretRightIcon, QuotesIcon } from "../phosphor"
 import { cn } from "../../../lib"
-import { useSaasflareProps } from "../../../providers"
-import { springGentle, noMotion, useReducedMotion } from "../motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../../providers"
+import { springGentle, useSaasflareMotion } from "../motion-config"
 
 /** A single testimonial entry. */
 export interface Testimonial {
@@ -46,7 +46,9 @@ export interface Testimonial {
 }
 
 /** Props for the AnimatedTestimonials component. */
-export interface AnimatedTestimonialsProps {
+export interface AnimatedTestimonialsProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Array of testimonials to display. */
   testimonials: Testimonial[]
   /** Auto-advance interval in milliseconds. Default: `5000` */
@@ -63,7 +65,8 @@ export interface AnimatedTestimonialsProps {
  * - Crossfades between testimonials with a horizontal slide
  * - Pauses auto-play on hover
  * - Accessible navigation buttons with keyboard support
- * - Shows static first testimonial when reduced motion is preferred
+ * - Honors the `animated` axis and OS reduced-motion: when disabled the
+ *   crossfade and auto-advance are skipped (static, manual-only)
  *
  * @component
  * @package ui
@@ -73,9 +76,14 @@ export function AnimatedTestimonials({
   interval = 5000,
   autoPlay = true,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...rest
 }: AnimatedTestimonialsProps) {
-  const reduced = useReducedMotion()
-  const sf = useSaasflareProps()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, springGentle)
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
 
@@ -88,10 +96,10 @@ export function AnimatedTestimonials({
   }, [testimonials.length])
 
   useEffect(() => {
-    if (!autoPlay || paused || reduced) return
+    if (!autoPlay || paused || motion.disabled) return
     const timer = setInterval(next, interval)
     return () => clearInterval(timer)
-  }, [autoPlay, paused, reduced, interval, next])
+  }, [autoPlay, paused, motion.disabled, interval, next])
 
   if (testimonials.length === 0) return null
 
@@ -99,10 +107,14 @@ export function AnimatedTestimonials({
 
   return (
     <div
+      {...rest}
       className={cn("relative mx-auto max-w-3xl", className)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       data-slot="animated-testimonials"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       <div className="relative min-h-[220px] overflow-hidden rounded-2xl border bg-card p-8 shadow-sm md:p-12">
         <QuotesIcon
@@ -114,10 +126,10 @@ export function AnimatedTestimonials({
         <AnimatePresence mode="wait">
           <m.div
             key={active}
-            initial={reduced ? false : { opacity: 0, x: 20 }}
+            initial={motion.disabled ? false : { opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, x: -20 }}
-            transition={reduced ? noMotion : springGentle}
+            exit={motion.disabled ? { opacity: 0 } : { opacity: 0, x: -20 }}
+            transition={motion.transition}
           >
             <blockquote className="mb-6 text-lg leading-relaxed text-foreground md:text-xl">
               &ldquo;{current.quote}&rdquo;
@@ -156,7 +168,7 @@ export function AnimatedTestimonials({
           </button>
 
           {/* Dots */}
-          <div className="flex gap-1.5" role="tablist" aria-label="Testimonials">
+          <div className="flex gap-1.5" role="group" aria-label="Testimonials">
             {testimonials.map((_, i) => (
               <button
                 key={i}
@@ -168,9 +180,8 @@ export function AnimatedTestimonials({
                     ? "w-6 bg-primary"
                     : "bg-muted-foreground/30 hover:bg-muted-foreground/50",
                 )}
-                role="tab"
-                aria-selected={i === active}
-                aria-label={`Testimonial ${i + 1}`}
+                aria-current={i === active}
+                aria-label={`Go to testimonial ${i + 1}`}
               />
             ))}
           </div>

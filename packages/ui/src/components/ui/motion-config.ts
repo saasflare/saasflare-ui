@@ -3,14 +3,14 @@
 
 /**
  * @fileoverview Shared motion presets for premium UI components.
- * @module packages/core/components/ui/motion-config
+ * @module packages/ui/components/ui/motion-config
  * @layer core
  *
  * Governance:
  *   CSS transitions (var(--duration-*), var(--ease-*)) → hover, focus, color changes.
  *   These tokens already zero-out via prefers-reduced-motion in motion.css.
  *
- *   Framer Motion springs → ONLY for mount/unmount, layout, drag, presence, gesture.
+ *   Motion springs → ONLY for mount/unmount, layout, drag, presence, gesture.
  *   Use `useReducedMotion()` to disable springs when the user prefers reduced motion.
  *
  * @example

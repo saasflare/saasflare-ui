@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Avatar — user profile image with size variants and hover scale animation.
- * @module packages/core/components/ui/avatar
+ * @module packages/ui/components/ui/avatar
  * @layer core
  *
  * Self-contained implementation built on Radix Avatar primitive. Supports
@@ -50,7 +50,7 @@ function Avatar({
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
       className={cn(
-        "group/avatar relative flex size-8 shrink-0 overflow-hidden rounded-full select-none transition-transform duration-200 hover:scale-105 data-[size=lg]:size-10 data-[size=sm]:size-6",
+        "group/avatar relative flex size-8 shrink-0 overflow-hidden rounded-full select-none transition-transform duration-200 data-[animated=true]:hover:scale-105 data-[size=lg]:size-10 data-[size=sm]:size-6",
         className
       )}
     />

@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare DataToolbar — toolbar for data views with search, filters, and actions.
- * @module packages/core/components/ui/data-toolbar
+ * @module packages/ui/components/ui/data-toolbar
  * @layer core
  *
  * A flexible toolbar layout for tables, lists, and data grids.
@@ -28,6 +28,12 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 interface DataToolbarProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+interface DataToolbarSearchProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+interface DataToolbarFiltersProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
+
+interface DataToolbarActionsProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
 /**
  * Toolbar container for data views.
@@ -66,11 +72,21 @@ function DataToolbar({ className, surface, radius, animated, ...props }: DataToo
  *
  * @component
  * @layer core
+ *
+ * @example
+ * <DataToolbarSearch>
+ *   <SearchField placeholder="Search users..." />
+ * </DataToolbarSearch>
  */
-function DataToolbarSearch({ className, ...props }: React.ComponentProps<"div">) {
+function DataToolbarSearch({ className, surface, radius, animated, ...props }: DataToolbarSearchProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
       data-slot="data-toolbar-search"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("w-full sm:max-w-sm", className)}
       {...props}
     />
@@ -82,11 +98,21 @@ function DataToolbarSearch({ className, ...props }: React.ComponentProps<"div">)
  *
  * @component
  * @layer core
+ *
+ * @example
+ * <DataToolbarFilters>
+ *   <Select>...</Select>
+ * </DataToolbarFilters>
  */
-function DataToolbarFilters({ className, ...props }: React.ComponentProps<"div">) {
+function DataToolbarFilters({ className, surface, radius, animated, ...props }: DataToolbarFiltersProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
       data-slot="data-toolbar-filters"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("flex items-center gap-2", className)}
       {...props}
     />
@@ -98,11 +124,21 @@ function DataToolbarFilters({ className, ...props }: React.ComponentProps<"div">
  *
  * @component
  * @layer core
+ *
+ * @example
+ * <DataToolbarActions>
+ *   <Button size="sm">Export</Button>
+ * </DataToolbarActions>
  */
-function DataToolbarActions({ className, ...props }: React.ComponentProps<"div">) {
+function DataToolbarActions({ className, surface, radius, animated, ...props }: DataToolbarActionsProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
       data-slot="data-toolbar-actions"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn("flex items-center gap-2 sm:ml-auto", className)}
       {...props}
     />
@@ -115,4 +151,7 @@ export {
   DataToolbarFilters,
   DataToolbarActions,
   type DataToolbarProps,
+  type DataToolbarSearchProps,
+  type DataToolbarFiltersProps,
+  type DataToolbarActionsProps,
 }

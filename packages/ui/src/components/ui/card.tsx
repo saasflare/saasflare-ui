@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare Card — surface container with optional hover lift.
- * @module packages/core/components/ui/card
+ * @module packages/ui/components/ui/card
  * @layer core
  *
  * Self-contained implementation. Does NOT import from ui/.
@@ -25,7 +25,7 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springGentle } from "./motion-config"
 
-/** Framer-motion event overrides that conflict with React HTML events */
+/** Motion event overrides that conflict with React HTML events */
 type MotionConflicts = "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
 
 interface CardProps
@@ -44,8 +44,8 @@ interface CardProps
  *   <CardContent>Content here</CardContent>
  * </Card>
  */
-function Card({ className, surface, radius, animated, ...props }: CardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Card({ className, surface, radius, animated, iconWeight, ...props }: CardProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springGentle)
 
   return (
@@ -55,7 +55,11 @@ function Card({ className, surface, radius, animated, ...props }: CardProps) {
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      whileHover={motion.disabled ? undefined : { y: -2, boxShadow: "0 8px 30px rgba(0,0,0,0.08)" }}
+      whileHover={
+        motion.disabled
+          ? undefined
+          : { y: -2, boxShadow: "0 8px 30px color-mix(in oklab, var(--foreground) 8%, transparent)" }
+      }
       transition={motion.transition}
       className={cn(
         "flex flex-col gap-6 rounded-xl border bg-card py-6 text-card-foreground shadow-sm transition-[border-color] duration-300 hover:border-primary/20",

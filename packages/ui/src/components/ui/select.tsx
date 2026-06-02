@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Select — animated dropdown select with spring transitions and grouped options.
- * @module packages/core/components/ui/select
+ * @module packages/ui/components/ui/select
  * @layer core
  *
  * @component
@@ -19,7 +19,6 @@
  *   </SelectContent>
  * </Select>
  */
-"use client"
 
 import * as React from "react"
 import { m } from "motion/react"
@@ -53,6 +52,7 @@ function SelectTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+  /** Control height of the trigger. `"default"` (h-9) or `"sm"` (h-8). */
   size?: "sm" | "default"
 }) {
   const sf = useSaasflareProps()

@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare SectionCard — titled card for settings and dashboard panels.
- * @module packages/core/components/ui/section-card
+ * @module packages/ui/components/ui/section-card
  * @layer core
  *
  * A card with a built-in header section (title + description)

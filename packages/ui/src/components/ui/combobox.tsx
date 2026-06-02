@@ -34,7 +34,6 @@
  *   </ComboboxContent>
  * </Combobox>
  */
-"use client"
 
 import * as React from "react"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
@@ -42,23 +41,40 @@ import { Command as CommandPrimitive } from "cmdk"
 import { CheckIcon, MagnifyingGlassIcon } from "./phosphor"
 
 import { cn } from "../../lib"
-import { useSaasflareProps } from "../../providers"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 const Combobox = PopoverPrimitive.Root
 
 const ComboboxTrigger = PopoverPrimitive.Trigger
 
+/** Props for {@link ComboboxContent}. */
+interface ComboboxContentProps
+  extends Omit<React.ComponentProps<typeof PopoverPrimitive.Content>, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {}
+
+/**
+ * Popover surface that mounts the `cmdk` command palette. This is the themeable
+ * chrome of the combobox — honors `surface`/`radius`/`animated` overrides and
+ * emits the matching data axes on its root for the design system to style.
+ */
 function ComboboxContent({
   className,
   align = "start",
   sideOffset = 6,
+  surface,
+  radius,
+  animated,
   children,
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+}: ComboboxContentProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         data-slot="combobox-content"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         align={align}
         sideOffset={sideOffset}
         className={cn(
@@ -78,11 +94,18 @@ function ComboboxContent({
   )
 }
 
+/** Props for {@link ComboboxInput}. */
+interface ComboboxInputProps
+  extends Omit<React.ComponentProps<typeof CommandPrimitive.Input>, "iconWeight">,
+    Pick<SaasflareComponentProps, "iconWeight"> {}
+
+/** Search field for the combobox, with a leading magnifier whose Phosphor weight follows `iconWeight`. */
 function ComboboxInput({
   className,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
-  const sf = useSaasflareProps()
+}: ComboboxInputProps) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <div
       data-slot="combobox-input-wrapper"
@@ -101,6 +124,7 @@ function ComboboxInput({
   )
 }
 
+/** Scrollable list region that holds {@link ComboboxItem}s, groups, and the empty state. */
 function ComboboxList({
   className,
   ...props
@@ -117,16 +141,20 @@ function ComboboxList({
   )
 }
 
+/** Selectable option row. Pass `selected` to render a trailing check indicator. */
 function ComboboxItem({
   className,
   children,
   selected,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Item> & {
+}: Omit<React.ComponentProps<typeof CommandPrimitive.Item>, "iconWeight"> & {
   /** Show a leading check indicator. Lets consumers render selection state without a separate Indicator slot. */
   selected?: boolean
+  /** Icon weight override for the selection check indicator. Omit to inherit from provider. */
+  iconWeight?: SaasflareComponentProps["iconWeight"]
 }) {
-  const sf = useSaasflareProps()
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <CommandPrimitive.Item
       data-slot="combobox-item"
@@ -148,6 +176,7 @@ function ComboboxItem({
   )
 }
 
+/** Labeled section of items. Render a `[cmdk-group-heading]` child for the group title. */
 function ComboboxGroup({
   className,
   ...props
@@ -164,6 +193,7 @@ function ComboboxGroup({
   )
 }
 
+/** Fallback shown when the current query matches no items. */
 function ComboboxEmpty({
   className,
   ...props
@@ -177,6 +207,7 @@ function ComboboxEmpty({
   )
 }
 
+/** Thin divider between groups or items inside the list. */
 function ComboboxSeparator({
   className,
   ...props
@@ -200,4 +231,6 @@ export {
   ComboboxGroup,
   ComboboxEmpty,
   ComboboxSeparator,
+  type ComboboxContentProps,
+  type ComboboxInputProps,
 }

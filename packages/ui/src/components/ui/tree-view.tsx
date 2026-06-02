@@ -30,6 +30,7 @@
 import {
     useCallback,
     useMemo,
+    useRef,
     useState,
     type KeyboardEvent,
     type ReactNode,
@@ -115,6 +116,8 @@ export function TreeView({
 }: TreeViewProps) {
     const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
+    const treeRef = useRef<HTMLDivElement>(null)
+
     const isExpandedControlled = expanded !== undefined
     const [internalExpanded, setInternalExpanded] = useState<string[]>(
         defaultExpanded ?? [],
@@ -152,6 +155,12 @@ export function TreeView({
 
     const flat = useMemo(() => flattenVisible(data, expandedSet), [data, expandedSet])
 
+    /** First non-disabled row, used as the roving tab stop when nothing is selected. */
+    const firstFocusableIndex = useMemo(
+        () => flat.findIndex((f) => !f.node.disabled),
+        [flat],
+    )
+
     const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>, index: number) => {
         const item = flat[index]
         if (!item || item.node.disabled) return
@@ -159,7 +168,7 @@ export function TreeView({
             const target = flat[i]
             if (!target) return
             select(target.node.id)
-            const el = e.currentTarget.parentElement?.querySelectorAll<HTMLDivElement>(
+            const el = treeRef.current?.querySelectorAll<HTMLDivElement>(
                 "[data-slot='tree-view-row']",
             )[i]
             el?.focus()
@@ -209,6 +218,7 @@ export function TreeView({
 
     return (
         <div
+            ref={treeRef}
             data-slot="tree-view"
             data-surface={sf.surface}
             data-radius={sf.radius}
@@ -229,7 +239,12 @@ export function TreeView({
                         aria-selected={isSelected}
                         aria-level={depth + 1}
                         aria-disabled={node.disabled || undefined}
-                        tabIndex={isSelected || (currentSelected === null && index === 0) ? 0 : -1}
+                        tabIndex={
+                            isSelected ||
+                            (currentSelected === null && index === firstFocusableIndex)
+                                ? 0
+                                : -1
+                        }
                         onKeyDown={(e) => handleKeyDown(e, index)}
                         onClick={() => {
                             if (node.disabled) return
@@ -247,6 +262,7 @@ export function TreeView({
                     >
                         {hasChildren ? (
                             <CaretRightIcon
+                                weight={sf.iconWeight}
                                 className={cn(
                                     "size-3.5 shrink-0 text-muted-foreground transition-transform duration-150",
                                     isExpanded && "rotate-90",

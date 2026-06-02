@@ -23,12 +23,13 @@
  * </div>
  */
 
-import { useEffect, useState, useCallback, type RefObject } from "react"
+import { useEffect, useState, useCallback, useId, type RefObject } from "react"
 import { cn } from "../../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../../providers"
 import { useReducedMotion } from "../motion-config"
 
 /** Props for the AnimatedBeam component. */
-export interface AnimatedBeamProps {
+export interface AnimatedBeamProps extends SaasflareComponentProps {
   /** Ref to the container element (provides coordinate space). */
   containerRef: RefObject<HTMLElement | null>
   /** Ref to the source element. */
@@ -53,7 +54,8 @@ export interface AnimatedBeamProps {
  * - Calculates path dynamically from element positions
  * - Uses a gradient dash animation for the pulse effect
  * - Recalculates on resize
- * - Renders a static line when reduced motion is preferred
+ * - Renders a static line when `animated` is false (prop or provider) or
+ *   reduced motion is preferred
  *
  * @component
  * @package ui
@@ -67,8 +69,16 @@ export function AnimatedBeam({
   curvature = 50,
   duration = 3,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: AnimatedBeamProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
+  const pulse = sf.animated && !reduced
+  const rawId = useId()
+  const id = `sf-beam-${rawId.replace(/:/g, "")}`
   const [path, setPath] = useState("")
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
@@ -103,8 +113,6 @@ export function AnimatedBeam({
 
   if (!path) return null
 
-  const id = `sf-beam-${Math.random().toString(36).slice(2, 8)}`
-
   return (
     <svg
       className={cn("pointer-events-none absolute inset-0", className)}
@@ -112,8 +120,11 @@ export function AnimatedBeam({
       height={dimensions.height}
       aria-hidden="true"
       data-slot="animated-beam"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
-      {!reduced && (
+      {pulse && (
         <style>{`
           @keyframes sf-beam-dash {
             from { stroke-dashoffset: 200; }
@@ -137,10 +148,12 @@ export function AnimatedBeam({
         fill="none"
         stroke={`url(#${id})`}
         strokeWidth={strokeWidth}
-        strokeDasharray={reduced ? "none" : "10 190"}
-        style={reduced ? {} : {
-          animation: `sf-beam-dash ${duration}s linear infinite`,
-        }}
+        strokeDasharray={pulse ? "10 190" : "none"}
+        style={
+          pulse
+            ? { animation: `sf-beam-dash ${duration}s linear infinite` }
+            : {}
+        }
       />
 
       <defs>

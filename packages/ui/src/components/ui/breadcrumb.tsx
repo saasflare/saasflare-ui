@@ -5,7 +5,7 @@
  * @fileoverview Breadcrumb primitive — navigation trail showing the current page hierarchy.
  * Pure Tailwind component with Radix UI Slot for flexible link rendering.
  * Part of the Saasflare base component layer.
- * @module packages/core/components/ui/breadcrumb
+ * @module packages/ui/components/ui/breadcrumb
  * @layer core
  *
  * @component
@@ -25,8 +25,18 @@ import * as Slot from "@radix-ui/react-slot"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link Breadcrumb}. Extends the native `<nav>` props with the
+ * Saasflare axes (`surface`, `radius`, `animated`, `iconWeight`) inherited from
+ * {@link SaasflareComponentProps}. Breadcrumb is a text-navigation subset, so the
+ * axes are emitted on the root for consistency rather than driving a surface.
+ */
 interface BreadcrumbProps extends Omit<React.ComponentProps<"nav">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Breadcrumb navigation root — labelled `<nav>` wrapping the trail. Resolves the
+ * Saasflare axes and emits `data-surface`/`data-radius`/`data-animated`.
+ */
 function Breadcrumb({ surface, radius, animated, iconWeight, ...props }: BreadcrumbProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -42,6 +52,7 @@ function Breadcrumb({ surface, radius, animated, iconWeight, ...props }: Breadcr
   )
 }
 
+/** Ordered list (`<ol>`) holding the breadcrumb items and separators. */
 function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
   return (
     <ol
@@ -55,6 +66,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
   )
 }
 
+/** Single breadcrumb entry (`<li>`) — wraps a {@link BreadcrumbLink} or {@link BreadcrumbPage}. */
 function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
@@ -65,6 +77,13 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   )
 }
 
+/**
+ * Interactive breadcrumb link (`<a>`). Pass `asChild` to render through a custom
+ * element (e.g. a framework `<Link>`) via Radix Slot while keeping the styling.
+ *
+ * @param asChild - When `true`, merges props onto the single child element instead
+ *   of rendering an `<a>`.
+ */
 function BreadcrumbLink({
   asChild,
   className,
@@ -83,6 +102,7 @@ function BreadcrumbLink({
   )
 }
 
+/** Current-page node (`<span>`) — the non-interactive, `aria-current="page"` trail end. */
 function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -96,6 +116,10 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
   )
 }
 
+/**
+ * Visual divider (`<li>`) between items. Defaults to a Phosphor caret that adopts
+ * the provider's `iconWeight`; override via `children` for a custom glyph.
+ */
 function BreadcrumbSeparator({
   children,
   className,
@@ -115,6 +139,7 @@ function BreadcrumbSeparator({
   )
 }
 
+/** Collapsed-trail indicator (`<span>`) — a Phosphor ellipsis glyph plus screen-reader "More". */
 function BreadcrumbEllipsis({
   className,
   ...props

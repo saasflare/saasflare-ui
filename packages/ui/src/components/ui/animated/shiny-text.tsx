@@ -23,15 +23,16 @@
 
 import { type ReactNode } from "react"
 import { cn } from "../../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../../providers"
 import { useReducedMotion } from "../motion-config"
 
 /** Props for the AnimatedShinyText component. */
-export interface AnimatedShinyTextProps {
+export interface AnimatedShinyTextProps extends SaasflareComponentProps {
   /** Text content. */
   children: ReactNode
   /** Animation cycle duration in seconds. Default: `3` */
   speed?: number
-  /** Shimmer highlight color. Default: `"var(--primary)"` */
+  /** Shimmer highlight color. Prefer design tokens. Default: `"var(--primary)"` */
   shimmerColor?: string
   /** Additional class names. */
   className?: string
@@ -41,7 +42,7 @@ export interface AnimatedShinyTextProps {
  * Text with a sweeping shimmer/shine animation.
  *
  * - CSS-only gradient animation (no JS frames)
- * - Renders static text when reduced motion is preferred
+ * - Renders static text when reduced motion is preferred or `animated={false}`
  * - Use inside badge containers for announcement strips
  *
  * @component
@@ -52,12 +53,21 @@ export function AnimatedShinyText({
   speed = 3,
   shimmerColor = "var(--primary)",
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: AnimatedShinyTextProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
+  // The sweep runs only when both the design-system `animated` axis and the
+  // user's OS motion preference allow it. `animated={false}` stops the shine
+  // independent of OS reduced-motion.
+  const shimmer = sf.animated && !reduced
 
   return (
     <>
-      {!reduced && (
+      {shimmer && (
         <style>{`
           @keyframes sf-shimmer-sweep {
             0% { background-position: -200% 50%; }
@@ -71,16 +81,19 @@ export function AnimatedShinyText({
           className,
         )}
         style={{
-          backgroundImage: reduced
-            ? `linear-gradient(90deg, currentColor, currentColor)`
-            : `linear-gradient(90deg, currentColor 40%, ${shimmerColor} 50%, currentColor 60%)`,
-          backgroundSize: reduced ? "100% 100%" : "200% 100%",
+          backgroundImage: shimmer
+            ? `linear-gradient(90deg, currentColor 40%, ${shimmerColor} 50%, currentColor 60%)`
+            : `linear-gradient(90deg, currentColor, currentColor)`,
+          backgroundSize: shimmer ? "200% 100%" : "100% 100%",
           WebkitTextFillColor: "transparent",
-          ...(reduced
-            ? {}
-            : { animation: `sf-shimmer-sweep ${speed}s ease-in-out infinite` }),
+          ...(shimmer
+            ? { animation: `sf-shimmer-sweep ${speed}s ease-in-out infinite` }
+            : {}),
         }}
         data-slot="animated-shiny-text"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
       >
         {children}
       </span>

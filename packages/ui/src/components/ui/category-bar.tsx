@@ -17,9 +17,9 @@
  * @example
  * <CategoryBar
  *   segments={[
- *     { value: 30, color: "oklch(0.65 0.18 230)", label: "Images" },
- *     { value: 20, color: "oklch(0.72 0.17 50)",  label: "Docs"   },
- *     { value: 50, color: "oklch(0.70 0 0)",      label: "Other"  },
+ *     { value: 30, color: "var(--chart-1)", label: "Images" },
+ *     { value: 20, color: "var(--chart-2)", label: "Docs"   },
+ *     { value: 50, color: "var(--chart-3)", label: "Other"  },
  *   ]}
  *   showLabels
  * />
@@ -56,14 +56,13 @@ export interface CategoryBarProps extends SaasflareComponentProps {
     "aria-label"?: string
 }
 
-/** Fallback palette — used when a segment has no color. */
+/** Fallback palette — derived from the design-system chart tokens. */
 const FALLBACK_COLORS = [
-    "oklch(0.65 0.18 230)", // blue
-    "oklch(0.72 0.17 50)", // amber
-    "oklch(0.68 0.17 155)", // emerald
-    "oklch(0.62 0.21 25)", // red
-    "oklch(0.65 0.20 290)", // violet
-    "oklch(0.70 0.15 185)", // teal
+    "var(--chart-1)",
+    "var(--chart-2)",
+    "var(--chart-3)",
+    "var(--chart-4)",
+    "var(--chart-5)",
 ]
 
 /**

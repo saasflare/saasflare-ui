@@ -1,5 +1,38 @@
 # @saasflare/ui
 
+## 3.4.0
+
+### Minor Changes
+
+- 11eb992: Add data-driven and wizard components plus Button/overlay parity — all additive, no breaking changes.
+
+  **New components**
+
+  - **`DataTable`** + **`useDataTable`** — dependency-free, typed data grid built on the Table primitives: typed column defs, client-side single/multi-column sort, row selection (current-page select-all), client-side pagination, density, sticky header, loading/empty states, and a documented `manualSort`/`manualPagination` escape hatch for server-side / TanStack. Sort + select + paginate in ~15 LOC with zero extra dependencies.
+  - **`MultiSelect`** — searchable multi-select (Popover + cmdk) with chips, select-all, `max`, `+N more` collapse, and async option loading via `onSearchChange`. Plain `string[]` value.
+  - **`Stepper`** + **`useStepper`** (+ `StepperNav` / `StepperPanel` / `StepperContent`) — a controlled multi-step wizard over the existing visual `Steps`: linear / non-linear flow, optional steps, and an async validation gate before advancing. The headless `useStepper` hook composes with the bare `Steps` indicator too.
+  - **`DataPagination`** + **`paginationSummary`** — total-driven pagination convenience: prev/next, numbered pages with ellipsis, an optional page-size selector, and an "X–Y of N" summary. One component wires a whole table footer.
+
+  **API parity additions**
+
+  - **`Button`** — new optional `startContent`, `endContent`, `isLoading`, `isIconOnly`, and `spinnerPlacement` props (`StatefulButton` now delegates its loading state to `Button.isLoading`).
+  - **Overlays** — `DialogContent` gains `showCloseButton` (defaults to current behavior); `PopoverArrow`, `TooltipArrow`, and `HoverCardArrow` sub-components added for the floating overlays.
+  - `Step` gains an additive optional `optional` prop.
+
+- 11eb992: Make the `SaasflareComponentProps` contract consistent across the catalog, fix verified correctness bugs, and clean up quality issues. Additive — no public API removed or renamed.
+
+  **Contract consistency** — every visibly-rendering component now extends `SaasflareComponentProps` and resolves `surface` / `radius` / `animated` / `iconWeight` via `useSaasflareProps`, emitting the `data-surface` / `data-radius` / `data-animated` attributes (coverage went from ~91 to 131 files). Concretely this fixes three systemic gaps:
+
+  - **Motion kill-switch** — ~15 JS-motion components (e.g. `HeroVideoDialog`, `Dock`, `Timeline`, `GalleryLightbox`, `AnimatedTooltip`, `BentoGridItem`) gated only on `useReducedMotion()` and silently ignored `animated={false}`; they now honor it via `useSaasflareMotion`.
+  - **`data-animated` emission** — CSS-motion components (`Toggle`, `Avatar`, `Sheet`, `StatCard`, `TeamCard`, `TestimonialCard`, `TagInput`, `FeatureCard`, …) now emit the attribute so the per-component motion gate actually engages.
+  - **Off-contract primitives** — `Separator`, `Label`, `Kbd`, `Item`, `ButtonGroup`, `GradientText`, and others now accept the standard axes.
+
+  **Correctness fixes (44 verified)** — including 3 `Math.random()` SSR-hydration bugs replaced with `useId()` (sidebar skeleton, `Rating` clip-path, animated `beam` gradient), `CommandDialog` a11y nesting, `AppIcon` dropping its ref/props, `Form` hook-order, `MouseGradientBlob` global selector, animated `cursor` listener leak, and missing `"use client"` on `StatCard` / `TeamCard` / `Empty` / `FeatureCard` (RSC crash).
+
+  **Quality** — replaced hardcoded colors with design tokens (brand colors preserved), swapped reimplemented inline `<svg>` icons for Phosphor icons that honor `iconWeight` (e.g. `Steps` checkmark), removed 3 empty stub files, and corrected stale `@module` / "Framer Motion" doc labels. Also fixed the `social-button` registry description, which incorrectly advertised 16 providers (it supports 5; the 16-provider component is `SocialAuthButton`).
+
+  **Documentation** — the docs catalog + shadcn registry now also cover 9 previously-undocumented public exports (`Sidebar` system, `SocialAuthButton`, `StatefulButton`, `ThemeModeToggle`, `ThemeModeMultiToggle`, `UserAvatar`, `TopLoadingBar`, `ScrollToTopButton`, `AnimatedTooltip`), so every shipped export now has a props table, demos, and an installable registry block.
+
 ## 3.3.1
 
 ### Patch Changes

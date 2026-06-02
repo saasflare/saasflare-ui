@@ -19,8 +19,9 @@
  *     matches the rail's outer corner radius on its outer edge and stays
  *     flat on its inner edge so it slots cleanly into the rail.
  *
- * The `radius` prop drives the rail's outer border-radius. Default is
- * `"pill"` (`rounded-full`). Override with `radius="sharp" | "soft" |
+ * The `radius` axis drives the rail's outer border-radius and is resolved
+ * through `useSaasflareProps` (an explicit `radius` prop wins; this component
+ * defaults to `"pill"` / `rounded-full`). Set `radius="sharp" | "soft" |
  * "rounded" | "pill"` — segment corners adapt automatically in
  * `"icon-inherit"` and `"button"` appearances.
  *
@@ -145,7 +146,11 @@ export function ThemeModeMultiToggle({
   initialMode,
 }: ThemeModeMultiToggleProps): React.JSX.Element | null {
   const { theme, setTheme, resolvedTheme } = useTheme()
-  const sf = useSaasflareProps({ surface, animated, iconWeight })
+  // Route every axis (including radius) through the resolver so it stays the
+  // single source of truth. This component's default radius is "pill"; we
+  // express that as the resolver input's fallback so an explicit `radius`
+  // prop still wins and `sf.radius` is the one value used everywhere below.
+  const sf = useSaasflareProps({ surface, radius: radius ?? "pill", animated, iconWeight })
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
@@ -159,9 +164,6 @@ export function ThemeModeMultiToggle({
   if (initialMode === undefined && !mounted) {
     return null
   }
-
-  // Component-level default for radius is "pill" — the prop overrides if set.
-  const resolvedRadius: Radius = radius ?? "pill"
 
   const resolved: ThemeMode =
     theme === "light" || theme === "dark" || theme === "system"
@@ -201,7 +203,7 @@ export function ThemeModeMultiToggle({
       }}
       data-slot="theme-mode-multi-toggle"
       data-surface={sf.surface}
-      data-radius={resolvedRadius}
+      data-radius={sf.radius}
       data-animated={String(sf.animated)}
       data-appearance={appearance}
       data-resolved-theme={dataResolvedTheme}
@@ -212,7 +214,7 @@ export function ThemeModeMultiToggle({
       suppressHydrationWarning
       className={cn(
         "inline-flex items-center bg-muted",
-        RADIUS_CLASS[resolvedRadius],
+        RADIUS_CLASS[sf.radius],
         appearance === "button" ? "gap-0 p-0" : "gap-1 p-1",
         className
       )}
@@ -221,7 +223,7 @@ export function ThemeModeMultiToggle({
         mode="light"
         size={size}
         appearance={appearance}
-        radius={resolvedRadius}
+        radius={sf.radius}
         label={segmentLabel("light")}
       >
         <SunIcon weight={sf.iconWeight} aria-hidden="true" />
@@ -230,7 +232,7 @@ export function ThemeModeMultiToggle({
         mode="dark"
         size={size}
         appearance={appearance}
-        radius={resolvedRadius}
+        radius={sf.radius}
         label={segmentLabel("dark")}
       >
         <MoonIcon weight={sf.iconWeight} aria-hidden="true" />
@@ -239,7 +241,7 @@ export function ThemeModeMultiToggle({
         mode="system"
         size={size}
         appearance={appearance}
-        radius={resolvedRadius}
+        radius={sf.radius}
         label={segmentLabel("system")}
       >
         <MonitorIcon weight={sf.iconWeight} aria-hidden="true" />

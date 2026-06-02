@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Toggle — two-state button with pressed/unpressed styling, size variants, and outline mode.
- * @module packages/core/components/ui/toggle
+ * @module packages/ui/components/ui/toggle
  * @layer core
  *
  * @component
@@ -13,7 +13,6 @@
  *   <BoldIcon className="size-4" />
  * </Toggle>
  */
-"use client"
 
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"

@@ -1,3 +1,5 @@
+"use client"
+
 /**
  * @fileoverview Statistic card with number, label, and optional icon.
  * @author Saasflare™
@@ -52,6 +54,7 @@ export function StatCard({
       data-slot="stat-card"
       data-surface={sf.surface}
       data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "flex flex-col items-center rounded-xl border surface-card p-6 text-center",
         "transition-all duration-200 hover:-translate-y-px hover:shadow-md",

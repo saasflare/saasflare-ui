@@ -4,7 +4,7 @@
  * @fileoverview macOS-style dock with magnification effect.
  * @author Saasflare™
  * Renders a horizontal dock bar where items magnify on mouse proximity.
- * Uses Framer Motion springs for smooth scaling with natural physics.
+ * Uses Motion springs for smooth scaling with natural physics.
  * @module packages/ui/components/ui/dock
  * @package ui
  *
@@ -43,7 +43,7 @@ import {
   type MotionValue,
 } from "motion/react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "./motion-config"
+import { useSaasflareMotion } from "./motion-config"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /* ── Dock context ── */
@@ -98,17 +98,20 @@ export function Dock({
   animated,
 }: DockProps) {
   const sf = useSaasflareProps({ surface, radius, animated })
-  const reduced = useReducedMotion()
+  const motion = useSaasflareMotion(sf.animated)
   const mouseX = useMotionValue(Infinity)
 
   return (
-    <DockContext.Provider value={{ mouseX, magnification, distance, reduced }}>
+    <DockContext.Provider
+      value={{ mouseX, magnification, distance, reduced: motion.disabled }}
+    >
       <m.nav
         onMouseMove={(e: ReactMouseEvent) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         data-slot="dock"
         data-surface={sf.surface}
         data-radius={sf.radius}
+        data-animated={String(sf.animated)}
         className={cn(
           "mx-auto flex h-14 items-end gap-2 rounded-2xl border surface-card px-3 pb-2",
           className,
@@ -125,7 +128,7 @@ export function Dock({
 /* ── DockItem ── */
 
 /** Props for a DockItem. */
-export interface DockItemProps {
+export interface DockItemProps extends SaasflareComponentProps {
   /** Icon or content inside the dock item. */
   children: ReactNode
   /** Tooltip label for the item. */

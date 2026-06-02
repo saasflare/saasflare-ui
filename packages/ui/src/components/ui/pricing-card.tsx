@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare PricingCard — plan display for pricing pages.
- * @module packages/core/components/ui/pricing-card
+ * @module packages/ui/components/ui/pricing-card
  * @layer core
  *
  * Displays a pricing plan with name, price, feature list, and CTA button.
@@ -51,14 +51,6 @@ interface PricingCardProps extends Omit<React.ComponentProps<"div">, keyof Saasf
  *
  * @component
  * @layer core
- *
- * @param {string} name - Plan name
- * @param {string} price - Formatted price string
- * @param {string} period - Billing period
- * @param {string} description - Short description
- * @param {string[]} features - List of features
- * @param {React.ReactNode} cta - Call-to-action button
- * @param {boolean} featured - Highlight styling
  *
  * @example
  * <PricingCard

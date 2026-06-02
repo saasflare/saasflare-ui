@@ -2,13 +2,13 @@
 "use client"
 
 /**
- * @fileoverview Checkbox — toggle input with Framer Motion spring check-mark animation.
- * @module packages/core/components/ui/checkbox
+ * @fileoverview Checkbox — toggle input with Motion spring check-mark animation.
+ * @module packages/ui/components/ui/checkbox
  * @layer core
  *
  * Self-contained implementation built on Radix Checkbox primitive. The check
- * indicator uses a bouncy spring scale animation via Framer Motion with
- * AnimatePresence for smooth mount/unmount transitions.
+ * indicator uses a bouncy spring scale animation via Motion that plays on mount
+ * when the checkbox becomes checked.
  *
  * @component
  * @example
@@ -19,7 +19,7 @@
  */
 
 import * as React from "react"
-import { m, AnimatePresence } from "motion/react"
+import { m } from "motion/react"
 import { CheckIcon } from "./phosphor"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { cn } from "../../lib"

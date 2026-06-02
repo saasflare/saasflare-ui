@@ -2,8 +2,8 @@
 "use client"
 
 /**
- * @fileoverview DropdownMenu — premium animated dropdown menu with Framer Motion spring transitions, sub-menus, checkbox/radio items, and keyboard navigation.
- * @module packages/core/components/ui/dropdown-menu
+ * @fileoverview DropdownMenu — premium animated dropdown menu with Motion spring transitions, sub-menus, checkbox/radio items, and keyboard navigation.
+ * @module packages/ui/components/ui/dropdown-menu
  * @layer core
  *
  * @component
@@ -18,7 +18,6 @@
  *   </DropdownMenuContent>
  * </DropdownMenu>
  */
-"use client"
 
 import * as React from "react"
 import { m } from "motion/react"
@@ -89,7 +88,14 @@ function DropdownMenuContent({
   )
 }
 
-function DropdownMenuItem({ className, inset, variant = "default", ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & { inset?: boolean; variant?: "default" | "destructive" }) {
+interface DropdownMenuItemExtraProps {
+  /** Indent the item to align with sibling items that have a leading icon or indicator. */
+  inset?: boolean
+  /** Visual intent of the item. `"destructive"` tints the label and focus state with the destructive token. */
+  variant?: "default" | "destructive"
+}
+
+function DropdownMenuItem({ className, inset, variant = "default", ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & DropdownMenuItemExtraProps) {
   return (
     <DropdownMenuPrimitive.Item
       data-slot="dropdown-menu-item"

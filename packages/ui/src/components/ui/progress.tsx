@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare Progress — animated progress bar.
- * @module packages/core/components/ui/progress
+ * @module packages/ui/components/ui/progress
  * @layer core
  *
  * Self-contained implementation using Radix Progress primitive directly.

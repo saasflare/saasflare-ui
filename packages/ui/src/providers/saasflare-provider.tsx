@@ -336,7 +336,7 @@ export function SaasflareProvider({
     // `animated` must follow the same prop > persisted > default chain as the
     // other axes so runtime toggles (catalog/header switches writing to the
     // persisted storageKey) actually flip the AnimationContext value for JS
-    // consumers (Framer Motion, conditional Spring). Without the persisted
+    // consumers (Motion, conditional Spring). Without the persisted
     // fallback, a `undefined` prop collapsed to a hardcoded `true` and the
     // context could never go to `false` from anywhere except the prop.
     const currentAnimated: boolean =

@@ -16,9 +16,12 @@
  */
 
 import { cn } from "../../lib"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the Countdown component. */
-export interface CountdownProps {
+export interface CountdownProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Number of days remaining. */
   days: number
   /** Number of hours remaining (0–23). */
@@ -51,7 +54,14 @@ export function Countdown({
   seconds,
   showLabels = true,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+  ...props
 }: CountdownProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+
   const units = [
     { value: days, label: "Days" },
     { value: hours, label: "Hours" },
@@ -63,8 +73,11 @@ export function Countdown({
     <div
       className={cn("flex items-center gap-2 md:gap-3", className)}
       data-slot="countdown"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
       role="timer"
       aria-label={`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`}
+      {...props}
     >
       {units.map((unit, i) => (
         <div key={unit.label} className="flex items-center gap-2 md:gap-3">

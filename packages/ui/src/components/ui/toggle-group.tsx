@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview ToggleGroup — grouped toggle buttons with shared state, variant styling, and configurable spacing.
- * @module packages/core/components/ui/toggle-group
+ * @module packages/ui/components/ui/toggle-group
  * @layer core
  *
  * @component
@@ -15,7 +15,6 @@
  *   <ToggleGroupItem value="right">Right</ToggleGroupItem>
  * </ToggleGroup>
  */
-"use client"
 
 import * as React from "react"
 import { type VariantProps } from "class-variance-authority"
@@ -37,6 +36,7 @@ const ToggleGroupContext = React.createContext<
 type ToggleGroupProps = React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
   VariantProps<typeof toggleVariants> &
   SaasflareComponentProps & {
+    /** Gap (in spacing units) between items. `0` (default) renders a joined, segmented group; a positive value detaches the items into spaced pills. */
     spacing?: number
   }
 
@@ -65,7 +65,7 @@ function ToggleGroup({
       data-animated={String(sf.animated)}
       style={{ "--gap": spacing } as React.CSSProperties}
       className={cn(
-        "group/toggle-group flex w-fit items-center gap-[--spacing(var(--gap))] rounded-md data-[spacing=default]:data-[variant=outline]:shadow-xs",
+        "group/toggle-group flex w-fit items-center gap-[--spacing(var(--gap))] rounded-md data-[spacing=0]:data-[variant=outline]:shadow-xs",
         className
       )}
     >

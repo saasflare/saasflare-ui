@@ -29,11 +29,11 @@
 import { type ReactNode } from "react"
 import { m } from "motion/react"
 import { cn } from "../../lib"
-import { springGentle, noMotion, useReducedMotion } from "./motion-config"
+import { springGentle, useSaasflareMotion } from "./motion-config"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Props for the BentoGrid container. */
-export interface BentoGridProps {
+export interface BentoGridProps extends SaasflareComponentProps {
   /** Grid items. */
   children: ReactNode
   /** Number of columns at md+ breakpoint. Default: `3` */
@@ -66,7 +66,12 @@ export function BentoGrid({
   columns = 3,
   gap = 4,
   className,
+  surface,
+  radius,
+  animated,
 }: BentoGridProps) {
+  const sf = useSaasflareProps({ surface, radius, animated })
+
   return (
     <div
       className={cn(
@@ -76,6 +81,9 @@ export function BentoGrid({
       )}
       style={{ gap: `${gap * 0.25}rem` }}
       data-slot="bento-grid"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       {children}
     </div>
@@ -132,17 +140,18 @@ export function BentoGridItem({
   animated,
 }: BentoGridItemProps) {
   const sf = useSaasflareProps({ surface, radius, animated })
-  const reduced = useReducedMotion()
+  const motion = useSaasflareMotion(sf.animated, springGentle)
 
   return (
     <m.div
-      initial={reduced ? false : { opacity: 0, y: 16 }}
-      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
+      initial={motion.disabled ? false : { opacity: 0, y: 16 }}
+      whileInView={motion.disabled ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={reduced ? noMotion : { ...springGentle, delay: index * 0.08 }}
+      transition={motion.disabled ? motion.transition : { ...springGentle, delay: index * 0.08 }}
       data-slot="bento-grid-item"
       data-surface={sf.surface}
       data-radius={sf.radius}
+      data-animated={String(sf.animated)}
       className={cn(
         "rounded-xl border surface-card p-6 text-card-foreground",
         "transition-all duration-200 hover:-translate-y-px hover:shadow-md",

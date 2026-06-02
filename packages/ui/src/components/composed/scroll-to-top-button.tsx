@@ -7,7 +7,7 @@
  * window-level and custom container scrolling.
  *
  * Integrates with SaasflareProvider:
- *   - `animated` → gates Framer Motion transitions and scroll-to-top behavior
+ *   - `animated` → gates Motion transitions and scroll-to-top behavior
  *   - `surface`  → swaps between flat (solid primary) and glass (backdrop-blur)
  *
  * @module packages/ui/components/composed/scroll-to-top-button
@@ -25,9 +25,9 @@
  * // Per-instance surface override (ignores provider value)
  * <ScrollToTopButton surface="glass" />
  */
-'use client';
 
-import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
+import { JSX, useEffect, useState } from 'react';
+import * as React from 'react';
 import { ArrowUpIcon } from '../ui/phosphor';
 import { AnimatePresence, m } from 'motion/react';
 import { cn } from '../../lib';
@@ -35,6 +35,10 @@ import {
     useSaasflareProps,
     type SaasflareComponentProps,
 } from '../../providers';
+import { useSaasflareMotion, springGentle } from '../ui/motion-config';
+
+/** Motion event overrides that conflict with React HTML events */
+type MotionConflicts = "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
 
 /**
  * Props for the ScrollToTopButton component.
@@ -42,7 +46,9 @@ import {
  * @interface
  * @package ui
  */
-export interface ScrollToTopButtonProps extends SaasflareComponentProps {
+export interface ScrollToTopButtonProps
+    extends Omit<React.ComponentProps<"button">, MotionConflicts | keyof SaasflareComponentProps>,
+        SaasflareComponentProps {
     /**
      * Optional scroll container element ID.
      * If not provided, falls back to the global `window`.
@@ -69,24 +75,42 @@ export function ScrollToTopButton({
     scrollContainerId,
     scrollOffset = 300,
     className,
-    ...sfProps
+    surface,
+    radius,
+    animated,
+    iconWeight,
+    onClick,
+    ...props
 }: ScrollToTopButtonProps): JSX.Element {
-    const { animated, surface, iconWeight } = useSaasflareProps(sfProps);
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight });
+    const motion = useSaasflareMotion(sf.animated, springGentle);
 
     const [isVisible, setIsVisible] = useState(false);
+    const [container, setContainer] = useState<HTMLElement | Window | null>(null);
 
-    const finalId = useMemo(() => scrollContainerId ?? null, [scrollContainerId]);
-
-    const getContainer = useCallback(() => {
-        if (finalId) {
-            const el = document.getElementById(finalId);
-            if (el) return el;
+    // Resolve the scroll container. When a `scrollContainerId` is given, retry
+    // until the target node mounts so late-rendered containers still bind.
+    useEffect(() => {
+        if (!scrollContainerId) {
+            setContainer(window);
+            return;
         }
-        return window;
-    }, [finalId]);
+
+        let raf = 0;
+        const resolve = () => {
+            const el = document.getElementById(scrollContainerId);
+            if (el) {
+                setContainer(el);
+                return;
+            }
+            raf = requestAnimationFrame(resolve);
+        };
+        resolve();
+
+        return () => cancelAnimationFrame(raf);
+    }, [scrollContainerId]);
 
     useEffect(() => {
-        const container = getContainer();
         if (!container) return;
 
         const getScrollTop = () =>
@@ -100,13 +124,13 @@ export function ScrollToTopButton({
 
         container.addEventListener('scroll', onScroll, { passive: true });
         return () => container.removeEventListener('scroll', onScroll as EventListener);
-    }, [finalId, scrollOffset, getContainer]);
+    }, [container, scrollOffset]);
 
-    const scrollToTop = () => {
-        const container = getContainer();
+    const scrollToTop = (event: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(event);
         if (!container) return;
 
-        const behavior: ScrollBehavior = animated ? 'smooth' : 'auto';
+        const behavior: ScrollBehavior = sf.animated ? 'smooth' : 'auto';
         if (container instanceof Window) {
             window.scrollTo({ top: 0, behavior });
         } else {
@@ -119,33 +143,34 @@ export function ScrollToTopButton({
     // fill (CTA identity) but inherits the pillow shadow stack from surface
     // tokens for the soft 3D finish; flat is opaque.
     const surfaceClass =
-        surface === 'glass'
-            ? 'bg-primary/85 text-primary-foreground backdrop-blur-md border border-[oklch(1_0_0_/_0.15)] shadow-[var(--surface-shadow)]'
-            : surface === 'clay'
+        sf.surface === 'glass'
+            ? 'bg-primary/85 text-primary-foreground backdrop-blur-md border border-border shadow-[var(--surface-shadow)]'
+            : sf.surface === 'clay'
             ? 'bg-primary text-primary-foreground border-0 shadow-[var(--surface-shadow)] active:translate-y-px'
             : 'bg-primary text-primary-foreground shadow-lg';
-
-    // Animated=false → zero-duration transitions, Framer still owns AnimatePresence
-    // so the mount/unmount stays predictable.
-    const duration = animated ? 0.3 : 0;
 
     return (
         <AnimatePresence>
             {isVisible && (
                 <m.button
+                    {...props}
+                    data-slot="scroll-to-top-button"
+                    data-surface={sf.surface}
+                    data-radius={sf.radius}
+                    data-animated={String(sf.animated)}
                     onClick={scrollToTop}
                     aria-label="Scroll to top"
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={motion.disabled ? false : { opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 40 }}
-                    transition={{ duration }}
+                    exit={motion.disabled ? undefined : { opacity: 0, y: 40 }}
+                    transition={motion.transition}
                     className={cn(
                         'fixed bottom-6 right-6 z-50 cursor-pointer rounded-full p-3 transition-colors hover:bg-primary/80',
                         surfaceClass,
                         className,
                     )}
                 >
-                    <ArrowUpIcon weight={iconWeight} className="h-5 w-5" />
+                    <ArrowUpIcon weight={sf.iconWeight} className="h-5 w-5" />
                 </m.button>
             )}
         </AnimatePresence>

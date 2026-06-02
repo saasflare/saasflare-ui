@@ -24,13 +24,17 @@
  * </div>
  */
 
+import * as React from "react"
 import { useRef, useState } from "react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion } from "./motion-config"
 import { useMousePosition } from "../../hooks/use-mouse-position"
 
 /** Props for the GlowingEffect component. */
-export interface GlowingEffectProps {
+export interface GlowingEffectProps
+  extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
+    SaasflareComponentProps {
   /** Glow color. Default: `"var(--primary)"` */
   color?: string
   /** Glow spread diameter in pixels. Default: `150` */
@@ -41,8 +45,6 @@ export interface GlowingEffectProps {
   opacity?: number
   /** Border radius to match parent (CSS value). Default: `"inherit"` */
   borderRadius?: string
-  /** Additional class names. */
-  className?: string
 }
 
 /**
@@ -51,7 +53,7 @@ export interface GlowingEffectProps {
  * - Tracks mouse position and renders a radial gradient at cursor
  * - Only glows along the border (uses inset mask to hollow out center)
  * - Fades out when the mouse leaves
- * - Renders nothing when reduced motion is preferred
+ * - Renders nothing when motion is disabled (reduced motion or `animated={false}`)
  *
  * @component
  * @package ui
@@ -62,24 +64,43 @@ export function GlowingEffect({
   blur = 20,
   opacity = 0.4,
   borderRadius = "inherit",
+  surface,
+  radius,
+  animated,
+  iconWeight,
   className,
+  style,
+  onMouseEnter,
+  onMouseLeave,
+  ...rest
 }: GlowingEffectProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated)
   const ref = useRef<HTMLDivElement>(null)
-  const pos = useMousePosition({ ref, enabled: !reduced })
+  const pos = useMousePosition({ ref, enabled: !motion.disabled })
   const [hovered, setHovered] = useState(false)
 
-  if (reduced) return null
+  if (motion.disabled) return null
 
   return (
     <div
       ref={ref}
       className={cn("pointer-events-none absolute inset-0", className)}
-      style={{ borderRadius }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      style={{ borderRadius, ...style }}
+      onMouseEnter={(event) => {
+        setHovered(true)
+        onMouseEnter?.(event)
+      }}
+      onMouseLeave={(event) => {
+        setHovered(false)
+        onMouseLeave?.(event)
+      }}
       aria-hidden="true"
       data-slot="glowing-effect"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+      {...rest}
     >
       <div
         className="absolute inset-0 transition-opacity duration-300"

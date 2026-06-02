@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Saasflare PageHeader — top-level page title with actions.
- * @module packages/core/components/ui/page-header
+ * @module packages/ui/components/ui/page-header
  * @layer core
  *
  * Composed component for SaaS page headers with breadcrumbs,

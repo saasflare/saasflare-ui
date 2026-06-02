@@ -3,7 +3,7 @@
 
 /**
  * @fileoverview Hook to detect mobile viewport via media query.
- * @module packages/core/hooks/use-mobile
+ * @module packages/ui/hooks/use-mobile
  * @layer core
  *
  * Uses `matchMedia` to reactively track whether the viewport width

@@ -24,10 +24,11 @@
 import { useRef, type ReactNode } from "react"
 import { m, useScroll, useTransform } from "motion/react"
 import { cn } from "../../lib"
-import { useReducedMotion } from "./motion-config"
+import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
+import { useSaasflareMotion, springGentle } from "./motion-config"
 
 /** Props for the Timeline container. */
-export interface TimelineProps {
+export interface TimelineProps extends SaasflareComponentProps {
   /** TimelineItem children. */
   children: ReactNode
   /** Additional class names. */
@@ -39,19 +40,29 @@ export interface TimelineProps {
  *
  * - Beam fills as the user scrolls through the timeline
  * - Each item fades in on scroll intersection
- * - Falls back to a static timeline when reduced motion is preferred
+ * - Falls back to a static timeline when motion is disabled (reduced-motion or `animated={false}`)
  *
  * @component
  * @package ui
  */
-export function Timeline({ children, className }: TimelineProps) {
-  const reduced = useReducedMotion()
+export function Timeline({
+  children,
+  className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
+}: TimelineProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, springGentle)
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start 80%", "end 50%"],
   })
 
+  // Hook order stays stable; the beam render is gated on `motion.disabled`
+  // below so the scroll-driven progress honors the `animated` axis.
   const beamHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
 
   return (
@@ -59,12 +70,15 @@ export function Timeline({ children, className }: TimelineProps) {
       ref={containerRef}
       className={cn("relative", className)}
       data-slot="timeline"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       {/* Track line */}
       <div className="absolute left-4 top-0 h-full w-0.5 bg-border md:left-1/2 md:-translate-x-px" />
 
       {/* Animated beam overlay */}
-      {!reduced && (
+      {!motion.disabled && (
         <m.div
           className="absolute left-4 top-0 w-0.5 bg-primary md:left-1/2 md:-translate-x-px"
           style={{ height: beamHeight }}
@@ -78,7 +92,7 @@ export function Timeline({ children, className }: TimelineProps) {
 }
 
 /** Props for a TimelineItem. */
-export interface TimelineItemProps {
+export interface TimelineItemProps extends SaasflareComponentProps {
   /** Item title. */
   title: string
   /** Date or time label. */
@@ -92,9 +106,9 @@ export interface TimelineItemProps {
 /**
  * Individual item within a Timeline.
  *
- * - Positioned alternating left/right on desktop, left-aligned on mobile
+ * - Content sits to the right of the track on desktop, left-aligned on mobile
  * - Dot indicator on the timeline track
- * - Fades in when scrolled into view
+ * - Fades in when scrolled into view (disabled when motion is off)
  *
  * @component
  * @package ui
@@ -104,17 +118,25 @@ export function TimelineItem({
   date,
   children,
   className,
+  surface,
+  radius,
+  animated,
+  iconWeight,
 }: TimelineItemProps) {
-  const reduced = useReducedMotion()
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const motion = useSaasflareMotion(sf.animated, springGentle)
 
   return (
     <m.div
-      initial={reduced ? false : { opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={motion.disabled ? false : { opacity: 0, y: 16 }}
+      whileInView={motion.disabled ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={reduced ? { duration: 0 } : { duration: 0.5, ease: "easeOut" }}
+      transition={motion.transition}
       className={cn("relative pl-12 md:pl-0", className)}
       data-slot="timeline-item"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
     >
       {/* Dot */}
       <div className="absolute left-[11px] top-1.5 size-3 rounded-full border-2 border-primary bg-background md:left-1/2 md:-translate-x-1.5" />

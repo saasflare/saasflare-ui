@@ -4,7 +4,7 @@
 /**
  * @fileoverview ContextMenu primitive — right-click menu with items, sub-menus, checkboxes, and radio groups.
  * Built on Radix UI ContextMenu. Part of the Saasflare base component layer.
- * @module packages/core/components/ui/context-menu
+ * @module packages/ui/components/ui/context-menu
  * @layer core
  *
  * @component
@@ -18,7 +18,6 @@
  *   </ContextMenuContent>
  * </ContextMenu>
  */
-"use client"
 
 import * as React from "react"
 import { CheckIcon, CaretRightIcon, CircleIcon } from "./phosphor"
@@ -77,12 +76,13 @@ function ContextMenuRadioGroup({
 function ContextMenuSubTrigger({
   className,
   inset,
+  iconWeight,
   children,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
   inset?: boolean
-}) {
-  const sf = useSaasflareProps()
+} & Pick<SaasflareComponentProps, "iconWeight">) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <ContextMenuPrimitive.SubTrigger
       data-slot="context-menu-sub-trigger"
@@ -173,9 +173,11 @@ function ContextMenuCheckboxItem({
   className,
   children,
   checked,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
-  const sf = useSaasflareProps()
+}: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem> &
+  Pick<SaasflareComponentProps, "iconWeight">) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <ContextMenuPrimitive.CheckboxItem
       data-slot="context-menu-checkbox-item"
@@ -199,9 +201,11 @@ function ContextMenuCheckboxItem({
 function ContextMenuRadioItem({
   className,
   children,
+  iconWeight,
   ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
-  const sf = useSaasflareProps()
+}: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem> &
+  Pick<SaasflareComponentProps, "iconWeight">) {
+  const sf = useSaasflareProps({ iconWeight })
   return (
     <ContextMenuPrimitive.RadioItem
       data-slot="context-menu-radio-item"
