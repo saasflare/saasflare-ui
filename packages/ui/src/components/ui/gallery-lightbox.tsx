@@ -28,6 +28,8 @@ import { XIcon, CaretLeftIcon, CaretRightIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion } from "./motion-config"
+import { useFocusTrap } from "../../hooks/use-focus-trap"
+import { useScrollLock } from "../../hooks/use-scroll-lock"
 
 /** Props for the GalleryLightbox component. */
 export interface GalleryLightboxProps extends SaasflareComponentProps {
@@ -65,6 +67,12 @@ export function GalleryLightbox({
 }: GalleryLightboxProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { duration: 0.2 })
+
+  // Modal a11y: trap focus inside the overlay (with focus restoration on close)
+  // and lock body scroll — same hooks HeroVideoDialog uses.
+  const overlayRef = useFocusTrap<HTMLDivElement>(open)
+  useScrollLock(open)
+
   const prev = useCallback(() => {
     onIndexChange((index - 1 + images.length) % images.length)
   }, [index, images.length, onIndexChange])
@@ -84,18 +92,11 @@ export function GalleryLightbox({
     return () => window.removeEventListener("keydown", onKey)
   }, [open, onClose, prev, next])
 
-  // Prevent body scroll
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden"
-      return () => { document.body.style.overflow = "" }
-    }
-  }, [open])
-
   return (
     <AnimatePresence>
       {open && (
         <m.div
+          ref={overlayRef}
           initial={motion.disabled ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -108,6 +109,7 @@ export function GalleryLightbox({
           role="dialog"
           aria-modal="true"
           aria-label="Image gallery"
+          tabIndex={-1}
           data-slot="gallery-lightbox"
           data-surface={sf.surface}
           data-radius={sf.radius}

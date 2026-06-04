@@ -101,9 +101,17 @@ export function AnimatedTestimonials({
     return () => clearInterval(timer)
   }, [autoPlay, paused, motion.disabled, interval, next])
 
+  // Reconcile state if the list shrinks below the active index (no-op when in range).
+  useEffect(() => {
+    setActive((prev) => (prev > testimonials.length - 1 ? Math.max(0, testimonials.length - 1) : prev))
+  }, [testimonials.length])
+
   if (testimonials.length === 0) return null
 
-  const current = testimonials[active]
+  // Clamp for the render path too: the reconcile effect runs *after* this render,
+  // so guard against an out-of-range `active` to avoid reading `undefined.quote`.
+  const safeIndex = Math.min(active, testimonials.length - 1)
+  const current = testimonials[safeIndex]
 
   return (
     <div
@@ -125,7 +133,7 @@ export function AnimatedTestimonials({
 
         <AnimatePresence mode="wait">
           <m.div
-            key={active}
+            key={safeIndex}
             initial={motion.disabled ? false : { opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={motion.disabled ? { opacity: 0 } : { opacity: 0, x: -20 }}
@@ -176,11 +184,11 @@ export function AnimatedTestimonials({
                 onClick={() => setActive(i)}
                 className={cn(
                   "size-2 rounded-full transition-all",
-                  i === active
+                  i === safeIndex
                     ? "w-6 bg-primary"
                     : "bg-muted-foreground/30 hover:bg-muted-foreground/50",
                 )}
-                aria-current={i === active}
+                aria-current={i === safeIndex}
                 aria-label={`Go to testimonial ${i + 1}`}
               />
             ))}
