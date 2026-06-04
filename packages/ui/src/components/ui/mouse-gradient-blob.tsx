@@ -101,11 +101,13 @@ export function MouseGradientBlob({
   )
 
   useEffect(() => {
-    const parent = containerRef.current
-    if (!parent || motion.disabled) return
+    // The container is `pointer-events-none`, so it never receives pointer
+    // events — track the cursor on the positioned host element it overlays.
+    const host = containerRef.current?.parentElement
+    if (!host || motion.disabled) return
 
-    parent.addEventListener("mousemove", onMouseMove as EventListener, { passive: true })
-    return () => parent.removeEventListener("mousemove", onMouseMove as EventListener)
+    host.addEventListener("mousemove", onMouseMove as EventListener, { passive: true })
+    return () => host.removeEventListener("mousemove", onMouseMove as EventListener)
   }, [onMouseMove, motion.disabled])
 
   if (motion.disabled) return null

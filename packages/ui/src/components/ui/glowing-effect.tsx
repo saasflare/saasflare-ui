@@ -25,7 +25,7 @@
  */
 
 import * as React from "react"
-import { useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion } from "./motion-config"
@@ -70,31 +70,41 @@ export function GlowingEffect({
   iconWeight,
   className,
   style,
-  onMouseEnter,
-  onMouseLeave,
   ...rest
 }: GlowingEffectProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated)
-  const ref = useRef<HTMLDivElement>(null)
-  const pos = useMousePosition({ ref, enabled: !motion.disabled })
+  // The overlay below is `pointer-events-none`, so it can never be the pointer
+  // target. Track the cursor on the positioned parent the overlay covers
+  // instead (captured via the ref callback during commit, before effects run).
+  const parentRef = useRef<HTMLElement | null>(null)
+  const pos = useMousePosition({ ref: parentRef, enabled: !motion.disabled })
   const [hovered, setHovered] = useState(false)
+
+  const captureParent = useCallback((node: HTMLDivElement | null) => {
+    parentRef.current = node?.parentElement ?? null
+  }, [])
+
+  useEffect(() => {
+    const parent = parentRef.current
+    if (!parent || motion.disabled) return
+    const onEnter = () => setHovered(true)
+    const onLeave = () => setHovered(false)
+    parent.addEventListener("mouseenter", onEnter)
+    parent.addEventListener("mouseleave", onLeave)
+    return () => {
+      parent.removeEventListener("mouseenter", onEnter)
+      parent.removeEventListener("mouseleave", onLeave)
+    }
+  }, [motion.disabled])
 
   if (motion.disabled) return null
 
   return (
     <div
-      ref={ref}
+      ref={captureParent}
       className={cn("pointer-events-none absolute inset-0", className)}
       style={{ borderRadius, ...style }}
-      onMouseEnter={(event) => {
-        setHovered(true)
-        onMouseEnter?.(event)
-      }}
-      onMouseLeave={(event) => {
-        setHovered(false)
-        onMouseLeave?.(event)
-      }}
       aria-hidden="true"
       data-slot="glowing-effect"
       data-surface={sf.surface}

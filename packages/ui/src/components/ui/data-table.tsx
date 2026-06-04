@@ -497,10 +497,14 @@ function DataTable<T>(props: DataTableProps<T>): React.JSX.Element {
                       <PaginationContent>
                         <PaginationItem>
                           <PaginationPrevious
-                            role="button"
-                            aria-disabled={table.activePage <= 1}
+                            href="#"
+                            aria-disabled={table.activePage <= 1 || undefined}
+                            tabIndex={table.activePage <= 1 ? -1 : undefined}
                             className={cn(table.activePage <= 1 && "pointer-events-none opacity-50")}
-                            onClick={() => table.setPage(table.activePage - 1)}
+                            onClick={(event) => {
+                              event.preventDefault()
+                              if (table.activePage > 1) table.setPage(table.activePage - 1)
+                            }}
                           />
                         </PaginationItem>
                         {table.range.map((item, i) =>
@@ -511,9 +515,12 @@ function DataTable<T>(props: DataTableProps<T>): React.JSX.Element {
                           ) : (
                             <PaginationItem key={item}>
                               <PaginationLink
-                                role="button"
+                                href="#"
                                 isActive={item === table.activePage}
-                                onClick={() => table.setPage(item)}
+                                onClick={(event) => {
+                                  event.preventDefault()
+                                  table.setPage(item)
+                                }}
                               >
                                 {item}
                               </PaginationLink>
@@ -522,10 +529,14 @@ function DataTable<T>(props: DataTableProps<T>): React.JSX.Element {
                         )}
                         <PaginationItem>
                           <PaginationNext
-                            role="button"
-                            aria-disabled={table.activePage >= table.pageCount}
+                            href="#"
+                            aria-disabled={table.activePage >= table.pageCount || undefined}
+                            tabIndex={table.activePage >= table.pageCount ? -1 : undefined}
                             className={cn(table.activePage >= table.pageCount && "pointer-events-none opacity-50")}
-                            onClick={() => table.setPage(table.activePage + 1)}
+                            onClick={(event) => {
+                              event.preventDefault()
+                              if (table.activePage < table.pageCount) table.setPage(table.activePage + 1)
+                            }}
                           />
                         </PaginationItem>
                       </PaginationContent>

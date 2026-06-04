@@ -11,7 +11,9 @@
  */
 import * as React from 'react';
 
-interface AppIconProps extends React.SVGProps<SVGSVGElement> {
+/** Props for the {@link AppIcon} component. */
+export interface AppIconProps extends React.SVGProps<SVGSVGElement> {
+    /** Square size in px (or any CSS length); `width`/`height` override it. */
     size?: number | string;
 }
 

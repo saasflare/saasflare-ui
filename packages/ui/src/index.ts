@@ -112,6 +112,8 @@ export {
     type SocialAuthButtonProps,
     type SocialProvider,
 } from './components/brand/social-auth-buttons';
+export { Logo, type LogoProps } from './components/brand/logo';
+export { AppIcon, type AppIconProps } from './components/brand/app-icon';
 export { ThemeModeToggle } from './components/composed/theme-mode-toggle';
 export {
     ThemeModeMultiToggle,
