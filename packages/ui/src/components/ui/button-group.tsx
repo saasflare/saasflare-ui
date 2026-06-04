@@ -63,9 +63,10 @@ function ButtonGroup({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ButtonGroupProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -105,10 +106,11 @@ function ButtonGroupText({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ButtonGroupTextProps) {
   const Comp = asChild ? Slot.Root : "div"
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <Comp

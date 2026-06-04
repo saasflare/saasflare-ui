@@ -19,7 +19,7 @@
 "use client"
 
 import * as React from "react"
-import { m, AnimatePresence } from "motion/react"
+import { m } from "motion/react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
@@ -61,9 +61,10 @@ function TooltipContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: TooltipContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (

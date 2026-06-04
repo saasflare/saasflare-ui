@@ -55,8 +55,8 @@ const RADIUS_BY_AS: Record<SkeletonAs, string> = {
  * @component
  * @package ui
  */
-function Skeleton({ as, className, style, surface, radius, animated, ...props }: SkeletonProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Skeleton({ as, className, style, surface, radius, animated, iconWeight, ...props }: SkeletonProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   const radiusStyle: CSSProperties | undefined = as
     ? { borderRadius: RADIUS_BY_AS[as], ...style }

@@ -26,8 +26,8 @@ type InputBaseProps = Omit<
 
 interface InputProps extends Omit<InputBaseProps, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Input({ className, type, surface, radius, animated, ...props }: InputProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Input({ className, type, surface, radius, animated, iconWeight, ...props }: InputProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
 
   return (

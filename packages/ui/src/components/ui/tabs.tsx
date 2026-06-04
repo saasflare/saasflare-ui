@@ -44,9 +44,10 @@ function Tabs({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: TabsProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <TabsPrimitive.Root
@@ -102,10 +103,11 @@ function TabsList({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: TabsListProps) {
   const listRef = React.useRef<HTMLDivElement>(null)
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, spring)
   const [pos, setPos] = React.useState<IndicatorPos | null>(null)
 
@@ -211,9 +213,10 @@ function TabsTrigger({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: TabsTriggerProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
@@ -244,9 +247,10 @@ function TabsContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: TabsContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"

@@ -85,9 +85,10 @@ export function SparkChart({
     surface,
     radius,
     animated,
+    iconWeight,
     "aria-label": ariaLabel,
 }: SparkChartProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
     const points = data.filter((v) => Number.isFinite(v))
     if (points.length < 2) return null
@@ -101,7 +102,11 @@ export function SparkChart({
     const span = max - min || 1
     const innerH = height - strokeWidth
     const offset = strokeWidth / 2
-    const barW = (width - strokeWidth * (points.length + 1)) / points.length
+    // Proportional slot layout: each bar gets an equal slice of the width with a
+    // ~30% gap. Scales to any point count (the old fixed-gap formula went
+    // negative past ~40 points and the bars vanished).
+    const slot = width / points.length
+    const barW = Math.max(slot * 0.7, 0.5)
 
     return (
         <svg
@@ -120,7 +125,7 @@ export function SparkChart({
             {variant === "bar" ? (
                 points.map((v, i) => {
                     const h = Math.max(((v - min) / span) * innerH, 1)
-                    const x = offset + i * (barW + strokeWidth)
+                    const x = i * slot + (slot - barW) / 2
                     const y = offset + innerH - h
                     return (
                         <rect

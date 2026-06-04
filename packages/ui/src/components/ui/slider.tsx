@@ -32,9 +32,10 @@ function Slider({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SliderProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   const _values = React.useMemo(

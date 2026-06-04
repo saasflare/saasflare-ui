@@ -426,25 +426,30 @@ function StepperIndicator() {
 
     return (
         <div className="relative">
-            {/* Untouched visual indicator. */}
-            <Steps
-                current={stepper.activeStep}
-                direction={direction}
-                surface={sf.surface}
-                radius={sf.radius}
-                animated={sf.animated}
-                iconWeight={sf.iconWeight}
-            >
-                {items.map((item, i) => (
-                    <Step
-                        key={i}
-                        title={item.title}
-                        description={item.description}
-                        icon={item.icon}
-                        optional={item.optional}
-                    />
-                ))}
-            </Steps>
+            {/* Decorative visual indicator — hidden from assistive tech so the
+                interactive overlay below is the single a11y source (otherwise the
+                active step claims aria-current on both the Steps listitem and the
+                trigger button). */}
+            <div aria-hidden="true">
+                <Steps
+                    current={stepper.activeStep}
+                    direction={direction}
+                    surface={sf.surface}
+                    radius={sf.radius}
+                    animated={sf.animated}
+                    iconWeight={sf.iconWeight}
+                >
+                    {items.map((item, i) => (
+                        <Step
+                            key={i}
+                            title={item.title}
+                            description={item.description}
+                            icon={item.icon}
+                            optional={item.optional}
+                        />
+                    ))}
+                </Steps>
+            </div>
 
             {/* Interactive overlay: a button per step for keyboard + click nav. */}
             <div

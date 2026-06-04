@@ -45,9 +45,10 @@ function CollapsibleContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: CollapsibleContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <CollapsiblePrimitive.CollapsibleContent

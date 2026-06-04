@@ -49,8 +49,8 @@ interface DataToolbarActionsProps extends Omit<React.ComponentProps<"div">, keyo
  *   </DataToolbarActions>
  * </DataToolbar>
  */
-function DataToolbar({ className, surface, radius, animated, ...props }: DataToolbarProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function DataToolbar({ className, surface, radius, animated, iconWeight, ...props }: DataToolbarProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -78,8 +78,8 @@ function DataToolbar({ className, surface, radius, animated, ...props }: DataToo
  *   <SearchField placeholder="Search users..." />
  * </DataToolbarSearch>
  */
-function DataToolbarSearch({ className, surface, radius, animated, ...props }: DataToolbarSearchProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function DataToolbarSearch({ className, surface, radius, animated, iconWeight, ...props }: DataToolbarSearchProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -104,8 +104,8 @@ function DataToolbarSearch({ className, surface, radius, animated, ...props }: D
  *   <Select>...</Select>
  * </DataToolbarFilters>
  */
-function DataToolbarFilters({ className, surface, radius, animated, ...props }: DataToolbarFiltersProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function DataToolbarFilters({ className, surface, radius, animated, iconWeight, ...props }: DataToolbarFiltersProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -130,8 +130,8 @@ function DataToolbarFilters({ className, surface, radius, animated, ...props }: 
  *   <Button size="sm">Export</Button>
  * </DataToolbarActions>
  */
-function DataToolbarActions({ className, surface, radius, animated, ...props }: DataToolbarActionsProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function DataToolbarActions({ className, surface, radius, animated, iconWeight, ...props }: DataToolbarActionsProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

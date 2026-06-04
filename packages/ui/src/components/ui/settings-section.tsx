@@ -57,9 +57,10 @@ function SettingsSection({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SettingsSectionProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

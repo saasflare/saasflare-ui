@@ -75,9 +75,10 @@ export function ProgressCircle({
     surface,
     radius,
     animated,
+    iconWeight,
     "aria-label": ariaLabel,
 }: ProgressCircleProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const motion = useSaasflareMotion(sf.animated, springGentle)
 
     const px = SIZE_PX[size]

@@ -43,8 +43,8 @@ interface InputGroupProps
  *   <InputGroupInput placeholder="Amount" />
  * </InputGroup>
  */
-function InputGroup({ className, surface, radius, animated, ...props }: InputGroupProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function InputGroup({ className, surface, radius, animated, iconWeight, ...props }: InputGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <div
       data-slot="input-group"

@@ -42,9 +42,10 @@ function Progress({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ProgressProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, spring)
 
   return (

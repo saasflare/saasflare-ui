@@ -107,6 +107,10 @@ export function FlipWords({
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
+      // Live region lives on the STABLE container, not the per-cycle keyed span —
+      // a freshly-mounted live region is not reliably announced.
+      aria-live="polite"
+      aria-atomic="true"
       {...rest}
     >
       {/* Invisible spacer for width */}
@@ -120,7 +124,6 @@ export function FlipWords({
           exit={{ y: "-100%", opacity: 0 }}
           transition={motion.transition}
           className="absolute inset-0"
-          aria-live="polite"
         >
           {words[index]}
         </m.span>

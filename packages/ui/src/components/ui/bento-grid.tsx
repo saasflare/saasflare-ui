@@ -69,8 +69,9 @@ export function BentoGrid({
   surface,
   radius,
   animated,
+  iconWeight,
 }: BentoGridProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -138,8 +139,9 @@ export function BentoGridItem({
   surface,
   radius,
   animated,
+  iconWeight,
 }: BentoGridItemProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springGentle)
 
   return (

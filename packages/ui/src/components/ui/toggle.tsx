@@ -54,9 +54,10 @@ function Toggle({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ToggleProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <TogglePrimitive.Root

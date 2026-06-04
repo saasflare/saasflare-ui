@@ -126,18 +126,8 @@ export function TimelineItem({
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springGentle)
 
-  return (
-    <m.div
-      initial={motion.disabled ? false : { opacity: 0, y: 16 }}
-      whileInView={motion.disabled ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={motion.transition}
-      className={cn("relative pl-12 md:pl-0", className)}
-      data-slot="timeline-item"
-      data-surface={sf.surface}
-      data-radius={sf.radius}
-      data-animated={String(sf.animated)}
-    >
+  const inner = (
+    <>
       {/* Dot */}
       <div className="absolute left-[11px] top-1.5 size-3 rounded-full border-2 border-primary bg-background md:left-1/2 md:-translate-x-1.5" />
 
@@ -149,6 +139,38 @@ export function TimelineItem({
         <h3 className="text-lg font-semibold">{title}</h3>
         <div className="mt-1 text-muted-foreground">{children}</div>
       </div>
+    </>
+  )
+
+  // Motion off: render a plain <div> so consumers don't instantiate a motion
+  // node per item — and don't need the LazyMotion provider just for a Timeline.
+  if (motion.disabled) {
+    return (
+      <div
+        className={cn("relative pl-12 md:pl-0", className)}
+        data-slot="timeline-item"
+        data-surface={sf.surface}
+        data-radius={sf.radius}
+        data-animated={String(sf.animated)}
+      >
+        {inner}
+      </div>
+    )
+  }
+
+  return (
+    <m.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={motion.transition}
+      className={cn("relative pl-12 md:pl-0", className)}
+      data-slot="timeline-item"
+      data-surface={sf.surface}
+      data-radius={sf.radius}
+      data-animated={String(sf.animated)}
+    >
+      {inner}
     </m.div>
   )
 }

@@ -123,11 +123,12 @@ export function SidebarMenuButton({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarMenuButtonProps) {
   const Comp = asChild ? Slot.Root : "button"
   const { isMobile, state } = useSidebar()
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   const button = (
     <Comp
@@ -184,10 +185,11 @@ export function SidebarMenuAction({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarMenuActionProps) {
   const Comp = asChild ? Slot.Root : "button"
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <Comp
@@ -227,9 +229,10 @@ export function SidebarMenuBadge({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarMenuBadgeProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -270,9 +273,10 @@ export function SidebarMenuSkeleton({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarMenuSkeletonProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   // Deterministic on first render (SSR + hydration match); randomize after mount
   // so each skeleton row varies visually without causing a hydration mismatch.
@@ -371,10 +375,11 @@ export function SidebarMenuSubButton({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarMenuSubButtonProps) {
   const Comp = asChild ? Slot.Root : "a"
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <Comp

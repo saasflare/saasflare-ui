@@ -55,9 +55,10 @@ export function TestimonialCard({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: TestimonialCardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <div
       data-slot="testimonial-card"

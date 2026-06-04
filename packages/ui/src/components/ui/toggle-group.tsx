@@ -49,9 +49,10 @@ function ToggleGroup({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ToggleGroupProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <ToggleGroupPrimitive.Root

@@ -70,12 +70,19 @@ interface BadgeProps
       React.ComponentProps<"span">,
       "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd" | keyof SaasflareComponentProps
     >,
-    VariantProps<typeof badgeVariants>,
+    Omit<VariantProps<typeof badgeVariants>, "variant">,
     SaasflareComponentProps {
   /** Render as child element (Radix Slot pattern) */
   asChild?: boolean
   /** Semantic color intent */
   intent?: Intent
+  /**
+   * Visual treatment: `"solid" | "soft" | "outline"`.
+   * @remarks `"default" | "destructive" | "secondary"` are deprecated aliases
+   * (mapped to a solid/soft variant + intent via {@link LEGACY_VARIANT_MAP});
+   * prefer `variant` + `intent` instead.
+   */
+  variant?: VariantProps<typeof badgeVariants>["variant"] | "default" | "destructive" | "secondary"
 }
 
 /**
@@ -108,9 +115,10 @@ function Badge({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: BadgeProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, spring)
 
   /* ── Backward compat: map legacy variant names ── */

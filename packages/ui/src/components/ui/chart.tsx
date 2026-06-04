@@ -74,9 +74,10 @@ function ChartContainer({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ChartContainerProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
 
@@ -202,9 +203,10 @@ function ChartTooltipContent({
   surface,
   radius,
   animated,
+  iconWeight,
 }: ChartTooltipContentProps) {
   const { config } = useChart()
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   const tooltipLabel = React.useMemo(() => {
     if (hideLabel || !payload?.length) {
@@ -366,9 +368,10 @@ function ChartLegendContent({
   surface,
   radius,
   animated,
+  iconWeight,
 }: ChartLegendContentProps) {
   const { config } = useChart()
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   if (!payload?.length) {
     return null

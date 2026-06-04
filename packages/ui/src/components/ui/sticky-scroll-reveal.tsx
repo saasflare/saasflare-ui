@@ -62,9 +62,10 @@ export function StickyScrollReveal({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: StickyScrollRevealProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated)
   const containerRef = useRef<HTMLDivElement>(null)
 

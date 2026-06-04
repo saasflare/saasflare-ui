@@ -69,9 +69,10 @@ export function SpotlightCard({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SpotlightCardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, spring)
   const cardRef = useRef<HTMLDivElement>(null)
   const position = useMousePosition({ ref: cardRef, enabled: !motion.disabled })

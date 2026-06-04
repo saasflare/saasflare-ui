@@ -96,8 +96,9 @@ export function Dock({
   surface,
   radius,
   animated,
+  iconWeight,
 }: DockProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated)
   const mouseX = useMotionValue(Infinity)
 
@@ -106,7 +107,7 @@ export function Dock({
       value={{ mouseX, magnification, distance, reduced: motion.disabled }}
     >
       <m.nav
-        onMouseMove={(e: ReactMouseEvent) => mouseX.set(e.pageX)}
+        onMouseMove={(e: ReactMouseEvent) => mouseX.set(e.clientX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         data-slot="dock"
         data-surface={sf.surface}
@@ -127,8 +128,12 @@ export function Dock({
 
 /* ── DockItem ── */
 
-/** Props for a DockItem. */
-export interface DockItemProps extends SaasflareComponentProps {
+/**
+ * Props for a DockItem. Intentionally does NOT carry the Saasflare axes —
+ * a DockItem's motion follows the parent {@link Dock} via context, and it has
+ * no surface/radius/iconWeight of its own.
+ */
+export interface DockItemProps {
   /** Icon or content inside the dock item. */
   children: ReactNode
   /** Tooltip label for the item. */
@@ -194,7 +199,7 @@ export function DockItem({
 
       {/* Tooltip */}
       <span
-        className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-popover px-2 py-1 text-xs text-popover-foreground shadow-md opacity-0 transition-opacity group-hover:opacity-100"
+        className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-popover px-2 py-1 text-xs text-popover-foreground shadow-md opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
         role="tooltip"
       >
         {label}

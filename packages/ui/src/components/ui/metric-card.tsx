@@ -84,9 +84,10 @@ function MetricCard({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: MetricCardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

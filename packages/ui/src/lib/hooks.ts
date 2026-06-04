@@ -63,7 +63,6 @@ export function useControllableState<T>({
             }
             onChange?.(nextValue);
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [isControlled, onChange, state],
     );
 
@@ -90,7 +89,6 @@ export function useCallbackRef<T extends (...args: never[]) => unknown>(
         callbackRef.current = callback;
     });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     return useCallback(
         ((...args: Parameters<T>) => callbackRef.current?.(...args)) as T,
         [],

@@ -37,9 +37,10 @@ function Avatar({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: AvatarProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <AvatarPrimitive.Root

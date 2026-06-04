@@ -25,7 +25,7 @@
  * />
  */
 
-import { useCallback, useState, type DragEvent, type ReactNode } from "react"
+import { useCallback, useRef, useState, type DragEvent, type ReactNode } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useFileDialog } from "../../hooks/use-file-dialog"
@@ -107,9 +107,11 @@ export function Dropzone({
     surface,
     radius,
     animated,
+    iconWeight,
 }: DropzoneProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const [isDragActive, setIsDragActive] = useState(false)
+    const dragDepth = useRef(0)
 
     const handle = useCallback(
         (files: File[]) => {
@@ -125,17 +127,25 @@ export function Dropzone({
         onChange: handle,
     })
 
-    const onDragOver = (e: DragEvent<HTMLDivElement>) => {
+    const onDragEnter = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault()
         if (disabled) return
+        // Count enter/leave across descendants so the active state doesn't
+        // flicker as the cursor crosses child element boundaries.
+        dragDepth.current += 1
         setIsDragActive(true)
+    }
+    const onDragOver = (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault() // mark the element as a valid drop target
     }
     const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault()
-        setIsDragActive(false)
+        dragDepth.current = Math.max(0, dragDepth.current - 1)
+        if (dragDepth.current === 0) setIsDragActive(false)
     }
     const onDropEvent = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault()
+        dragDepth.current = 0
         setIsDragActive(false)
         if (disabled) return
         const files = Array.from(e.dataTransfer.files)
@@ -162,7 +172,7 @@ export function Dropzone({
                 }
             }}
             onDragOver={onDragOver}
-            onDragEnter={onDragOver}
+            onDragEnter={onDragEnter}
             onDragLeave={onDragLeave}
             onDrop={onDropEvent}
             className={cn(

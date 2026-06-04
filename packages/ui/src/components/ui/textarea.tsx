@@ -27,8 +27,8 @@ interface TextareaProps
   extends Omit<TextareaBaseProps, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
-function Textarea({ className, surface, radius, animated, ...props }: TextareaProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Textarea({ className, surface, radius, animated, iconWeight, ...props }: TextareaProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
 
   return (
