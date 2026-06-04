@@ -23,8 +23,8 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 
 interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Spinner({ className, surface, radius, animated, ...props }: SpinnerProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Spinner({ className, surface, radius, animated, iconWeight, ...props }: SpinnerProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <CircleNotchIcon

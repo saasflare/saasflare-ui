@@ -32,9 +32,10 @@ function ScrollArea({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ScrollAreaProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <ScrollAreaPrimitive.Root

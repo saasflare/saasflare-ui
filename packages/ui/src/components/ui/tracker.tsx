@@ -86,10 +86,11 @@ export function Tracker({
     surface,
     radius,
     animated,
+    iconWeight,
     style,
     ...props
 }: TrackerProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
     return (
         <div

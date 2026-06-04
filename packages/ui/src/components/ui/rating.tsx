@@ -123,9 +123,10 @@ export function Rating({
     surface,
     radius,
     animated,
+    iconWeight,
     "aria-label": ariaLabel,
 }: RatingProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const isControlled = value !== undefined
     const [internal, setInternal] = useState<number>(defaultValue ?? 0)
     const [hover, setHover] = useState<number | null>(null)
@@ -164,6 +165,7 @@ export function Rating({
             aria-valuemin={interactive ? 0 : undefined}
             aria-valuemax={interactive ? count : undefined}
             aria-valuenow={interactive ? current : undefined}
+            aria-valuetext={interactive ? `${current} of ${count} stars` : undefined}
             tabIndex={interactive ? 0 : -1}
             onKeyDown={
                 interactive

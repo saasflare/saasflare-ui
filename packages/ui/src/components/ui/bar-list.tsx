@@ -74,8 +74,9 @@ export function BarList({
     surface,
     radius,
     animated,
+    iconWeight,
 }: BarListProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const motion = useSaasflareMotion(sf.animated, springGentle)
 
     const sorted = sortDescending ? [...data].sort((a, b) => b.value - a.value) : data

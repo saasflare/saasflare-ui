@@ -18,8 +18,8 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 
 interface KbdProps extends Omit<React.ComponentProps<"kbd">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Kbd({ className, surface, radius, animated, ...props }: KbdProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Kbd({ className, surface, radius, animated, iconWeight, ...props }: KbdProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <kbd
@@ -42,8 +42,8 @@ interface KbdGroupProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
-function KbdGroup({ className, surface, radius, animated, ...props }: KbdGroupProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function KbdGroup({ className, surface, radius, animated, iconWeight, ...props }: KbdGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

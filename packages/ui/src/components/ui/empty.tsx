@@ -26,8 +26,8 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 
 interface EmptyProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Empty({ className, surface, radius, animated, ...props }: EmptyProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Empty({ className, surface, radius, animated, iconWeight, ...props }: EmptyProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

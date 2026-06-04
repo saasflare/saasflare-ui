@@ -47,8 +47,9 @@ export function StatCard({
   surface,
   radius,
   animated,
+  iconWeight,
 }: StatCardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <div
       data-slot="stat-card"

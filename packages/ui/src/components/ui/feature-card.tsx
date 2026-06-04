@@ -47,8 +47,9 @@ export function FeatureCard({
   surface,
   radius,
   animated,
+  iconWeight,
 }: FeatureCardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <div
       data-slot="feature-card"

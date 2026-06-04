@@ -263,12 +263,19 @@ interface BadgeProps
       React.ComponentProps<"span">,
       "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd" | keyof SaasflareComponentProps
     >,
-    VariantProps<typeof badgeVariants>,
+    Omit<VariantProps<typeof badgeVariants>, "variant">,
     SaasflareComponentProps {
   /** Render as child element (Radix Slot pattern) */
   asChild?: boolean
   /** Semantic color intent */
   intent?: Intent
+  /**
+   * Visual treatment: `"solid" | "soft" | "outline"`.
+   * @remarks `"default" | "destructive" | "secondary"` are deprecated aliases
+   * (mapped to a solid/soft variant + intent via {@link LEGACY_VARIANT_MAP});
+   * prefer `variant` + `intent` instead.
+   */
+  variant?: VariantProps<typeof badgeVariants>["variant"] | "default" | "destructive" | "secondary"
 }
 ```
 
@@ -619,6 +626,7 @@ function ButtonGroup({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }
 ```
@@ -1400,8 +1408,8 @@ interface DataToolbarActionsProps extends Omit<React.ComponentProps<"div">, keyo
  *   </DataToolbarActions>
  * </DataToolbar>
  */
-function DataToolbar({ className, surface, radius, animated, ...props }: DataToolbarProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function DataToolbar({ className, surface, radius, animated, iconWeight, ...props }: DataToolbarProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -1719,8 +1727,8 @@ npx shadcn add https://ui.saasflare.io/r/empty.json
 ```ts
 interface EmptyProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Empty({ className, surface, radius, animated, ...props }: EmptyProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Empty({ className, surface, radius, animated, iconWeight, ...props }: EmptyProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -1875,6 +1883,7 @@ function Field({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }
 ```
@@ -2246,8 +2255,8 @@ npx shadcn add https://ui.saasflare.io/r/input.json
 ```ts
 interface InputProps extends Omit<InputBaseProps, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Input({ className, type, surface, radius, animated, ...props }: InputProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Input({ className, type, surface, radius, animated, iconWeight, ...props }: InputProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
 
   return (
@@ -2310,8 +2319,8 @@ interface InputGroupProps
  *   <InputGroupInput placeholder="Amount" />
  * </InputGroup>
  */
-function InputGroup({ className, surface, radius, animated, ...props }: InputGroupProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function InputGroup({ className, surface, radius, animated, iconWeight, ...props }: InputGroupProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <div
       data-slot="input-group"
@@ -2439,8 +2448,8 @@ npx shadcn add https://ui.saasflare.io/r/kbd.json
 ```ts
 interface KbdProps extends Omit<React.ComponentProps<"kbd">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Kbd({ className, surface, radius, animated, ...props }: KbdProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Kbd({ className, surface, radius, animated, iconWeight, ...props }: KbdProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <kbd
@@ -3294,6 +3303,7 @@ function Progress({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }
 ```
@@ -3567,6 +3577,7 @@ function ScrollArea({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }
 ```
@@ -3899,6 +3910,7 @@ function Slider({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }
 ```
@@ -4022,8 +4034,8 @@ npx shadcn add https://ui.saasflare.io/r/spinner.json
 ```ts
 interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Spinner({ className, surface, radius, animated, ...props }: SpinnerProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Spinner({ className, surface, radius, animated, iconWeight, ...props }: SpinnerProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <CircleNotchIcon
@@ -4300,8 +4312,8 @@ npx shadcn add https://ui.saasflare.io/r/table.json
 ```ts
 interface TableProps extends Omit<React.ComponentProps<"table">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Table({ className, surface, radius, animated, ...props }: TableProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Table({ className, surface, radius, animated, iconWeight, ...props }: TableProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div
@@ -4366,6 +4378,7 @@ function Tabs({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }
 ```
@@ -4579,8 +4592,8 @@ interface TextareaProps
   extends Omit<TextareaBaseProps, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
-function Textarea({ className, surface, radius, animated, ...props }: TextareaProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Textarea({ className, surface, radius, animated, iconWeight, ...props }: TextareaProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
 
   return (
@@ -4675,6 +4688,7 @@ function Toggle({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }
 ```

@@ -62,9 +62,10 @@ export function ShimmerButton({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: ShimmerButtonProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
   const showShimmer = sf.animated && !reduced
 

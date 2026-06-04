@@ -71,10 +71,11 @@ export function Sidebar({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarProps) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   if (collapsible === "none") {
     return (
@@ -227,9 +228,10 @@ export function SidebarInset({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarInsetProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <main
@@ -319,9 +321,10 @@ export function SidebarSeparator({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SidebarSeparatorProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <Separator

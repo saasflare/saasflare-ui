@@ -86,9 +86,10 @@ function DrawerContent({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: DrawerContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <DrawerPortal>

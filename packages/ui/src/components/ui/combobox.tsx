@@ -64,10 +64,11 @@ function ComboboxContent({
   surface,
   radius,
   animated,
+  iconWeight,
   children,
   ...props
 }: ComboboxContentProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content

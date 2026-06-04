@@ -89,7 +89,6 @@ async function injectUseClient(): Promise<void> {
             }
         }),
     );
-    // eslint-disable-next-line no-console
     console.log(`[use-client] ${added} chunks marked client, ${skipped} stayed RSC-safe`);
 }
 

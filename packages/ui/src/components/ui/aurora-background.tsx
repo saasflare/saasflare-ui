@@ -80,9 +80,10 @@ export function AuroraBackground({
     surface,
     radius,
     animated,
+    iconWeight,
     ...props
 }: AuroraBackgroundProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
     const blobStyle = (color: string): CSSProperties => ({
         background: `radial-gradient(circle, ${color} 0%, transparent 65%)`,

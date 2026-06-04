@@ -68,9 +68,10 @@ function PageHeader({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: PageHeaderProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

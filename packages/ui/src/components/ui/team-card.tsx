@@ -68,9 +68,10 @@ export function TeamCard({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: TeamCardProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   return (
     <div
       data-slot="team-card"

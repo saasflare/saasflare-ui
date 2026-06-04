@@ -33,8 +33,8 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 
 interface TableProps extends Omit<React.ComponentProps<"table">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
-function Table({ className, surface, radius, animated, ...props }: TableProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+function Table({ className, surface, radius, animated, iconWeight, ...props }: TableProps) {
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
   return (
     <div

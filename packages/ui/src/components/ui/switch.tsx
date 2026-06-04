@@ -33,9 +33,10 @@ function Switch({
   surface,
   radius,
   animated,
+  iconWeight,
   ...props
 }: SwitchProps) {
-  const sf = useSaasflareProps({ surface, radius, animated })
+  const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, springBouncy)
 
   return (

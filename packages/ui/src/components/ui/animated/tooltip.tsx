@@ -65,8 +65,9 @@ export const AnimatedTooltip = ({
     surface,
     radius,
     animated,
+    iconWeight,
 }: AnimatedTooltipProps): JSX.Element => {
-    const sf = useSaasflareProps({ surface, radius, animated });
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight });
     const motion = useSaasflareMotion(sf.animated, { type: 'spring', stiffness: 260, damping: 10 });
 
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -86,10 +87,14 @@ export const AnimatedTooltip = ({
         <>
             {items.map((item) => (
                 <div
-                    className="-mr-4  relative group"
+                    className="-mr-4  relative group rounded-full focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                     key={item.id}
+                    tabIndex={0}
+                    aria-label={`${item.name}, ${item.designation}`}
                     onMouseEnter={() => setHoveredIndex(item.id)}
                     onMouseLeave={() => setHoveredIndex(null)}
+                    onFocus={() => setHoveredIndex(item.id)}
+                    onBlur={() => setHoveredIndex(null)}
                 >
                     <AnimatePresence>
                         {hoveredIndex === item.id && (

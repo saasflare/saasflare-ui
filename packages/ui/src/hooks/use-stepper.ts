@@ -250,7 +250,7 @@ export function useStepper(options: UseStepperOptions): UseStepperReturn {
 
         const current = activeStep
         const stepGate = steps?.[current]?.validate
-        let result: StepValidationResult = true
+        let result: StepValidationResult
 
         const runGates = async (): Promise<StepValidationResult> => {
             if (stepGate) {

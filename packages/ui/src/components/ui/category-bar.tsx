@@ -80,9 +80,10 @@ export function CategoryBar({
     surface,
     radius,
     animated,
+    iconWeight,
     "aria-label": ariaLabel,
 }: CategoryBarProps) {
-    const sf = useSaasflareProps({ surface, radius, animated })
+    const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
     const motion = useSaasflareMotion(sf.animated, springGentle)
 
     const total = segments.reduce((sum, s) => sum + Math.max(0, s.value), 0)
