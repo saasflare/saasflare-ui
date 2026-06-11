@@ -24,8 +24,23 @@ type InputBaseProps = Omit<
   "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
 >
 
+/**
+ * Props for {@link Input}.
+ *
+ * Extends the native input props with {@link SaasflareComponentProps}, so
+ * `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface InputProps extends Omit<InputBaseProps, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Single-line text input with a spring-animated focus ring. Accepts all
+ * native input props; `surface`, `radius`, and `animated` resolve against
+ * the <SaasflareProvider> context when omitted.
+ *
+ * @component
+ * @layer core
+ */
 function Input({ className, type, surface, radius, animated, iconWeight, ...props }: InputProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })

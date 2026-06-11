@@ -433,7 +433,7 @@
   "avatar": [
     {
       "name": "Avatar",
-      "description": "",
+      "description": "User avatar with size variants and a subtle hover-scale animation. Built on",
       "props": [
         {
           "name": "animated",
@@ -465,10 +465,10 @@
         },
         {
           "name": "size",
-          "type": "\"default\" | \"sm\" | \"lg\"",
+          "type": "\"sm\" | \"md\" | \"lg\" | \"default\"",
           "required": false,
-          "default": "default",
-          "description": ""
+          "default": "md",
+          "description": "Visual size. `\"default\"` is a deprecated alias for `\"md\"`."
         },
         {
           "name": "surface",
@@ -481,7 +481,7 @@
     },
     {
       "name": "AvatarImage",
-      "description": "",
+      "description": "Avatar image — fills the circle once the source has loaded; until then",
       "props": [
         {
           "name": "asChild",
@@ -494,7 +494,7 @@
     },
     {
       "name": "AvatarFallback",
-      "description": "",
+      "description": "Fallback initials shown while the avatar image loads or when it fails.",
       "props": [
         {
           "name": "asChild",
@@ -562,10 +562,10 @@
         },
         {
           "name": "variant",
-          "type": "\"solid\" | \"soft\" | \"outline\" | null",
+          "type": "\"solid\" | \"soft\" | \"outline\" | \"default\" | \"destructive\" | \"secondary\" | null",
           "required": false,
           "default": "solid",
-          "description": ""
+          "description": "Visual treatment: `\"solid\" | \"soft\" | \"outline\"`. @remarks `\"default\" | \"destructive\" | \"secondary\"` are deprecated aliases (mapped to a solid/soft variant + intent via {@link LEGACY_VARIANT_MAP }); prefer `variant` + `intent` instead."
         }
       ]
     }
@@ -1220,7 +1220,7 @@
   "calendar": [
     {
       "name": "Calendar",
-      "description": "",
+      "description": "Date picker grid with month navigation, dropdown caption layouts, and",
       "props": [
         {
           "name": "animated",
@@ -1261,7 +1261,7 @@
     },
     {
       "name": "CalendarDayButton",
-      "description": "",
+      "description": "Day cell button used by {@link Calendar} — styles selection, range, and",
       "props": [
         {
           "name": "day",
@@ -1740,7 +1740,7 @@
   "chart": [
     {
       "name": "ChartContainer",
-      "description": "",
+      "description": "Themed wrapper for Recharts charts. Provides the {@link ChartConfig} to",
       "props": [
         {
           "name": "config",
@@ -2045,7 +2045,7 @@
     },
     {
       "name": "ChartLegend",
-      "description": "",
+      "description": "Re-export of the Recharts `Legend` component. Place inside a chart and pass",
       "props": [
         {
           "name": "content",
@@ -3290,7 +3290,7 @@
   "checkbox": [
     {
       "name": "Checkbox",
-      "description": "",
+      "description": "Checkbox input with a bouncy spring check-mark animation. Built on the",
       "props": [
         {
           "name": "animated",
@@ -3418,7 +3418,7 @@
   "collapsible": [
     {
       "name": "Collapsible",
-      "description": "",
+      "description": "Expandable content region toggled by a trigger. Root of the composition —",
       "props": [
         {
           "name": "asChild",
@@ -3431,7 +3431,7 @@
     },
     {
       "name": "CollapsibleTrigger",
-      "description": "",
+      "description": "Button that toggles the collapsible region open and closed.",
       "props": [
         {
           "name": "asChild",
@@ -3444,7 +3444,7 @@
     },
     {
       "name": "CollapsibleContent",
-      "description": "",
+      "description": "The content region revealed while the collapsible is open. Resolves",
       "props": [
         {
           "name": "animated",
@@ -3487,7 +3487,7 @@
   "combobox": [
     {
       "name": "ComboboxTrigger",
-      "description": "",
+      "description": "Element that toggles the combobox open. Alias of Radix Popover.Trigger —",
       "props": [
         {
           "name": "asChild",
@@ -3726,7 +3726,7 @@
   "command": [
     {
       "name": "Command",
-      "description": "",
+      "description": "Command palette root — a searchable, keyboard-navigable command menu built on cmdk.",
       "props": [
         {
           "name": "animated",
@@ -3823,7 +3823,7 @@
     },
     {
       "name": "CommandDialog",
-      "description": "",
+      "description": "Command palette inside a modal {@link Dialog} — the classic ⌘K menu.",
       "props": [
         {
           "name": "animated",
@@ -3878,7 +3878,7 @@
     },
     {
       "name": "CommandInput",
-      "description": "",
+      "description": "Search input that filters the command list as the user types, with a leading",
       "props": [
         {
           "name": "asChild",
@@ -3912,7 +3912,7 @@
     },
     {
       "name": "CommandList",
-      "description": "",
+      "description": "Scrollable container for the command groups and items.",
       "props": [
         {
           "name": "asChild",
@@ -3932,7 +3932,7 @@
     },
     {
       "name": "CommandEmpty",
-      "description": "",
+      "description": "Empty state shown when the current search matches no items.",
       "props": [
         {
           "name": "asChild",
@@ -3945,7 +3945,7 @@
     },
     {
       "name": "CommandGroup",
-      "description": "",
+      "description": "Labeled group of related command items — pass `heading` for the group label.",
       "props": [
         {
           "name": "asChild",
@@ -3979,7 +3979,7 @@
     },
     {
       "name": "CommandItem",
-      "description": "",
+      "description": "Selectable command entry — highlighted on keyboard navigation and pointer hover.",
       "props": [
         {
           "name": "asChild",
@@ -4027,7 +4027,7 @@
     },
     {
       "name": "CommandSeparator",
-      "description": "",
+      "description": "Visual divider between command groups.",
       "props": [
         {
           "name": "alwaysRender",
@@ -4212,7 +4212,7 @@
   "context-menu": [
     {
       "name": "ContextMenuTrigger",
-      "description": "",
+      "description": "Area that opens the menu on right-click (or long-press on touch).",
       "props": [
         {
           "name": "asChild",
@@ -4225,7 +4225,7 @@
     },
     {
       "name": "ContextMenuContent",
-      "description": "",
+      "description": "Menu panel, portaled and anchored at the pointer position. Honors",
       "props": [
         {
           "name": "animated",
@@ -4266,7 +4266,7 @@
     },
     {
       "name": "ContextMenuItem",
-      "description": "",
+      "description": "Selectable menu item. Use `variant=\"destructive\"` for dangerous actions",
       "props": [
         {
           "name": "asChild",
@@ -4293,7 +4293,7 @@
     },
     {
       "name": "ContextMenuCheckboxItem",
-      "description": "",
+      "description": "Menu item with a togglable checked state, shown via a leading check",
       "props": [
         {
           "name": "asChild",
@@ -4313,7 +4313,7 @@
     },
     {
       "name": "ContextMenuRadioItem",
-      "description": "",
+      "description": "Single-selection item within a {@link ContextMenuRadioGroup}; shows a",
       "props": [
         {
           "name": "asChild",
@@ -4333,7 +4333,7 @@
     },
     {
       "name": "ContextMenuLabel",
-      "description": "",
+      "description": "Non-interactive heading for a group of menu items. Set `inset` to align",
       "props": [
         {
           "name": "asChild",
@@ -4353,7 +4353,7 @@
     },
     {
       "name": "ContextMenuSeparator",
-      "description": "",
+      "description": "Thin divider between menu items or groups.",
       "props": [
         {
           "name": "asChild",
@@ -4366,7 +4366,7 @@
     },
     {
       "name": "ContextMenuGroup",
-      "description": "",
+      "description": "Groups related menu items for semantics and accessibility.",
       "props": [
         {
           "name": "asChild",
@@ -4379,7 +4379,7 @@
     },
     {
       "name": "ContextMenuSubContent",
-      "description": "",
+      "description": "Panel for a nested sub-menu, positioned against its",
       "props": [
         {
           "name": "asChild",
@@ -4392,7 +4392,7 @@
     },
     {
       "name": "ContextMenuSubTrigger",
-      "description": "",
+      "description": "Item that opens a nested sub-menu; renders a trailing caret whose Phosphor",
       "props": [
         {
           "name": "asChild",
@@ -4419,7 +4419,7 @@
     },
     {
       "name": "ContextMenuRadioGroup",
-      "description": "",
+      "description": "Container for {@link ContextMenuRadioItem}s sharing a single selected value.",
       "props": [
         {
           "name": "asChild",
@@ -5107,7 +5107,7 @@
           "type": "((date: Date) => void)",
           "required": false,
           "default": null,
-          "description": "Called when the user picks a date."
+          "description": "Called when the user picks a date (`undefined` on deselect — writing it back to state keeps the picker controlled and clears it)."
         },
         {
           "name": "placeholder",
@@ -5132,10 +5132,10 @@
         },
         {
           "name": "value",
-          "type": "Date",
+          "type": "Date | null",
           "required": false,
           "default": null,
-          "description": "Controlled value."
+          "description": "Controlled value. Pass `null` for a controlled-but-empty picker."
         }
       ]
     }
@@ -5213,7 +5213,7 @@
           "type": "((range: DateRange) => void)",
           "required": false,
           "default": null,
-          "description": "Called when the user picks a new range."
+          "description": "Called when the user picks a new range (`undefined` on deselect — writing it back to state keeps the picker controlled and clears it)."
         },
         {
           "name": "placeholder",
@@ -5238,10 +5238,10 @@
         },
         {
           "name": "value",
-          "type": "DateRange",
+          "type": "DateRange | null",
           "required": false,
           "default": null,
-          "description": "Controlled value."
+          "description": "Controlled value. Pass `null` for a controlled-but-empty picker."
         }
       ]
     }
@@ -5548,13 +5548,6 @@
           "description": "Tooltip label for the item."
         },
         {
-          "name": "animated",
-          "type": "boolean",
-          "required": false,
-          "default": null,
-          "description": "Animation override. Omit to inherit from provider."
-        },
-        {
           "name": "className",
           "type": "string",
           "required": false,
@@ -5562,32 +5555,11 @@
           "description": "Additional class names."
         },
         {
-          "name": "iconWeight",
-          "type": "\"regular\" | \"bold\" | \"fill\" | \"duotone\"",
-          "required": false,
-          "default": null,
-          "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
-        },
-        {
           "name": "onClick",
           "type": "(() => void)",
           "required": false,
           "default": null,
           "description": "Click handler."
-        },
-        {
-          "name": "radius",
-          "type": "\"sharp\" | \"soft\" | \"rounded\" | \"pill\"",
-          "required": false,
-          "default": null,
-          "description": "Radius preset override. Omit to inherit from provider."
-        },
-        {
-          "name": "surface",
-          "type": "StyleVariant",
-          "required": false,
-          "default": null,
-          "description": "Surface style override. Omit to inherit from provider."
         }
       ]
     }
@@ -5891,7 +5863,7 @@
   "dropdown-menu": [
     {
       "name": "DropdownMenuCheckboxItem",
-      "description": "",
+      "description": "Menu item with a toggleable checked state, rendering a check indicator in",
       "props": [
         {
           "name": "asChild",
@@ -5904,7 +5876,7 @@
     },
     {
       "name": "DropdownMenuContent",
-      "description": "",
+      "description": "Floating menu panel with a spring scale/fade entrance. Portals itself —",
       "props": [
         {
           "name": "animated",
@@ -5945,7 +5917,7 @@
     },
     {
       "name": "DropdownMenuGroup",
-      "description": "",
+      "description": "Groups related menu items for semantics and accessible structure.",
       "props": [
         {
           "name": "asChild",
@@ -5958,7 +5930,7 @@
     },
     {
       "name": "DropdownMenuItem",
-      "description": "",
+      "description": "Selectable menu entry. `inset` aligns it with icon-bearing siblings;",
       "props": [
         {
           "name": "asChild",
@@ -5985,7 +5957,7 @@
     },
     {
       "name": "DropdownMenuLabel",
-      "description": "",
+      "description": "Non-interactive heading for a group of menu items.",
       "props": [
         {
           "name": "asChild",
@@ -6005,7 +5977,7 @@
     },
     {
       "name": "DropdownMenuRadioGroup",
-      "description": "",
+      "description": "Single-select group for {@link DropdownMenuRadioItem} children, controlled",
       "props": [
         {
           "name": "asChild",
@@ -6018,7 +5990,7 @@
     },
     {
       "name": "DropdownMenuRadioItem",
-      "description": "",
+      "description": "Single-select menu item for use inside {@link DropdownMenuRadioGroup},",
       "props": [
         {
           "name": "asChild",
@@ -6031,7 +6003,7 @@
     },
     {
       "name": "DropdownMenuSeparator",
-      "description": "",
+      "description": "Thin horizontal rule between menu groups.",
       "props": [
         {
           "name": "asChild",
@@ -6044,7 +6016,7 @@
     },
     {
       "name": "DropdownMenuSubContent",
-      "description": "",
+      "description": "Floating panel for a nested sub-menu, animated via CSS data-state transitions.",
       "props": [
         {
           "name": "asChild",
@@ -6057,7 +6029,7 @@
     },
     {
       "name": "DropdownMenuSubTrigger",
-      "description": "",
+      "description": "Menu item that opens a nested sub-menu, with a trailing caret indicator.",
       "props": [
         {
           "name": "asChild",
@@ -6077,7 +6049,7 @@
     },
     {
       "name": "DropdownMenuTrigger",
-      "description": "",
+      "description": "Button that toggles the dropdown menu open and closed.",
       "props": [
         {
           "name": "asChild",
@@ -6177,7 +6149,7 @@
   "empty": [
     {
       "name": "Empty",
-      "description": "",
+      "description": "Empty-state placeholder — a dashed-border container centered in its parent.",
       "props": [
         {
           "name": "animated",
@@ -6211,7 +6183,7 @@
     },
     {
       "name": "EmptyMedia",
-      "description": "",
+      "description": "Icon or illustration slot above the title. `variant=\"icon\"` wraps the icon",
       "props": [
         {
           "name": "variant",
@@ -6521,7 +6493,7 @@
   "form": [
     {
       "name": "FormLabel",
-      "description": "",
+      "description": "Field label — wired to the control via `htmlFor` and tinted destructive when",
       "props": [
         {
           "name": "animated",
@@ -6562,7 +6534,7 @@
     },
     {
       "name": "FormDescription",
-      "description": "",
+      "description": "Muted helper text below the control, referenced by the control's",
       "props": [
         {
           "name": "animated",
@@ -6596,7 +6568,7 @@
     },
     {
       "name": "FormMessage",
-      "description": "",
+      "description": "Validation message — shows the field's error message when present, otherwise",
       "props": [
         {
           "name": "animated",
@@ -6630,7 +6602,7 @@
     },
     {
       "name": "FormField",
-      "description": "",
+      "description": "Controlled field binding — wraps react-hook-form's `Controller` and exposes",
       "props": [
         {
           "name": "name",
@@ -7111,7 +7083,7 @@
   "hover-card": [
     {
       "name": "HoverCardTrigger",
-      "description": "",
+      "description": "Element that opens the hover card on hover or keyboard focus. Also serves as",
       "props": [
         {
           "name": "asChild",
@@ -7124,7 +7096,7 @@
     },
     {
       "name": "HoverCardContent",
-      "description": "",
+      "description": "The floating preview panel rendered while the hover card is open. Portals to",
       "props": [
         {
           "name": "animated",
@@ -7251,7 +7223,7 @@
   "input": [
     {
       "name": "Input",
-      "description": "",
+      "description": "Single-line text input with a spring-animated focus ring. Accepts all",
       "props": [
         {
           "name": "animated",
@@ -7687,10 +7659,10 @@
         },
         {
           "name": "size",
-          "type": "\"default\" | \"sm\" | null",
+          "type": "\"default\" | \"md\" | \"sm\" | null",
           "required": false,
-          "default": "default",
-          "description": ""
+          "default": "md",
+          "description": "Row density. (`\"default\"` is a deprecated alias for `\"md\"`.)"
         },
         {
           "name": "surface",
@@ -7766,7 +7738,7 @@
   "kbd": [
     {
       "name": "Kbd",
-      "description": "",
+      "description": "Renders a single keyboard key as a styled `<kbd>` element. Use it in",
       "props": [
         {
           "name": "animated",
@@ -7800,7 +7772,7 @@
     },
     {
       "name": "KbdGroup",
-      "description": "",
+      "description": "Lays out multiple {@link Kbd} keys as a single shortcut combination.",
       "props": [
         {
           "name": "animated",
@@ -7836,7 +7808,7 @@
   "label": [
     {
       "name": "Label",
-      "description": "",
+      "description": "Accessible form label built on the Radix Label primitive. Dims itself when",
       "props": [
         {
           "name": "animated",
@@ -8501,8 +8473,8 @@
           "name": "closeOnSelect",
           "type": "boolean",
           "required": false,
-          "default": "true",
-          "description": "Keep the popover open after a selection (true) or close on each pick (false)."
+          "default": "false",
+          "description": "Close the popover after each pick."
         },
         {
           "name": "contentClassName",
@@ -8636,7 +8608,7 @@
   "native-select": [
     {
       "name": "NativeSelect",
-      "description": "",
+      "description": "Styled native `<select>` with a chevron icon overlay. Uses the platform",
       "props": [
         {
           "name": "animated",
@@ -8661,10 +8633,10 @@
         },
         {
           "name": "size",
-          "type": "\"sm\" | \"default\"",
+          "type": "\"sm\" | \"md\" | \"default\"",
           "required": false,
-          "default": "default",
-          "description": "Control height. `\"sm\"` renders a more compact trigger; `\"default\"` is the standard height."
+          "default": "md",
+          "description": "Control height. `\"sm\"` renders a more compact trigger; `\"md\"` is the standard height. (`\"default\"` is a deprecated alias for `\"md\"`.)"
         },
         {
           "name": "surface",
@@ -8679,7 +8651,7 @@
   "navigation-menu": [
     {
       "name": "NavigationMenu",
-      "description": "",
+      "description": "Site navigation root with animated dropdown menus, built on Radix NavigationMenu.",
       "props": [
         {
           "name": "animated",
@@ -8721,13 +8693,13 @@
           "type": "boolean",
           "required": false,
           "default": "true",
-          "description": ""
+          "description": "Render the shared viewport panel for dropdown content."
         }
       ]
     },
     {
       "name": "NavigationMenuList",
-      "description": "",
+      "description": "Horizontal list that lays out the top-level {@link NavigationMenuItem} entries.",
       "props": [
         {
           "name": "asChild",
@@ -8740,7 +8712,7 @@
     },
     {
       "name": "NavigationMenuItem",
-      "description": "",
+      "description": "A single menu entry — wraps a trigger/content pair or a standalone link.",
       "props": [
         {
           "name": "asChild",
@@ -8753,7 +8725,7 @@
     },
     {
       "name": "NavigationMenuContent",
-      "description": "",
+      "description": "Dropdown panel for a menu item. Renders into the shared",
       "props": [
         {
           "name": "animated",
@@ -8794,7 +8766,7 @@
     },
     {
       "name": "NavigationMenuTrigger",
-      "description": "",
+      "description": "Button that opens an item's {@link NavigationMenuContent}. Renders a caret",
       "props": [
         {
           "name": "asChild",
@@ -8814,7 +8786,7 @@
     },
     {
       "name": "NavigationMenuLink",
-      "description": "",
+      "description": "Navigational link inside the menu — use `asChild` to compose with a framework",
       "props": [
         {
           "name": "animated",
@@ -8855,7 +8827,7 @@
     },
     {
       "name": "NavigationMenuIndicator",
-      "description": "",
+      "description": "Animated arrow that tracks the active trigger and points at the open content.",
       "props": [
         {
           "name": "animated",
@@ -8896,7 +8868,7 @@
     },
     {
       "name": "NavigationMenuViewport",
-      "description": "",
+      "description": "Shared panel that hosts the active item's content and animates between sizes.",
       "props": [
         {
           "name": "animated",
@@ -9622,7 +9594,7 @@
   "popover": [
     {
       "name": "PopoverTrigger",
-      "description": "",
+      "description": "Button that toggles the popover open and closed. Also serves as the",
       "props": [
         {
           "name": "asChild",
@@ -9635,7 +9607,7 @@
     },
     {
       "name": "PopoverContent",
-      "description": "",
+      "description": "The floating panel rendered while the popover is open. Portals to the body,",
       "props": [
         {
           "name": "animated",
@@ -9676,7 +9648,7 @@
     },
     {
       "name": "PopoverAnchor",
-      "description": "",
+      "description": "Optional element the popover content positions against instead of the",
       "props": [
         {
           "name": "asChild",
@@ -10086,7 +10058,7 @@
   "resizable": [
     {
       "name": "ResizableHandle",
-      "description": "",
+      "description": "Draggable divider between two {@link ResizablePanel}s. Set `withHandle` to",
       "props": [
         {
           "name": "animated",
@@ -10148,7 +10120,7 @@
     },
     {
       "name": "ResizablePanel",
-      "description": "",
+      "description": "A single resizable region within a {@link ResizablePanelGroup}.",
       "props": [
         {
           "name": "collapsedSize",
@@ -10224,7 +10196,7 @@
     },
     {
       "name": "ResizablePanelGroup",
-      "description": "",
+      "description": "Container that lays out {@link ResizablePanel}s along a horizontal or",
       "props": [
         {
           "name": "animated",
@@ -10451,7 +10423,7 @@
   "scroll-area": [
     {
       "name": "ScrollArea",
-      "description": "",
+      "description": "Scrollable container that replaces native scrollbars with a styled,",
       "props": [
         {
           "name": "animated",
@@ -10492,7 +10464,7 @@
     },
     {
       "name": "ScrollBar",
-      "description": "",
+      "description": "Styled scrollbar for {@link ScrollArea}. A vertical instance is rendered",
       "props": [
         {
           "name": "asChild",
@@ -10621,7 +10593,7 @@
   "select": [
     {
       "name": "Select",
-      "description": "",
+      "description": "Animated dropdown select built on Radix Select. Manages value and open",
       "props": [
         {
           "name": "defaultValue",
@@ -10648,7 +10620,7 @@
     },
     {
       "name": "SelectContent",
-      "description": "",
+      "description": "Portalled dropdown panel with a spring entrance animation — hosts the",
       "props": [
         {
           "name": "animated",
@@ -10689,7 +10661,7 @@
     },
     {
       "name": "SelectGroup",
-      "description": "",
+      "description": "Groups related items inside {@link SelectContent}, typically headed by a",
       "props": [
         {
           "name": "asChild",
@@ -10702,7 +10674,7 @@
     },
     {
       "name": "SelectItem",
-      "description": "",
+      "description": "Selectable option inside {@link SelectContent} — shows a check indicator",
       "props": [
         {
           "name": "asChild",
@@ -10715,7 +10687,7 @@
     },
     {
       "name": "SelectLabel",
-      "description": "",
+      "description": "Non-interactive heading for a {@link SelectGroup}.",
       "props": [
         {
           "name": "asChild",
@@ -10728,7 +10700,7 @@
     },
     {
       "name": "SelectScrollDownButton",
-      "description": "",
+      "description": "Scroll affordance pinned to the bottom of the viewport when items overflow.",
       "props": [
         {
           "name": "asChild",
@@ -10741,7 +10713,7 @@
     },
     {
       "name": "SelectScrollUpButton",
-      "description": "",
+      "description": "Scroll affordance pinned to the top of the viewport when items overflow.",
       "props": [
         {
           "name": "asChild",
@@ -10754,7 +10726,7 @@
     },
     {
       "name": "SelectSeparator",
-      "description": "",
+      "description": "Thin divider between groups of items.",
       "props": [
         {
           "name": "asChild",
@@ -10767,7 +10739,7 @@
     },
     {
       "name": "SelectTrigger",
-      "description": "",
+      "description": "Button that opens the dropdown — renders the current {@link SelectValue}",
       "props": [
         {
           "name": "asChild",
@@ -10778,16 +10750,16 @@
         },
         {
           "name": "size",
-          "type": "\"sm\" | \"default\"",
+          "type": "\"sm\" | \"md\" | \"default\"",
           "required": false,
-          "default": "default",
-          "description": "Control height of the trigger. `\"default\"` (h-9) or `\"sm\"` (h-8)."
+          "default": "md",
+          "description": "Control height of the trigger. `\"md\"` (h-9) or `\"sm\"` (h-8). (`\"default\"` is a deprecated alias for `\"md\"`.)"
         }
       ]
     },
     {
       "name": "SelectValue",
-      "description": "",
+      "description": "Displays the selected item's text (or a `placeholder`) inside",
       "props": [
         {
           "name": "asChild",
@@ -10895,7 +10867,7 @@
   "sheet": [
     {
       "name": "SheetTrigger",
-      "description": "",
+      "description": "Button that opens the sheet.",
       "props": [
         {
           "name": "asChild",
@@ -10908,7 +10880,7 @@
     },
     {
       "name": "SheetClose",
-      "description": "",
+      "description": "Button that closes the sheet from anywhere inside it.",
       "props": [
         {
           "name": "asChild",
@@ -10921,7 +10893,7 @@
     },
     {
       "name": "SheetContent",
-      "description": "",
+      "description": "The sliding panel itself — portaled behind a dimmed overlay, slides in from",
       "props": [
         {
           "name": "animated",
@@ -10976,7 +10948,7 @@
     },
     {
       "name": "SheetTitle",
-      "description": "",
+      "description": "Accessible sheet title — announced to screen readers when the sheet opens.",
       "props": [
         {
           "name": "asChild",
@@ -10989,7 +10961,7 @@
     },
     {
       "name": "SheetDescription",
-      "description": "",
+      "description": "Accessible sheet description text below the title.",
       "props": [
         {
           "name": "asChild",
@@ -11111,7 +11083,7 @@
   "slider": [
     {
       "name": "Slider",
-      "description": "",
+      "description": "Range slider for selecting one or more numeric values along a track. Renders",
       "props": [
         {
           "name": "animated",
@@ -11211,7 +11183,7 @@
   "sonner": [
     {
       "name": "Toaster",
-      "description": "",
+      "description": "Toast notification container built on Sonner. Mount once near the app root,",
       "props": [
         {
           "name": "animated",
@@ -11339,7 +11311,7 @@
   "spinner": [
     {
       "name": "Spinner",
-      "description": "",
+      "description": "Loading indicator — a spinning Phosphor CircleNotch with `role=\"status\"` and",
       "props": [
         {
           "name": "animated",
@@ -11852,7 +11824,7 @@
   "switch": [
     {
       "name": "Switch",
-      "description": "",
+      "description": "Toggle switch for boolean settings, with a spring-animated thumb that slides",
       "props": [
         {
           "name": "animated",
@@ -11884,10 +11856,10 @@
         },
         {
           "name": "size",
-          "type": "\"sm\" | \"default\"",
+          "type": "\"sm\" | \"md\" | \"default\"",
           "required": false,
-          "default": "default",
-          "description": "Visual size of the toggle. `default` is the standard control; `sm` is a compact variant for dense rows."
+          "default": "md",
+          "description": "Visual size of the toggle. `md` is the standard control; `sm` is a compact variant for dense rows. (`\"default\"` is a deprecated alias for `\"md\"`.)"
         },
         {
           "name": "surface",
@@ -11902,7 +11874,7 @@
   "table": [
     {
       "name": "Table",
-      "description": "",
+      "description": "Data table root — a styled `<table>` wrapped in a horizontally scrollable",
       "props": [
         {
           "name": "animated",
@@ -11938,7 +11910,7 @@
   "tabs": [
     {
       "name": "Tabs",
-      "description": "",
+      "description": "Tabbed navigation root built on Radix Tabs, with an animated indicator that",
       "props": [
         {
           "name": "animated",
@@ -11979,7 +11951,7 @@
     },
     {
       "name": "TabsList",
-      "description": "",
+      "description": "Container for tab triggers. Renders the single animated active-tab",
       "props": [
         {
           "name": "animated",
@@ -12027,7 +11999,7 @@
     },
     {
       "name": "TabsTrigger",
-      "description": "",
+      "description": "Tab trigger button that activates its associated {@link TabsContent} panel.",
       "props": [
         {
           "name": "animated",
@@ -12068,7 +12040,7 @@
     },
     {
       "name": "TabsContent",
-      "description": "",
+      "description": "Panel shown when its `value` matches the active tab.",
       "props": [
         {
           "name": "animated",
@@ -12444,7 +12416,7 @@
   "textarea": [
     {
       "name": "Textarea",
-      "description": "",
+      "description": "Multi-line text input with a spring-animated focus ring and content-based",
       "props": [
         {
           "name": "animated",
@@ -12592,7 +12564,7 @@
   "toggle": [
     {
       "name": "Toggle",
-      "description": "",
+      "description": "Two-state button that switches between pressed and unpressed — e.g. toolbar",
       "props": [
         {
           "name": "animated",
@@ -12624,10 +12596,10 @@
         },
         {
           "name": "size",
-          "type": "\"default\" | \"sm\" | \"lg\" | null",
+          "type": "\"default\" | \"md\" | \"sm\" | \"lg\" | null",
           "required": false,
           "default": null,
-          "description": ""
+          "description": "Visual size. (`\"default\"` is a deprecated alias for `\"md\"`.)"
         },
         {
           "name": "surface",
@@ -12649,7 +12621,7 @@
   "toggle-group": [
     {
       "name": "ToggleGroup",
-      "description": "",
+      "description": "Set of two-state buttons with shared single or multiple selection. Renders",
       "props": [
         {
           "name": "animated",
@@ -12681,10 +12653,10 @@
         },
         {
           "name": "size",
-          "type": "\"default\" | \"sm\" | \"lg\" | null",
+          "type": "\"default\" | \"md\" | \"sm\" | \"lg\" | null",
           "required": false,
           "default": null,
-          "description": ""
+          "description": "Visual size of the items. (`\"default\"` is a deprecated alias for `\"md\"`.)"
         },
         {
           "name": "spacing",
@@ -12711,7 +12683,7 @@
     },
     {
       "name": "ToggleGroupItem",
-      "description": "",
+      "description": "A single toggle within a {@link ToggleGroup}. Inherits `variant`, `size`,",
       "props": [
         {
           "name": "asChild",
@@ -12722,7 +12694,7 @@
         },
         {
           "name": "size",
-          "type": "\"default\" | \"sm\" | \"lg\" | null",
+          "type": "\"md\" | \"sm\" | \"lg\" | null",
           "required": false,
           "default": null,
           "description": ""
@@ -12740,7 +12712,7 @@
   "tooltip": [
     {
       "name": "TooltipTrigger",
-      "description": "",
+      "description": "Element that shows the tooltip on hover or keyboard focus.",
       "props": [
         {
           "name": "asChild",
@@ -12753,7 +12725,7 @@
     },
     {
       "name": "TooltipContent",
-      "description": "",
+      "description": "The tooltip bubble itself. Portals to the body, enters with a spring",
       "props": [
         {
           "name": "animated",
@@ -15106,10 +15078,10 @@
         },
         {
           "name": "size",
-          "type": "\"default\" | \"sm\" | \"lg\" | null",
+          "type": "\"default\" | \"md\" | \"sm\" | \"lg\" | null",
           "required": false,
-          "default": "default",
-          "description": ""
+          "default": "md",
+          "description": "Visual size. (`\"default\"` is a deprecated alias for `\"md\"`.)"
         },
         {
           "name": "surface",
@@ -15298,7 +15270,7 @@
         },
         {
           "name": "size",
-          "type": "\"sm\" | \"md\"",
+          "type": "\"md\" | \"sm\"",
           "required": false,
           "default": "md",
           "description": "Type scale for the sub-button label. Defaults to `\"md\"`."
@@ -15332,7 +15304,7 @@
         },
         {
           "name": "size",
-          "type": "\"default\" | \"sm\" | \"lg\" | null",
+          "type": "\"md\" | \"sm\" | \"lg\" | null",
           "required": false,
           "default": null,
           "description": ""
@@ -15658,7 +15630,7 @@
   "theme-mode-toggle": [
     {
       "name": "ThemeModeToggle",
-      "description": "",
+      "description": "Light/dark mode toggle button. Reads and writes the resolved theme via",
       "props": [
         {
           "name": "animated",
@@ -15782,10 +15754,10 @@
         },
         {
           "name": "size",
-          "type": "\"sm\" | \"default\" | \"lg\"",
+          "type": "\"sm\" | \"md\" | \"lg\" | \"default\"",
           "required": false,
-          "default": "default",
-          "description": "Segment size — matches the Toggle/ToggleGroup `size` axis."
+          "default": "md",
+          "description": "Segment size — matches the Toggle/ToggleGroup `size` axis. (`\"default\"` is a deprecated alias for `\"md\"`.)"
         },
         {
           "name": "surface",
@@ -15800,7 +15772,7 @@
   "top-loading-bar": [
     {
       "name": "TopLoadingBar",
-      "description": "",
+      "description": "Top-of-viewport loading bar that signals route transitions in the Next.js",
       "props": [
         {
           "name": "animated",
@@ -15907,7 +15879,7 @@
   "animated-tooltip": [
     {
       "name": "AnimatedTooltip",
-      "description": "",
+      "description": "Row of circular avatar images that reveal a spring-animated, mouse-tracking",
       "props": [
         {
           "name": "items",

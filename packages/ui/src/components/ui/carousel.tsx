@@ -35,6 +35,7 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Button } from "./button"
 
+/** Embla carousel API instance, handed to consumers via the `setApi` prop for imperative control (`scrollTo`, `on`/`off` events, …). */
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 type CarouselOptions = UseCarouselParameters[0]

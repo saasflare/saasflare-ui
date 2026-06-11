@@ -85,13 +85,13 @@ const itemVariants = cva(
         muted: "bg-muted/50",
       },
       size: {
-        default: "gap-4 p-4",
+        md: "gap-4 p-4",
         sm: "gap-2.5 px-4 py-3",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      size: "md",
     },
   }
 )
@@ -99,10 +99,12 @@ const itemVariants = cva(
 /** Props for the Saasflare {@link Item} component. */
 interface ItemProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
-    VariantProps<typeof itemVariants>,
+    Omit<VariantProps<typeof itemVariants>, "size">,
     SaasflareComponentProps {
   /** Render as child element (Radix Slot pattern). */
   asChild?: boolean
+  /** Row density. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: VariantProps<typeof itemVariants>["size"] | "default"
 }
 
 /**
@@ -127,7 +129,7 @@ interface ItemProps
 function Item({
   className,
   variant = "default",
-  size = "default",
+  size = "md",
   asChild = false,
   surface,
   radius,
@@ -137,15 +139,16 @@ function Item({
 }: ItemProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const Comp = asChild ? Slot.Root : "div"
+  const resolvedSize = size === "default" ? "md" : size
   return (
     <Comp
       data-slot="item"
       data-variant={variant}
-      data-size={size}
+      data-size={resolvedSize}
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      className={cn(itemVariants({ variant, size, className }))}
+      className={cn(itemVariants({ variant, size: resolvedSize, className }))}
       {...props}
     />
   )

@@ -51,6 +51,7 @@ const MotionSlot = m.create(Slot.Root)
 
 /* ── Intent type ── */
 const INTENTS = ["primary", "neutral", "success", "warning", "danger", "info"] as const
+/** Semantic color intent of a {@link Button} — emitted as `data-intent` and resolved to the `--intent` CSS tokens by the theme. */
 type Intent = (typeof INTENTS)[number]
 
 /**
@@ -109,7 +110,7 @@ const buttonVariants = cva(
         clay:
           "bg-[var(--intent)] text-[var(--intent-fg)] shadow-[var(--surface-shadow)] hover:brightness-110 active:translate-y-px dark:hover:brightness-125",
         shadow:
-          "bg-[var(--intent)] text-[var(--intent-fg)] shadow-[var(--btn-shadow)] hover:shadow-[var(--btn-shadow-hover)] hover:brightness-110 dark:hover:brightness-125",
+          "bg-[var(--intent)] text-[var(--intent-fg)] shadow-[0_8px_24px_-6px_oklch(from_var(--intent)_l_c_h_/_0.5)] hover:shadow-[0_12px_32px_-6px_oklch(from_var(--intent)_l_c_h_/_0.6)] hover:brightness-110 dark:hover:brightness-125",
       },
       size: {
         xs: "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",

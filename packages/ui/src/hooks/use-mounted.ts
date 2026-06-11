@@ -12,7 +12,6 @@
  * if (!isMounted) return <Skeleton />;
  * return <ClientOnlyWidget />;
  */
-'use client';
 
 import { useEffect, useState } from 'react';
 

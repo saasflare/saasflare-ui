@@ -20,16 +20,37 @@ import { CaretDownIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link NativeSelect}.
+ *
+ * Extends the native `<select>` props with {@link SaasflareComponentProps}.
+ * The HTML `size` attribute is omitted — `size` is repurposed as the visual
+ * height variant.
+ */
 interface NativeSelectProps
   extends Omit<React.ComponentProps<"select">, "size" | keyof SaasflareComponentProps>,
     SaasflareComponentProps {
-  /** Control height. `"sm"` renders a more compact trigger; `"default"` is the standard height. */
-  size?: "sm" | "default"
+  /** Control height. `"sm"` renders a more compact trigger; `"md"` is the standard height. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: "sm" | "md" | "default"
 }
 
+/**
+ * Styled native `<select>` with a chevron icon overlay. Uses the platform
+ * picker UI — prefer it over the custom Select when native behavior (mobile
+ * pickers, plain form submission) matters more than custom-rendered options.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <NativeSelect>
+ *   <NativeSelectOption value="a">Option A</NativeSelectOption>
+ *   <NativeSelectOption value="b">Option B</NativeSelectOption>
+ * </NativeSelect>
+ */
 function NativeSelect({
   className,
-  size = "default",
+  size = "md",
   surface,
   radius,
   animated,
@@ -37,6 +58,7 @@ function NativeSelect({
   ...props
 }: NativeSelectProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const resolvedSize = size === "default" ? "md" : size
 
   return (
     <div
@@ -46,7 +68,7 @@ function NativeSelect({
       <select
         {...props}
         data-slot="native-select"
-        data-size={size}
+        data-size={resolvedSize}
         data-surface={sf.surface}
         data-radius={sf.radius}
         data-animated={String(sf.animated)}

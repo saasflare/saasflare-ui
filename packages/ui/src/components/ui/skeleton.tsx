@@ -28,6 +28,13 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 /** Component the skeleton imitates — drives radius from the design tokens. */
 type SkeletonAs = "avatar" | "text" | "card"
 
+/**
+ * Props for {@link Skeleton}.
+ *
+ * Extends the native div props with {@link SaasflareComponentProps}; the
+ * optional `as` prop snaps the placeholder's radius to the design-token scale
+ * of the component it stands in for.
+ */
 interface SkeletonProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {
   /**
    * Component shape to imitate. When set, radius follows the design-system

@@ -17,7 +17,6 @@
  * // Document event
  * useEventListener('visibilitychange', handleVisibility, { current: document });
  */
-'use client';
 
 import { useEffect, useRef, type RefObject } from 'react';
 
@@ -66,12 +65,22 @@ export function useEventListener(
     savedHandler.current = handler;
   }, [handler]);
 
+  // Depend on the option PRIMITIVES, not object identity — inline option
+  // objects (the documented usage) would otherwise tear the listener down on
+  // every render and silently break `once` semantics.
+  const opts = typeof options === 'boolean' ? { capture: options } : options;
+  const capture = opts?.capture;
+  const once = opts?.once;
+  const passive = opts?.passive;
+  const signal = opts?.signal;
+
   useEffect(() => {
     const target = element?.current ?? window;
     if (!target?.addEventListener) return;
 
     const listener = (event: Event) => savedHandler.current(event);
-    target.addEventListener(eventName, listener, options);
-    return () => target.removeEventListener(eventName, listener, options);
-  }, [eventName, element, options]);
+    const listenerOptions: AddEventListenerOptions = { capture, once, passive, signal };
+    target.addEventListener(eventName, listener, listenerOptions);
+    return () => target.removeEventListener(eventName, listener, listenerOptions);
+  }, [eventName, element, capture, once, passive, signal]);
 }

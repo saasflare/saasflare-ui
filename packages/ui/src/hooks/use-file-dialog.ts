@@ -15,7 +15,7 @@
  * {files?.length ? <p>{files.length} file(s) selected</p> : null}
  */
 
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 /** Options for {@link useFileDialog}. */
 export interface UseFileDialogOptions {
@@ -54,39 +54,59 @@ export function useFileDialog(options: UseFileDialogOptions = {}): UseFileDialog
     const [files, setFiles] = useState<File[]>([])
     const inputRef = useRef<HTMLInputElement | null>(null)
 
-    const handleChange = useCallback(
-        (e: Event) => {
-            const target = e.target as HTMLInputElement
-            const picked = Array.from(target.files ?? [])
-            setFiles(picked)
-            onChange?.(picked)
-            // Reset the input value so picking the same file twice still fires.
-            target.value = ""
-        },
-        [onChange],
-    )
+    // Latest-ref: the single change listener must never capture a stale onChange.
+    const onChangeRef = useRef(onChange)
+    onChangeRef.current = onChange
+
+    const handleChange = useCallback((e: Event) => {
+        const target = e.target as HTMLInputElement
+        const picked = Array.from(target.files ?? [])
+        setFiles(picked)
+        onChangeRef.current?.(picked)
+        // Reset the input value so picking the same file twice still fires.
+        target.value = ""
+    }, [])
 
     const ensureInput = useCallback((): HTMLInputElement => {
         if (typeof document === "undefined") {
             throw new Error("useFileDialog: open() called outside the browser")
         }
-        if (inputRef.current) return inputRef.current
-        const input = document.createElement("input")
-        input.type = "file"
-        input.style.display = "none"
-        if (accept) input.accept = accept
-        if (multiple) input.multiple = true
-        if (capture) input.capture = capture
+        let input = inputRef.current
+        if (!input) {
+            input = document.createElement("input")
+            input.type = "file"
+            input.style.display = "none"
+            input.addEventListener("change", handleChange)
+            document.body.appendChild(input)
+            inputRef.current = input
+        }
+        // (Re-)apply options on every open so changes after the first call apply.
+        input.accept = accept ?? ""
+        input.multiple = multiple
+        if (capture) input.setAttribute("capture", capture)
+        else input.removeAttribute("capture")
         if (directory) {
             // Non-standard but supported in Chromium.
             input.setAttribute("webkitdirectory", "")
             input.setAttribute("directory", "")
+        } else {
+            input.removeAttribute("webkitdirectory")
+            input.removeAttribute("directory")
         }
-        input.addEventListener("change", handleChange)
-        document.body.appendChild(input)
-        inputRef.current = input
         return input
     }, [accept, multiple, directory, capture, handleChange])
+
+    // Remove the hidden input (and its listener) when the consumer unmounts.
+    useEffect(() => {
+        return () => {
+            const input = inputRef.current
+            if (input) {
+                input.removeEventListener("change", handleChange)
+                input.remove()
+                inputRef.current = null
+            }
+        }
+    }, [handleChange])
 
     const open = useCallback(() => {
         ensureInput().click()

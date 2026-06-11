@@ -31,8 +31,21 @@ import * as React from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link Table}. Extends {@link SaasflareComponentProps} so
+ * `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from the provider.
+ */
 interface TableProps extends Omit<React.ComponentProps<"table">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Data table root — a styled `<table>` wrapped in a horizontally scrollable
+ * container so wide tables stay usable on narrow viewports. Compose with
+ * {@link TableHeader}, {@link TableBody}, {@link TableRow}, and friends.
+ *
+ * @component
+ * @layer core
+ */
 function Table({ className, surface, radius, animated, iconWeight, ...props }: TableProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -53,6 +66,12 @@ function Table({ className, surface, radius, animated, iconWeight, ...props }: T
   )
 }
 
+/**
+ * Table header section (`<thead>`) — wraps the heading row(s).
+ *
+ * @component
+ * @layer core
+ */
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
@@ -63,6 +82,12 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   )
 }
 
+/**
+ * Table body section (`<tbody>`) holding the data rows.
+ *
+ * @component
+ * @layer core
+ */
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
     <tbody
@@ -73,6 +98,12 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   )
 }
 
+/**
+ * Table footer section (`<tfoot>`) — muted emphasis for totals or summary rows.
+ *
+ * @component
+ * @layer core
+ */
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   return (
     <tfoot
@@ -86,6 +117,12 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   )
 }
 
+/**
+ * Table row (`<tr>`) with hover and `data-state="selected"` highlighting.
+ *
+ * @component
+ * @layer core
+ */
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
@@ -99,6 +136,12 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   )
 }
 
+/**
+ * Header cell (`<th>`) inside a {@link TableHeader} row.
+ *
+ * @component
+ * @layer core
+ */
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   return (
     <th
@@ -112,6 +155,12 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   )
 }
 
+/**
+ * Data cell (`<td>`) inside a body or footer row.
+ *
+ * @component
+ * @layer core
+ */
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
@@ -125,6 +174,12 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   )
 }
 
+/**
+ * Table caption rendered below the table.
+ *
+ * @component
+ * @layer core
+ */
 function TableCaption({
   className,
   ...props

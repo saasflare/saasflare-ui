@@ -17,7 +17,6 @@
  *   </HoverCardContent>
  * </HoverCard>
  */
-"use client"
 
 import * as React from "react"
 import { m } from "motion/react"
@@ -26,22 +25,52 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Rich preview card shown when an element is hovered, opened without a click.
+ * Root of the composition — owns open state and wires {@link HoverCardTrigger}
+ * and {@link HoverCardContent} together. Use for non-interactive previews
+ * (profiles, link previews); for click-opened interactive panels reach for
+ * Popover.
+ *
+ * @component
+ * @layer core
+ */
 function HoverCard({
   ...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
   return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />
 }
 
+/**
+ * Element that opens the hover card on hover or keyboard focus. Also serves as
+ * the positioning anchor for {@link HoverCardContent}.
+ *
+ * @component
+ * @layer core
+ */
 function HoverCardTrigger({
   ...props
 }: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
   return <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
 }
 
+/**
+ * Props for {@link HoverCardContent}. Extends the Radix HoverCard content props
+ * with the Saasflare theming axes (`surface`, `radius`, `animated`,
+ * `iconWeight`).
+ */
 interface HoverCardContentProps
   extends Omit<React.ComponentProps<typeof HoverCardPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * The floating preview panel rendered while the hover card is open. Portals to
+ * the body, enters with a spring scale/fade, and resolves
+ * `surface`/`radius`/`animated` against the <SaasflareProvider> context.
+ *
+ * @component
+ * @layer core
+ */
 function HoverCardContent({
   className,
   align = "center",
@@ -82,6 +111,7 @@ function HoverCardContent({
   )
 }
 
+/** Props for {@link HoverCardArrow}. Pure pass-through to the Radix HoverCard arrow. */
 interface HoverCardArrowProps
   extends React.ComponentProps<typeof HoverCardPrimitive.Arrow> {}
 

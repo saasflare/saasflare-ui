@@ -25,6 +25,7 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 const INTENTS = ["primary", "neutral", "success", "warning", "danger", "info"] as const
+/** Semantic color intent of a {@link Callout} — drives the accent stripe, background tint, and title/icon color tokens. */
 export type CalloutIntent = (typeof INTENTS)[number]
 
 /** Props for the Callout component. */

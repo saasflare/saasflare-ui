@@ -11,7 +11,6 @@
  * const isIdle = useIdle(5 * 60 * 1000); // 5 minutes
  * if (isIdle) showSessionWarning();
  */
-'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 

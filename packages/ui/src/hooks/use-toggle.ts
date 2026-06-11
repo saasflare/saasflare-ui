@@ -13,7 +13,6 @@
  * <Button onClick={open}>Open</Button>
  * <Button onClick={close}>Close</Button>
  */
-'use client';
 
 import { useCallback, useState } from 'react';
 

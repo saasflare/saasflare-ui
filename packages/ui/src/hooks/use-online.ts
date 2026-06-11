@@ -11,7 +11,6 @@
  * const isOnline = useOnline();
  * if (!isOnline) return <OfflineBanner />;
  */
-'use client';
 
 import { useEffect, useState } from 'react';
 

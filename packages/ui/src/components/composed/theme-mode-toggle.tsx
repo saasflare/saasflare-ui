@@ -57,6 +57,16 @@ interface ThemeModeToggleProps extends SaasflareComponentProps {
     initialResolvedTheme?: 'light' | 'dark';
 }
 
+/**
+ * Light/dark mode toggle button. Reads and writes the resolved theme via
+ * next-themes and renders a ghost {@link Button} with a sun or moon icon,
+ * optionally followed by a visible label. Pass `initialResolvedTheme` (e.g.
+ * from a cookie) to paint the correct glyph on the very first render;
+ * without it, the button mount-gates to `null` until hydration.
+ *
+ * @component
+ * @layer composed
+ */
 export function ThemeModeToggle({
     showText = false,
     textLight = 'Switch to Dark Mode',

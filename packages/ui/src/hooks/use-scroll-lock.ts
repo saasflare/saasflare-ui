@@ -10,7 +10,6 @@
  * @example
  * useScrollLock(isModalOpen);
  */
-'use client';
 
 import { useEffect, useRef } from 'react';
 
@@ -26,13 +25,16 @@ import { useEffect, useRef } from 'react';
  * useScrollLock(drawerOpen);
  */
 export function useScrollLock(locked: boolean): void {
-  const originalStyleRef = useRef('');
+  const originalStyleRef = useRef({ overflow: '', paddingRight: '' });
 
   useEffect(() => {
     if (!locked) return;
 
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    originalStyleRef.current = document.body.style.overflow;
+    originalStyleRef.current = {
+      overflow: document.body.style.overflow,
+      paddingRight: document.body.style.paddingRight,
+    };
 
     document.body.style.overflow = 'hidden';
     if (scrollbarWidth > 0) {
@@ -40,8 +42,10 @@ export function useScrollLock(locked: boolean): void {
     }
 
     return () => {
-      document.body.style.overflow = originalStyleRef.current;
-      document.body.style.paddingRight = '';
+      // Restore BOTH saved values — resetting paddingRight to '' would
+      // clobber a pre-existing inline body padding.
+      document.body.style.overflow = originalStyleRef.current.overflow;
+      document.body.style.paddingRight = originalStyleRef.current.paddingRight;
     };
   }, [locked]);
 }

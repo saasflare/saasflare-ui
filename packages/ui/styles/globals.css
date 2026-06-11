@@ -7,6 +7,6 @@
  * Apps should import exactly this file:
  *   @import "@saasflare/ui/globals.css";
  *
- * theme.css transitively pulls in motion.css, surfaces.css, and themes.css.
+ * theme.css transitively pulls in motion.css, surfaces.css, aurora.css, and palettes.css.
  */
 @import "./theme.css";

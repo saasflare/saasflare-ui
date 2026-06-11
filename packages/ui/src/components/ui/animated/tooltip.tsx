@@ -60,6 +60,15 @@ export interface AnimatedTooltipProps extends SaasflareComponentProps {
     items: TooltipItem[];
 }
 
+/**
+ * Row of circular avatar images that reveal a spring-animated, mouse-tracking
+ * tooltip (name + designation) on hover or keyboard focus. Suited for team
+ * strips, contributor lists, and social-proof clusters. The parallax tilt is
+ * skipped entirely when the resolved `animated` axis is off.
+ *
+ * @component
+ * @layer ui
+ */
 export const AnimatedTooltip = ({
     items,
     surface,

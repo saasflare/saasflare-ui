@@ -11,9 +11,8 @@
  * const handlers = useLongPress(() => openContextMenu(), { delay: 500 });
  * <div {...handlers}>Press and hold</div>
  */
-'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 /** Options for the long press gesture */
 export interface UseLongPressOptions {
@@ -61,8 +60,16 @@ export function useLongPress(
   const callbackRef = useRef(callback);
   const onClickRef = useRef(onClick);
 
-  callbackRef.current = callback;
-  onClickRef.current = onClick;
+  // Latest-ref updates belong in an effect, not the render body (render must
+  // stay pure under concurrent rendering).
+  useEffect(() => {
+    callbackRef.current = callback;
+    onClickRef.current = onClick;
+  });
+
+  // Cancel a pending long-press when the consumer unmounts — otherwise the
+  // user's callback fires against an unmounted component.
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   const start = useCallback(
     (x: number, y: number) => {

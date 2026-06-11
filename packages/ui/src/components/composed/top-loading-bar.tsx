@@ -188,6 +188,16 @@ function TopLoadingBarStatic({
     );
 }
 
+/**
+ * Top-of-viewport loading bar that signals route transitions in the Next.js
+ * App Router. Re-triggers on every pathname / search-param change and picks
+ * its renderer from the provider-resolved `animated` flag: a self-trickling
+ * progress bar when animated, a flat motion-free bar (plus aria-live
+ * announcement) otherwise. Suspense-wrapped so `useSearchParams` is safe.
+ *
+ * @component
+ * @package ui
+ */
 export function TopLoadingBar({
                                   startDelayMs,
                                   finishDelayMs,

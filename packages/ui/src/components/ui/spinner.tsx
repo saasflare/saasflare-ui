@@ -21,8 +21,26 @@ import { CircleNotchIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link Spinner}.
+ *
+ * Extends the SVG element props with {@link SaasflareComponentProps}. The
+ * spinner keeps the regular icon weight regardless of `iconWeight` — a
+ * deliberate visual-identity exemption.
+ */
 interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Loading indicator — a spinning Phosphor CircleNotch with `role="status"` and
+ * an accessible "Loading" label. The spin animation respects the resolved
+ * `animated` axis. Size via `className` (defaults to `size-4`).
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Spinner className="size-6" />
+ */
 function Spinner({ className, surface, radius, animated, iconWeight, ...props }: SpinnerProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 

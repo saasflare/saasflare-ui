@@ -23,7 +23,6 @@
  *   <StepperPanel value={2}>All set!</StepperPanel>
  * </Stepper>
  */
-"use client"
 
 import {
     Children,

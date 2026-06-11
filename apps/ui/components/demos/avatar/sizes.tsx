@@ -10,7 +10,7 @@ export function Demo() {
                 <AvatarImage src="https://i.pravatar.cc/96?img=5" alt="Ava Reyes" />
                 <AvatarFallback>AR</AvatarFallback>
             </Avatar>
-            <Avatar size="default">
+            <Avatar size="md">
                 <AvatarImage src="https://i.pravatar.cc/96?img=5" alt="Ava Reyes" />
                 <AvatarFallback>AR</AvatarFallback>
             </Avatar>

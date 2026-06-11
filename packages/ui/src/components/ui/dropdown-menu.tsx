@@ -27,29 +27,84 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Dropdown menu root. Manages open state and wires {@link DropdownMenuTrigger}
+ * and {@link DropdownMenuContent} together, with spring-animated content,
+ * nested sub-menus, checkbox/radio items, and full keyboard navigation.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
 }
+/**
+ * Portals menu content into the document body. Rarely needed directly —
+ * {@link DropdownMenuContent} renders its own portal.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuPortal({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
   return <DropdownMenuPrimitive.Portal data-slot="dropdown-menu-portal" {...props} />
 }
+/**
+ * Button that toggles the dropdown menu open and closed.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuTrigger({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
   return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" className={cn("cursor-pointer", className)} {...props} />
 }
+/**
+ * Groups related menu items for semantics and accessible structure.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuGroup({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
   return <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
 }
+/**
+ * Root for a nested sub-menu. Wraps {@link DropdownMenuSubTrigger} and
+ * {@link DropdownMenuSubContent}.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuSub({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
   return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />
 }
+/**
+ * Single-select group for {@link DropdownMenuRadioItem} children, controlled
+ * via `value` / `onValueChange`.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuRadioGroup({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
   return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />
 }
 
+/**
+ * Props for {@link DropdownMenuContent}.
+ *
+ * Extends the Radix Content props with {@link SaasflareComponentProps}, so
+ * `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface DropdownMenuContentProps
   extends Omit<React.ComponentProps<typeof DropdownMenuPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Floating menu panel with a spring scale/fade entrance. Portals itself —
+ * no {@link DropdownMenuPortal} wrapper required.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuContent({
   className,
   sideOffset = 4,
@@ -95,6 +150,13 @@ interface DropdownMenuItemExtraProps {
   variant?: "default" | "destructive"
 }
 
+/**
+ * Selectable menu entry. `inset` aligns it with icon-bearing siblings;
+ * `variant="destructive"` tints label and focus state with the destructive token.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuItem({ className, inset, variant = "default", ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & DropdownMenuItemExtraProps) {
   return (
     <DropdownMenuPrimitive.Item
@@ -110,6 +172,13 @@ function DropdownMenuItem({ className, inset, variant = "default", ...props }: R
   )
 }
 
+/**
+ * Menu item with a toggleable checked state, rendering a check indicator in
+ * the leading slot.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuCheckboxItem({ className, children, checked, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
   const sf = useSaasflareProps()
   return (
@@ -132,6 +201,13 @@ function DropdownMenuCheckboxItem({ className, children, checked, ...props }: Re
   )
 }
 
+/**
+ * Single-select menu item for use inside {@link DropdownMenuRadioGroup},
+ * rendering a dot indicator when active.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuRadioItem({ className, children, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
   const sf = useSaasflareProps()
   return (
@@ -153,6 +229,12 @@ function DropdownMenuRadioItem({ className, children, ...props }: React.Componen
   )
 }
 
+/**
+ * Non-interactive heading for a group of menu items.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuLabel({ className, inset, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & { inset?: boolean }) {
   return (
     <DropdownMenuPrimitive.Label
@@ -164,6 +246,12 @@ function DropdownMenuLabel({ className, inset, ...props }: React.ComponentProps<
   )
 }
 
+/**
+ * Thin horizontal rule between menu groups.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return (
     <DropdownMenuPrimitive.Separator
@@ -174,6 +262,13 @@ function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typ
   )
 }
 
+/**
+ * Right-aligned keyboard-shortcut hint inside a menu item. Purely visual —
+ * does not register the key binding.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
@@ -184,6 +279,12 @@ function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"spa
   )
 }
 
+/**
+ * Menu item that opens a nested sub-menu, with a trailing caret indicator.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuSubTrigger({ className, inset, children, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & { inset?: boolean }) {
   const sf = useSaasflareProps()
   return (
@@ -202,6 +303,12 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }: React.
   )
 }
 
+/**
+ * Floating panel for a nested sub-menu, animated via CSS data-state transitions.
+ *
+ * @component
+ * @layer core
+ */
 function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
   return (
     <DropdownMenuPrimitive.SubContent

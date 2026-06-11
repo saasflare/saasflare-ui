@@ -17,7 +17,6 @@
  *   </PopoverContent>
  * </Popover>
  */
-"use client"
 
 import * as React from "react"
 import { m } from "motion/react"
@@ -26,28 +25,65 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Floating content panel anchored to a trigger element, opened on click.
+ * Root of the composition — owns open state and wires {@link PopoverTrigger},
+ * {@link PopoverAnchor}, and {@link PopoverContent} together. Use for small
+ * interactive panels (filters, pickers, inline forms); for hover-only previews
+ * reach for HoverCard.
+ *
+ * @component
+ * @layer core
+ */
 function Popover({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />
 }
 
+/**
+ * Button that toggles the popover open and closed. Also serves as the
+ * positioning anchor unless a {@link PopoverAnchor} is rendered.
+ *
+ * @component
+ * @layer core
+ */
 function PopoverTrigger({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
 }
 
+/**
+ * Optional element the popover content positions against instead of the
+ * trigger.
+ *
+ * @component
+ * @layer core
+ */
 function PopoverAnchor({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
   return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />
 }
 
+/**
+ * Props for {@link PopoverContent}. Extends the Radix Popover content props
+ * with the Saasflare theming axes (`surface`, `radius`, `animated`,
+ * `iconWeight`).
+ */
 interface PopoverContentProps
   extends Omit<React.ComponentProps<typeof PopoverPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * The floating panel rendered while the popover is open. Portals to the body,
+ * enters with a spring scale/fade, and resolves `surface`/`radius`/`animated`
+ * against the <SaasflareProvider> context.
+ *
+ * @component
+ * @layer core
+ */
 function PopoverContent({
   className,
   align = "center",
@@ -88,6 +124,7 @@ function PopoverContent({
   )
 }
 
+/** Props for {@link PopoverArrow}. Pure pass-through to the Radix Popover arrow. */
 interface PopoverArrowProps
   extends React.ComponentProps<typeof PopoverPrimitive.Arrow> {}
 

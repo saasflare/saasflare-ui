@@ -188,7 +188,7 @@ export { RadioGroup, RadioGroupItem } from "./radio-group"
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsible"
 export { Spinner } from "./spinner"
 export { ScrollArea, ScrollBar } from "./scroll-area"
-export { Toaster } from "./sonner"
+export { Toaster, toast, type SaasflareToasterProps } from "./sonner"
 
 // Tier C: Re-exports
 export { AspectRatio } from "./aspect-ratio"
@@ -435,7 +435,7 @@ export { ParticlesBackground, type ParticlesBackgroundProps } from "./particles-
 export { RetroGrid, type RetroGridProps } from "./retro-grid"
 export { RevealOnScroll, type RevealOnScrollProps } from "./reveal-on-scroll"
 export { ShimmerButton, type ShimmerButtonProps } from "./shimmer-button"
-export { SocialButton, type SocialButtonProps } from "./social-button"
+export { SocialButton, type SocialButtonProps, type SocialButtonProvider } from "./social-button"
 export { SpotlightCard, type SpotlightCardProps } from "./spotlight-card"
 export { StatCard, type StatCardProps } from "./stat-card"
 export { Steps, Step, type StepsProps, type StepProps } from "./steps"

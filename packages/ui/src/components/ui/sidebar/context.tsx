@@ -38,10 +38,15 @@ import {
 // ============================================================================
 
 export const SIDEBAR_COOKIE_NAME = "sidebar_state"
+/** Lifetime (seconds, 7 days) of the sidebar-state cookie written by {@link SidebarProvider}'s `setOpen`. */
 export const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+/** Expanded sidebar width on desktop; exposed as `--sidebar-width` by {@link SidebarProvider}. */
 export const SIDEBAR_WIDTH = "16rem"
+/** Sidebar width inside the mobile Sheet; applied as `--sidebar-width` by the mobile branch of `Sidebar`. */
 export const SIDEBAR_WIDTH_MOBILE = "18rem"
+/** Collapsed (icon-only) sidebar width; exposed as `--sidebar-width-icon` by {@link SidebarProvider}. */
 export const SIDEBAR_WIDTH_ICON = "3rem"
+/** Key that toggles the sidebar together with Cmd/Ctrl; registered by {@link SidebarProvider}. */
 export const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
 // ============================================================================
@@ -58,8 +63,18 @@ export type SidebarContextProps = {
   toggleSidebar: () => void
 }
 
+/**
+ * React context carrying the sidebar open/collapsed state. Provided by
+ * {@link SidebarProvider}; read via {@link useSidebar}.
+ */
 export const SidebarContext = React.createContext<SidebarContextProps | null>(null)
 
+/**
+ * Accesses the sidebar state and controls. Returns the
+ * {@link SidebarContextProps} value: `state`, `open`/`setOpen`,
+ * `openMobile`/`setOpenMobile`, `isMobile`, and `toggleSidebar`. Must be
+ * called inside a {@link SidebarProvider}; throws otherwise.
+ */
 export function useSidebar() {
   const context = React.useContext(SidebarContext)
   if (!context) {

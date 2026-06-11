@@ -26,10 +26,29 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Props for {@link Checkbox}.
+ *
+ * Extends the Radix Checkbox root props with {@link SaasflareComponentProps},
+ * so `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface CheckboxProps
   extends Omit<React.ComponentProps<typeof CheckboxPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Checkbox input with a bouncy spring check-mark animation. Built on the
+ * Radix Checkbox primitive; supports controlled and uncontrolled checked
+ * state. Pair with a `<label htmlFor>` for an accessible name.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Checkbox id="terms" />
+ * <label htmlFor="terms">Accept terms and conditions</label>
+ */
 function Checkbox({
   className,
   surface,

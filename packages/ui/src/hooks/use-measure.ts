@@ -13,7 +13,6 @@
  * const [ref, { width, height }] = useMeasure<HTMLDivElement>();
  * return <div ref={ref}>{width} × {height}</div>;
  */
-'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 

@@ -16,7 +16,6 @@
  *   </Tooltip>
  * </TooltipProvider>
  */
-"use client"
 
 import * as React from "react"
 import { m } from "motion/react"
@@ -25,6 +24,14 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Context provider that shares open-delay and skip-delay behavior across all
+ * descendant tooltips. Wrap once near the app root; defaults `delayDuration`
+ * to 0 so tooltips appear instantly.
+ *
+ * @component
+ * @layer core
+ */
 function TooltipProvider({
   delayDuration = 0,
   ...props
@@ -38,22 +45,50 @@ function TooltipProvider({
   )
 }
 
+/**
+ * Contextual hint shown when an element is hovered or keyboard-focused.
+ * Root of the composition — owns open state and wires {@link TooltipTrigger}
+ * and {@link TooltipContent} together. Must be rendered inside a
+ * {@link TooltipProvider}.
+ *
+ * @component
+ * @layer core
+ */
 function Tooltip({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
   return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
 }
 
+/**
+ * Element that shows the tooltip on hover or keyboard focus.
+ *
+ * @component
+ * @layer core
+ */
 function TooltipTrigger({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
 }
 
+/**
+ * Props for {@link TooltipContent}. Extends the Radix Tooltip content props
+ * with the Saasflare theming axes (`surface`, `radius`, `animated`,
+ * `iconWeight`).
+ */
 interface TooltipContentProps
   extends Omit<React.ComponentProps<typeof TooltipPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * The tooltip bubble itself. Portals to the body, enters with a spring
+ * scale/fade, and resolves `surface`/`radius`/`animated` against the
+ * <SaasflareProvider> context.
+ *
+ * @component
+ * @layer core
+ */
 function TooltipContent({
   className,
   sideOffset = 6,
@@ -95,6 +130,7 @@ function TooltipContent({
   )
 }
 
+/** Props for {@link TooltipArrow}. Pure pass-through to the Radix Tooltip arrow. */
 interface TooltipArrowProps
   extends React.ComponentProps<typeof TooltipPrimitive.Arrow> {}
 

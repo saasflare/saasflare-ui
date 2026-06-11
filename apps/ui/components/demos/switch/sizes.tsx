@@ -11,7 +11,7 @@ export function Demo() {
                 <Label htmlFor="compact-sm">Compact density (sm)</Label>
             </div>
             <div className="flex items-center gap-2">
-                <Switch id="compact-default" size="default" defaultChecked />
+                <Switch id="compact-default" size="md" defaultChecked />
                 <Label htmlFor="compact-default">Comfortable density (default)</Label>
             </div>
         </div>

@@ -11,7 +11,6 @@
  * const { width, height } = useWindowSize();
  * const columns = width > 1024 ? 3 : width > 640 ? 2 : 1;
  */
-'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 

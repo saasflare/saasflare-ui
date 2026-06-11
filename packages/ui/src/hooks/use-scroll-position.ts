@@ -11,7 +11,6 @@
  * const { x, y, direction } = useScrollPosition();
  * // direction is 'up', 'down', or null (no scroll yet)
  */
-'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 

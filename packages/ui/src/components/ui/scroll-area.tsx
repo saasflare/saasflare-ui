@@ -14,7 +14,6 @@
  *   <div>Scrollable content here</div>
  * </ScrollArea>
  */
-"use client"
 
 import * as React from "react"
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
@@ -22,10 +21,23 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link ScrollArea}.
+ *
+ * Extends the Radix ScrollArea root props with {@link SaasflareComponentProps}.
+ */
 interface ScrollAreaProps
   extends Omit<React.ComponentProps<typeof ScrollAreaPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Scrollable container that replaces native scrollbars with a styled,
+ * cross-browser thumb, built on Radix UI ScrollArea. Constrain it with a
+ * height or width class and place overflowing content inside.
+ *
+ * @component
+ * @layer core
+ */
 function ScrollArea({
   className,
   children,
@@ -58,6 +70,14 @@ function ScrollArea({
   )
 }
 
+/**
+ * Styled scrollbar for {@link ScrollArea}. A vertical instance is rendered
+ * automatically; add one with `orientation="horizontal"` for horizontal
+ * scrolling.
+ *
+ * @component
+ * @layer core
+ */
 function ScrollBar({
   className,
   orientation = "vertical",

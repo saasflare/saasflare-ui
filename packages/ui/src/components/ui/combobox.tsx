@@ -43,8 +43,23 @@ import { CheckIcon, MagnifyingGlassIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Searchable dropdown root. Alias of Radix Popover.Root that owns the open
+ * state; compose with {@link ComboboxTrigger} and {@link ComboboxContent}
+ * for a shadcn-style combobox.
+ *
+ * @component
+ * @layer core
+ */
 const Combobox = PopoverPrimitive.Root
 
+/**
+ * Element that toggles the combobox open. Alias of Radix Popover.Trigger —
+ * use `asChild` to render a custom trigger such as a Button.
+ *
+ * @component
+ * @layer core
+ */
 const ComboboxTrigger = PopoverPrimitive.Trigger
 
 /** Props for {@link ComboboxContent}. */

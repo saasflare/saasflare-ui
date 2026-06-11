@@ -189,10 +189,13 @@ export function NotificationCenter({
                             const inner = (
                                 <>
                                     {!item.read && (
-                                        <span
-                                            aria-hidden="true"
-                                            className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary"
-                                        />
+                                        <>
+                                            <span
+                                                aria-hidden="true"
+                                                className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary"
+                                            />
+                                            <span className="sr-only">Unread</span>
+                                        </>
                                     )}
                                     {item.icon !== undefined && (
                                         <span className="mt-0.5 flex shrink-0 items-center [&_svg]:size-4 text-muted-foreground">
@@ -224,7 +227,7 @@ export function NotificationCenter({
                                                 onMarkRead(item.id)
                                             }}
                                             aria-label="Mark as read"
-                                            className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
+                                            className="relative shrink-0 text-muted-foreground transition-colors hover:text-foreground"
                                         >
                                             <CheckIcon weight={sf.iconWeight} className="size-3" />
                                         </button>
@@ -233,34 +236,47 @@ export function NotificationCenter({
                             )
 
                             const rowClass = cn(
-                                "flex items-start gap-2 border-b px-3 py-2.5 last:border-b-0",
+                                "relative flex items-start gap-2 border-b px-3 py-2.5 last:border-b-0",
                                 "transition-colors hover:bg-accent/40",
                                 !item.read && "bg-primary/5",
                             )
                             const onClick = () => onItemClick?.(item)
+                            const titleLabel =
+                                typeof item.title === "string" ? item.title : "Notification"
+                            const actionLabel = item.read ? titleLabel : `Unread: ${titleLabel}`
 
-                            return item.href ? (
+                            /* Stretched-overlay pattern: the row action is a SIBLING
+                             * of the content (absolute inset-0), never its ancestor,
+                             * so the nested mark-as-read <button> stays valid HTML.
+                             * The positioned mark-as-read button paints above it. */
+                            const overlay = item.href ? (
                                 <a
-                                    key={item.id}
                                     href={item.href}
+                                    data-slot="notification-center-item-action"
+                                    onClick={onClick}
+                                    aria-label={actionLabel}
+                                    className="absolute inset-0"
+                                />
+                            ) : onItemClick ? (
+                                <button
+                                    type="button"
+                                    data-slot="notification-center-item-action"
+                                    onClick={onClick}
+                                    aria-label={actionLabel}
+                                    className="absolute inset-0 cursor-pointer"
+                                />
+                            ) : null
+
+                            return (
+                                <div
+                                    key={item.id}
                                     data-slot="notification-center-item"
                                     data-read={String(!!item.read)}
-                                    onClick={onClick}
                                     className={rowClass}
                                 >
+                                    {overlay}
                                     {inner}
-                                </a>
-                            ) : (
-                                <button
-                                    key={item.id}
-                                    type="button"
-                                    data-slot="notification-center-item"
-                                    data-read={String(!!item.read)}
-                                    onClick={onClick}
-                                    className={cn(rowClass, "w-full text-left")}
-                                >
-                                    {inner}
-                                </button>
+                                </div>
                             )
                         })
                     )}

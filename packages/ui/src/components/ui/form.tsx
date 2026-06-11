@@ -25,7 +25,6 @@
  *   )} />
  * </Form>
  */
-"use client"
 
 import * as React from "react"
 import type * as LabelPrimitive from "@radix-ui/react-label"
@@ -44,6 +43,14 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Label } from "./label"
 
+/**
+ * Form root — re-export of react-hook-form's `FormProvider`. Spread the object
+ * returned by `useForm()` into it to make form state available to nested
+ * {@link FormField} compositions.
+ *
+ * @component
+ * @layer core
+ */
 const Form = FormProvider
 
 interface FormFieldContextValue<
@@ -55,6 +62,14 @@ interface FormFieldContextValue<
 
 const FormFieldContext = React.createContext<FormFieldContextValue | null>(null)
 
+/**
+ * Controlled field binding — wraps react-hook-form's `Controller` and exposes
+ * the field name via context so {@link useFormField} can resolve ids and
+ * validation state for the label, control, description, and message.
+ *
+ * @component
+ * @layer core
+ */
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -68,6 +83,13 @@ const FormField = <
   )
 }
 
+/**
+ * Resolves the current field's accessibility wiring and validation state.
+ * Returns the field `id`/`name`, the derived `formItemId`, `formDescriptionId`,
+ * and `formMessageId`, plus the react-hook-form field state (`error`,
+ * `invalid`, `isDirty`, `isTouched`). Must be called inside both
+ * `<FormField>` and `<FormItem>`, under a `<Form>` provider — throws otherwise.
+ */
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
@@ -106,6 +128,13 @@ interface FormItemContextValue {
 
 const FormItemContext = React.createContext<FormItemContextValue | null>(null)
 
+/**
+ * Field wrapper — generates the unique id shared by label, control,
+ * description, and message, and stacks them in a vertical grid.
+ *
+ * @component
+ * @layer core
+ */
 function FormItem({ className, ...props }: React.ComponentProps<"div">) {
   const id = React.useId()
 
@@ -120,6 +149,11 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Props for {@link FormLabel}. Extends {@link SaasflareComponentProps} so
+ * `surface`, `radius`, `animated`, and `iconWeight` can override the
+ * <SaasflareProvider> context per instance.
+ */
 interface FormLabelProps
   extends Omit<
       React.ComponentProps<typeof LabelPrimitive.Root>,
@@ -127,6 +161,13 @@ interface FormLabelProps
     >,
     SaasflareComponentProps {}
 
+/**
+ * Field label — wired to the control via `htmlFor` and tinted destructive when
+ * the field has a validation error.
+ *
+ * @component
+ * @layer core
+ */
 function FormLabel({
   className,
   surface,
@@ -152,6 +193,14 @@ function FormLabel({
   )
 }
 
+/**
+ * Slot that wires the wrapped input to its label, description, and message via
+ * `id`, `aria-describedby`, and `aria-invalid`. Place the actual form control
+ * as its single child.
+ *
+ * @component
+ * @layer core
+ */
 function FormControl({ ...props }: React.ComponentProps<typeof Slot.Root>) {
   const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
@@ -170,10 +219,21 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot.Root>) {
   )
 }
 
+/**
+ * Props for {@link FormDescription}. Extends {@link SaasflareComponentProps}
+ * for per-instance `surface` / `radius` / `animated` / `iconWeight` overrides.
+ */
 interface FormDescriptionProps
   extends Omit<React.ComponentProps<"p">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Muted helper text below the control, referenced by the control's
+ * `aria-describedby`.
+ *
+ * @component
+ * @layer core
+ */
 function FormDescription({
   className,
   surface,
@@ -198,10 +258,21 @@ function FormDescription({
   )
 }
 
+/**
+ * Props for {@link FormMessage}. Extends {@link SaasflareComponentProps}
+ * for per-instance `surface` / `radius` / `animated` / `iconWeight` overrides.
+ */
 interface FormMessageProps
   extends Omit<React.ComponentProps<"p">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Validation message — shows the field's error message when present, otherwise
+ * its children; renders nothing when both are empty.
+ *
+ * @component
+ * @layer core
+ */
 function FormMessage({
   className,
   surface,

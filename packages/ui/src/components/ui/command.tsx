@@ -35,10 +35,27 @@ import {
   DialogTitle,
 } from "./dialog"
 
+/**
+ * Props for {@link Command}.
+ *
+ * Extends the cmdk root props with {@link SaasflareComponentProps} so the
+ * design-system axes (surface/radius/animated/iconWeight) can be supplied
+ * per-instance or inherited from the provider.
+ */
 interface CommandProps
   extends Omit<React.ComponentProps<typeof CommandPrimitive>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Command palette root — a searchable, keyboard-navigable command menu built on cmdk.
+ *
+ * Filters {@link CommandItem} children as the user types into {@link CommandInput}.
+ * Resolves the design-system axes and emits them as data attributes. For a modal
+ * ⌘K-style palette use {@link CommandDialog}.
+ *
+ * @component
+ * @layer core
+ */
 function Command({
   className,
   surface,
@@ -64,6 +81,16 @@ function Command({
   )
 }
 
+/**
+ * Command palette inside a modal {@link Dialog} — the classic ⌘K menu.
+ *
+ * `title` and `description` feed a visually hidden header for screen readers;
+ * the design-system axes are forwarded to both the dialog surface and the
+ * inner {@link Command}.
+ *
+ * @component
+ * @layer core
+ */
 function CommandDialog({
   title = "Command Palette",
   description = "Search for a command to run...",
@@ -107,6 +134,13 @@ function CommandDialog({
   )
 }
 
+/**
+ * Search input that filters the command list as the user types, with a leading
+ * magnifying-glass icon that follows the resolved `iconWeight` axis.
+ *
+ * @component
+ * @layer core
+ */
 function CommandInput({
   className,
   iconWeight,
@@ -135,6 +169,12 @@ function CommandInput({
   )
 }
 
+/**
+ * Scrollable container for the command groups and items.
+ *
+ * @component
+ * @layer core
+ */
 function CommandList({
   className,
   ...props
@@ -151,6 +191,12 @@ function CommandList({
   )
 }
 
+/**
+ * Empty state shown when the current search matches no items.
+ *
+ * @component
+ * @layer core
+ */
 function CommandEmpty({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
@@ -163,6 +209,12 @@ function CommandEmpty({
   )
 }
 
+/**
+ * Labeled group of related command items — pass `heading` for the group label.
+ *
+ * @component
+ * @layer core
+ */
 function CommandGroup({
   className,
   ...props
@@ -179,6 +231,12 @@ function CommandGroup({
   )
 }
 
+/**
+ * Visual divider between command groups.
+ *
+ * @component
+ * @layer core
+ */
 function CommandSeparator({
   className,
   ...props
@@ -192,6 +250,12 @@ function CommandSeparator({
   )
 }
 
+/**
+ * Selectable command entry — highlighted on keyboard navigation and pointer hover.
+ *
+ * @component
+ * @layer core
+ */
 function CommandItem({
   className,
   ...props
@@ -208,6 +272,12 @@ function CommandItem({
   )
 }
 
+/**
+ * Right-aligned keyboard-shortcut hint inside a {@link CommandItem}.
+ *
+ * @component
+ * @layer core
+ */
 function CommandShortcut({
   className,
   ...props

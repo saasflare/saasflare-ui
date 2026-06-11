@@ -19,7 +19,6 @@
  * // Controlled
  * const disclosure = useDisclosure({ isOpen: props.open, onChange: props.onChange });
  */
-'use client';
 
 import { useCallback, useMemo, useState } from 'react';
 

@@ -19,10 +19,28 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Props for {@link Slider}.
+ *
+ * Extends the Radix Slider root props (`value`, `min`, `max`, `step`, …) with
+ * {@link SaasflareComponentProps}, so `animated` can be supplied per-instance
+ * or inherited from <SaasflareProvider>.
+ */
 interface SliderProps
   extends Omit<React.ComponentProps<typeof SliderPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Range slider for selecting one or more numeric values along a track. Renders
+ * one thumb per value with spring-animated hover/press scaling; supports
+ * horizontal and vertical layouts via the Radix `orientation` prop.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Slider defaultValue={[50]} max={100} step={1} />
+ */
 function Slider({
   className,
   defaultValue,

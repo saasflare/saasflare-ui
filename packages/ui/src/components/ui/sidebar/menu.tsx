@@ -50,14 +50,14 @@ export const sidebarMenuButtonVariants = cva(
           "bg-background shadow-[0_0_0_1px_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_var(--sidebar-accent)]",
       },
       size: {
-        default: "h-8 text-sm",
+        md: "h-8 text-sm",
         sm: "h-7 text-xs",
         lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      size: "md",
     },
   }
 )
@@ -100,7 +100,9 @@ export function SidebarMenuItem({ className, ...props }: React.ComponentProps<"l
 export interface SidebarMenuButtonProps
   extends Omit<React.ComponentProps<"button">, keyof SaasflareComponentProps>,
     SaasflareComponentProps,
-    VariantProps<typeof sidebarMenuButtonVariants> {
+    Omit<VariantProps<typeof sidebarMenuButtonVariants>, "size"> {
+  /** Visual size. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: VariantProps<typeof sidebarMenuButtonVariants>["size"] | "default"
   /** Render via Radix `Slot` instead of a `<button>`, merging props onto the child. */
   asChild?: boolean
   /** Marks the button as the active route. Drives the accent indicator + emphasis. */
@@ -117,7 +119,7 @@ export function SidebarMenuButton({
   asChild = false,
   isActive = false,
   variant = "default",
-  size = "default",
+  size = "md",
   tooltip,
   className,
   surface,
@@ -129,17 +131,18 @@ export function SidebarMenuButton({
   const Comp = asChild ? Slot.Root : "button"
   const { isMobile, state } = useSidebar()
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const resolvedSize = size === "default" ? "md" : size
 
   const button = (
     <Comp
       data-slot="sidebar-menu-button"
       data-sidebar="menu-button"
-      data-size={size}
+      data-size={resolvedSize}
       data-active={isActive}
       data-surface={sf.surface}
       data-radius={sf.radius}
       data-animated={String(sf.animated)}
-      className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+      className={cn(sidebarMenuButtonVariants({ variant, size: resolvedSize }), className)}
       {...props}
     />
   )
@@ -203,7 +206,7 @@ export function SidebarMenuAction({
         // Increases the hit area of the button on mobile.
         "after:absolute after:-inset-2 md:after:hidden",
         "peer-data-[size=sm]/menu-button:top-1",
-        "peer-data-[size=default]/menu-button:top-1.5",
+        "peer-data-[size=md]/menu-button:top-1.5",
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         showOnHover &&
@@ -245,7 +248,7 @@ export function SidebarMenuBadge({
         "text-sidebar-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-xs font-medium tabular-nums select-none",
         "peer-hover/menu-button:text-sidebar-accent-foreground peer-data-[active=true]/menu-button:text-sidebar-accent-foreground",
         "peer-data-[size=sm]/menu-button:top-1",
-        "peer-data-[size=default]/menu-button:top-1.5",
+        "peer-data-[size=md]/menu-button:top-1.5",
         "peer-data-[size=lg]/menu-button:top-2.5",
         "group-data-[collapsible=icon]:hidden",
         className

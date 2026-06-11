@@ -107,7 +107,7 @@ export interface MultiSelectProps
   selectAll?: boolean
   /** Label for the select-all row. @default "Select all" */
   selectAllLabel?: string
-  /** Keep the popover open after a selection (true) or close on each pick (false). @default true for multi */
+  /** Close the popover after each pick. @default false (multi-pick stays open) */
   closeOnSelect?: boolean
   /** Max chip ROWS shown collapsed on the trigger before overflowing to "+N more" (HeroUI isMultiline analog). @default 1 */
   maxRows?: number
@@ -199,7 +199,7 @@ export function MultiSelect({
   clearable = true,
   selectAll = false,
   selectAllLabel = "Select all",
-  closeOnSelect = true,
+  closeOnSelect = false,
   maxRows = 1,
   loading = false,
   searchValue,
@@ -273,7 +273,7 @@ export function MultiSelect({
         if (typeof max === "number" && selected.length >= max) return
         commit([...selected, val])
       }
-      if (!closeOnSelect) setOpen(false)
+      if (closeOnSelect) setOpen(false)
     },
     [optionByValue, selected, commit, max, closeOnSelect],
   )
@@ -360,6 +360,10 @@ export function MultiSelect({
       e.preventDefault()
       setOpen(true)
     }
+    if (e.key === "Backspace" && selected.length > 0) {
+      e.preventDefault()
+      removeValue(selected[selected.length - 1])
+    }
   }
 
   /* ── Backspace in the EMPTY search input removes the last chip (tag-input
@@ -436,25 +440,19 @@ export function MultiSelect({
                         className="gap-1 pr-1"
                       >
                         <span className="max-w-[12rem] truncate">{label}</span>
+                        {/* Mouse-only affordance: a focusable control may not nest
+                          * inside the trigger <button>. Keyboard parity comes from
+                          * Backspace on the trigger / empty search input. */}
                         <span
-                          role="button"
-                          tabIndex={disabled ? -1 : 0}
-                          aria-label={`Remove ${label}`}
+                          aria-hidden="true"
                           data-slot="multi-select-chip-remove"
                           onClick={(e) => {
                             e.stopPropagation()
                             if (!disabled) removeValue(val)
                           }}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              if (!disabled) removeValue(val)
-                            }
-                          }}
-                          className="inline-flex size-3.5 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-ring/50"
+                          className="inline-flex size-3.5 cursor-pointer items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
                         >
-                          <XIcon weight={sf.iconWeight} aria-hidden="true" className="size-2.5" />
+                          <XIcon weight={sf.iconWeight} className="size-2.5" />
                         </span>
                       </Badge>
                     </MotionChip>
@@ -473,24 +471,15 @@ export function MultiSelect({
             <span className="ml-auto flex shrink-0 items-center gap-1 pl-1">
               {showClear ? (
                 <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="Clear all"
+                  aria-hidden="true"
                   data-slot="multi-select-clear"
                   onClick={(e) => {
                     e.stopPropagation()
                     clearAll()
                   }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      clearAll()
-                    }
-                  }}
-                  className="inline-flex size-4 cursor-pointer items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-ring/50"
+                  className="inline-flex size-4 cursor-pointer items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  <XIcon weight={sf.iconWeight} aria-hidden="true" className="size-3.5" />
+                  <XIcon weight={sf.iconWeight} className="size-3.5" />
                 </span>
               ) : null}
               <CaretDownIcon

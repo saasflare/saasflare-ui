@@ -65,6 +65,12 @@ function Accordion({
   )
 }
 
+/**
+ * Props for {@link AccordionItem}.
+ *
+ * Extends the Radix Item props with {@link SaasflareComponentProps} so the
+ * design-system axes can be overridden per-item.
+ */
 interface AccordionItemProps
   extends Omit<React.ComponentProps<typeof AccordionPrimitive.Item>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

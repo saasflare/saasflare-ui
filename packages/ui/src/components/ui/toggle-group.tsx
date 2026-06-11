@@ -28,18 +28,42 @@ const ToggleGroupContext = React.createContext<
     spacing?: number
   }
 >({
-  size: "default",
+  size: "md",
   variant: "default",
   spacing: 0,
 })
 
+/**
+ * Props for {@link ToggleGroup}.
+ *
+ * Combines the Radix ToggleGroup root props (`type`, `value`, …) with the
+ * shared toggle variant axes and {@link SaasflareComponentProps}. `variant`
+ * and `size` propagate to every {@link ToggleGroupItem} via context.
+ */
 type ToggleGroupProps = React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
-  VariantProps<typeof toggleVariants> &
+  Omit<VariantProps<typeof toggleVariants>, "size"> &
   SaasflareComponentProps & {
+    /** Visual size of the items. (`"default"` is a deprecated alias for `"md"`.) */
+    size?: VariantProps<typeof toggleVariants>["size"] | "default"
     /** Gap (in spacing units) between items. `0` (default) renders a joined, segmented group; a positive value detaches the items into spaced pills. */
     spacing?: number
   }
 
+/**
+ * Set of two-state buttons with shared single or multiple selection. Renders
+ * as a joined, segmented control by default; set `spacing` to detach the items
+ * into spaced pills. `variant` and `size` apply to all items via context.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ToggleGroup type="single" defaultValue="center">
+ *   <ToggleGroupItem value="left">Left</ToggleGroupItem>
+ *   <ToggleGroupItem value="center">Center</ToggleGroupItem>
+ *   <ToggleGroupItem value="right">Right</ToggleGroupItem>
+ * </ToggleGroup>
+ */
 function ToggleGroup({
   className,
   variant,
@@ -53,13 +77,14 @@ function ToggleGroup({
   ...props
 }: ToggleGroupProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
+  const resolvedSize = size === "default" ? "md" : size
 
   return (
     <ToggleGroupPrimitive.Root
       {...props}
       data-slot="toggle-group"
       data-variant={variant}
-      data-size={size}
+      data-size={resolvedSize}
       data-spacing={spacing}
       data-surface={sf.surface}
       data-radius={sf.radius}
@@ -70,13 +95,20 @@ function ToggleGroup({
         className
       )}
     >
-      <ToggleGroupContext.Provider value={{ variant, size, spacing }}>
+      <ToggleGroupContext.Provider value={{ variant, size: resolvedSize, spacing }}>
         {children}
       </ToggleGroupContext.Provider>
     </ToggleGroupPrimitive.Root>
   )
 }
 
+/**
+ * A single toggle within a {@link ToggleGroup}. Inherits `variant`, `size`,
+ * and `spacing` from the group context; group values win over item props.
+ *
+ * @component
+ * @layer core
+ */
 function ToggleGroupItem({
   className,
   children,

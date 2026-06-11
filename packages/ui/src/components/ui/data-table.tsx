@@ -66,6 +66,13 @@ import {
 
 export type { DataTableColumn, DataTableSort, DataTableAlign, DataTableDensity }
 
+/**
+ * Props for {@link DataTable}, generic over the row type `T`.
+ *
+ * Sorting, selection, and pagination each work controlled or uncontrolled;
+ * pass `manualSort` / `manualPagination` to hand ordering and slicing over to
+ * a server or TanStack layer while keeping the rendering here.
+ */
 interface DataTableProps<T>
   extends Omit<React.ComponentProps<"table">, "children" | keyof SaasflareComponentProps>,
     SaasflareComponentProps {
@@ -435,7 +442,9 @@ function DataTable<T>(props: DataTableProps<T>): React.JSX.Element {
                   <TableRow
                     key={id}
                     data-state={selected ? "selected" : undefined}
-                    role={clickable ? "button" : undefined}
+                    // No role="button" on <tr>: it would strip the row's table
+                    // semantics for AT. Focusable + Enter/Space is enough.
+                    data-clickable={clickable ? "true" : undefined}
                     tabIndex={clickable ? 0 : undefined}
                     onClick={clickable ? (event) => handleRowActivate(row, index, event.target) : undefined}
                     onKeyDown={

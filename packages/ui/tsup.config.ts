@@ -109,7 +109,9 @@ export default defineConfig({
     sourcemap: false,
     clean: true,
     external: ['react', 'react-dom'],
-    noExternal: ['sonner'],
+    // sonner must stay EXTERNAL: inlining it (noExternal) duplicates its
+    // module-level ToastState, so consumers' toast() calls land in a different
+    // singleton than the rendered <Toaster> and never show up.
     treeshake: true,
     onSuccess: injectUseClient,
 });

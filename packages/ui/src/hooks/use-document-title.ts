@@ -11,7 +11,6 @@
  * useDocumentTitle('Settings — MyApp');
  * useDocumentTitle(`(${unreadCount}) Inbox`, { restoreOnUnmount: true });
  */
-'use client';
 
 import { useEffect, useRef } from 'react';
 

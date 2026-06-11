@@ -28,8 +28,26 @@ import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link Toaster}.
+ *
+ * Extends Sonner's `ToasterProps` (`position`, `duration`, …) with
+ * {@link SaasflareComponentProps}, so `iconWeight` and the other axes can be
+ * supplied per-instance or inherited from <SaasflareProvider>.
+ */
 interface SaasflareToasterProps extends Omit<ToasterProps, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Toast notification container built on Sonner. Mount once near the app root,
+ * then fire toasts with Sonner's `toast()` API. Follows the next-themes color
+ * scheme and swaps Sonner's default status icons for Phosphor equivalents.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Toaster position="top-right" />
+ */
 const Toaster = ({ surface, radius, animated, iconWeight, ...props }: SaasflareToasterProps) => {
   const { theme = "system" } = useTheme()
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
@@ -61,5 +79,14 @@ const Toaster = ({ surface, radius, animated, iconWeight, ...props }: SaasflareT
     />
   )
 }
+
+/**
+ * Sonner's imperative toast API, re-exported so consumers and the mounted
+ * {@link Toaster} are guaranteed to share ONE sonner module instance.
+ * Importing `toast` from "sonner" directly can resolve to a second copy
+ * (separate toast state) under isolated installs — always import it from
+ * `@saasflare/ui` instead.
+ */
+export { toast } from "sonner"
 
 export { Toaster, type SaasflareToasterProps }

@@ -13,7 +13,6 @@
  * const { activePage, range, setPage, next, previous } = usePagination({ total: 20 });
  * // activePage = 10 → range = [1, 'dots', 9, 10, 11, 'dots', 20]
  */
-'use client';
 
 import { useCallback, useMemo, useState } from 'react';
 

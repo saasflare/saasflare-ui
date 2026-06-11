@@ -10,7 +10,7 @@ export function Demo() {
                 <NativeSelectOption value="monthly">Billed monthly</NativeSelectOption>
                 <NativeSelectOption value="yearly">Billed yearly</NativeSelectOption>
             </NativeSelect>
-            <NativeSelect size="default" defaultValue="monthly">
+            <NativeSelect size="md" defaultValue="monthly">
                 <NativeSelectOption value="monthly">Billed monthly</NativeSelectOption>
                 <NativeSelectOption value="yearly">Billed yearly</NativeSelectOption>
             </NativeSelect>

@@ -58,11 +58,11 @@ export interface DateRange {
 
 /** Props for the DateRangePicker component. */
 export interface DateRangePickerProps extends SaasflareComponentProps {
-    /** Controlled value. */
-    value?: DateRange
+    /** Controlled value. Pass `null` for a controlled-but-empty picker. */
+    value?: DateRange | null
     /** Uncontrolled default value. */
     defaultValue?: DateRange
-    /** Called when the user picks a new range. */
+    /** Called when the user picks a new range (`undefined` on deselect — writing it back to state keeps the picker controlled and clears it). */
     onChange?: (range: DateRange | undefined) => void
     /** Placeholder shown in the trigger when no range is set. */
     placeholder?: string
@@ -116,9 +116,14 @@ export function DateRangePicker({
 }: DateRangePickerProps) {
     const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
-    const isControlled = value !== undefined
+    /* Latched controlled-ness — see DatePicker: keeps the component controlled
+     * after the parent stores the `undefined` emitted on deselect, so a
+     * controlled clear actually renders. */
+    const wasControlled = React.useRef(value !== undefined)
+    if (value !== undefined) wasControlled.current = true
+    const isControlled = wasControlled.current
     const [internal, setInternal] = React.useState<DateRange | undefined>(defaultValue)
-    const range = isControlled ? value : internal
+    const range = isControlled ? (value ?? undefined) : internal
 
     const handleSelect = (next: DateRange | undefined) => {
         if (!isControlled) setInternal(next)

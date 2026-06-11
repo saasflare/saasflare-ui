@@ -11,18 +11,20 @@
  * Do NOT add a hex `color` field here; it will drift from palettes.css.
  */
 
-/** All available color palette ids and display names. */
+/** All available color palette ids and display names — one entry per `:root[data-palette]` preset in palettes.css. */
 export const PALETTES = [
+    { id: "saasflare", name: "Saasflare" },
     { id: "ocean", name: "Ocean" },
     { id: "achromatic", name: "Achromatic" },
     { id: "black", name: "Black" },
+    { id: "snow", name: "Snow" },
     { id: "ink", name: "Ink" },
+    { id: "stone", name: "Stone" },
     { id: "aurora", name: "Aurora" },
     { id: "indigo", name: "Indigo" },
     { id: "emerald", name: "Emerald" },
     { id: "violet", name: "Violet" },
     { id: "coral", name: "Coral" },
-    { id: "stone", name: "Stone" },
     { id: "jade", name: "Jade" },
     { id: "cobalt", name: "Cobalt" },
     { id: "amber", name: "Amber" },
@@ -31,6 +33,10 @@ export const PALETTES = [
     { id: "teal", name: "Teal" },
     { id: "iris", name: "Iris" },
     { id: "ruby", name: "Ruby" },
+    { id: "lavender", name: "Lavender" },
+    { id: "mint", name: "Mint" },
+    { id: "sage", name: "Sage" },
+    { id: "sky", name: "Sky" },
     { id: "colorful", name: "Colorful" },
     { id: "craivo", name: "Craivo" },
 ] as const
@@ -124,7 +130,7 @@ export interface CustomPalette {
  * - arbitrary string   → app-registered [data-palette="…"] in the app's globals.css
  * - CustomPalette      → runtime palette via inline CSS custom properties
  *
- * The `(string & {})` branch preserves autocomplete for the 16 preset ids
+ * The `(string & {})` branch preserves autocomplete for the preset ids
  * while still permitting arbitrary strings.
  */
 export type Palette = PaletteId | (string & {}) | CustomPalette

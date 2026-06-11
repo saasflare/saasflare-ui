@@ -20,7 +20,6 @@
  *   onError: (err) => Sentry.captureException(err),
  * });
  */
-'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 

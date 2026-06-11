@@ -12,7 +12,6 @@
  * useClickOutside(ref, () => setOpen(false));
  * return <div ref={ref}>Dropdown content</div>;
  */
-'use client';
 
 import { useEffect, useRef, type RefObject } from 'react';
 

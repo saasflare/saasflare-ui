@@ -29,6 +29,7 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 const SIZE_PX = { sm: 14, md: 20, lg: 28, xl: 36 } as const
+/** Star size preset of a {@link Rating} — per-star pixel size (`sm` 14px, `md` 20px, `lg` 28px, `xl` 36px). */
 export type RatingSize = keyof typeof SIZE_PX
 
 /** Props for the Rating component. */

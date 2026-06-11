@@ -45,7 +45,7 @@ saasflare-ui/
 │       │   ├── providers/   SaasflareShell, animation, smooth scroll
 │       │   ├── entries/     Subpath bundle entries
 │       │   └── types/
-│       ├── styles/          theme.css, palettes.css, themes.css, motion.css
+│       ├── styles/          globals.css, theme.css, palettes.css, surfaces.css, motion.css, aurora.css
 │       ├── fonts/           Font presets (default, editorial, geometric, ...)
 │       └── package.json     "name": "@saasflare/ui"
 ├── package.json
@@ -62,9 +62,9 @@ saasflare-ui/
 
 Every theme decision lives here. Five discipline points:
 
-1. **Theme variables live in `packages/ui/styles/`** — `theme.css` (token root),
-   `palettes.css` (active brand palette), `themes.css` (light/dark switching).
-   Apps never define theme variables.
+1. **Theme variables live in `packages/ui/styles/`** — `theme.css` (token root +
+   light/dark switching via `.dark` token redefinition), `palettes.css` (brand
+   palettes). Apps never define theme variables.
 2. **Tailwind v4 uses CSS `@theme` from `packages/ui/styles/theme.css`** — no app-side
    `tailwind.config.ts extend`.
 3. **One entry: `@import "@saasflare/ui/styles"`** — pulls the complete bundle
@@ -77,10 +77,13 @@ Every theme decision lives here. Five discipline points:
 
 ### Palette switching
 
-`<html data-palette="{name}">` swaps palette. Current presets in
-`packages/ui/styles/palettes.css`: `saasflare` (house), `ocean`, `ink`, `aurora`,
-`indigo`, `emerald`, `violet`, `coral`, `stone`, `jade`, `cobalt`, `amber`, `fuchsia`,
-`honey`, `teal`, `iris`, `ruby`. Brand changes = edit `palettes.css`.
+`<html data-palette="{name}">` swaps palette. 26 presets in
+`packages/ui/styles/palettes.css` (mirrored 1:1 by the exported `PALETTES` const in
+`src/types/theme-props.ts` — keep both in lockstep): `saasflare` (house), `ocean`,
+`achromatic`, `black`, `snow`, `ink`, `stone`, `aurora`, `indigo`, `emerald`,
+`violet`, `coral`, `jade`, `cobalt`, `amber`, `fuchsia`, `honey`, `teal`, `iris`,
+`ruby`, `lavender`, `mint`, `sage`, `sky`, `colorful`, `craivo`.
+Brand changes = edit `palettes.css`.
 
 ### Smoke test
 
@@ -93,7 +96,7 @@ adopt the new accent on next HMR. If one doesn't, the consumer's setup is broken
 ## Design Principles
 
 1. **Components expose semantic props only** — no micro-styling, no prop bloat.
-2. **Animation via Motion (formerly Framer Motion)** — `motion/react`; declared as an optional peer; consumers provide.
+2. **Animation via Motion (formerly Framer Motion)** — `motion/react`; a **required** peer (SaasflareShell mounts LazyMotion unconditionally); consumers install it.
 3. **Zero env vars** — `@saasflare/ui` works without configuration.
 4. **Own implementation** — no shadcn dependency. We control the primitives.
 5. **One component per file**. JSDoc on every export (feeds copilot training).

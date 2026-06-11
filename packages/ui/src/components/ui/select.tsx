@@ -28,40 +28,71 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, springBouncy } from "./motion-config"
 
+/**
+ * Animated dropdown select built on Radix Select. Manages value and open
+ * state; compose with {@link SelectTrigger}, {@link SelectValue},
+ * {@link SelectContent}, and {@link SelectItem}. Use for single-choice
+ * selection from a list too long for radio buttons.
+ *
+ * @component
+ * @layer core
+ */
 function Select({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />
 }
 
+/**
+ * Groups related items inside {@link SelectContent}, typically headed by a
+ * {@link SelectLabel}.
+ *
+ * @component
+ * @layer core
+ */
 function SelectGroup({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Group>) {
   return <SelectPrimitive.Group data-slot="select-group" {...props} />
 }
 
+/**
+ * Displays the selected item's text (or a `placeholder`) inside
+ * {@link SelectTrigger}.
+ *
+ * @component
+ * @layer core
+ */
 function SelectValue({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
   return <SelectPrimitive.Value data-slot="select-value" {...props} />
 }
 
+/**
+ * Button that opens the dropdown — renders the current {@link SelectValue}
+ * with a trailing caret icon.
+ *
+ * @component
+ * @layer core
+ */
 function SelectTrigger({
   className,
-  size = "default",
+  size = "md",
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  /** Control height of the trigger. `"default"` (h-9) or `"sm"` (h-8). */
-  size?: "sm" | "default"
+  /** Control height of the trigger. `"md"` (h-9) or `"sm"` (h-8). (`"default"` is a deprecated alias for `"md"`.) */
+  size?: "sm" | "md" | "default"
 }) {
   const sf = useSaasflareProps()
+  const resolvedSize = size === "default" ? "md" : size
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
-      data-size={size}
+      data-size={resolvedSize}
       className={cn(
-        "flex w-fit cursor-pointer items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow,border-color] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 dark:bg-input/30",
+        "flex w-fit cursor-pointer items-center justify-between gap-2 rounded-md border border-input bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow,border-color] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 data-[size=md]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 dark:bg-input/30",
         "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
         className
       )}
@@ -75,10 +106,22 @@ function SelectTrigger({
   )
 }
 
+/**
+ * Props for {@link SelectContent}. Extends {@link SaasflareComponentProps} so
+ * `surface`, `radius`, `animated`, and `iconWeight` can override the
+ * <SaasflareProvider> context per instance.
+ */
 interface SelectContentProps
   extends Omit<React.ComponentProps<typeof SelectPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Portalled dropdown panel with a spring entrance animation — hosts the
+ * scrollable item viewport plus the scroll-up/down affordances.
+ *
+ * @component
+ * @layer core
+ */
 function SelectContent({
   className,
   children,
@@ -130,6 +173,12 @@ function SelectContent({
   )
 }
 
+/**
+ * Non-interactive heading for a {@link SelectGroup}.
+ *
+ * @component
+ * @layer core
+ */
 function SelectLabel({
   className,
   ...props
@@ -143,6 +192,13 @@ function SelectLabel({
   )
 }
 
+/**
+ * Selectable option inside {@link SelectContent} — shows a check indicator
+ * when it is the current value.
+ *
+ * @component
+ * @layer core
+ */
 function SelectItem({
   className,
   children,
@@ -168,6 +224,12 @@ function SelectItem({
   )
 }
 
+/**
+ * Thin divider between groups of items.
+ *
+ * @component
+ * @layer core
+ */
 function SelectSeparator({
   className,
   ...props
@@ -181,6 +243,13 @@ function SelectSeparator({
   )
 }
 
+/**
+ * Scroll affordance pinned to the top of the viewport when items overflow.
+ * Rendered automatically by {@link SelectContent}.
+ *
+ * @component
+ * @layer core
+ */
 function SelectScrollUpButton({
   className,
   ...props
@@ -197,6 +266,13 @@ function SelectScrollUpButton({
   )
 }
 
+/**
+ * Scroll affordance pinned to the bottom of the viewport when items overflow.
+ * Rendered automatically by {@link SelectContent}.
+ *
+ * @component
+ * @layer core
+ */
 function SelectScrollDownButton({
   className,
   ...props

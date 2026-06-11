@@ -24,8 +24,33 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link Empty}.
+ *
+ * Extends {@link SaasflareComponentProps} so `surface`, `radius`, `animated`,
+ * and `iconWeight` can be supplied per-instance or inherited from
+ * <SaasflareProvider>.
+ */
 interface EmptyProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Empty-state placeholder — a dashed-border container centered in its parent.
+ * Use when a list, table, or search has nothing to show; compose with
+ * {@link EmptyHeader}, {@link EmptyTitle}, {@link EmptyDescription}, and
+ * {@link EmptyContent}.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Empty>
+ *   <EmptyHeader>
+ *     <EmptyTitle>No items found</EmptyTitle>
+ *     <EmptyDescription>Try adjusting your filters.</EmptyDescription>
+ *   </EmptyHeader>
+ *   <EmptyContent>Create one</EmptyContent>
+ * </Empty>
+ */
 function Empty({ className, surface, radius, animated, iconWeight, ...props }: EmptyProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -44,6 +69,12 @@ function Empty({ className, surface, radius, animated, iconWeight, ...props }: E
   )
 }
 
+/**
+ * Groups the media, title, and description at the top of an {@link Empty}.
+ *
+ * @component
+ * @layer core
+ */
 function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -72,6 +103,13 @@ const emptyMediaVariants = cva(
   }
 )
 
+/**
+ * Icon or illustration slot above the title. `variant="icon"` wraps the icon
+ * in a muted rounded tile.
+ *
+ * @component
+ * @layer core
+ */
 function EmptyMedia({
   className,
   variant = "default",
@@ -87,6 +125,12 @@ function EmptyMedia({
   )
 }
 
+/**
+ * Empty-state title text.
+ *
+ * @component
+ * @layer core
+ */
 function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -97,6 +141,12 @@ function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Empty-state supporting text; nested links are underlined automatically.
+ *
+ * @component
+ * @layer core
+ */
 function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
@@ -110,6 +160,12 @@ function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
   )
 }
 
+/**
+ * Action area of an {@link Empty} — holds buttons or links below the header.
+ *
+ * @component
+ * @layer core
+ */
 function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div

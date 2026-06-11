@@ -55,6 +55,7 @@ const PROVIDERS = [
     "linkedin", "medium", "slack", "reddit", "paypal", "stripe", "gitlab",
     "dribbble", "tiktok",
 ] as const
+/** Identity provider supported by {@link SocialAuthButton} — selects the brand icon and the default "Continue with {Provider}" label. */
 type SocialProvider = (typeof PROVIDERS)[number]
 
 const PROVIDER_LABELS: Record<SocialProvider, string> = {

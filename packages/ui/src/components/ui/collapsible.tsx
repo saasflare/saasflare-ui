@@ -20,16 +20,36 @@ import * as React from "react"
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link CollapsibleContent}. Extends the Radix Collapsible content
+ * props with the Saasflare theming axes (`surface`, `radius`, `animated`,
+ * `iconWeight`).
+ */
 interface CollapsibleContentProps
   extends Omit<React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Expandable content region toggled by a trigger. Root of the composition —
+ * owns open state and wires {@link CollapsibleTrigger} and
+ * {@link CollapsibleContent} together. Use for a single show/hide section;
+ * for stacked exclusive sections reach for Accordion.
+ *
+ * @component
+ * @layer core
+ */
 function Collapsible({
   ...props
 }: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
   return <CollapsiblePrimitive.Root data-slot="collapsible" {...props} />
 }
 
+/**
+ * Button that toggles the collapsible region open and closed.
+ *
+ * @component
+ * @layer core
+ */
 function CollapsibleTrigger({
   ...props
 }: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {
@@ -41,6 +61,14 @@ function CollapsibleTrigger({
   )
 }
 
+/**
+ * The content region revealed while the collapsible is open. Resolves
+ * `surface`/`radius`/`animated` against the <SaasflareProvider> context and
+ * exposes them as data attributes for CSS-driven styling.
+ *
+ * @component
+ * @layer core
+ */
 function CollapsibleContent({
   surface,
   radius,

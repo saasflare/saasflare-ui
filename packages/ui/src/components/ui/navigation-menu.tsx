@@ -29,12 +29,35 @@ import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link NavigationMenu}.
+ *
+ * `viewport` toggles the shared {@link NavigationMenuViewport} that hosts all
+ * dropdown content in one animated panel; set it to `false` to render each
+ * item's content as a self-contained popover below its trigger instead.
+ */
 interface NavigationMenuProps
   extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
+  /**
+   * Render the shared viewport panel for dropdown content.
+   *
+   * @default true
+   */
   viewport?: boolean
 }
 
+/**
+ * Site navigation root with animated dropdown menus, built on Radix NavigationMenu.
+ *
+ * Hosts a {@link NavigationMenuList} of items and, by default, a shared
+ * {@link NavigationMenuViewport} that all dropdown content animates into.
+ * Resolves the design-system axes and emits them as data attributes. Use for
+ * horizontal header navigation.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenu({
   className,
   children,
@@ -66,6 +89,12 @@ function NavigationMenu({
   )
 }
 
+/**
+ * Horizontal list that lays out the top-level {@link NavigationMenuItem} entries.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenuList({
   className,
   ...props
@@ -82,6 +111,12 @@ function NavigationMenuList({
   )
 }
 
+/**
+ * A single menu entry — wraps a trigger/content pair or a standalone link.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenuItem({
   className,
   ...props
@@ -95,6 +130,11 @@ function NavigationMenuItem({
   )
 }
 
+/**
+ * cva builder for the trigger button styles. Applied internally by
+ * {@link NavigationMenuTrigger}; call it on a plain {@link NavigationMenuLink}
+ * to make a top-level link match the trigger appearance.
+ */
 const navigationMenuTriggerStyle = cva(
   "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-[color,box-shadow] outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground data-[state=open]:hover:bg-accent data-[state=open]:focus:bg-accent"
 )
@@ -103,6 +143,13 @@ interface NavigationMenuTriggerProps
   extends React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>,
     Pick<SaasflareComponentProps, "iconWeight"> {}
 
+/**
+ * Button that opens an item's {@link NavigationMenuContent}. Renders a caret
+ * that rotates while open and follows the resolved `iconWeight` axis.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenuTrigger({
   className,
   children,
@@ -129,6 +176,14 @@ interface NavigationMenuContentProps
   extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Dropdown panel for a menu item. Renders into the shared
+ * {@link NavigationMenuViewport} when the root has `viewport` enabled,
+ * otherwise as a self-contained popover below its trigger.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenuContent({
   className,
   surface,
@@ -158,6 +213,13 @@ interface NavigationMenuViewportProps
   extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Viewport>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Shared panel that hosts the active item's content and animates between sizes.
+ * Rendered automatically by {@link NavigationMenu} unless `viewport` is `false`.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenuViewport({
   className,
   surface,
@@ -188,6 +250,13 @@ interface NavigationMenuLinkProps
   extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Link>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Navigational link inside the menu — use `asChild` to compose with a framework
+ * router link. Works standalone in an item or inside dropdown content.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenuLink({
   className,
   surface,
@@ -216,6 +285,12 @@ interface NavigationMenuIndicatorProps
   extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Indicator>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Animated arrow that tracks the active trigger and points at the open content.
+ *
+ * @component
+ * @layer core
+ */
 function NavigationMenuIndicator({
   className,
   surface,

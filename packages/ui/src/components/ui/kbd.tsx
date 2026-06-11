@@ -16,8 +16,16 @@
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/** Props for {@link Kbd}. */
 interface KbdProps extends Omit<React.ComponentProps<"kbd">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Renders a single keyboard key as a styled `<kbd>` element. Use it in
+ * tooltips, menus, and docs to surface keyboard shortcuts.
+ *
+ * @component
+ * @layer core
+ */
 function Kbd({ className, surface, radius, animated, iconWeight, ...props }: KbdProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -42,6 +50,12 @@ interface KbdGroupProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Lays out multiple {@link Kbd} keys as a single shortcut combination.
+ *
+ * @component
+ * @layer core
+ */
 function KbdGroup({ className, surface, radius, animated, iconWeight, ...props }: KbdGroupProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 

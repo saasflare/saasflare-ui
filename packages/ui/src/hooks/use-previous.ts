@@ -12,7 +12,6 @@
  * const prevCount = usePrevious(count);
  * // prevCount is the value of count from the previous render
  */
-'use client';
 
 import { useEffect, useRef } from 'react';
 

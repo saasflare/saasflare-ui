@@ -17,7 +17,6 @@
  * // Ctrl+Shift+S
  * useKeyboardShortcut('s', handleSave, { ctrl: true, shift: true });
  */
-'use client';
 
 import { useEffect, useRef } from 'react';
 

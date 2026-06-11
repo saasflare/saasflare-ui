@@ -32,6 +32,13 @@ import { MinusIcon } from "./phosphor"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link InputOTP}.
+ *
+ * Extends the `input-otp` OTPInput props with {@link SaasflareComponentProps}.
+ * `containerClassName` styles the outer flex wrapper; `className` styles the
+ * underlying input element.
+ */
 type InputOTPProps = React.ComponentProps<typeof OTPInput> & SaasflareComponentProps & {
   containerClassName?: string
 }
@@ -68,6 +75,7 @@ function InputOTP({
   )
 }
 
+/** Props for {@link InputOTPGroup}. */
 interface InputOTPGroupProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
@@ -98,6 +106,7 @@ function InputOTPGroup({
   )
 }
 
+/** Props for {@link InputOTPSlot}. */
 interface InputOTPSlotProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
@@ -146,6 +155,7 @@ function InputOTPSlot({
   )
 }
 
+/** Props for {@link InputOTPSeparator}. */
 interface InputOTPSeparatorProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

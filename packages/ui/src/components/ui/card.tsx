@@ -28,6 +28,13 @@ import { useSaasflareMotion, springGentle } from "./motion-config"
 /** Motion event overrides that conflict with React HTML events */
 type MotionConflicts = "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
 
+/**
+ * Props for {@link Card}.
+ *
+ * Extends the native div props with {@link SaasflareComponentProps}, so
+ * `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface CardProps
   extends Omit<React.ComponentProps<"div">, MotionConflicts | keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

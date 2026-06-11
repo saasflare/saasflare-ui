@@ -12,7 +12,6 @@
  * const isLargeScreen = useMediaQuery('(min-width: 1024px)');
  * const prefersReducedData = useMediaQuery('(prefers-reduced-data: reduce)');
  */
-'use client';
 
 import { useEffect, useState } from 'react';
 

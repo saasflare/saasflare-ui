@@ -28,6 +28,13 @@ import * as MenubarPrimitive from "@radix-ui/react-menubar"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link Menubar}.
+ *
+ * Extends the Radix Menubar root props with {@link SaasflareComponentProps},
+ * so `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface MenubarProps
   extends Omit<React.ComponentProps<typeof MenubarPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
@@ -108,6 +115,12 @@ function MenubarTrigger({
   )
 }
 
+/**
+ * Props for {@link MenubarContent}.
+ *
+ * Extends the Radix Menubar content props (`align`, `alignOffset`,
+ * `sideOffset`, …) with {@link SaasflareComponentProps}.
+ */
 interface MenubarContentProps
   extends Omit<React.ComponentProps<typeof MenubarPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

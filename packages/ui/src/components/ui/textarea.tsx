@@ -23,10 +23,25 @@ type TextareaBaseProps = Omit<
   "onDrag" | "onDragStart" | "onDragEnd" | "onAnimationStart" | "onAnimationEnd"
 >
 
+/**
+ * Props for {@link Textarea}.
+ *
+ * Extends the native textarea props with {@link SaasflareComponentProps}, so
+ * `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface TextareaProps
   extends Omit<TextareaBaseProps, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Multi-line text input with a spring-animated focus ring and content-based
+ * auto-sizing (`field-sizing-content`). `surface`, `radius`, and `animated`
+ * resolve against the <SaasflareProvider> context when omitted.
+ *
+ * @component
+ * @layer core
+ */
 function Textarea({ className, surface, radius, animated, iconWeight, ...props }: TextareaProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })

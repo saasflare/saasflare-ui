@@ -25,8 +25,22 @@ import * as ResizablePrimitive from "react-resizable-panels"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link ResizablePanelGroup}.
+ *
+ * Extends the `react-resizable-panels` group props (e.g. `direction`) with
+ * {@link SaasflareComponentProps}.
+ */
 type ResizablePanelGroupProps = ResizablePrimitive.GroupProps & SaasflareComponentProps
 
+/**
+ * Container that lays out {@link ResizablePanel}s along a horizontal or
+ * vertical axis and coordinates their drag-to-resize behavior. Use it for
+ * split views like editors, file trees, and inspector layouts.
+ *
+ * @component
+ * @layer core
+ */
 function ResizablePanelGroup({
   className,
   surface,
@@ -52,10 +66,23 @@ function ResizablePanelGroup({
   )
 }
 
+/**
+ * A single resizable region within a {@link ResizablePanelGroup}.
+ *
+ * @component
+ * @layer core
+ */
 function ResizablePanel({ ...props }: ResizablePrimitive.PanelProps) {
   return <ResizablePrimitive.Panel data-slot="resizable-panel" {...props} />
 }
 
+/**
+ * Draggable divider between two {@link ResizablePanel}s. Set `withHandle` to
+ * render a visible grip affordance centered on the divider.
+ *
+ * @component
+ * @layer core
+ */
 function ResizableHandle({
   withHandle,
   className,

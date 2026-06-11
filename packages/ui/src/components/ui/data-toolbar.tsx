@@ -27,12 +27,22 @@ import * as React from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link DataToolbar}.
+ *
+ * Extends the native div props with {@link SaasflareComponentProps}, so
+ * `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface DataToolbarProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/** Props for {@link DataToolbarSearch}. */
 interface DataToolbarSearchProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/** Props for {@link DataToolbarFilters}. */
 interface DataToolbarFiltersProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/** Props for {@link DataToolbarActions}. */
 interface DataToolbarActionsProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
 /**

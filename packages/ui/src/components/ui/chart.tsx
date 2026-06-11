@@ -33,6 +33,13 @@ import { useSaasflareProps, type SaasflareComponentProps } from "../../providers
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
 
+/**
+ * Per-series chart configuration keyed by data key. Each entry supplies an
+ * optional `label` and `icon` plus either a static `color` or a per-theme
+ * (`light`/`dark`) color map. Consumed by {@link ChartContainer}, which exposes
+ * each color as a `--color-{key}` CSS variable, and read by the tooltip and
+ * legend content components.
+ */
 export type ChartConfig = {
   [k in string]: {
     label?: React.ReactNode
@@ -59,6 +66,11 @@ function useChart() {
   return context
 }
 
+/**
+ * Props for {@link ChartContainer}. `config` drives series colors, labels, and
+ * icons; `children` must satisfy Recharts' `ResponsiveContainer` child
+ * contract (a single chart element).
+ */
 interface ChartContainerProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
@@ -66,6 +78,17 @@ interface ChartContainerProps
   children: React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>["children"]
 }
 
+/**
+ * Themed wrapper for Recharts charts. Provides the {@link ChartConfig} to
+ * descendant tooltip/legend components via context, injects per-series
+ * `--color-{key}` CSS variables (light/dark aware), and renders children in a
+ * responsive 16:9 container with Saasflare token styling applied to Recharts
+ * internals. Required ancestor for {@link ChartTooltipContent} and
+ * {@link ChartLegendContent}.
+ *
+ * @component
+ * @layer core
+ */
 function ChartContainer({
   id,
   className,
@@ -144,6 +167,13 @@ ${colorConfig
   )
 }
 
+/**
+ * Re-export of the Recharts `Tooltip` component. Place inside a chart and pass
+ * {@link ChartTooltipContent} via `content` to get the themed, config-driven
+ * tooltip body.
+ *
+ * @component
+ */
 const ChartTooltip = RechartsPrimitive.Tooltip
 
 interface ChartTooltipPayloadItem {
@@ -334,6 +364,13 @@ function ChartTooltipContent({
   )
 }
 
+/**
+ * Re-export of the Recharts `Legend` component. Place inside a chart and pass
+ * {@link ChartLegendContent} via `content` to get the themed, config-driven
+ * legend body.
+ *
+ * @component
+ */
 const ChartLegend = RechartsPrimitive.Legend
 
 interface ChartLegendPayloadItem {

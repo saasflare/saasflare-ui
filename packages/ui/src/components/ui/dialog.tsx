@@ -99,6 +99,13 @@ function DialogOverlay({
   )
 }
 
+/**
+ * Props for {@link DialogContent}.
+ *
+ * Extends the Radix Dialog Content props with {@link SaasflareComponentProps},
+ * so `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface DialogContentProps
   extends Omit<React.ComponentProps<typeof DialogPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {

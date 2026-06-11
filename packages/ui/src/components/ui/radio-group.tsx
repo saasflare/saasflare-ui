@@ -21,6 +21,13 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Props for {@link RadioGroup}.
+ *
+ * Extends the Radix RadioGroup Root props with {@link SaasflareComponentProps},
+ * so `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface RadioGroupProps
   extends Omit<React.ComponentProps<typeof RadioGroupPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

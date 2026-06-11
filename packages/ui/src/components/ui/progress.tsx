@@ -21,6 +21,13 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, spring } from "./motion-config"
 
+/**
+ * Props for {@link Progress}.
+ *
+ * Extends the Radix Progress Root props with {@link SaasflareComponentProps},
+ * so `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from <SaasflareProvider>.
+ */
 interface ProgressProps
   extends Omit<React.ComponentProps<typeof ProgressPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

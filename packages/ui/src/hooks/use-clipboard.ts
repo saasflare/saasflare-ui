@@ -13,9 +13,8 @@
  *   {copied ? 'Copied!' : 'Copy'}
  * </Button>
  */
-'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /** Return type for the useClipboard hook */
 export interface UseClipboardReturn {
@@ -42,6 +41,9 @@ export function useClipboard(resetMs = 2000): UseClipboardReturn {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  // Clear the pending reset timer when the consumer unmounts.
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   const copy = useCallback(
     async (text: string) => {

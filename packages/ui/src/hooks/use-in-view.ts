@@ -12,7 +12,6 @@
  * const inView = useInView(ref);
  * return <div ref={ref} className={inView ? 'animate-in' : 'opacity-0'} />;
  */
-'use client';
 
 import { type RefObject } from 'react';
 import {

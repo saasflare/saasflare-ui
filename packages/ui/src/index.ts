@@ -50,6 +50,48 @@ export {
     type UseFileDialogOptions,
     type UseFileDialogReturn,
 } from './hooks/use-file-dialog';
+export { useAnimationFrame } from './hooks/use-animation-frame';
+export { useClickOutside } from './hooks/use-click-outside';
+export { useClipboard, type UseClipboardReturn } from './hooks/use-clipboard';
+export {
+    useDebounce,
+    useDebouncedCallback,
+    type DebouncedCallbackOptions,
+    type DebouncedFunction,
+} from './hooks/use-debounce';
+export { useDocumentTitle, type UseDocumentTitleOptions } from './hooks/use-document-title';
+export { useEventListener } from './hooks/use-event-listener';
+export { useIdle } from './hooks/use-idle';
+export { useInView } from './hooks/use-in-view';
+export {
+    useIntersectionObserver,
+    type UseIntersectionObserverOptions,
+} from './hooks/use-intersection-observer';
+export { useKeyboardShortcut, type KeyboardShortcutOptions } from './hooks/use-keyboard-shortcut';
+export {
+    useLongPress,
+    type UseLongPressOptions,
+    type LongPressHandlers,
+} from './hooks/use-long-press';
+export { useMediaQuery } from './hooks/use-media-query';
+export { useMounted } from './hooks/use-mounted';
+export {
+    useMousePosition,
+    type MousePosition,
+    type UseMousePositionOptions,
+} from './hooks/use-mouse-position';
+export { useOnline } from './hooks/use-online';
+export { useParallax, type ParallaxValue } from './hooks/use-parallax';
+export { usePrevious } from './hooks/use-previous';
+export { useScrollLock } from './hooks/use-scroll-lock';
+export {
+    useScrollPosition,
+    type ScrollPosition,
+    type ScrollDirection,
+    type UseScrollPositionOptions,
+} from './hooks/use-scroll-position';
+export { useToggle } from './hooks/use-toggle';
+export { useWindowSize, type WindowSize } from './hooks/use-window-size';
 
 // UI Components (Premium — from ui/ with animations)
 export * from './components/ui/index';

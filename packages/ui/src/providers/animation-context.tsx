@@ -11,7 +11,6 @@
  * This context exists purely so JS code (Motion, conditional
  * animations) can read the same flag without querying the DOM.
  */
-"use client"
 
 import { createContext, useContext } from "react"
 import { useReducedMotion } from "../hooks/use-reduced-motion"

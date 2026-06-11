@@ -24,6 +24,11 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { Separator } from "./separator"
 
+/**
+ * cva variant builder for {@link ButtonGroup} — the `orientation` axis lays the
+ * children out horizontally or vertically and flattens the adjacent corners of
+ * connected children. Exported for consumers composing custom group shells.
+ */
 const buttonGroupVariants = cva(
   "flex w-fit items-stretch has-[>[data-slot=button-group]]:gap-2 [&>*]:focus-visible:relative [&>*]:focus-visible:z-10 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-r-md [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
   {
@@ -41,6 +46,12 @@ const buttonGroupVariants = cva(
   }
 )
 
+/**
+ * Props for {@link ButtonGroup}.
+ *
+ * Extends the native div props with the `orientation` variant from
+ * {@link buttonGroupVariants} and {@link SaasflareComponentProps}.
+ */
 interface ButtonGroupProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     VariantProps<typeof buttonGroupVariants>,
@@ -82,6 +93,7 @@ function ButtonGroup({
   )
 }
 
+/** Props for {@link ButtonGroupText}. */
 interface ButtonGroupTextProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {

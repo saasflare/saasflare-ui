@@ -27,7 +27,6 @@
  * For first-paint correctness when a non-baseline palette is persisted,
  * render <SaasflareScript /> inside <head> before any React hydration.
  */
-"use client"
 
 import { createContext, useCallback, useContext, useEffect, type ReactNode } from "react"
 import { ThemeProvider, useTheme } from "next-themes"
@@ -319,6 +318,18 @@ export function SaasflareProvider({
     const [persisted, setPersisted] = useLocalStorage<PersistedPrefs>(
         storageKey,
         PERSISTED_DEFAULTS,
+        {
+            // Normalize corrupted/foreign values (e.g. a literal `null` or a
+            // string written by another script): JSON.parse succeeds on those,
+            // so without this guard `persisted.palette` would crash the tree.
+            // The inline bootstrap script applies the same defense.
+            deserializer: (raw) => {
+                const parsed: unknown = JSON.parse(raw)
+                return parsed !== null && typeof parsed === "object"
+                    ? { ...PERSISTED_DEFAULTS, ...(parsed as Partial<PersistedPrefs>) }
+                    : PERSISTED_DEFAULTS
+            },
+        },
     )
 
     // Resolve effective values: explicit prop > persisted > baseline default.

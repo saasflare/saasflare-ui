@@ -1,5 +1,5 @@
 /**
- * @fileoverview 20 preset brand palettes — activate via [data-palette="id"] on <html>.
+ * @fileoverview 26 preset brand palettes — activate via [data-palette="id"] on <html>.
  * @module packages/ui/styles/palettes
  * @package ui
  * @reviewed 2026-04-19
@@ -156,10 +156,14 @@
     --neutral-h: 0;
     --neutral-c: 0;
     --primary-foreground: oklch(0.2 0 0);    /* dark text on near-white */
+    /* Derived --ring would be near-white on the white canvas — pin a visible
+     * focus ring (same per-mode override pattern as --primary-foreground). */
+    --ring: oklch(0.55 0.01 0);
 }
 :root[data-palette="snow"].dark {
     --primary-l: 0.95;
     --primary-foreground: oklch(0.2 0 0);
+    --ring: oklch(0.75 0.01 0);  /* light ring stays visible on the dark canvas */
 }
 
 /* ─── Craivo (cool cyan → magenta brand) ─────────── */
@@ -193,11 +197,12 @@
  * Chart palette overrides for achromatic palettes
  *
  * With --primary-c: 0, the derived chart colors collapse to grayscale.
- * Give Ink, Stone, Black and Snow a fixed distinguishable 5-hue palette.
+ * Give Ink, Stone, Black, Snow and Achromatic a fixed distinguishable 5-hue palette.
  * ============================================ */
 :root[data-palette="ink"],
 :root[data-palette="stone"],
 :root[data-palette="black"],
+:root[data-palette="achromatic"],
 :root[data-palette="snow"] {
     --chart-1: oklch(0.60 0.18 230);  /* blue */
     --chart-2: oklch(0.65 0.17  55);  /* orange */

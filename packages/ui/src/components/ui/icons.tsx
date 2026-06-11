@@ -19,6 +19,11 @@ interface IconProps {
   className?: string;
 }
 
+/**
+ * Map of inline-SVG icon components keyed by name (e.g. `Icons.chat`).
+ * Each icon accepts a `className` to override the default size and color —
+ * stroke icons inherit `currentColor`; the logo mark uses the primary token.
+ */
 export const Icons = {
   logo: ({ className }: IconProps) => (
     <svg className={cn("h-6 w-6", className)} viewBox="0 0 24 24" fill="none">

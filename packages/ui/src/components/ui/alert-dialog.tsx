@@ -77,6 +77,14 @@ function AlertDialogOverlay({
   )
 }
 
+/**
+ * Props for {@link AlertDialogContent}.
+ *
+ * Extends the Radix AlertDialog content props with
+ * {@link SaasflareComponentProps} so the design-system axes
+ * (surface/radius/animated/iconWeight) can be supplied per-instance or
+ * inherited from the provider.
+ */
 interface AlertDialogContentProps
   extends Omit<React.ComponentProps<typeof AlertDialogPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

@@ -36,6 +36,7 @@ const SIZE_PX = {
     xl: 128,
 } as const
 
+/** Size preset of a {@link ProgressCircle} — selects the outer diameter (`sm` 48px, `md` 64px, `lg` 96px, `xl` 128px). */
 export type ProgressCircleSize = keyof typeof SIZE_PX
 
 /** Props for the ProgressCircle component. */

@@ -48,11 +48,11 @@ function CalendarIcon(props: React.SVGProps<SVGSVGElement>) {
 
 /** Props for the DatePicker component. */
 export interface DatePickerProps extends SaasflareComponentProps {
-    /** Controlled value. */
-    value?: Date
+    /** Controlled value. Pass `null` for a controlled-but-empty picker. */
+    value?: Date | null
     /** Uncontrolled default value. */
     defaultValue?: Date
-    /** Called when the user picks a date. */
+    /** Called when the user picks a date (`undefined` on deselect — writing it back to state keeps the picker controlled and clears it). */
     onChange?: (date: Date | undefined) => void
     /** Placeholder shown when no date is set. */
     placeholder?: string
@@ -99,9 +99,15 @@ export function DatePicker({
 }: DatePickerProps) {
     const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
-    const isControlled = value !== undefined
+    /* Latched controlled-ness: once a defined `value` (or explicit null) has
+     * been seen, the component stays controlled even when the parent stores
+     * the `undefined` emitted on deselect — otherwise clearing silently flips
+     * the picker to uncontrolled and the stale internal date keeps rendering. */
+    const wasControlled = React.useRef(value !== undefined)
+    if (value !== undefined) wasControlled.current = true
+    const isControlled = wasControlled.current
     const [internal, setInternal] = useState<Date | undefined>(defaultValue)
-    const date = isControlled ? value : internal
+    const date = isControlled ? (value ?? undefined) : internal
 
     const handleSelect = (next: Date | undefined) => {
         if (!isControlled) setInternal(next)

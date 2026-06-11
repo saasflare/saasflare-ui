@@ -228,7 +228,8 @@ npx shadcn add https://ui.saasflare.io/r/avatar.json
 interface AvatarProps
   extends Omit<React.ComponentProps<typeof AvatarPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
-  size?: "default" | "sm" | "lg"
+  /** Visual size. `"default"` is a deprecated alias for `"md"`. */
+  size?: "sm" | "md" | "lg" | "default"
 }
 ```
 
@@ -881,6 +882,18 @@ interface CheckboxProps
   extends Omit<React.ComponentProps<typeof CheckboxPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Checkbox input with a bouncy spring check-mark animation. Built on the
+ * Radix Checkbox primitive; supports controlled and uncontrolled checked
+ * state. Pair with a `<label htmlFor>` for an accessible name.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Checkbox id="terms" />
+ * <label htmlFor="terms">Accept terms and conditions</label>
+ */
 function Checkbox({
   className,
   surface,
@@ -1025,6 +1038,16 @@ interface CommandProps
   extends Omit<React.ComponentProps<typeof CommandPrimitive>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Command palette root — a searchable, keyboard-navigable command menu built on cmdk.
+ *
+ * Filters {@link CommandItem} children as the user types into {@link CommandInput}.
+ * Resolves the design-system axes and emits them as data attributes. For a modal
+ * ⌘K-style palette use {@link CommandDialog}.
+ *
+ * @component
+ * @layer core
+ */
 function Command({
   className,
   surface,
@@ -1388,10 +1411,13 @@ npx shadcn add https://ui.saasflare.io/r/data-toolbar.json
 ```ts
 interface DataToolbarProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/** Props for {@link DataToolbarSearch}. */
 interface DataToolbarSearchProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/** Props for {@link DataToolbarFilters}. */
 interface DataToolbarFiltersProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/** Props for {@link DataToolbarActions}. */
 interface DataToolbarActionsProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
 /**
@@ -1459,11 +1485,11 @@ npx shadcn add https://ui.saasflare.io/r/date-picker.json
 
 ```ts
 export interface DatePickerProps extends SaasflareComponentProps {
-    /** Controlled value. */
-    value?: Date
+    /** Controlled value. Pass `null` for a controlled-but-empty picker. */
+    value?: Date | null
     /** Uncontrolled default value. */
     defaultValue?: Date
-    /** Called when the user picks a date. */
+    /** Called when the user picks a date (`undefined` on deselect — writing it back to state keeps the picker controlled and clears it). */
     onChange?: (date: Date | undefined) => void
     /** Placeholder shown when no date is set. */
     placeholder?: string
@@ -1503,11 +1529,11 @@ npx shadcn add https://ui.saasflare.io/r/date-range-picker.json
 
 ```ts
 export interface DateRangePickerProps extends SaasflareComponentProps {
-    /** Controlled value. */
-    value?: DateRange
+    /** Controlled value. Pass `null` for a controlled-but-empty picker. */
+    value?: DateRange | null
     /** Uncontrolled default value. */
     defaultValue?: DateRange
-    /** Called when the user picks a new range. */
+    /** Called when the user picks a new range (`undefined` on deselect — writing it back to state keeps the picker controlled and clears it). */
     onChange?: (range: DateRange | undefined) => void
     /** Placeholder shown in the trigger when no range is set. */
     placeholder?: string
@@ -1727,6 +1753,24 @@ npx shadcn add https://ui.saasflare.io/r/empty.json
 ```ts
 interface EmptyProps extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Empty-state placeholder — a dashed-border container centered in its parent.
+ * Use when a list, table, or search has nothing to show; compose with
+ * {@link EmptyHeader}, {@link EmptyTitle}, {@link EmptyDescription}, and
+ * {@link EmptyContent}.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Empty>
+ *   <EmptyHeader>
+ *     <EmptyTitle>No items found</EmptyTitle>
+ *     <EmptyDescription>Try adjusting your filters.</EmptyDescription>
+ *   </EmptyHeader>
+ *   <EmptyContent>Create one</EmptyContent>
+ * </Empty>
+ */
 function Empty({ className, surface, radius, animated, iconWeight, ...props }: EmptyProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -2255,6 +2299,14 @@ npx shadcn add https://ui.saasflare.io/r/input.json
 ```ts
 interface InputProps extends Omit<InputBaseProps, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Single-line text input with a spring-animated focus ring. Accepts all
+ * native input props; `surface`, `radius`, and `animated` resolve against
+ * the <SaasflareProvider> context when omitted.
+ *
+ * @component
+ * @layer core
+ */
 function Input({ className, type, surface, radius, animated, iconWeight, ...props }: InputProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
@@ -2410,10 +2462,12 @@ npx shadcn add https://ui.saasflare.io/r/item.json
 ```ts
 interface ItemProps
   extends Omit<React.ComponentProps<"div">, keyof SaasflareComponentProps>,
-    VariantProps<typeof itemVariants>,
+    Omit<VariantProps<typeof itemVariants>, "size">,
     SaasflareComponentProps {
   /** Render as child element (Radix Slot pattern). */
   asChild?: boolean
+  /** Row density. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: VariantProps<typeof itemVariants>["size"] | "default"
 }
 ```
 
@@ -2448,6 +2502,13 @@ npx shadcn add https://ui.saasflare.io/r/kbd.json
 ```ts
 interface KbdProps extends Omit<React.ComponentProps<"kbd">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Renders a single keyboard key as a styled `<kbd>` element. Use it in
+ * tooltips, menus, and docs to surface keyboard shortcuts.
+ *
+ * @component
+ * @layer core
+ */
 function Kbd({ className, surface, radius, animated, iconWeight, ...props }: KbdProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -2495,6 +2556,17 @@ interface LabelProps
   extends Omit<React.ComponentProps<typeof LabelPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Accessible form label built on the Radix Label primitive. Dims itself when
+ * the associated peer control or `data-disabled` group is disabled; associate
+ * with a control via `htmlFor`.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Label htmlFor="email">Email address</Label>
+ */
 function Label({
   className,
   surface,
@@ -2689,7 +2761,7 @@ export interface MultiSelectProps
   selectAll?: boolean
   /** Label for the select-all row. @default "Select all" */
   selectAllLabel?: string
-  /** Keep the popover open after a selection (true) or close on each pick (false). @default true for multi */
+  /** Close the popover after each pick. @default false (multi-pick stays open) */
   closeOnSelect?: boolean
   /** Max chip ROWS shown collapsed on the trigger before overflowing to "+N more" (HeroUI isMultiline analog). @default 1 */
   maxRows?: number
@@ -2826,8 +2898,8 @@ npx shadcn add https://ui.saasflare.io/r/native-select.json
 interface NativeSelectProps
   extends Omit<React.ComponentProps<"select">, "size" | keyof SaasflareComponentProps>,
     SaasflareComponentProps {
-  /** Control height. `"sm"` renders a more compact trigger; `"default"` is the standard height. */
-  size?: "sm" | "default"
+  /** Control height. `"sm"` renders a more compact trigger; `"md"` is the standard height. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: "sm" | "md" | "default"
 }
 ```
 
@@ -2859,6 +2931,11 @@ npx shadcn add https://ui.saasflare.io/r/navigation-menu.json
 interface NavigationMenuProps
   extends Omit<React.ComponentProps<typeof NavigationMenuPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
+  /**
+   * Render the shared viewport panel for dropdown content.
+   *
+   * @default true
+   */
   viewport?: boolean
 }
 ```
@@ -3571,6 +3648,14 @@ interface ScrollAreaProps
   extends Omit<React.ComponentProps<typeof ScrollAreaPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Scrollable container that replaces native scrollbars with a styled,
+ * cross-browser thumb, built on Radix UI ScrollArea. Constrain it with a
+ * height or width class and place overflowing content inside.
+ *
+ * @component
+ * @layer core
+ */
 function ScrollArea({
   className,
   children,
@@ -3901,6 +3986,17 @@ interface SliderProps
   extends Omit<React.ComponentProps<typeof SliderPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Range slider for selecting one or more numeric values along a track. Renders
+ * one thumb per value with spring-animated hover/press scaling; supports
+ * horizontal and vertical layouts via the Radix `orientation` prop.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Slider defaultValue={[50]} max={100} step={1} />
+ */
 function Slider({
   className,
   defaultValue,
@@ -3941,7 +4037,7 @@ export interface SocialButtonProps
   extends Omit<ComponentProps<"button">, "children" | keyof SaasflareComponentProps>,
     SaasflareComponentProps {
   /** Social provider to render. */
-  provider: SocialProvider
+  provider: SocialButtonProvider
   /** Override the default label text. */
   label?: string
   /** Show only the icon (no text). Default: `false` */
@@ -3952,9 +4048,8 @@ export interface SocialButtonProps
 **Example:**
 
 ```tsx
-import { SocialButton } from '@saasflare/ui';
-<SocialButton provider="google" onClick={() => signInWithGoogle()} />
-<SocialButton provider="github" onClick={() => signInWithGitHub()} />
+import { SocialAuthButton } from '@saasflare/ui'; // preferred
+<SocialAuthButton provider="google" onClick={() => signInWithGoogle()} />
 ```
 
 ---
@@ -4034,6 +4129,17 @@ npx shadcn add https://ui.saasflare.io/r/spinner.json
 ```ts
 interface SpinnerProps extends Omit<React.ComponentProps<"svg">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Loading indicator — a spinning Phosphor CircleNotch with `role="status"` and
+ * an accessible "Loading" label. The spin animation respects the resolved
+ * `animated` axis. Size via `className` (defaults to `size-4`).
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Spinner className="size-6" />
+ */
 function Spinner({ className, surface, radius, animated, iconWeight, ...props }: SpinnerProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -4282,8 +4388,8 @@ npx shadcn add https://ui.saasflare.io/r/switch.json
 interface SwitchProps
   extends Omit<React.ComponentProps<typeof SwitchPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
-  /** Visual size of the toggle. `default` is the standard control; `sm` is a compact variant for dense rows. */
-  size?: "sm" | "default"
+  /** Visual size of the toggle. `md` is the standard control; `sm` is a compact variant for dense rows. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: "sm" | "md" | "default"
 }
 ```
 
@@ -4312,6 +4418,14 @@ npx shadcn add https://ui.saasflare.io/r/table.json
 ```ts
 interface TableProps extends Omit<React.ComponentProps<"table">, keyof SaasflareComponentProps>, SaasflareComponentProps {}
 
+/**
+ * Data table root — a styled `<table>` wrapped in a horizontally scrollable
+ * container so wide tables stay usable on narrow viewports. Compose with
+ * {@link TableHeader}, {@link TableBody}, {@link TableRow}, and friends.
+ *
+ * @component
+ * @layer core
+ */
 function Table({ className, surface, radius, animated, iconWeight, ...props }: TableProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
 
@@ -4372,6 +4486,14 @@ interface TabsProps
   extends Omit<React.ComponentProps<typeof TabsPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Tabbed navigation root built on Radix Tabs, with an animated indicator that
+ * tracks the active trigger. Owns the active value and orientation; compose
+ * with {@link TabsList}, {@link TabsTrigger}, and {@link TabsContent}.
+ *
+ * @component
+ * @layer core
+ */
 function Tabs({
   className,
   orientation = "horizontal",
@@ -4592,6 +4714,14 @@ interface TextareaProps
   extends Omit<TextareaBaseProps, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Multi-line text input with a spring-animated focus ring and content-based
+ * auto-sizing (`field-sizing-content`). `surface`, `radius`, and `animated`
+ * resolve against the <SaasflareProvider> context when omitted.
+ *
+ * @component
+ * @layer core
+ */
 function Textarea({ className, surface, radius, animated, iconWeight, ...props }: TextareaProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, { type: "spring", stiffness: 300, damping: 20 })
@@ -4678,18 +4808,10 @@ npx shadcn add https://ui.saasflare.io/r/toggle.json
 ```ts
 interface ToggleProps
   extends Omit<React.ComponentProps<typeof TogglePrimitive.Root>, keyof SaasflareComponentProps>,
-    VariantProps<typeof toggleVariants>,
-    SaasflareComponentProps {}
-
-function Toggle({
-  className,
-  variant,
-  size,
-  surface,
-  radius,
-  animated,
-  iconWeight,
-  ...props
+    Omit<VariantProps<typeof toggleVariants>, "size">,
+    SaasflareComponentProps {
+  /** Visual size. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: VariantProps<typeof toggleVariants>["size"] | "default"
 }
 ```
 

@@ -12,7 +12,6 @@
  * const entry = useIntersectionObserver(ref, { threshold: 0.5 });
  * const isVisible = entry?.isIntersecting ?? false;
  */
-'use client';
 
 import { useEffect, useRef, useState, type RefObject } from 'react';
 
@@ -61,6 +60,16 @@ export function useIntersectionObserver(
   const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
   const observerRef = useRef<IntersectionObserver | undefined>(undefined);
 
+  /* Stabilize the threshold dependency: inline arrays (the documented usage)
+   * change identity every render and would re-create the observer — and with
+   * it the entry state — in an endless loop. The effect keys on the VALUE
+   * (joined string) and reads the actual threshold from a ref. */
+  const thresholdKey = Array.isArray(threshold) ? threshold.join(',') : String(threshold);
+  const thresholdRef = useRef(threshold);
+  useEffect(() => {
+    thresholdRef.current = threshold;
+  });
+
   useEffect(() => {
     const element = ref.current;
     if (!enabled || !element) return;
@@ -68,19 +77,21 @@ export function useIntersectionObserver(
     observerRef.current?.disconnect();
 
     observerRef.current = new IntersectionObserver(
-      ([observedEntry]) => {
+      (entries) => {
+        // A batch can hold several records for the target; the last is current.
+        const observedEntry = entries[entries.length - 1];
         setEntry(observedEntry);
         if (triggerOnce && observedEntry.isIntersecting) {
           observerRef.current?.disconnect();
         }
       },
-      { root, rootMargin, threshold },
+      { root, rootMargin, threshold: thresholdRef.current },
     );
 
     observerRef.current.observe(element);
 
     return () => observerRef.current?.disconnect();
-  }, [ref, root, rootMargin, threshold, triggerOnce, enabled]);
+  }, [ref, root, rootMargin, thresholdKey, triggerOnce, enabled]);
 
   return entry;
 }

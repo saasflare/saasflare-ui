@@ -34,10 +34,23 @@ import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion, spring } from "./motion-config"
 
+/**
+ * Props for {@link Tabs}. Extends {@link SaasflareComponentProps} so
+ * `surface`, `radius`, `animated`, and `iconWeight` can be supplied
+ * per-instance or inherited from the provider.
+ */
 interface TabsProps
   extends Omit<React.ComponentProps<typeof TabsPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Tabbed navigation root built on Radix Tabs, with an animated indicator that
+ * tracks the active trigger. Owns the active value and orientation; compose
+ * with {@link TabsList}, {@link TabsTrigger}, and {@link TabsContent}.
+ *
+ * @component
+ * @layer core
+ */
 function Tabs({
   className,
   orientation = "horizontal",
@@ -66,6 +79,11 @@ function Tabs({
   )
 }
 
+/**
+ * Variant classes for {@link TabsList} — `default` (filled muted track) vs
+ * `line` (transparent, underline-style); consumed by `TabsList` and exported
+ * for class reuse.
+ */
 const tabsListVariants = cva(
   "group/tabs-list relative inline-flex w-fit items-center justify-center rounded-lg p-[3px] text-muted-foreground group-data-[orientation=horizontal]/tabs:h-9 group-data-[orientation=vertical]/tabs:h-fit group-data-[orientation=vertical]/tabs:flex-col data-[variant=line]:rounded-none",
   {
@@ -88,6 +106,10 @@ interface IndicatorPos {
   height: number
 }
 
+/**
+ * Props for {@link TabsList}. `variant` selects the track style
+ * (`"default"` filled vs `"line"` transparent).
+ */
 interface TabsListProps
   extends Omit<
       React.ComponentProps<typeof TabsPrimitive.List>,
@@ -96,6 +118,13 @@ interface TabsListProps
     SaasflareComponentProps,
     VariantProps<typeof tabsListVariants> {}
 
+/**
+ * Container for tab triggers. Renders the single animated active-tab
+ * indicator that follows the active trigger via measured position.
+ *
+ * @component
+ * @layer core
+ */
 function TabsList({
   className,
   variant = "default",
@@ -207,6 +236,12 @@ interface TabsTriggerProps
     >,
     SaasflareComponentProps {}
 
+/**
+ * Tab trigger button that activates its associated {@link TabsContent} panel.
+ *
+ * @component
+ * @layer core
+ */
 function TabsTrigger({
   className,
   children,
@@ -235,6 +270,9 @@ function TabsTrigger({
   )
 }
 
+/**
+ * Props for {@link TabsContent}.
+ */
 interface TabsContentProps
   extends Omit<
       React.ComponentProps<typeof TabsPrimitive.Content>,
@@ -242,6 +280,12 @@ interface TabsContentProps
     >,
     SaasflareComponentProps {}
 
+/**
+ * Panel shown when its `value` matches the active tab.
+ *
+ * @component
+ * @layer core
+ */
 function TabsContent({
   className,
   surface,

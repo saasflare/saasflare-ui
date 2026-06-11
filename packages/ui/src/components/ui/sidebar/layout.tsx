@@ -209,6 +209,10 @@ export function SidebarRail({ className, ...props }: React.ComponentProps<"butto
   )
 }
 
+/**
+ * Props for {@link SidebarInset}. Extends `<main>` props with
+ * {@link SaasflareComponentProps} (`surface`, `radius`, `animated`, `iconWeight`).
+ */
 export interface SidebarInsetProps
   extends Omit<React.ComponentProps<"main">, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
@@ -303,6 +307,10 @@ export function SidebarFooter({ className, ...props }: React.ComponentProps<"div
   )
 }
 
+/**
+ * Props for {@link SidebarSeparator}. Extends {@link Separator} props with
+ * {@link SaasflareComponentProps} (`surface`, `radius`, `animated`, `iconWeight`).
+ */
 export interface SidebarSeparatorProps
   extends Omit<React.ComponentProps<typeof Separator>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}

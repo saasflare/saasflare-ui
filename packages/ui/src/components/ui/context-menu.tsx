@@ -26,12 +26,36 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Right-click menu root. Wraps Radix ContextMenu.Root and manages the open
+ * state of a menu anchored at the pointer position. Compose with
+ * {@link ContextMenuTrigger} and {@link ContextMenuContent}; supports items,
+ * checkbox/radio items, labels, separators, and nested sub-menus.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <ContextMenu>
+ *   <ContextMenuTrigger>Right-click here</ContextMenuTrigger>
+ *   <ContextMenuContent>
+ *     <ContextMenuItem>Copy</ContextMenuItem>
+ *     <ContextMenuItem>Paste</ContextMenuItem>
+ *   </ContextMenuContent>
+ * </ContextMenu>
+ */
 function ContextMenu({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
   return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />
 }
 
+/**
+ * Area that opens the menu on right-click (or long-press on touch).
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuTrigger({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
@@ -40,6 +64,12 @@ function ContextMenuTrigger({
   )
 }
 
+/**
+ * Groups related menu items for semantics and accessibility.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuGroup({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Group>) {
@@ -48,6 +78,13 @@ function ContextMenuGroup({
   )
 }
 
+/**
+ * Portals menu content into the document body. {@link ContextMenuContent}
+ * already portals itself — reach for this only with custom content trees.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuPortal({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Portal>) {
@@ -56,12 +93,25 @@ function ContextMenuPortal({
   )
 }
 
+/**
+ * Manages the open state of a nested sub-menu. Compose with
+ * {@link ContextMenuSubTrigger} and {@link ContextMenuSubContent}.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuSub({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Sub>) {
   return <ContextMenuPrimitive.Sub data-slot="context-menu-sub" {...props} />
 }
 
+/**
+ * Container for {@link ContextMenuRadioItem}s sharing a single selected value.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuRadioGroup({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.RadioGroup>) {
@@ -73,6 +123,14 @@ function ContextMenuRadioGroup({
   )
 }
 
+/**
+ * Item that opens a nested sub-menu; renders a trailing caret whose Phosphor
+ * weight follows `iconWeight`. Set `inset` to align with items that have
+ * indicators.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuSubTrigger({
   className,
   inset,
@@ -99,6 +157,13 @@ function ContextMenuSubTrigger({
   )
 }
 
+/**
+ * Panel for a nested sub-menu, positioned against its
+ * {@link ContextMenuSubTrigger}.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuSubContent({
   className,
   ...props
@@ -115,10 +180,23 @@ function ContextMenuSubContent({
   )
 }
 
+/**
+ * Props for {@link ContextMenuContent}. Extends the Radix Content props with
+ * `surface`/`radius`/`animated`/`iconWeight` overrides from
+ * {@link SaasflareComponentProps}.
+ */
 interface ContextMenuContentProps
   extends Omit<React.ComponentProps<typeof ContextMenuPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Menu panel, portaled and anchored at the pointer position. Honors
+ * `surface`/`radius`/`animated` overrides and emits the matching data axes
+ * for the design system to style.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuContent({
   className,
   surface,
@@ -146,6 +224,13 @@ function ContextMenuContent({
   )
 }
 
+/**
+ * Selectable menu item. Use `variant="destructive"` for dangerous actions
+ * and `inset` to align with items that have indicators.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuItem({
   className,
   inset,
@@ -169,6 +254,13 @@ function ContextMenuItem({
   )
 }
 
+/**
+ * Menu item with a togglable checked state, shown via a leading check
+ * indicator whose Phosphor weight follows `iconWeight`.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuCheckboxItem({
   className,
   children,
@@ -198,6 +290,13 @@ function ContextMenuCheckboxItem({
   )
 }
 
+/**
+ * Single-selection item within a {@link ContextMenuRadioGroup}; shows a
+ * leading dot indicator when selected.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuRadioItem({
   className,
   children,
@@ -225,6 +324,13 @@ function ContextMenuRadioItem({
   )
 }
 
+/**
+ * Non-interactive heading for a group of menu items. Set `inset` to align
+ * with items that have indicators.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuLabel({
   className,
   inset,
@@ -245,6 +351,12 @@ function ContextMenuLabel({
   )
 }
 
+/**
+ * Thin divider between menu items or groups.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuSeparator({
   className,
   ...props
@@ -258,6 +370,13 @@ function ContextMenuSeparator({
   )
 }
 
+/**
+ * Right-aligned keyboard shortcut hint inside a menu item. Purely visual —
+ * it does not register the key binding.
+ *
+ * @component
+ * @layer core
+ */
 function ContextMenuShortcut({
   className,
   ...props

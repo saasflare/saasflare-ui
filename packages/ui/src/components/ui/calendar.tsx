@@ -34,12 +34,28 @@ import { Button, buttonVariants } from "./button"
 
 const defaultClassNames = getDefaultClassNames()
 
+/**
+ * Props for {@link Calendar}.
+ *
+ * Extends the full `react-day-picker` DayPicker props (`mode`, `selected`,
+ * `onSelect`, …) with {@link SaasflareComponentProps} and `buttonVariant`.
+ */
 type CalendarProps = React.ComponentProps<typeof DayPicker> &
   SaasflareComponentProps & {
     /** Visual variant applied to the previous/next month navigation buttons. Defaults to `"ghost"`. */
     buttonVariant?: React.ComponentProps<typeof Button>["variant"]
   }
 
+/**
+ * Date picker grid with month navigation, dropdown caption layouts, and
+ * single/multiple/range selection, built on `react-day-picker`. Use it
+ * standalone or inside a Popover to compose a date field.
+ *
+ * @component
+ *
+ * @example
+ * <Calendar mode="single" selected={date} onSelect={setDate} />
+ */
 function Calendar({
   className,
   classNames,
@@ -219,6 +235,14 @@ function Calendar({
   )
 }
 
+/**
+ * Day cell button used by {@link Calendar} — styles selection, range, and
+ * focus states on top of {@link Button}. Supplied as the DayPicker
+ * `DayButton`; pass your own via the Calendar `components` prop to customize
+ * day rendering.
+ *
+ * @component
+ */
 function CalendarDayButton({
   className,
   day,

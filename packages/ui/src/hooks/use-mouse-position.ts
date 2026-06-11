@@ -15,7 +15,6 @@
  * const ref = useRef<HTMLDivElement>(null);
  * const { x, y } = useMousePosition({ ref });
  */
-'use client';
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 

@@ -72,8 +72,8 @@ interface ThemeModeMultiToggleProps extends SaasflareComponentProps {
   labels?: Partial<Record<ThemeMode, string>>
   /** Additional class names applied to the rail. */
   className?: string
-  /** Segment size — matches the Toggle/ToggleGroup `size` axis. */
-  size?: "sm" | "default" | "lg"
+  /** Segment size — matches the Toggle/ToggleGroup `size` axis. (`"default"` is a deprecated alias for `"md"`.) */
+  size?: "sm" | "md" | "lg" | "default"
   /**
    * Visual appearance of the segments.
    *
@@ -137,7 +137,7 @@ const RADIUS_RIGHT_CLASS: Record<Radius, string> = {
 export function ThemeModeMultiToggle({
   labels,
   className,
-  size = "default",
+  size = "md",
   appearance = "icon",
   surface,
   radius,
@@ -178,6 +178,8 @@ export function ThemeModeMultiToggle({
   // leave it undefined and rely on `suppressHydrationWarning` below.
   const dataResolvedTheme =
     resolvedTheme ?? (initialMode === "dark" || initialMode === "light" ? initialMode : undefined)
+
+  const resolvedSize = size === "default" ? "md" : size
 
   const baseLabel = (mode: ThemeMode) => labels?.[mode] ?? DEFAULT_LABELS[mode]
 
@@ -221,7 +223,7 @@ export function ThemeModeMultiToggle({
     >
       <ThemeModeSegment
         mode="light"
-        size={size}
+        size={resolvedSize}
         appearance={appearance}
         radius={sf.radius}
         label={segmentLabel("light")}
@@ -230,7 +232,7 @@ export function ThemeModeMultiToggle({
       </ThemeModeSegment>
       <ThemeModeSegment
         mode="dark"
-        size={size}
+        size={resolvedSize}
         appearance={appearance}
         radius={sf.radius}
         label={segmentLabel("dark")}
@@ -239,7 +241,7 @@ export function ThemeModeMultiToggle({
       </ThemeModeSegment>
       <ThemeModeSegment
         mode="system"
-        size={size}
+        size={resolvedSize}
         appearance={appearance}
         radius={sf.radius}
         label={segmentLabel("system")}
@@ -252,7 +254,7 @@ export function ThemeModeMultiToggle({
 
 interface ThemeModeSegmentProps {
   mode: ThemeMode
-  size: "sm" | "default" | "lg"
+  size: "sm" | "md" | "lg"
   appearance: ThemeModeMultiToggleAppearance
   radius: Radius
   label: string

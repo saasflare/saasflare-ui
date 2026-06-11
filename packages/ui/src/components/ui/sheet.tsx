@@ -28,16 +28,37 @@ import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
+/**
+ * Slide-in panel overlay that enters from an edge of the viewport. Built on
+ * Radix Dialog — owns open state, focus trapping, and dismissal. Compose with
+ * {@link SheetTrigger} and {@link SheetContent}; use it for side navigation,
+ * filters, or detail panels that should not leave the current page.
+ *
+ * @component
+ * @layer core
+ */
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
 
+/**
+ * Button that opens the sheet.
+ *
+ * @component
+ * @layer core
+ */
 function SheetTrigger({
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
 }
 
+/**
+ * Button that closes the sheet from anywhere inside it.
+ *
+ * @component
+ * @layer core
+ */
 function SheetClose({
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Close>) {
@@ -66,6 +87,12 @@ function SheetOverlay({
   )
 }
 
+/**
+ * Props for {@link SheetContent}.
+ *
+ * `side` picks the viewport edge the panel slides in from (default `"right"`);
+ * `showCloseButton` toggles the built-in top-right close button.
+ */
 interface SheetContentProps
   extends Omit<React.ComponentProps<typeof SheetPrimitive.Content>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {
@@ -73,6 +100,13 @@ interface SheetContentProps
   showCloseButton?: boolean
 }
 
+/**
+ * The sliding panel itself — portaled behind a dimmed overlay, slides in from
+ * the chosen `side`, and renders an optional built-in close button.
+ *
+ * @component
+ * @layer core
+ */
 function SheetContent({
   className,
   children,
@@ -120,6 +154,13 @@ function SheetContent({
   )
 }
 
+/**
+ * Sheet header — stacks {@link SheetTitle} and {@link SheetDescription} at the
+ * top of the panel.
+ *
+ * @component
+ * @layer core
+ */
 function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -130,6 +171,12 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Sheet footer — actions area pinned to the bottom of the panel.
+ *
+ * @component
+ * @layer core
+ */
 function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -140,6 +187,12 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Accessible sheet title — announced to screen readers when the sheet opens.
+ *
+ * @component
+ * @layer core
+ */
 function SheetTitle({
   className,
   ...props
@@ -153,6 +206,12 @@ function SheetTitle({
   )
 }
 
+/**
+ * Accessible sheet description text below the title.
+ *
+ * @component
+ * @layer core
+ */
 function SheetDescription({
   className,
   ...props

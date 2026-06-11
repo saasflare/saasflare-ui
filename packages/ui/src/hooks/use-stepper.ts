@@ -14,7 +14,6 @@
  * const s = useStepper({ count: 3, validate: (i) => i !== 1 || form.isValid });
  * <Button onClick={() => s.next()} disabled={s.isValidating}>Next</Button>
  */
-"use client"
 
 import { useCallback, useMemo, useRef, useState } from "react"
 

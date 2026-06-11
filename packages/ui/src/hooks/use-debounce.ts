@@ -14,7 +14,6 @@
  * // Debounce a callback (e.g., API call)
  * const debouncedSave = useDebouncedCallback((value: string) => save(value), 500);
  */
-'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -52,7 +51,7 @@ export interface DebouncedCallbackOptions {
 }
 
 /** A debounced function with cancel and flush capabilities */
-export interface DebouncedFunction<T extends (...args: unknown[]) => unknown> {
+export interface DebouncedFunction<T extends (...args: never[]) => unknown> {
   (...args: Parameters<T>): void;
   /** Cancel any pending invocation */
   cancel: () => void;
@@ -78,7 +77,7 @@ export interface DebouncedFunction<T extends (...args: unknown[]) => unknown> {
  * debouncedSearch('react'); // calls fetchResults after 400ms
  * debouncedSearch.cancel(); // cancel pending call
  */
-export function useDebouncedCallback<T extends (...args: unknown[]) => unknown>(
+export function useDebouncedCallback<T extends (...args: never[]) => unknown>(
   callback: T,
   options: number | DebouncedCallbackOptions = 300,
 ): DebouncedFunction<T> {
@@ -109,6 +108,9 @@ export function useDebouncedCallback<T extends (...args: unknown[]) => unknown>(
     }
     clearTimeout(timerRef.current);
     clearTimeout(maxTimerRef.current);
+    // Reset the refs so the maxWait gate can re-arm on the next burst.
+    timerRef.current = undefined;
+    maxTimerRef.current = undefined;
   }, []);
 
   const debounced = useCallback(
@@ -128,6 +130,8 @@ export function useDebouncedCallback<T extends (...args: unknown[]) => unknown>(
     lastArgsRef.current = null;
     clearTimeout(timerRef.current);
     clearTimeout(maxTimerRef.current);
+    timerRef.current = undefined;
+    maxTimerRef.current = undefined;
   }, []);
 
   debounced.flush = invoke;

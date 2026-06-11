@@ -23,6 +23,17 @@ interface LabelProps
   extends Omit<React.ComponentProps<typeof LabelPrimitive.Root>, keyof SaasflareComponentProps>,
     SaasflareComponentProps {}
 
+/**
+ * Accessible form label built on the Radix Label primitive. Dims itself when
+ * the associated peer control or `data-disabled` group is disabled; associate
+ * with a control via `htmlFor`.
+ *
+ * @component
+ * @layer core
+ *
+ * @example
+ * <Label htmlFor="email">Email address</Label>
+ */
 function Label({
   className,
   surface,
