@@ -7,8 +7,11 @@
  * import { cn, createSafeContext, useControllableState } from '@saasflare/ui';
  */
 
-// ─── Utils ───────────────────────────────────────────────────────────────────
-export { cn, mergeRefs, composeEventHandlers, createSafeContext } from './utils';
+// ─── Utils (pure — RSC-safe) ─────────────────────────────────────────────────
+export { cn, mergeRefs, composeEventHandlers } from './utils';
+
+// ─── Context (client-coupled) ────────────────────────────────────────────────
+export { createSafeContext } from './context';
 
 // ─── Hooks ───────────────────────────────────────────────────────────────────
 export { useControllableState, useCallbackRef } from './hooks';

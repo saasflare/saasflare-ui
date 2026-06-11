@@ -1,5 +1,6 @@
 // @toreview
 import { defineConfig } from 'tsup';
+import { esbuildPluginFilePathExtensions } from 'esbuild-plugin-file-path-extensions';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -93,25 +94,34 @@ async function injectUseClient(): Promise<void> {
 }
 
 export default defineConfig({
-    entry: [
-        'src/index.ts',
-        'src/entries/calendar.ts',
-        'src/entries/carousel.ts',
-        'src/entries/chart.ts',
-        'src/entries/command.ts',
-        'src/entries/drawer.ts',
-        'src/entries/input-otp.ts',
-        'src/entries/resizable.ts',
-    ],
+    /**
+     * BUNDLELESS ("per-module") output: every source file compiles to its own
+     * dist module; the path-extensions plugin externalizes relative imports
+     * and rewrites them to real file paths (.mjs/.js, directory → /index.*).
+     * Why not a bundled barrel:
+     *   1. RSC granularity — a bundled entry carries ONE "use client" for all
+     *      exports; per-file output lets injectUseClient mark only modules
+     *      with client coupling, keeping cn/PALETTES/presentational modules
+     *      server-eligible.
+     *   2. Tree-shaking — consumer bundlers prune per module (the bundled
+     *      barrel retained ~131 KB minified for a cn-only import).
+     *   3. Peer confinement — react-hook-form / react-day-picker imports stay
+     *      inside form/date-picker modules instead of the shared entry chunk.
+     */
+    entry: ['src/**/*.ts', 'src/**/*.tsx'],
     format: ['cjs', 'esm'],
-    dts: true,
-    splitting: true,
+    // Declarations come from `tsc -p tsconfig.build.json` (see build script):
+    // rollup-based dts across ~250 entries is prohibitively slow.
+    dts: false,
+    splitting: false,
     sourcemap: false,
     clean: true,
     external: ['react', 'react-dom'],
     // sonner must stay EXTERNAL: inlining it (noExternal) duplicates its
     // module-level ToastState, so consumers' toast() calls land in a different
     // singleton than the rendered <Toaster> and never show up.
-    treeshake: true,
+    esbuildPlugins: [
+        esbuildPluginFilePathExtensions({ esmExtension: 'mjs', cjsExtension: 'js' }),
+    ],
     onSuccess: injectUseClient,
 });

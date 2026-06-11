@@ -1,9 +1,12 @@
 // @reviewed 2026-04-17
-"use client"
 
 /**
  * @fileoverview Core utility functions for the Saasflare design system.
  * @module @saasflare/ui/lib/utils
+ *
+ * Deliberately NO "use client": these are pure functions, safe in React
+ * Server Components. Client-coupled helpers live in lib/context.ts and
+ * lib/hooks.ts.
  *
  * @example
  * import { cn, composeEventHandlers } from '@saasflare/ui';
@@ -11,7 +14,7 @@
 
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import React from 'react';
+import type * as React from 'react';
 
 // ─── Class Names ─────────────────────────────────────────────────────────────
 
@@ -85,39 +88,4 @@ export function composeEventHandlers<E>(
     };
 }
 
-// ─── Context ─────────────────────────────────────────────────────────────────
-
-/**
- * Creates a type-safe React context with a required provider.
- * Throws a descriptive error when used outside its provider,
- * eliminating null-checks in compound components.
- *
- * @param componentName - Display name for error messages
- * @returns Tuple of [Provider, useContext hook]
- *
- * @example
- * const [TabsProvider, useTabsContext] = createSafeContext<TabsState>('Tabs');
- *
- * // In parent:
- * <TabsProvider value={{ activeTab, setActiveTab }}>...</TabsProvider>
- *
- * // In child (no null check needed):
- * const { activeTab } = useTabsContext();
- */
-export function createSafeContext<T>(componentName: string) {
-    const Context = React.createContext<T | undefined>(undefined);
-    Context.displayName = componentName;
-
-    function useSafeContext(): T {
-        const ctx = React.useContext(Context);
-        if (ctx === undefined) {
-            throw new Error(
-                `[Saasflare] \`${componentName}\` context is missing. ` +
-                `Wrap your component tree with <${componentName}Provider>.`,
-            );
-        }
-        return ctx;
-    }
-
-    return [Context.Provider, useSafeContext] as const;
-}
+// createSafeContext moved to lib/context.ts (client-coupled; see fileoverview).
