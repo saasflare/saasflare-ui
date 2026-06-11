@@ -1,5 +1,77 @@
 # @saasflare/ui
 
+## 3.7.0
+
+### Minor Changes
+
+- 4259743: Bundleless (per-module) dist — the structural fix behind the bundle-perf findings.
+
+  Every source file now compiles to its own dist module (490 files) instead of one bundled mega-entry per format. All public entry paths (`dist/index.*`, `dist/entries/*`) are unchanged; consumer imports stay identical. What changes:
+
+  - **RSC granularity:** the `"use client"` directive is injected per module — 226 modules ship server-eligible (was 6 chunks), including `cn`, `PALETTES`, and the type/constant modules. The main barrel itself carries no directive anymore. `createSafeContext` moved from `lib/utils` into its own client module so the pure utilities stay server-safe.
+  - **Tree-shaking:** consumer bundlers prune per module. A `cn`-only import dropped from ~131 KB to ~26 KB even without `sideEffects` hints, and to near-zero in bundlers that honor the package's `sideEffects` field.
+  - **Peer confinement:** `react-hook-form` is referenced only by `form.*` and `react-day-picker` only by `calendar.*` — no longer baked into the shared entry chunk. (They remain required peers for now: CJS `require` of the barrel and Vite dep-prebundling still resolve the full graph.)
+  - Declarations now come from `tsc` (per-file, matching the module layout) instead of rollup-dts.
+
+  Validated: every relative specifier in dist resolves (1,420 checked), CJS barrel loads 455 exports, package + app typecheck clean, and a full Next production build of the catalog (141 pages) passes against the new dist.
+
+- 6abccab: Hooks roster, sonner singleton fix, and full JSDoc coverage.
+
+  - **21 hooks added to the public barrel** (previously unreachable): `useAnimationFrame`, `useClickOutside`, `useClipboard`, `useDebounce`, `useDebouncedCallback`, `useDocumentTitle`, `useEventListener`, `useIdle`, `useInView`, `useIntersectionObserver`, `useKeyboardShortcut`, `useLongPress`, `useMediaQuery`, `useMounted`, `useMousePosition`, `useOnline`, `useParallax`, `usePrevious`, `useScrollLock`, `useScrollPosition`, `useToggle`, `useWindowSize` — with their option/return types.
+  - Hook fixes applied before export:
+    - `useDebouncedCallback`: generic constraint now accepts concretely-typed callbacks (its own @example previously failed `tsc`), and `maxWait` re-arms per burst instead of firing once per component lifetime.
+    - `useIntersectionObserver`: inline array `threshold` (the documented usage) no longer re-creates the observer in an infinite loop; observer callback reads the last entry of a batch.
+    - `useEventListener`: inline `options` objects no longer tear the listener down every render (deps key on option primitives) — fixes broken `once` semantics.
+    - `useLongPress`: pending long-press timer cleared on unmount; latest-ref writes moved out of the render body.
+    - `useScrollLock`: restores the body's original `padding-right` instead of clobbering it.
+    - `useClipboard`: reset timer cleared on unmount.
+  - **sonner toast fix:** `sonner` is no longer inlined into the bundle (`noExternal` removed) — the inlined copy had its own toast state, so consumers' `toast()` calls never rendered in the package's `<Toaster>`. `toast` is now also re-exported from `@saasflare/ui` so app code and the Toaster always share one sonner instance.
+  - **JSDoc on every export is now real:** 218 previously undocumented exported declarations across 56 files got descriptions (the repo contract feeds react-docgen → docs site); generated docs now show descriptions for 300 of 303 components (previously dozens were blank).
+  - Removed the duplicate non-prologue `"use client"` directive from 27 remaining files.
+
+- eed071a: React-correctness fixes (adversarially verified, incl. one Playwright-confirmed critical) + honest peer declarations.
+
+  - **Switch: the thumb never moved.** Its only movement mechanism was a Motion `layout` prop, which is silently inert under the `domAnimation` LazyMotion bundle SaasflareShell loads (layout projection lives in `domMax`) — and there was no layout change to animate anyway. Verified live: the thumb's bounding box was pixel-identical in both states; only the track color changed. Now a CSS `translate-x` transform sized per `data-size`, honoring `animated={false}` and `prefers-reduced-motion`.
+  - **MultiSelect:** removed the equally-inert `layout` prop from chips (enter/exit animations unchanged and working).
+  - **useCountdown:** no longer reads the clock during render (guaranteed React hydration mismatch on SSR). First paint renders zeros; the live value fills in after mount. An already-expired target no longer starts a timer.
+  - **TagInput:** pasting `"a, b, c"` kept only the last tag (stale-closure commit loop). Multi-separator pastes now land in one batched state update.
+  - **Confetti / TypewriterText:** an inline `onComplete` callback no longer restarts the animation on every parent render (latest-ref; effects keyed on real triggers only).
+  - **Peers made honest:** `react-hook-form` and `react-day-picker` are now **required** peers — the bundled dist imports them eagerly from the main entry, so a default install without them failed at build/require time while the README claimed they were optional. (Proper fix — per-module dist so they become truly optional again — tracked as a follow-up.) README updated; sonner section rewritten to match the un-inlining from the previous changeset.
+
+- 6abccab: Strict-review fix batch — correctness, a11y, and contract repairs across the package.
+
+  **Behavioral fix (flagged):** `MultiSelect.closeOnSelect` semantics were inverted relative to the prop name (`true` kept the popover open). The prop now means what it says — `true` closes on each pick — and the default flipped to `false`, so **default behavior is unchanged**. Only consumers who passed `closeOnSelect` explicitly see a change (they previously got the opposite of what the name promised).
+
+  Fixes:
+
+  - **Button** `variant="shadow"` rendered no shadow (consumed `--btn-shadow`, which was never defined). Now renders a palette-aware OKLCH intent shadow.
+  - **PALETTES/PaletteId** extended from 20 to all 26 palettes defined in `palettes.css` — adds `saasflare` (house palette), `lavender`, `mint`, `sage`, `sky`, `snow`.
+  - **useFileDialog** no longer pins first-call `onChange`/`accept`/`multiple`/`capture`/`directory` forever (options re-applied on every `open()`, listener reads a latest-ref) and removes its hidden `<input>` on unmount. Fixes stale validation/callbacks in Dropzone's click path.
+  - **DataTable** no longer sets `role="button"` on clickable `<tr>` (it destroyed table semantics for screen readers); rows stay focusable with Enter/Space activation and expose `data-clickable`.
+  - **MultiSelect** chip-remove and clear-all affordances are no longer focusable controls nested inside the trigger `<button>` (invalid interactive nesting); they are mouse-only now, with Backspace on the trigger/empty search input as the keyboard path (trigger Backspace added).
+  - **NotificationCenter** rows use a stretched-overlay action instead of nesting the mark-as-read `<button>` inside a row `<button>`/`<a>`; unread state is now announced (sr-only text + `Unread:` action label).
+  - **DatePicker/DateRangePicker** controlled clear works: controlled-ness is latched (writing back the `undefined` emitted on deselect no longer flips the component to uncontrolled), and `value` accepts `null` for controlled-empty.
+  - **Size axis unified on `"md"`**: Avatar, Switch, NativeSelect, SelectTrigger, Toggle, ToggleGroup, Item, SidebarMenuButton, ThemeModeMultiToggle migrate `"default"` → `"md"` (canonical `Size` scale). `"default"` remains accepted as a deprecated alias.
+  - **SocialButton** deprecated in favor of `SocialAuthButton`; its conflicting `SocialProvider` type renamed to `SocialButtonProvider` (the package-level `SocialProvider` export is the 16-provider union); hardcoded grays/hex replaced with tokens.
+  - **SaasflareProvider** no longer crashes on corrupted persisted prefs (`null`/non-object localStorage values normalize to defaults, matching the inline script's defense).
+  - **snow palette** pins a visible focus ring per mode; **achromatic palette** joins the fixed 5-hue chart override group (charts were collapsing to grayscale).
+  - Removed duplicate `"use client"` directives (form, use-local-storage); fixed the stale `themes.css` reference in the styles entry docs.
+
+### Patch Changes
+
+- 9f83c23: Runtime-perf cleanups (verified review minors) + full catalog coverage.
+
+  - **SpotlightCard / GlowingEffect**: cursor tracking moved out of React state — position is written as CSS variables directly on the overlay (no per-frame re-render), and the container rect is cached for the hover duration instead of a forced-layout `getBoundingClientRect` per mousemove (invalidated on enter/scroll/resize).
+  - **MouseGradientBlob**: same rect caching in the mousemove hot path.
+  - **DockItem**: item centers are cached instead of reading `getBoundingClientRect` for every item on every mouseX update while the width spring writes layout per frame (the classic read/write thrash interleave).
+  - **ScrollToTopButton**: the scroll-container resolver gives up after ~10s with a dev warning instead of polling `getElementById` every frame forever when the id never mounts.
+  - **Docs**: `Logo` and `AppIcon` join the catalog (registry, props, doc pages, demos) — the generated docs now cover all 130 public components.
+
+- bc0ca46: Test baseline + PR CI.
+
+  - vitest + testing-library regression suite (13 tests) pinning every bug class fixed in the review batches: Switch thumb movement, MultiSelect `closeOnSelect` semantics, DatePicker controlled clear (incl. `null`), TagInput separator paste, `useDebouncedCallback` maxWait re-arm + concrete-callback typing, `useCountdown` SSR-safe first paint + expired-target timer, `useFileDialog` option re-application + unmount cleanup, `useScrollLock` padding restore, and the 26-palette PALETTES lockstep.
+  - GitHub Actions CI on every PR and main push: package build → typecheck → lint → test → app typecheck (previously only a release workflow existed).
+
 ## 3.6.0
 
 ### Minor Changes
