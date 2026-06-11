@@ -3,6 +3,8 @@
   "pages": [
     "index",
     "---Brand & Auth---",
+    "app-icon",
+    "logo",
     "social-auth-button",
     "theme-mode-multi-toggle",
     "theme-mode-toggle",

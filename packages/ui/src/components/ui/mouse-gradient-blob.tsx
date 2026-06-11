@@ -90,10 +90,15 @@ export function MouseGradientBlob({
   const blobX = useSpring(mouseX, { stiffness: 150, damping: 20 })
   const blobY = useSpring(mouseY, { stiffness: 150, damping: 20 })
 
+  /* gBCR per mousemove forces a sync layout read in the hottest input path —
+   * cache the host rect for the hover duration; invalidate on enter/scroll/resize. */
+  const hostRectRef = useRef<DOMRect | null>(null)
+
   const onMouseMove = useCallback(
     (e: MouseEvent) => {
-      const target = e.currentTarget as HTMLElement
-      const rect = target.getBoundingClientRect()
+      const rect =
+        hostRectRef.current ??
+        (hostRectRef.current = (e.currentTarget as HTMLElement).getBoundingClientRect())
       mouseX.set(e.clientX - rect.left - size / 2)
       mouseY.set(e.clientY - rect.top - size / 2)
     },
@@ -106,8 +111,19 @@ export function MouseGradientBlob({
     const host = containerRef.current?.parentElement
     if (!host || motion.disabled) return
 
+    const invalidate = () => {
+      hostRectRef.current = null
+    }
+    host.addEventListener("mouseenter", invalidate, { passive: true })
+    window.addEventListener("scroll", invalidate, { passive: true, capture: true })
+    window.addEventListener("resize", invalidate, { passive: true })
     host.addEventListener("mousemove", onMouseMove as EventListener, { passive: true })
-    return () => host.removeEventListener("mousemove", onMouseMove as EventListener)
+    return () => {
+      host.removeEventListener("mouseenter", invalidate)
+      window.removeEventListener("scroll", invalidate, { capture: true })
+      window.removeEventListener("resize", invalidate)
+      host.removeEventListener("mousemove", onMouseMove as EventListener)
+    }
   }, [onMouseMove, motion.disabled])
 
   if (motion.disabled) return null

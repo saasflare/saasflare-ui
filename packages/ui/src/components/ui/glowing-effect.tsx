@@ -29,7 +29,6 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion } from "./motion-config"
-import { useMousePosition } from "../../hooks/use-mouse-position"
 
 /** Props for the GlowingEffect component. */
 export interface GlowingEffectProps
@@ -78,23 +77,46 @@ export function GlowingEffect({
   // target. Track the cursor on the positioned parent the overlay covers
   // instead (captured via the ref callback during commit, before effects run).
   const parentRef = useRef<HTMLElement | null>(null)
-  const pos = useMousePosition({ ref: parentRef, enabled: !motion.disabled })
+  const glowRef = useRef<HTMLDivElement>(null)
+  const rectRef = useRef<DOMRect | null>(null)
   const [hovered, setHovered] = useState(false)
 
   const captureParent = useCallback((node: HTMLDivElement | null) => {
     parentRef.current = node?.parentElement ?? null
   }, [])
 
+  /* Hot path stays out of React: cursor position is written as CSS variables
+   * on the glow layer (no per-frame re-render), and the parent rect is cached
+   * for the hover duration instead of a forced-layout gBCR per mousemove. */
   useEffect(() => {
     const parent = parentRef.current
     if (!parent || motion.disabled) return
-    const onEnter = () => setHovered(true)
+    const invalidate = () => {
+      rectRef.current = null
+    }
+    const onEnter = () => {
+      rectRef.current = null
+      setHovered(true)
+    }
     const onLeave = () => setHovered(false)
+    const onMove = (e: MouseEvent) => {
+      const glow = glowRef.current
+      if (!glow) return
+      const rect = rectRef.current ?? (rectRef.current = parent.getBoundingClientRect())
+      glow.style.setProperty("--glow-x", `${e.clientX - rect.left}px`)
+      glow.style.setProperty("--glow-y", `${e.clientY - rect.top}px`)
+    }
     parent.addEventListener("mouseenter", onEnter)
     parent.addEventListener("mouseleave", onLeave)
+    parent.addEventListener("mousemove", onMove, { passive: true })
+    window.addEventListener("scroll", invalidate, { passive: true, capture: true })
+    window.addEventListener("resize", invalidate, { passive: true })
     return () => {
       parent.removeEventListener("mouseenter", onEnter)
       parent.removeEventListener("mouseleave", onLeave)
+      parent.removeEventListener("mousemove", onMove)
+      window.removeEventListener("scroll", invalidate, { capture: true })
+      window.removeEventListener("resize", invalidate)
     }
   }, [motion.disabled])
 
@@ -113,10 +135,11 @@ export function GlowingEffect({
       {...rest}
     >
       <div
+        ref={glowRef}
         className="absolute inset-0 transition-opacity duration-300"
         style={{
           opacity: hovered ? opacity : 0,
-          background: `radial-gradient(${spread}px circle at ${pos.x}px ${pos.y}px, ${color}, transparent 70%)`,
+          background: `radial-gradient(${spread}px circle at var(--glow-x, 50%) var(--glow-y, 50%), ${color}, transparent 70%)`,
           filter: `blur(${blur}px)`,
           borderRadius,
           /* Mask to show glow only on borders, not fill */

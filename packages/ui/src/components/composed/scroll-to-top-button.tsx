@@ -28,6 +28,9 @@
 
 import { JSX, useEffect, useState } from 'react';
 import * as React from 'react';
+
+// React-style dev warnings: the consumer's bundler replaces process.env.NODE_ENV.
+declare const process: { readonly env: { readonly NODE_ENV?: string } };
 import { ArrowUpIcon } from '../ui/phosphor';
 import { AnimatePresence, m } from 'motion/react';
 import { cn } from '../../lib';
@@ -97,10 +100,22 @@ export function ScrollToTopButton({
         }
 
         let raf = 0;
+        let attempts = 0;
+        // Bounded retry (~10s at 60fps): a typo'd or never-rendered container id
+        // must not leave a permanent per-frame DOM query running.
+        const MAX_ATTEMPTS = 600;
         const resolve = () => {
             const el = document.getElementById(scrollContainerId);
             if (el) {
                 setContainer(el);
+                return;
+            }
+            if (attempts++ >= MAX_ATTEMPTS) {
+                if (process.env.NODE_ENV !== 'production') {
+                    console.warn(
+                        `[Saasflare][ScrollToTopButton] scroll container #${scrollContainerId} never mounted — giving up.`,
+                    );
+                }
                 return;
             }
             raf = requestAnimationFrame(resolve);

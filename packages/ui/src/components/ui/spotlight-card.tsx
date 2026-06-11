@@ -23,11 +23,10 @@
  * </SpotlightCard>
  */
 
-import { useRef, useState, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { m } from "motion/react"
 import { cn } from "../../lib"
 import { useSaasflareMotion, spring } from "./motion-config"
-import { useMousePosition } from "../../hooks/use-mouse-position"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 
 /** Motion-reserved DOM handlers that collide with Motion's own props. */
@@ -75,14 +74,49 @@ export function SpotlightCard({
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const motion = useSaasflareMotion(sf.animated, spring)
   const cardRef = useRef<HTMLDivElement>(null)
-  const position = useMousePosition({ ref: cardRef, enabled: !motion.disabled })
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const rectRef = useRef<DOMRect | null>(null)
   const [isHovered, setIsHovered] = useState(false)
+
+  /* Hot path stays out of React: the cursor position is written as CSS
+   * variables on the overlay (no per-frame re-render), and the card rect is
+   * cached for the hover duration (gBCR per mousemove forces sync layout).
+   * Cache invalidates on enter/scroll/resize. */
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card || motion.disabled) return
+    const invalidate = () => {
+      rectRef.current = null
+    }
+    const onMove = (e: MouseEvent) => {
+      const overlay = overlayRef.current
+      if (!overlay) return
+      const rect = rectRef.current ?? (rectRef.current = card.getBoundingClientRect())
+      overlay.style.setProperty("--spotlight-x", `${e.clientX - rect.left}px`)
+      overlay.style.setProperty("--spotlight-y", `${e.clientY - rect.top}px`)
+    }
+    card.addEventListener("mousemove", onMove, { passive: true })
+    window.addEventListener("scroll", invalidate, { passive: true, capture: true })
+    window.addEventListener("resize", invalidate, { passive: true })
+    return () => {
+      card.removeEventListener("mousemove", onMove)
+      window.removeEventListener("scroll", invalidate, { capture: true })
+      window.removeEventListener("resize", invalidate)
+    }
+  }, [motion.disabled])
 
   return (
     <m.div
       ref={cardRef}
       {...props}
-      onMouseEnter={motion.disabled ? undefined : () => setIsHovered(true)}
+      onMouseEnter={
+        motion.disabled
+          ? undefined
+          : () => {
+              rectRef.current = null
+              setIsHovered(true)
+            }
+      }
       onMouseLeave={motion.disabled ? undefined : () => setIsHovered(false)}
       data-slot="spotlight-card"
       data-surface={sf.surface}
@@ -98,10 +132,11 @@ export function SpotlightCard({
       {/* Spotlight gradient overlay */}
       {!motion.disabled && (
         <div
+          ref={overlayRef}
           className="pointer-events-none absolute inset-0 transition-opacity duration-300"
           style={{
             opacity: isHovered ? spotlightOpacity : 0,
-            background: `radial-gradient(${spotlightSize}px circle at ${position.x}px ${position.y}px, ${spotlightColor} 0%, transparent 70%)`,
+            background: `radial-gradient(${spotlightSize}px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), ${spotlightColor} 0%, transparent 70%)`,
           }}
           aria-hidden="true"
         />

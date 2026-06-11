@@ -17,6 +17,22 @@
  */
 export const ORPHANS = [
     {
+        slug: "logo",
+        srcPath: "src/components/brand/logo.tsx",
+        title: "Logo",
+        description:
+            "Saasflare brand mark + wordmark with six size presets (icon hides the wordmark) and an interactive mode that wraps the mark in a next/link with hover affordance.",
+        category: "Brand & Auth",
+    },
+    {
+        slug: "app-icon",
+        srcPath: "src/components/brand/app-icon.tsx",
+        title: "App Icon",
+        description:
+            "The raw Saasflare SVG mark as a standalone icon — sized via a single size prop (any CSS length), with full SVG prop pass-through for favicons, loaders, and nav rails.",
+        category: "Brand & Auth",
+    },
+    {
         slug: "social-auth-button",
         srcPath: "src/components/brand/social-auth-buttons.tsx",
         title: "Social Auth Button",

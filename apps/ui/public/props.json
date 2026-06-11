@@ -13069,6 +13069,85 @@
       ]
     }
   ],
+  "logo": [
+    {
+      "name": "Logo",
+      "description": "Logo – Saasflare rainbow-gradient circle mark with optional wordmark.",
+      "props": [
+        {
+          "name": "animated",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Animation override. Omit to inherit from provider."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional class names merged onto the root element."
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "default": "/",
+          "description": "Destination for the wrapping `next/link`. Only used when `interactive`."
+        },
+        {
+          "name": "iconWeight",
+          "type": "\"regular\" | \"bold\" | \"fill\" | \"duotone\"",
+          "required": false,
+          "default": null,
+          "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
+        },
+        {
+          "name": "interactive",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "When true, wraps the mark in a `next/link` with hover affordance."
+        },
+        {
+          "name": "radius",
+          "type": "\"sharp\" | \"soft\" | \"rounded\" | \"pill\"",
+          "required": false,
+          "default": null,
+          "description": "Radius preset override. Omit to inherit from provider."
+        },
+        {
+          "name": "size",
+          "type": "\"icon\" | \"xs\" | \"xxs\" | \"sm\" | \"md\" | \"lg\"",
+          "required": false,
+          "default": "md",
+          "description": "Visual size of the mark + wordmark. `'icon'` hides the wordmark."
+        },
+        {
+          "name": "surface",
+          "type": "StyleVariant",
+          "required": false,
+          "default": null,
+          "description": "Surface style override. Omit to inherit from provider."
+        }
+      ]
+    }
+  ],
+  "app-icon": [
+    {
+      "name": "AppIcon",
+      "description": "AppIcon – Custom SVG icon for Saasflare.",
+      "props": [
+        {
+          "name": "size",
+          "type": "string | number",
+          "required": false,
+          "default": null,
+          "description": "Square size in px (or any CSS length); `width`/`height` override it."
+        }
+      ]
+    }
+  ],
   "social-auth-button": [
     {
       "name": "SocialAuthButton",

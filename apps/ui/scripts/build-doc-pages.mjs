@@ -37,7 +37,7 @@ const OUT_DIR = path.join(APP_ROOT, "content/docs/components")
 /** Sidebar grouping. Every registry component must appear exactly once; the
  *  script asserts this so a new component can't silently fall out of the nav. */
 const CATEGORIES = {
-    "Brand & Auth": ["social-auth-button", "theme-mode-toggle", "theme-mode-multi-toggle"],
+    "Brand & Auth": ["logo", "app-icon", "social-auth-button", "theme-mode-toggle", "theme-mode-multi-toggle"],
     "Buttons & Actions": [
         "button", "button-group", "social-button", "shimmer-button", "moving-border",
         "stateful-button", "scroll-to-top-button",

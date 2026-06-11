@@ -34,6 +34,10 @@ export const demos: Record<string, DemoEntry> = {
         Component: lazy(() => import("./animated-tooltip/Demo").then((m) => ({ default: m.Demo }))),
         code: "\"use client\"\n\nimport { AnimatedTooltip } from \"@saasflare/ui\"\n\nconst people = [\n    {\n        id: 1,\n        name: \"Jordan Avery\",\n        designation: \"Founding Engineer\",\n        image: \"https://i.pravatar.cc/100?img=12\",\n    },\n    {\n        id: 2,\n        name: \"Priya Nair\",\n        designation: \"Head of Design\",\n        image: \"https://i.pravatar.cc/100?img=45\",\n    },\n    {\n        id: 3,\n        name: \"Marco Lindqvist\",\n        designation: \"Developer Advocate\",\n        image: \"https://i.pravatar.cc/100?img=68\",\n    },\n]\n\n/** Avatar row that reveals a tilting, mouse-tracking tooltip on hover. */\nexport function Demo() {\n    return (\n        <div className=\"flex flex-row items-center justify-center pt-16 pb-4\">\n            <AnimatedTooltip items={people} />\n        </div>\n    )\n}",
     },
+    "app-icon/Demo": {
+        Component: lazy(() => import("./app-icon/Demo").then((m) => ({ default: m.Demo }))),
+        code: "\"use client\"\n\nimport { AppIcon } from \"@saasflare/ui\"\n\n/** AppIcon — the standalone SVG mark at several sizes. */\nexport function Demo() {\n    return (\n        <div className=\"flex flex-wrap items-end gap-6\">\n            <AppIcon size={24} />\n            <AppIcon size={40} />\n            <AppIcon size={64} />\n        </div>\n    )\n}",
+    },
     "aspect-ratio/default": {
         Component: lazy(() => import("./aspect-ratio/default").then((m) => ({ default: m.Demo }))),
         code: "\"use client\"\n\nimport { AspectRatio } from \"@saasflare/ui\"\n\n/** A 16:9 media frame holding a dashboard preview image. */\nexport function Demo() {\n    return (\n        <div className=\"w-full max-w-sm\">\n            <AspectRatio ratio={16 / 9} className=\"overflow-hidden rounded-md border\">\n                <img\n                    src=\"https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&q=80\"\n                    alt=\"Analytics dashboard preview\"\n                    className=\"size-full object-cover\"\n                />\n            </AspectRatio>\n        </div>\n    )\n}",
@@ -505,6 +509,10 @@ export const demos: Record<string, DemoEntry> = {
     "label/default": {
         Component: lazy(() => import("./label/default").then((m) => ({ default: m.Demo }))),
         code: "\"use client\"\n\nimport { Input, Label } from \"@saasflare/ui\"\n\n/** A label associated with an input via htmlFor. */\nexport function Demo() {\n    return (\n        <div className=\"flex flex-col gap-2 w-full max-w-sm\">\n            <Label htmlFor=\"api-key\">API key name</Label>\n            <Input id=\"api-key\" placeholder=\"Production server\" />\n        </div>\n    )\n}",
+    },
+    "logo/Demo": {
+        Component: lazy(() => import("./logo/Demo").then((m) => ({ default: m.Demo }))),
+        code: "\"use client\"\n\nimport { Logo } from \"@saasflare/ui\"\n\n/** Logo — icon-only mark plus the wordmark across size presets. */\nexport function Demo() {\n    return (\n        <div className=\"flex flex-wrap items-end gap-8\">\n            <Logo size=\"icon\" interactive={false} />\n            <Logo size=\"sm\" interactive={false} />\n            <Logo size=\"md\" interactive={false} />\n            <Logo size=\"lg\" interactive={false} />\n        </div>\n    )\n}",
     },
     "marquee/default": {
         Component: lazy(() => import("./marquee/default").then((m) => ({ default: m.Demo }))),

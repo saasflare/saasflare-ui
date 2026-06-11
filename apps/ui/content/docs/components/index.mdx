@@ -1,12 +1,14 @@
 ---
 title: Components
-description: "128 composable, themeable components — every one installable via the shadcn registry."
+description: "130 composable, themeable components — every one installable via the shadcn registry."
 ---
 
-**128 components**, grouped below. Each is installable with `npx shadcn add` and fully themeable through the Saasflare design tokens.
+**130 components**, grouped below. Each is installable with `npx shadcn add` and fully themeable through the Saasflare design tokens.
 
 ## Brand & Auth
 
+- [App Icon](/docs/components/app-icon) — The raw Saasflare SVG mark as a standalone icon — sized via a single size prop (any CSS length), with full SVG prop pass-through for favicons, loaders, and nav rails.
+- [Logo](/docs/components/logo) — Saasflare brand mark + wordmark with six size presets (icon hides the wordmark) and an interactive mode that wraps the mark in a next/link with hover affordance.
 - [Social Auth Button](/docs/components/social-auth-button) — Provider-branded OAuth sign-in button for all 16 supported identity providers, with official brand logos, an opt-in colorful weight, and built-in loading state (wraps StatefulButton). Includes 16 pre-bound shortcuts (GoogleAuthButton, GitHubAuthButton, …).
 - [Theme Mode Multi Toggle](/docs/components/theme-mode-multi-toggle) — Three-segment light / dark / system segmented control (Sun / Moon / Monitor) built on ToggleGroup, with icon, icon-inherit, and button appearances.
 - [Theme Mode Toggle](/docs/components/theme-mode-toggle) — Two-state light/dark toggle button (Sun/Moon) backed by next-themes, with an SSR seed prop to eliminate the first-paint flash.

@@ -31,6 +31,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useRef,
   type ReactNode,
   type MouseEvent as ReactMouseEvent,
@@ -166,10 +167,32 @@ export function DockItem({
   const { mouseX, magnification, distance, reduced } = useDock()
   const ref = useRef<HTMLButtonElement>(null)
 
+  /* Reading gBCR for every item on every mouseX update — while the width
+   * spring is writing layout properties each frame — is the classic
+   * read/write layout-thrash interleave. Cache the item's rest center and
+   * invalidate on scroll/resize; the drift while neighbors magnify is
+   * bounded and visually negligible at dock distances. */
+  const centerRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    const invalidate = () => {
+      centerRef.current = null
+    }
+    window.addEventListener("resize", invalidate, { passive: true })
+    window.addEventListener("scroll", invalidate, { passive: true, capture: true })
+    return () => {
+      window.removeEventListener("resize", invalidate)
+      window.removeEventListener("scroll", invalidate, { capture: true })
+    }
+  }, [])
+
   const distanceFromMouse = useTransform(mouseX, (val: number) => {
-    const bounds = ref.current?.getBoundingClientRect()
-    if (!bounds) return distance + 1
-    return val - (bounds.x + bounds.width / 2)
+    if (centerRef.current === null) {
+      const bounds = ref.current?.getBoundingClientRect()
+      if (!bounds) return distance + 1
+      centerRef.current = bounds.x + bounds.width / 2
+    }
+    return val - centerRef.current
   })
 
   const maxSize = BASE_SIZE * magnification
