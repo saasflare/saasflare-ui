@@ -5,6 +5,7 @@
   "description": "Saasflare UI Catalog – ui.saasflare.io",
   "scripts": {
     "dev": "next dev --turbopack --port 3001",
+    "postinstall": "fumadocs-mdx",
     "build:docs": "node scripts/build-props.mjs && node scripts/build-demos.mjs && node scripts/build-doc-pages.mjs",
     "prebuild": "pnpm build:docs",
     "build": "next build",
