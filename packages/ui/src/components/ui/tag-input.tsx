@@ -110,20 +110,35 @@ export function TagInput({
         })
     }, [tags.length])
 
-    const commit = useCallback(
-        (raw: string) => {
-            const trimmed = raw.trim()
-            if (!trimmed) return
-            if (unique && tags.includes(trimmed)) return
-            if (typeof maxTags === "number" && tags.length >= maxTags) return
-            const next = [...tags, trimmed]
-            setIds((prev) => [...prev, idCounter.current++])
+    /* Batched commit: a multi-separator paste ("a, b, c") must land in ONE
+     * state update — looping a single-tag commit would rebuild `[...tags, x]`
+     * from the same stale snapshot each iteration and keep only the last tag. */
+    const commitMany = useCallback(
+        (parts: string[]) => {
+            let next = tags
+            let added = 0
+            for (const raw of parts) {
+                const trimmed = raw.trim()
+                if (!trimmed) continue
+                if (unique && next.includes(trimmed)) continue
+                if (typeof maxTags === "number" && next.length >= maxTags) break
+                next = [...next, trimmed]
+                added++
+            }
+            if (added === 0) return
+            setIds((prev) => {
+                const grown = prev.slice()
+                for (let i = 0; i < added; i++) grown.push(idCounter.current++)
+                return grown
+            })
             if (!isControlled) setInternal(next)
             onChange?.(next)
             setDraft("")
         },
         [isControlled, maxTags, onChange, tags, unique],
     )
+
+    const commit = useCallback((raw: string) => commitMany([raw]), [commitMany])
 
     const removeAt = useCallback(
         (index: number) => {
@@ -141,7 +156,7 @@ export function TagInput({
         const sep = separators.find((s) => s !== "Enter" && v.includes(s))
         if (sep) {
             const parts = v.split(sep)
-            for (let i = 0; i < parts.length - 1; i++) commit(parts[i])
+            commitMany(parts.slice(0, -1))
             setDraft(parts[parts.length - 1] ?? "")
         } else {
             setDraft(v)

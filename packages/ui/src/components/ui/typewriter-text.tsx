@@ -56,6 +56,13 @@ export function TypewriterText({
   const words = useRef(text.split(' '));
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Latest-ref: an inline `onComplete` changes identity every parent render —
+  // keying the reveal effect on it would restart the animation from word one.
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  });
+
   useEffect(() => {
     // Reset when text changes
     words.current = text.split(' ');
@@ -78,7 +85,7 @@ export function TypewriterText({
         timeoutRef.current = setTimeout(revealNextWord, wordDelay);
       } else {
         setIsComplete(true);
-        onComplete?.();
+        onCompleteRef.current?.();
       }
     };
 
@@ -90,7 +97,7 @@ export function TypewriterText({
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [text, wordDelay, effectiveSkip, onComplete]);
+  }, [text, wordDelay, effectiveSkip]);
 
   return (
     <span

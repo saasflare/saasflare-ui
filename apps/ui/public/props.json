@@ -11824,7 +11824,7 @@
   "switch": [
     {
       "name": "Switch",
-      "description": "Toggle switch for boolean settings, with a spring-animated thumb that slides",
+      "description": "Toggle switch for boolean settings, with a thumb that slides between",
       "props": [
         {
           "name": "animated",

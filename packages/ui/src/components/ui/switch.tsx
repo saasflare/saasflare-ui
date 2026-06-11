@@ -14,11 +14,9 @@
  */
 
 import * as React from "react"
-import { m } from "motion/react"
 import * as SwitchPrimitive from "@radix-ui/react-switch"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
-import { useSaasflareMotion, springBouncy } from "./motion-config"
 
 /**
  * Props for {@link Switch}.
@@ -35,9 +33,10 @@ interface SwitchProps
 }
 
 /**
- * Toggle switch for boolean settings, with a spring-animated thumb that slides
- * between states. Prefer it over Checkbox when the change takes effect
- * immediately rather than on form submit.
+ * Toggle switch for boolean settings, with a thumb that slides between
+ * states (CSS transform — honors `animated` and reduced motion). Prefer it
+ * over Checkbox when the change takes effect immediately rather than on
+ * form submit.
  *
  * @component
  * @layer core
@@ -55,7 +54,6 @@ function Switch({
   ...props
 }: SwitchProps) {
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
-  const motion = useSaasflareMotion(sf.animated, springBouncy)
   const resolvedSize = size === "default" ? "md" : size
 
   return (
@@ -72,16 +70,15 @@ function Switch({
         className
       )}
     >
+      {/* CSS transform, not Motion `layout`: layout projection lives in the
+        * domMax feature bundle, but SaasflareShell mounts LazyMotion with
+        * domAnimation — a `layout` prop here is silently inert and the thumb
+        * never moves. translate-x works everywhere; motion.css zeroes the
+        * duration under prefers-reduced-motion. */}
       <SwitchPrimitive.Thumb
         data-slot="switch-thumb"
-        asChild
-      >
-        <m.span
-          className="pointer-events-none block rounded-full bg-background ring-0 group-data-[size=md]/switch:size-4 group-data-[size=sm]/switch:size-3 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground"
-          layout={!motion.disabled}
-          transition={motion.transition}
-        />
-      </SwitchPrimitive.Thumb>
+        className="pointer-events-none block rounded-full bg-background ring-0 transition-transform duration-200 data-[state=unchecked]:translate-x-0 data-[state=checked]:translate-x-[calc(100%-2px)] group-data-[animated=false]/switch:transition-none group-data-[size=md]/switch:size-4 group-data-[size=sm]/switch:size-3 dark:data-[state=checked]:bg-primary-foreground dark:data-[state=unchecked]:bg-foreground"
+      />
     </SwitchPrimitive.Root>
   )
 }

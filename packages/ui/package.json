@@ -177,12 +177,6 @@
     "input-otp": {
       "optional": true
     },
-    "react-day-picker": {
-      "optional": true
-    },
-    "react-hook-form": {
-      "optional": true
-    },
     "react-resizable-panels": {
       "optional": true
     },

@@ -30,8 +30,22 @@ export interface CountdownValue {
   isExpired: boolean
 }
 
+/** Deterministic first-paint value — see the SSR note in {@link useCountdown}. */
+const ZERO_COUNTDOWN: CountdownValue = {
+  days: 0,
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+  totalMs: 0,
+  isExpired: false,
+}
+
 /**
  * Returns a live countdown to a target date, updating every second.
+ *
+ * SSR note: the first paint renders zeros (server and client must produce
+ * identical HTML — reading the clock during render guarantees a hydration
+ * mismatch); the real value fills in immediately after mount.
  *
  * @param {Date | string | number} target - The target date/time
  * @returns {CountdownValue} The current countdown values
@@ -42,21 +56,26 @@ export interface CountdownValue {
 export function useCountdown(target: Date | string | number): CountdownValue {
   const targetMs = new Date(target).getTime()
 
-  const calculate = (): CountdownValue => {
-    const diff = Math.max(0, targetMs - Date.now())
-    return {
-      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((diff / (1000 * 60)) % 60),
-      seconds: Math.floor((diff / 1000) % 60),
-      totalMs: diff,
-      isExpired: diff <= 0,
-    }
-  }
-
-  const [value, setValue] = useState<CountdownValue>(calculate)
+  const [value, setValue] = useState<CountdownValue>(ZERO_COUNTDOWN)
 
   useEffect(() => {
+    const calculate = (): CountdownValue => {
+      const diff = Math.max(0, targetMs - Date.now())
+      return {
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / (1000 * 60)) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+        totalMs: diff,
+        isExpired: diff <= 0,
+      }
+    }
+
+    const first = calculate()
+    setValue(first)
+    // Don't start a timer for an already-passed target.
+    if (first.isExpired) return
+
     const timer = setInterval(() => {
       const next = calculate()
       setValue(next)

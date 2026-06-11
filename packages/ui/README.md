@@ -117,25 +117,32 @@ pnpm add react react-dom next next-themes framer-motion
 `tailwindcss` is **not** a peer dependency — it's a build-time tool. Install it
 in your app and add a `@source` directive (see Setup below).
 
-### Optional (in main barrel — tree-shake-friendly)
+### Required by main-barrel components
 
-`Form` lives in the main barrel because `react-hook-form` declares
-`"sideEffects": false`, so consumer bundlers reliably eliminate the import when
-`Form` is unused. Install only if you use it. `peerDependenciesMeta.optional`
-is set, so package managers won't warn if you skip it.
+`Form` (`react-hook-form`) and `DatePicker`/`DateRangePicker`
+(`react-day-picker`, pulled in via `Calendar`) live in the main barrel, and
+the current bundled dist imports those peers **eagerly** — importing anything
+from `@saasflare/ui` resolves them. They are therefore declared as required
+peers (no `peerDependenciesMeta.optional`) until the per-module dist lands:
 
-| Component          | Install                                                  |
+| Peer               | Used by                                                  |
 | ------------------ | -------------------------------------------------------- |
-| `Form` + resolvers | `react-hook-form@^7`, `@hookform/resolvers@^5`, `zod@^4` |
+| `react-hook-form@^7` | `Form` family                                          |
+| `react-day-picker@^9` | `DatePicker`, `DateRangePicker`                       |
 
-### Bundled (no install required)
+`@hookform/resolvers@^5` and `zod@^4` stay optional — install them only for
+schema-validated forms.
 
-`Toaster` (sonner-based toast notifications) is bundled directly into
-`@saasflare/ui` — no separate `sonner` install needed. Sonner injects ~6 KB
-of toast CSS into the document at module load, which adds ~13 KB gzip to the
-main barrel for all consumers, including those who don't render `<Toaster />`.
-We accepted this trade-off because Toaster usage is >80 % across the Saasflare
-codebase and consumers; the extra-import friction was worse than the byte cost.
+### Toasts (regular dependency — no separate install)
+
+`Toaster` wraps [sonner](https://sonner.emilkowal.ski), which ships as a
+regular dependency of `@saasflare/ui` — your package manager installs it
+automatically. Import the imperative API from the barrel so your app and the
+mounted `<Toaster />` are guaranteed to share one sonner instance:
+
+```tsx
+import { Toaster, toast } from "@saasflare/ui"
+```
 
 ### Subpath imports (heavy, low-frequency, or non-tree-shakeable peers)
 

@@ -20,7 +20,7 @@
  * <Confetti active={active} count={60} colors={["#ff6b6b", "#ffd93d", "#6bcb77"]} />
  */
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useReducedMotion } from "./motion-config"
@@ -86,15 +86,22 @@ export function Confetti({
   const enabled = sf.animated && !reduced
   const [visible, setVisible] = useState(false)
 
+  // Latest-ref: an inline `onComplete` changes identity every parent render —
+  // keying the effect on it would restart the burst mid-flight.
+  const onCompleteRef = useRef(onComplete)
+  useEffect(() => {
+    onCompleteRef.current = onComplete
+  })
+
   useEffect(() => {
     if (!active || !enabled) return
     setVisible(true)
     const timer = setTimeout(() => {
       setVisible(false)
-      onComplete?.()
+      onCompleteRef.current?.()
     }, duration)
     return () => clearTimeout(timer)
-  }, [active, enabled, duration, onComplete])
+  }, [active, enabled, duration])
 
   const particles = useMemo(
     () =>

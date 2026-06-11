@@ -425,7 +425,6 @@ export function MultiSelect({
                   return (
                     <MotionChip
                       key={val}
-                      layout={motion.disabled ? false : true}
                       initial={motion.disabled ? false : { opacity: 0, scale: 0.85 }}
                       animate={motion.disabled ? false : { opacity: 1, scale: 1 }}
                       exit={motion.disabled ? undefined : { opacity: 0, scale: 0.85 }}
