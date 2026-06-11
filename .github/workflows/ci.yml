@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Build, typecheck, lint, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Build first: apps/ui resolves @saasflare/ui via the dist exports map.
+      - name: Build @saasflare/ui
+        run: pnpm -F @saasflare/ui build
+
+      - name: Typecheck @saasflare/ui
+        run: pnpm -F @saasflare/ui typecheck
+
+      - name: Lint @saasflare/ui
+        run: pnpm -F @saasflare/ui lint
+
+      - name: Test @saasflare/ui
+        run: pnpm -F @saasflare/ui test
+
+      - name: Typecheck @saasflare/ui-app
+        run: pnpm -F @saasflare/ui-app typecheck

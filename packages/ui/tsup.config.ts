@@ -108,7 +108,7 @@ export default defineConfig({
      *   3. Peer confinement — react-hook-form / react-day-picker imports stay
      *      inside form/date-picker modules instead of the shared entry chunk.
      */
-    entry: ['src/**/*.ts', 'src/**/*.tsx'],
+    entry: ['src/**/*.ts', 'src/**/*.tsx', '!src/**/*.test.*'],
     format: ['cjs', 'esm'],
     // Declarations come from `tsc -p tsconfig.build.json` (see build script):
     // rollup-based dts across ~250 entries is prohibitively slow.
