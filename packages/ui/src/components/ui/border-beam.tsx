@@ -70,6 +70,12 @@ export function BorderBeam({
   const sf = useSaasflareProps({ surface, radius, animated, iconWeight })
   const reduced = useReducedMotion()
 
+  /* `inherit` is valid for the border-radius property but NOT inside
+   * `rect(... round <radius>)` — an invalid offset-path is dropped wholesale
+   * and the beam parks as a blurred blob at the container's top-left corner.
+   * Fall back to the design-system radius token for the path. */
+  const pathRadius = borderRadius === "inherit" ? "var(--radius, 0.625rem)" : borderRadius
+
   // A static border beam is meaningless decoration: skip rendering entirely
   // when the design-system `animated` axis is off or the OS prefers reduced
   // motion. motion.css would zero the keyframe via [data-animated="false"],
@@ -99,7 +105,7 @@ export function BorderBeam({
             inset: 0,
             borderRadius,
             /* The beam travels along the rect path */
-            offsetPath: `rect(0 auto auto 0 round ${borderRadius})`,
+            offsetPath: `rect(0 auto auto 0 round ${pathRadius})`,
             animation: `sf-border-beam ${duration}s linear infinite`,
             background: `linear-gradient(to left, ${color}, ${colorFrom})`,
             width: size,

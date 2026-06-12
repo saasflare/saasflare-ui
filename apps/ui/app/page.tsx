@@ -1,24 +1,26 @@
 /**
  * @fileoverview Marketing landing page for ui.saasflare.io.
  *
- * Replaces the previous `redirect("/catalog")` (the catalog now lives at
- * `/catalog`). Composed entirely from `@saasflare/ui` primitives so the page
- * is itself the proof of the design system. Inherits theme + animation context
- * from `SaasflareShell` in the root layout.
+ * Compact two-zone layout (HeroUI/shadcn density): the hero IS the theme
+ * playground, the proof section folds breadth + differentiators + install
+ * into one screen. Composed entirely from `@saasflare/ui` primitives so the
+ * page is itself the proof of the design system. Version and component count
+ * are read at build time from the package + registry — they cannot go stale.
  */
 import type { Metadata } from "next"
-import { AiNative } from "../components/landing/ai-native"
+import pkg from "@saasflare/ui/package.json"
+import registry from "../public/registry.json"
 import { Cta } from "../components/landing/cta"
 import { Footer } from "../components/landing/footer"
-import { Hero } from "../components/landing/hero"
-import { Install } from "../components/landing/install"
+import { HeroPlayground } from "../components/landing/hero-playground"
 import { LandingNav } from "../components/landing/landing-nav"
-import { Showcase } from "../components/landing/showcase"
-import { ThemePlayground } from "../components/landing/theme-playground"
+import { Proof } from "../components/landing/proof"
 
 export const metadata: Metadata = {
     title: { absolute: "Saasflare UI — The AI-native React component library" },
 }
+
+const COMPONENT_COUNT = registry.items.length
 
 /** Full marketing landing page. */
 export default function Home() {
@@ -26,11 +28,8 @@ export default function Home() {
         <>
             <LandingNav />
             <main>
-                <Hero />
-                <AiNative />
-                <ThemePlayground />
-                <Showcase />
-                <Install />
+                <HeroPlayground version={pkg.version} componentCount={COMPONENT_COUNT} />
+                <Proof componentCount={COMPONENT_COUNT} />
                 <Cta />
             </main>
             <Footer />

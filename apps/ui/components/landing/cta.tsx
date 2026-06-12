@@ -11,8 +11,11 @@ import { AuroraBackground, Button, Icons } from "@saasflare/ui"
 /** Final call-to-action section. */
 export function Cta() {
     return (
-        <section className="mx-auto max-w-6xl px-6 py-20">
-            <AuroraBackground className="flex flex-col items-center rounded-3xl border px-6 py-20 text-center">
+        <section className="mx-auto max-w-6xl px-6 py-14">
+            <AuroraBackground
+                colors={["var(--primary)", "var(--chart-2)", "var(--chart-3)"]}
+                className="flex flex-col items-center rounded-3xl border px-6 py-16 text-center"
+            >
                 <h2 className="max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-5xl">
                     Ship your next interface this afternoon
                 </h2>
