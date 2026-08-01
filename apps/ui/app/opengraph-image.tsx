@@ -4,7 +4,7 @@
  * literal brand colors — OG images can't read the CSS design tokens.
  */
 import { ImageResponse } from "next/og"
-import { SITE_NAME, SITE_TAGLINE } from "../lib/site"
+import { SITE_NAME, SITE_TAGLINE } from "@/lib/site"
 
 export const runtime = "edge"
 export const alt = `${SITE_NAME} — ${SITE_TAGLINE}`

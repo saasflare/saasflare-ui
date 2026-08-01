@@ -9,7 +9,7 @@
  */
 
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js"
-import { createSaasflareMcpServer } from "../../../lib/mcp/server"
+import { createSaasflareMcpServer } from "@/lib/mcp/server"
 
 export const dynamic = "force-dynamic"
 export const runtime = "nodejs"

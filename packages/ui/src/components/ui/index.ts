@@ -333,6 +333,15 @@ export {
   TableCaption,
 } from "./table"
 export { AnimatedTooltip, type TooltipItem } from "./animated/tooltip"
+export { AnimatedBeam, type AnimatedBeamProps } from "./animated/beam"
+export { AnimatedCounter, type AnimatedCounterProps } from "./animated/counter"
+export { AnimatedCursor, type AnimatedCursorProps } from "./animated/cursor"
+export { AnimatedShinyText, type AnimatedShinyTextProps } from "./animated/shiny-text"
+export {
+  AnimatedTestimonials,
+  type AnimatedTestimonialsProps,
+  type Testimonial,
+} from "./animated/testimonials"
 export { TypewriterText } from "./typewriter-text"
 export {
   Sidebar,
