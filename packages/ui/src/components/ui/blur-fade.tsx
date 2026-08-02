@@ -27,7 +27,6 @@
 import * as React from "react"
 import { useRef, type ReactNode } from "react"
 import { m, useInView } from "motion/react"
-import { cn } from "../../lib"
 import { useSaasflareProps, type SaasflareComponentProps } from "../../providers"
 import { useSaasflareMotion } from "./motion-config"
 
@@ -84,9 +83,22 @@ export function BlurFade({
   const motion = useSaasflareMotion(sf.animated)
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once, margin: "-50px" })
-  // Only pin a compositing layer while the entrance is actually running, then
-  // release it so staggered lists don't keep a will-change layer for life.
-  const [isAnimating, setIsAnimating] = React.useState(false)
+
+  /**
+   * Pins a compositing layer for the duration of the entrance, then releases
+   * it so a staggered list does not keep hundreds of `will-change` layers
+   * alive forever.
+   *
+   * Written straight to the node rather than through React state on purpose.
+   * Driving the className from `onAnimationStart` re-rendered the component,
+   * which handed Motion a fresh `animate` target, which restarted the
+   * animation, which fired `onAnimationStart` again — a loop that left the
+   * content pinned near opacity 0 permanently. The DOM write has the same
+   * effect and cannot re-enter.
+   */
+  const setWillChange = React.useCallback((value: string) => {
+    if (ref.current) ref.current.style.willChange = value
+  }, [])
 
   if (motion.disabled) {
     return (
@@ -107,9 +119,9 @@ export function BlurFade({
           : { opacity: 0, y: yOffset, filter: `blur(${blur}px)` }
       }
       transition={{ duration, delay, ease: "easeOut" }}
-      onAnimationStart={() => setIsAnimating(true)}
-      onAnimationComplete={() => setIsAnimating(false)}
-      className={cn(isAnimating && "will-change-[opacity,transform,filter]", className)}
+      onAnimationStart={() => setWillChange("opacity, transform, filter")}
+      onAnimationComplete={() => setWillChange("auto")}
+      className={className}
       data-slot="blur-fade"
       data-surface={sf.surface}
       data-radius={sf.radius}

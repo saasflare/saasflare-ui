@@ -17,3 +17,8 @@
 @import "@saasflare/ui/globals.css";
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-ui/css/shadcn.css";
+
+/* The package's own @source points at dist, because that is what ships to
+ * consumers. Working *on* the package we also want src scanned, so a class
+ * added to a component shows up here without rebuilding first. */
+@source "../../../packages/ui/src";

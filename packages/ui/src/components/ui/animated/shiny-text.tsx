@@ -77,7 +77,13 @@ export function AnimatedShinyText({
       )}
       <span
         className={cn(
-          "inline-block bg-clip-text text-transparent",
+          // Deliberately NOT `text-transparent`. That sets `color: transparent`,
+          // and `currentColor` in the gradient below then resolves to
+          // transparent too — leaving only the narrow shimmer band visible and
+          // the rest of the word invisible. `-webkit-text-fill-color` makes the
+          // glyphs see-through without touching `color`, so `currentColor`
+          // still picks up the inherited text color.
+          "inline-block bg-clip-text",
           className,
         )}
         style={{

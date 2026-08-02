@@ -29,10 +29,22 @@
 @import "./aurora.css";
 @import "./palettes.css";
 
-/* Tailwind v4 source discovery — scan the package itself so consumers
- * don't have to declare @source in their app globals. */
-@source "../src/components";
-@source "../src/providers";
+/* Tailwind v4 source discovery — scan the package itself so consumers don't
+ * have to declare @source in their app globals.
+ *
+ * This MUST point at dist, not src. `files` in package.json publishes
+ * ["dist", "styles", "fonts"] — src/ never reaches a consumer, so an @source
+ * aimed at it silently matches nothing. Every utility used only inside a
+ * Saasflare component (bg-clip-text on GradientText, the shimmer gradients,
+ * every animation utility) then goes ungenerated, and the component renders
+ * unstyled in the consumer's app while looking perfect in this monorepo.
+ *
+ * dist ships, and tsup preserves the class strings verbatim, so scanning it
+ * produces exactly the same utility set in both places.
+ *
+ * Working on the package itself? apps/ui adds its own @source for src so
+ * class changes hot-reload without a rebuild. */
+@source "../dist";
 
 @custom-variant dark (&:is(.dark *));
 
