@@ -1,6 +1,6 @@
 {
   "name": "@saasflare/ui",
-  "version": "3.11.0",
+  "version": "3.11.1",
   "private": false,
   "license": "MIT",
   "description": "The Next.js UI library — App Router-aware Radix primitives with Tailwind v4 and Motion, animated by default.",
