@@ -1,5 +1,17 @@
 # @saasflare/ui
 
+## 3.8.0
+
+### Minor Changes
+
+- ea433c5: Export five components that shipped in the package but were unreachable: `AnimatedBeam`, `AnimatedCounter`, `AnimatedCursor`, `AnimatedShinyText`, and `AnimatedTestimonials`. All five were complete, documented, and bundled into `dist` — they were simply missing from `src/components/ui/index.ts`, so `import { AnimatedCounter } from "@saasflare/ui"` failed to type-check for every consumer.
+
+  Also removes `animated/aurora-background.tsx`, a dead duplicate of the exported `AuroraBackground` that was never imported and would have collided on name.
+
+### Patch Changes
+
+- 8dc2188: BorderBeam: the default `borderRadius="inherit"` produced an invalid `offset-path` (`inherit` is not valid inside `rect(... round <radius>)`), so the beam never traced the border — it rendered as a stationary blurred blob at the container's top-left. The path now falls back to the `--radius` token; explicit `borderRadius` values behave as before.
+
 ## 3.7.0
 
 ### Minor Changes
