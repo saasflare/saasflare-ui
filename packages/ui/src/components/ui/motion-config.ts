@@ -19,8 +19,10 @@
  * <motion.div transition={reduced ? { duration: 0 } : spring} />
  */
 
+import { useContext } from "react"
 import type { Transition } from "motion/react"
 import { useReducedMotion } from "../../hooks/use-reduced-motion"
+import { AnimationContext } from "../../providers/animation-context"
 
 /** Re-export reduced-motion hook for convenience */
 export { useReducedMotion }
@@ -63,7 +65,19 @@ export interface SaasflareMotion {
  * Disables motion when **any** of these are true:
  *   - Consumer opted out (`animated={false}` from prop or `<SaasflareProvider>`)
  *   - OS reports `prefers-reduced-motion: reduce`
+ *   - There is no `<SaasflareProvider>` above this component
  *   - Any `extraDisablers` (e.g. `disabled`, `loading`) is `true`
+ *
+ * That third condition is the one worth explaining. Animated components render
+ * `m.*`, the lazy Motion primitives, which only animate inside the
+ * `LazyMotion` that `SaasflareProvider` installs. Without the provider they
+ * still mount — at their `initial` state, and they stay there. For an entrance
+ * animation that means `opacity: 0` forever: a page that is structurally
+ * perfect and completely blank, with nothing logged.
+ *
+ * So a missing provider counts as "motion is off". Components already branch
+ * on `disabled` to render plain markup, which is visible and static — the
+ * right failure for a missing provider, and a far better one than invisible.
  *
  * Single tuning point — when later we differentiate spring tokens per component
  * (`springBouncy.checkbox`, `springSnappy.dialog`), the variants live next to
@@ -89,6 +103,9 @@ export function useSaasflareMotion(
     ...extraDisablers: boolean[]
 ): SaasflareMotion {
     const reduced = useReducedMotion()
-    const disabled = !animated || reduced || extraDisablers.some(Boolean)
+    // `undefined` means no SaasflareProvider, and therefore no LazyMotion.
+    const hasProvider = useContext(AnimationContext) !== undefined
+    const disabled =
+        !animated || reduced || !hasProvider || extraDisablers.some(Boolean)
     return { transition: disabled ? noMotion : base, disabled }
 }
