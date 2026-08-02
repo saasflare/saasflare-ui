@@ -269,6 +269,7 @@ export {
   CircleNotchIcon,
   DotsSixVerticalIcon,
   DotsThreeIcon,
+  EnvelopeIcon,
   InfoIcon,
   MagnifyingGlassIcon,
   MinusIcon,
@@ -300,6 +301,7 @@ export {
   StripeLogoIcon,
   TiktokLogoIcon,
   XLogoIcon,
+  YoutubeLogoIcon,
 } from "./phosphor"
 export {
   InputGroup,
