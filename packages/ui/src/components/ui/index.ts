@@ -282,6 +282,24 @@ export {
   WarningIcon,
   XIcon,
   XCircleIcon,
+  // Brand marks. Present in the package since 3.0 but never re-exported —
+  // any consumer building its own login form had to reimplement them.
+  AppleLogoIcon,
+  DiscordLogoIcon,
+  DribbbleLogoIcon,
+  FacebookLogoIcon,
+  GithubLogoIcon,
+  GitlabLogoIcon,
+  GoogleLogoIcon,
+  LinkedinLogoIcon,
+  MediumLogoIcon,
+  MicrosoftOutlookLogoIcon,
+  PaypalLogoIcon,
+  RedditLogoIcon,
+  SlackLogoIcon,
+  StripeLogoIcon,
+  TiktokLogoIcon,
+  XLogoIcon,
 } from "./phosphor"
 export {
   InputGroup,
