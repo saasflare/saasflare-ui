@@ -912,6 +912,41 @@
       "title": "Animated Tooltip",
       "description": "Row of circular avatars that reveal a spring-tilted, mouse-tracking tooltip on hover — for team rows and contributor stacks.",
       "url": "https://ui.saasflare.io/r/animated-tooltip.json"
+    },
+    {
+      "name": "animated-counter",
+      "type": "registry:ui",
+      "title": "Animated Counter",
+      "description": "Number that springs from zero to its target the first time it scrolls into view — decimals, prefix/suffix, and locale grouping. Shows the final value immediately under reduced motion.",
+      "url": "https://ui.saasflare.io/r/animated-counter.json"
+    },
+    {
+      "name": "animated-beam",
+      "type": "registry:ui",
+      "title": "Animated Beam",
+      "description": "Pulsing gradient beam drawn along an SVG bezier between two ref-targeted elements — the connector for architecture and integration diagrams.",
+      "url": "https://ui.saasflare.io/r/animated-beam.json"
+    },
+    {
+      "name": "animated-shiny-text",
+      "type": "registry:ui",
+      "title": "Animated Shiny Text",
+      "description": "Text with a sweeping highlight gradient, CSS-only and frame-free. The announcement-badge treatment (\"✨ Introducing v2.0\").",
+      "url": "https://ui.saasflare.io/r/animated-shiny-text.json"
+    },
+    {
+      "name": "animated-cursor",
+      "type": "registry:ui",
+      "title": "Animated Cursor",
+      "description": "Dot-and-ring cursor overlay that follows the pointer with spring physics. Hides itself on touch devices and under reduced motion.",
+      "url": "https://ui.saasflare.io/r/animated-cursor.json"
+    },
+    {
+      "name": "animated-testimonials",
+      "type": "registry:ui",
+      "title": "Animated Testimonials",
+      "description": "Auto-rotating testimonial carousel with crossfade, avatar, quote, and manual navigation — configurable interval or fully manual.",
+      "url": "https://ui.saasflare.io/r/animated-testimonials.json"
     }
   ]
 }

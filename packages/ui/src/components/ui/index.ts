@@ -408,7 +408,7 @@ export {
 export { EmptyState, type EmptyStateProps } from "./empty-state"
 export { SearchField, type SearchFieldProps } from "./search-field"
 export { SettingsSection, type SettingsSectionProps } from "./settings-section"
-export { PricingCard, type PricingCardProps } from "./pricing-card"
+export { PricingCard, type PricingCardProps, type PricingCardFeature } from "./pricing-card"
 export {
   DataToolbar,
   DataToolbarSearch,

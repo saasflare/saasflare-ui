@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "animated-counter",
+  "type": "registry:ui",
+  "title": "Animated Counter",
+  "description": "Number that springs from zero to its target the first time it scrolls into view — decimals, prefix/suffix, and locale grouping. Shows the final value immediately under reduced motion.",
+  "dependencies": [
+    "@saasflare/ui",
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "components/ui/animated-counter.tsx",
+      "type": "registry:ui",
+      "content": "// @draft\n\"use client\"\n\n/**\n * @fileoverview Animated counter that counts up when scrolled into view.\n * @author Saasflare™\n * Uses Intersection Observer to trigger a spring-based number animation.\n * Ideal for stats sections, dashboards, and metric displays.\n * @module packages/ui/components/ui/animated/counter\n * @package ui\n *\n * @component\n * @example\n * import { AnimatedCounter } from '@saasflare/ui';\n * <AnimatedCounter value={1234} />\n *\n * @example\n * // With formatting and prefix/suffix\n * <AnimatedCounter value={99.9} prefix=\"$\" suffix=\"M\" decimals={1} />\n */\n\nimport { useEffect, useRef, useState } from \"react\"\nimport { useSpring, useInView, useMotionValue } from \"motion/react\"\nimport { cn } from \"@saasflare/ui\"\nimport { useSaasflareProps, type SaasflareComponentProps } from \"@saasflare/ui\"\nimport { useSaasflareMotion } from \"@saasflare/ui\"\n\n/** Props for the AnimatedCounter component. */\nexport interface AnimatedCounterProps\n  extends Omit<React.ComponentProps<\"span\">, keyof SaasflareComponentProps>,\n    SaasflareComponentProps {\n  /** Target number to count up to. */\n  value: number\n  /** Number of decimal places. Default: `0` */\n  decimals?: number\n  /** Duration of the animation in seconds. Default: `2` */\n  duration?: number\n  /** Text to show before the number (e.g. \"$\"). */\n  prefix?: string\n  /** Text to show after the number (e.g. \"%\", \"K\"). */\n  suffix?: string\n  /** Additional class names. */\n  className?: string\n  /** Whether to use locale-aware formatting (e.g. \"1,234\"). Default: `true` */\n  formatted?: boolean\n}\n\n/**\n * Number that animates from 0 to a target value when scrolled into view.\n *\n * - Triggers once when the element enters the viewport\n * - Uses spring physics for a natural deceleration curve\n * - Shows the final value immediately when motion is disabled (reduced motion or `animated={false}`)\n * - Supports decimal precision, prefix/suffix, and locale formatting\n *\n * @component\n * @package ui\n */\nexport function AnimatedCounter({\n  value,\n  decimals = 0,\n  duration = 2,\n  prefix = \"\",\n  suffix = \"\",\n  className,\n  formatted = true,\n  animated,\n  ...props\n}: AnimatedCounterProps) {\n  const sf = useSaasflareProps({ animated })\n  const motion = useSaasflareMotion(sf.animated)\n  const ref = useRef<HTMLSpanElement>(null)\n  const isInView = useInView(ref, { once: true, margin: \"-50px\" })\n  const motionValue = useMotionValue(0)\n  const springValue = useSpring(motionValue, {\n    visualDuration: duration,\n    bounce: 0.1,\n  })\n  const [displayValue, setDisplayValue] = useState(\"0\")\n\n  useEffect(() => {\n    if (motion.disabled) {\n      setDisplayValue(formatNumber(value, decimals, formatted))\n      return\n    }\n    if (isInView) {\n      motionValue.set(value)\n    }\n  }, [isInView, value, motionValue, motion.disabled, decimals, formatted])\n\n  useEffect(() => {\n    if (motion.disabled) return\n    const unsubscribe = springValue.on(\"change\", (latest) => {\n      setDisplayValue(formatNumber(latest, decimals, formatted))\n    })\n    return unsubscribe\n  }, [springValue, decimals, formatted, motion.disabled])\n\n  return (\n    <span\n      ref={ref}\n      className={cn(\"tabular-nums\", className)}\n      data-slot=\"animated-counter\"\n      data-animated={String(sf.animated)}\n      {...props}\n    >\n      {prefix}\n      {displayValue}\n      {suffix}\n    </span>\n  )\n}\n\n/** Formats a number with optional decimals and locale grouping. */\nfunction formatNumber(n: number, decimals: number, useLocale: boolean): string {\n  if (useLocale) {\n    return n.toLocaleString(undefined, {\n      minimumFractionDigits: decimals,\n      maximumFractionDigits: decimals,\n    })\n  }\n  return n.toFixed(decimals)\n}\n",
+      "target": "components/ui/animated-counter.tsx"
+    }
+  ],
+  "$meta": {
+    "source": "https://ui.saasflare.io/r/animated-counter.json"
+  }
+}

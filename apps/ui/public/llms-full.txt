@@ -3319,12 +3319,20 @@ interface PricingCardProps extends Omit<React.ComponentProps<"div">, keyof Saasf
   period?: string
   /** Short plan description */
   description?: string
-  /** List of included features */
-  features: string[]
+  /**
+   * Feature rows. Plain strings are treated as included features; use the
+   * object form for a tooltip or to mark a feature as excluded.
+   */
+  features: ReadonlyArray<string | PricingCardFeature>
   /** CTA button element */
   cta?: React.ReactNode
   /** Highlight as recommended plan */
   featured?: boolean
+  /**
+   * Ribbon text on a featured card. Defaults to `"Recommended"`.
+   * Set your own for other languages or a different message ("Best value").
+   */
+  badge?: React.ReactNode
 }
 ```
 

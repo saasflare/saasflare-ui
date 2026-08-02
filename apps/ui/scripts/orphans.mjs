@@ -110,6 +110,46 @@ export const ORPHANS = [
             "Row of circular avatars that reveal a spring-tilted, mouse-tracking tooltip on hover — for team rows and contributor stacks.",
         category: "Feedback",
     },
+    {
+        slug: "animated-counter",
+        srcPath: "src/components/ui/animated/counter.tsx",
+        title: "Animated Counter",
+        description:
+            "Number that springs from zero to its target the first time it scrolls into view — decimals, prefix/suffix, and locale grouping. Shows the final value immediately under reduced motion.",
+        category: "Data Visualization",
+    },
+    {
+        slug: "animated-beam",
+        srcPath: "src/components/ui/animated/beam.tsx",
+        title: "Animated Beam",
+        description:
+            "Pulsing gradient beam drawn along an SVG bezier between two ref-targeted elements — the connector for architecture and integration diagrams.",
+        category: "Effects & Motion",
+    },
+    {
+        slug: "animated-shiny-text",
+        srcPath: "src/components/ui/animated/shiny-text.tsx",
+        title: "Animated Shiny Text",
+        description:
+            "Text with a sweeping highlight gradient, CSS-only and frame-free. The announcement-badge treatment (\"\u2728 Introducing v2.0\").",
+        category: "Effects & Motion",
+    },
+    {
+        slug: "animated-cursor",
+        srcPath: "src/components/ui/animated/cursor.tsx",
+        title: "Animated Cursor",
+        description:
+            "Dot-and-ring cursor overlay that follows the pointer with spring physics. Hides itself on touch devices and under reduced motion.",
+        category: "Effects & Motion",
+    },
+    {
+        slug: "animated-testimonials",
+        srcPath: "src/components/ui/animated/testimonials.tsx",
+        title: "Animated Testimonials",
+        description:
+            "Auto-rotating testimonial carousel with crossfade, avatar, quote, and manual navigation \u2014 configurable interval or fully manual.",
+        category: "Data Display",
+    },
 ]
 
 /** Convenience lookup used by the scripts. */

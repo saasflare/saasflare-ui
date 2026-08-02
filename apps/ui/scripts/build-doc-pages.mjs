@@ -52,11 +52,11 @@ const CATEGORIES = {
         "table", "data-table", "badge", "avatar", "user-avatar", "card", "stat-card", "metric-card",
         "feature-card", "pricing-card", "testimonial-card", "team-card", "section-card",
         "spotlight-card", "item", "kbd", "code-block", "tree-view", "data-toolbar", "empty",
-        "empty-state", "bento-grid", "page-header", "settings-section",
+        "empty-state", "bento-grid", "page-header", "settings-section", "animated-testimonials",
     ],
     "Data Visualization": [
         "chart", "bar-list", "category-bar", "tracker", "spark-chart", "progress",
-        "progress-circle", "countdown",
+        "progress-circle", "countdown", "animated-counter",
     ],
     Feedback: [
         "alert", "alert-dialog", "callout", "dialog", "drawer", "sheet", "sonner", "tooltip",
@@ -77,6 +77,7 @@ const CATEGORIES = {
         "gradient-text", "marquee", "mouse-gradient-blob", "page-transition", "parallax-section",
         "particles-background", "retro-grid", "reveal-on-scroll", "sticky-scroll-reveal",
         "text-generate-effect", "timeline", "tracing-beam", "typewriter-text",
+        "animated-beam", "animated-shiny-text", "animated-cursor",
     ],
 }
 

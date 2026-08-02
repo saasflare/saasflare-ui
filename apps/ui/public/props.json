@@ -9680,10 +9680,10 @@
       "props": [
         {
           "name": "features",
-          "type": "string[]",
+          "type": "readonly (string | PricingCardFeature)[]",
           "required": true,
           "default": null,
-          "description": "List of included features"
+          "description": "Feature rows. Plain strings are treated as included features; use the object form for a tooltip or to mark a feature as excluded."
         },
         {
           "name": "name",
@@ -9705,6 +9705,13 @@
           "required": false,
           "default": null,
           "description": "Animation override. Omit to inherit from provider."
+        },
+        {
+          "name": "badge",
+          "type": "ReactNode",
+          "required": false,
+          "default": "Recommended",
+          "description": "Ribbon text on a featured card. Defaults to `\"Recommended\"`. Set your own for other languages or a different message (\"Best value\")."
         },
         {
           "name": "cta",
@@ -15980,6 +15987,382 @@
           "required": false,
           "default": null,
           "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
+        },
+        {
+          "name": "radius",
+          "type": "\"sharp\" | \"soft\" | \"rounded\" | \"pill\"",
+          "required": false,
+          "default": null,
+          "description": "Radius preset override. Omit to inherit from provider."
+        },
+        {
+          "name": "surface",
+          "type": "StyleVariant",
+          "required": false,
+          "default": null,
+          "description": "Surface style override. Omit to inherit from provider."
+        }
+      ]
+    }
+  ],
+  "animated-counter": [
+    {
+      "name": "AnimatedCounter",
+      "description": "Number that animates from 0 to a target value when scrolled into view.",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "default": null,
+          "description": "Target number to count up to."
+        },
+        {
+          "name": "animated",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Animation override. Omit to inherit from provider."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional class names."
+        },
+        {
+          "name": "decimals",
+          "type": "number",
+          "required": false,
+          "default": "0",
+          "description": "Number of decimal places. Default: `0`"
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": "Duration of the animation in seconds. Default: `2`"
+        },
+        {
+          "name": "formatted",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Whether to use locale-aware formatting (e.g. \"1,234\"). Default: `true`"
+        },
+        {
+          "name": "iconWeight",
+          "type": "\"regular\" | \"bold\" | \"fill\" | \"duotone\"",
+          "required": false,
+          "default": null,
+          "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
+        },
+        {
+          "name": "prefix",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Text to show before the number (e.g. \"$\")."
+        },
+        {
+          "name": "radius",
+          "type": "\"sharp\" | \"soft\" | \"rounded\" | \"pill\"",
+          "required": false,
+          "default": null,
+          "description": "Radius preset override. Omit to inherit from provider."
+        },
+        {
+          "name": "suffix",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "description": "Text to show after the number (e.g. \"%\", \"K\")."
+        },
+        {
+          "name": "surface",
+          "type": "StyleVariant",
+          "required": false,
+          "default": null,
+          "description": "Surface style override. Omit to inherit from provider."
+        }
+      ]
+    }
+  ],
+  "animated-beam": [
+    {
+      "name": "AnimatedBeam",
+      "description": "Animated SVG beam connecting two DOM elements.",
+      "props": [
+        {
+          "name": "containerRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": true,
+          "default": null,
+          "description": "Ref to the container element (provides coordinate space)."
+        },
+        {
+          "name": "fromRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": true,
+          "default": null,
+          "description": "Ref to the source element."
+        },
+        {
+          "name": "toRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": true,
+          "default": null,
+          "description": "Ref to the target element."
+        },
+        {
+          "name": "animated",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Animation override. Omit to inherit from provider."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional class names for the SVG."
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "var(--primary)",
+          "description": "Beam stroke color. Default: `\"var(--primary)\"`"
+        },
+        {
+          "name": "curvature",
+          "type": "number",
+          "required": false,
+          "default": "50",
+          "description": "Curvature offset for the bezier curve. Default: `50`"
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": "Pulse animation duration in seconds. Default: `3`"
+        },
+        {
+          "name": "iconWeight",
+          "type": "\"regular\" | \"bold\" | \"fill\" | \"duotone\"",
+          "required": false,
+          "default": null,
+          "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
+        },
+        {
+          "name": "radius",
+          "type": "\"sharp\" | \"soft\" | \"rounded\" | \"pill\"",
+          "required": false,
+          "default": null,
+          "description": "Radius preset override. Omit to inherit from provider."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "default": "2",
+          "description": "Beam stroke width. Default: `2`"
+        },
+        {
+          "name": "surface",
+          "type": "StyleVariant",
+          "required": false,
+          "default": null,
+          "description": "Surface style override. Omit to inherit from provider."
+        }
+      ]
+    }
+  ],
+  "animated-shiny-text": [
+    {
+      "name": "AnimatedShinyText",
+      "description": "Text with a sweeping shimmer/shine animation.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": null,
+          "description": "Text content."
+        },
+        {
+          "name": "animated",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Animation override. Omit to inherit from provider."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional class names."
+        },
+        {
+          "name": "iconWeight",
+          "type": "\"regular\" | \"bold\" | \"fill\" | \"duotone\"",
+          "required": false,
+          "default": null,
+          "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
+        },
+        {
+          "name": "radius",
+          "type": "\"sharp\" | \"soft\" | \"rounded\" | \"pill\"",
+          "required": false,
+          "default": null,
+          "description": "Radius preset override. Omit to inherit from provider."
+        },
+        {
+          "name": "shimmerColor",
+          "type": "string",
+          "required": false,
+          "default": "var(--primary)",
+          "description": "Shimmer highlight color. Prefer design tokens. Default: `\"var(--primary)\"`"
+        },
+        {
+          "name": "speed",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": "Animation cycle duration in seconds. Default: `3`"
+        },
+        {
+          "name": "surface",
+          "type": "StyleVariant",
+          "required": false,
+          "default": null,
+          "description": "Surface style override. Omit to inherit from provider."
+        }
+      ]
+    }
+  ],
+  "animated-cursor": [
+    {
+      "name": "AnimatedCursor",
+      "description": "Animated cursor overlay with a dot + ring that follow the mouse.",
+      "props": [
+        {
+          "name": "animated",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Animation override. Omit to inherit from provider."
+        },
+        {
+          "name": "dotColor",
+          "type": "string",
+          "required": false,
+          "default": "var(--primary)",
+          "description": "CSS color for the inner dot. Default: `\"var(--primary)\"`"
+        },
+        {
+          "name": "dotSize",
+          "type": "number",
+          "required": false,
+          "default": "6",
+          "description": "Diameter of the inner dot in pixels. Default: `6`"
+        },
+        {
+          "name": "iconWeight",
+          "type": "\"regular\" | \"bold\" | \"fill\" | \"duotone\"",
+          "required": false,
+          "default": null,
+          "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
+        },
+        {
+          "name": "radius",
+          "type": "\"sharp\" | \"soft\" | \"rounded\" | \"pill\"",
+          "required": false,
+          "default": null,
+          "description": "Radius preset override. Omit to inherit from provider."
+        },
+        {
+          "name": "ringBorderWidth",
+          "type": "number",
+          "required": false,
+          "default": "1.5",
+          "description": "Border width of the outer ring in pixels. Default: `1.5`"
+        },
+        {
+          "name": "ringColor",
+          "type": "string",
+          "required": false,
+          "default": "var(--primary)",
+          "description": "CSS color for the outer ring border. Default: `\"var(--primary)\"`"
+        },
+        {
+          "name": "ringSize",
+          "type": "number",
+          "required": false,
+          "default": "32",
+          "description": "Diameter of the outer ring in pixels. Default: `32`"
+        },
+        {
+          "name": "surface",
+          "type": "StyleVariant",
+          "required": false,
+          "default": null,
+          "description": "Surface style override. Omit to inherit from provider."
+        }
+      ]
+    }
+  ],
+  "animated-testimonials": [
+    {
+      "name": "AnimatedTestimonials",
+      "description": "Auto-rotating testimonial carousel with image, quote, and attribution.",
+      "props": [
+        {
+          "name": "testimonials",
+          "type": "Testimonial[]",
+          "required": true,
+          "default": null,
+          "description": "Array of testimonials to display."
+        },
+        {
+          "name": "animated",
+          "type": "boolean",
+          "required": false,
+          "default": null,
+          "description": "Animation override. Omit to inherit from provider."
+        },
+        {
+          "name": "autoPlay",
+          "type": "boolean",
+          "required": false,
+          "default": "true",
+          "description": "Whether to auto-play. Default: `true`"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": null,
+          "description": "Additional class names."
+        },
+        {
+          "name": "iconWeight",
+          "type": "\"regular\" | \"bold\" | \"fill\" | \"duotone\"",
+          "required": false,
+          "default": null,
+          "description": "Icon weight override for any Phosphor icons rendered inside the component. Omit to inherit from provider (which defaults to \"regular\"). Some components (e.g. Spinner) hardcode a weight that's part of their visual identity and intentionally ignore this prop."
+        },
+        {
+          "name": "interval",
+          "type": "number",
+          "required": false,
+          "default": "5000",
+          "description": "Auto-advance interval in milliseconds. Default: `5000`"
         },
         {
           "name": "radius",
