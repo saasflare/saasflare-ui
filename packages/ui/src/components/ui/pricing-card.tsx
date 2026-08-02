@@ -213,7 +213,13 @@ function PricingCard({
           )
         })}
       </FeatureList>
-      {cta && <div className="mt-6">{cta}</div>}
+      {/* `mt-auto` pins the CTA to the bottom of the card. Without it the
+          button sits directly under the feature list, so in a row of plans
+          with different feature counts the CTAs land at different heights —
+          the one thing that makes an otherwise finished pricing table look
+          unfinished. Needs the parent grid to stretch its items, which is
+          the default. */}
+      {cta && <div className="mt-auto pt-6">{cta}</div>}
     </div>
   )
 }
