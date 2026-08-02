@@ -19,6 +19,10 @@
  *   trend={{ value: 12.5, direction: "up" }}
  *   icon={<UsersIcon />}
  * />
+ *
+ * @example
+ * // Usage metrics need the denominator, not just the number
+ * <MetricCard label="Credits left" value="1,240" description="of 5,000 this cycle" />
  */
 
 import * as React from "react"
@@ -43,6 +47,11 @@ interface MetricCardProps extends Omit<React.ComponentProps<"div">, keyof Saasfl
   trend?: MetricTrend
   /** Optional icon element */
   icon?: React.ReactNode
+  /**
+   * Secondary line under the value — the context that makes a number mean
+   * something ("of 5,000 this cycle", "vs. last month", "3 pending").
+   */
+  description?: React.ReactNode
 }
 
 const TREND_STYLES = {
@@ -67,6 +76,7 @@ const TREND_ARROWS = {
  * @param {string} value - Formatted metric value
  * @param {MetricTrend} trend - Optional trend with value and direction
  * @param {React.ReactNode} icon - Optional icon
+ * @param {React.ReactNode} description - Optional secondary line under the value
  *
  * @example
  * <MetricCard
@@ -80,6 +90,7 @@ function MetricCard({
   value,
   trend,
   icon,
+  description,
   className,
   surface,
   radius,
@@ -115,6 +126,9 @@ function MetricCard({
           </span>
         )}
       </div>
+      {description && (
+        <p className="text-xs text-muted-foreground">{description}</p>
+      )}
     </div>
   )
 }

@@ -8243,6 +8243,13 @@
           "description": "Animation override. Omit to inherit from provider."
         },
         {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "default": null,
+          "description": "Secondary line under the value — the context that makes a number mean something (\"of 5,000 this cycle\", \"vs. last month\", \"3 pending\")."
+        },
+        {
           "name": "icon",
           "type": "ReactNode",
           "required": false,
