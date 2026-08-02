@@ -34,8 +34,12 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
+      # Trusted publishing needs npm >= 11.5. Pinned to the 11.x line on
+      # purpose: npm 12 rejects unknown CLI flags outright, and pnpm publish
+      # passes --no-git-checks down the chain, so `npm@latest` breaks the
+      # changesets publish step with EUNKNOWNCONFIG.
       - name: Upgrade npm for trusted publishing
-        run: npm install -g npm@latest
+        run: npm install -g npm@^11.5.0
 
       - name: Install
         run: pnpm install --frozen-lockfile
